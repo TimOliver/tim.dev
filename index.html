@@ -1,9 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="auto">
 <head>
     <meta charset="UTF-8">
     <title>[tim.dev]</title>
+    <script>
+        (function() {
+            var t = localStorage.getItem('theme') || 'auto';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
     <style>
+        :root {
+            --bg: #fff;
+            --text: #333;
+            --text-secondary: #555;
+            --text-tertiary: #666;
+            --heading: #000;
+            --link: #f44;
+            --link-hover: #ff2e4a;
+            --blockquote-bg: #eee;
+            --border: #eee;
+            --icon-filter: none;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            [data-theme="auto"] {
+                --bg: #161616;
+                --text: #d4d4d4;
+                --text-secondary: #a0a0a0;
+                --text-tertiary: #888;
+                --heading: #e8e8e8;
+                --link: #ff6b6b;
+                --link-hover: #ff8888;
+                --blockquote-bg: #242424;
+                --border: #2a2a2a;
+                --icon-filter: invert(1);
+            }
+        }
+
+        [data-theme="dark"] {
+            --bg: #161616;
+            --text: #d4d4d4;
+            --text-secondary: #a0a0a0;
+            --text-tertiary: #888;
+            --heading: #e8e8e8;
+            --link: #ff6b6b;
+            --link-hover: #ff8888;
+            --blockquote-bg: #242424;
+            --border: #2a2a2a;
+            --icon-filter: invert(1);
+        }
+
         body {
             font-family: -apple-system,
                          BlinkMacSystemFont,
@@ -19,7 +66,8 @@
             line-height: 1.75;
             margin: 0;
             padding: 0;
-            color: #333;
+            color: var(--text);
+            background-color: var(--bg);
             width: 100%;
             overflow-wrap: break-word;
         }
@@ -30,12 +78,12 @@
 
         a {
             text-decoration-line: none;
-            color: #f44;
+            color: var(--link);
         }
 
         a:hover {
             text-decoration-line: underline;
-            color: #ff2e4a;
+            color: var(--link-hover);
         }
 
         h1 {
@@ -68,7 +116,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background-color: rgba(255, 255, 255, 1.0);
+            background-color: var(--bg);
             -webkit-mask-image: linear-gradient(rgb(0, 0, 0) 65%, rgba(0, 0, 0, 0.8) 85%, rgba(0, 0, 0, 0) 100%);
             mask-image: linear-gradient(rgb(0, 0, 0) 65%, rgba(0, 0, 0, 0.8) 85%, rgba(0, 0, 0, 0) 100%);
             z-index: -1;
@@ -91,10 +139,11 @@
         #logo img {
             height: 24px;
             display: block;
+            filter: var(--icon-filter);
         }
 
         #logo a {
-            color: #000;
+            color: var(--heading);
             text-decoration: none !important;
             font-size: 30px;
             font-weight: 800;
@@ -112,18 +161,98 @@
         }
 
         #menu a {
-            color: #000;
+            color: var(--heading);
         }
 
         #menu a:hover {
-            color: #000;
             text-decoration: none;
-            color: #ff2e4a;
+            color: var(--link-hover);
         }
 
-        #menu img {
+        #menu > li > a > img {
             height: 25px;
             display: block;
+            filter: var(--icon-filter);
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .theme-toggle-icon {
+            display: block;
+            height: 25px;
+            filter: var(--icon-filter);
+        }
+
+        .theme-popover {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            flex-direction: column;
+            gap: 4px;
+            min-width: 200px;
+            z-index: 100;
+        }
+
+        .theme-popover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            height: 12px;
+        }
+
+        @media (hover: hover) {
+            .theme-toggle:hover .theme-popover {
+                display: flex;
+            }
+        }
+
+        .theme-popover.open {
+            display: flex;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text);
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .theme-option:hover,
+        .theme-option.active:hover {
+            background: var(--blockquote-bg);
+        }
+
+        .theme-option.active {
+            font-weight: 700;
+            background: color-mix(in srgb, var(--blockquote-bg) 50%, transparent);
+        }
+
+        .theme-option img {
+            height: 24px;
+            width: 24px;
+            filter: var(--icon-filter);
         }
 
         .container {
@@ -142,7 +271,7 @@
 
         .date {
             display: block;
-            color: #555;
+            color: var(--text-secondary);
             font-size: 1.1em;
             font-weight: 400;
             text-align: center;
@@ -156,7 +285,7 @@
             margin: 0.6rem auto 0;
             text-align: center;
             text-wrap: balance;
-            color: #666;
+            color: var(--text-tertiary);
         }
 
         article {
@@ -170,8 +299,8 @@
 
         blockquote {
             /*font-style: italic;*/
-            color: #555;
-            background-color: #eee;
+            color: var(--text-secondary);
+            background-color: var(--blockquote-bg);
             padding: 1.1rem 2rem 1.3rem;
             margin: 0;
             border-radius: 30px;
@@ -181,7 +310,7 @@
         .article-separator {
             height: 2px;
             clear: both;
-            background: linear-gradient(to right, #fff 0%, #eee 25%, #eee 50%, #eee 75%, #fff 100%);
+            background: linear-gradient(to right, var(--bg) 0%, var(--border) 25%, var(--border) 50%, var(--border) 75%, var(--bg) 100%);
             border: none;
         }
 
@@ -190,7 +319,7 @@
             justify-content: center;
             align-items: center;
             line-height: 1.5em;
-            color: #555;
+            color: var(--text-secondary);
             font-weight: 500;
             font-size: 0.55em;
         }
@@ -203,7 +332,7 @@
             align-items: center;
             padding: 20px;
             width: 100%;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border);
         }
 
         footer span {
@@ -240,6 +369,10 @@
         .icon-row .icon {
             height: 25px;
         }
+
+        .icon-row img {
+            filter: var(--icon-filter);
+        }
     </style>
 </head>
 <body>
@@ -261,7 +394,23 @@
                     <li><a href="#">Talks</a></li>
                     <li><a href="#">Archive</a></li>
                     <li><a href="#">Contact</a></li>
-                    <li><a href="https://youtube.com/timXD" target="_blank"><img src="img/appearance.svg"></a></li>
+                    <li class="theme-toggle">
+                        <img src="img/appearance.svg" class="theme-toggle-icon" alt="Theme">
+                        <div class="theme-popover">
+                            <button data-theme-value="auto" class="theme-option">
+                                <img src="img/appearance/settings-automation.svg" id="auto-icon" alt="">
+                                <span>Auto</span>
+                            </button>
+                            <button data-theme-value="light" class="theme-option">
+                                <img src="img/appearance/sun.svg" alt="">
+                                <span>Light</span>
+                            </button>
+                            <button data-theme-value="dark" class="theme-option">
+                                <img src="img/appearance/moon.svg" alt="">
+                                <span>Dark</span>
+                            </button>
+                        </div>
+                    </li>
                     <li><a href="https://twitch.tv/timXD" target="_blank"><img src="img/rss.svg"></a></li>
                 </ul>
             </nav>
@@ -310,6 +459,61 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        (function() {
+            // Detect OS for the auto icon
+            var ua = navigator.userAgent;
+            var autoSrc = 'img/appearance/settings-automation.svg';
+            if (/Mac|iPhone|iPad|iPod/.test(ua)) {
+                autoSrc = 'img/appearance/brand-apple.svg';
+            } else if (/Windows/.test(ua)) {
+                autoSrc = 'img/appearance/brand-windows.svg';
+            } else if (/Android/.test(ua)) {
+                autoSrc = 'img/appearance/brand-android.svg';
+            }
+            var autoIcon = document.getElementById('auto-icon');
+            if (autoIcon) autoIcon.src = autoSrc;
+
+            // Read saved preference
+            var saved = localStorage.getItem('theme') || 'auto';
+            document.documentElement.setAttribute('data-theme', saved);
+
+            var toggle = document.querySelector('.theme-toggle');
+            var popover = document.querySelector('.theme-popover');
+            var options = document.querySelectorAll('.theme-option');
+
+            // Mark the active option
+            options.forEach(function(btn) {
+                if (btn.dataset.themeValue === saved) btn.classList.add('active');
+            });
+
+            // Toggle popover on click (needed for touch devices)
+            toggle.querySelector('.theme-toggle-icon').addEventListener('click', function(e) {
+                e.stopPropagation();
+                popover.classList.toggle('open');
+            });
+
+            // Handle option selection
+            options.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var value = btn.dataset.themeValue;
+                    localStorage.setItem('theme', value);
+                    document.documentElement.setAttribute('data-theme', value);
+                    options.forEach(function(b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    popover.classList.remove('open');
+                });
+            });
+
+            // Close popover when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!toggle.contains(e.target)) {
+                    popover.classList.remove('open');
+                }
+            });
+        })();
+    </script>
 
 </body>
 </html>
