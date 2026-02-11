@@ -5,6 +5,7 @@ All changes are in `index.html`. The appearance (moon) icon in `<ul id="menu">` 
 
 ### CSS
 - All hardcoded colors replaced with CSS custom properties (`:root` block): `--bg`, `--text`, `--text-secondary`, `--text-tertiary`, `--heading`, `--link`, `--link-hover`, `--blockquote-bg`, `--border`, `--icon-filter`.
+- All icon `<img>` elements (nav, theme toggle, footer) have `padding: 6px; border-radius: 8px` and show a subtle `var(--blockquote-bg)` background on hover.
 - Dark theme variables defined in two places (identical values):
   - `[data-theme="dark"]` — forced dark mode.
   - `@media (prefers-color-scheme: dark) { [data-theme="auto"] { ... } }` — follows OS preference.
@@ -19,17 +20,14 @@ All changes are in `index.html`. The appearance (moon) icon in `<ul id="menu">` 
 - Contains the moon icon trigger (`img/appearance.svg`) and a `.theme-popover` div with 3 `<button>` elements (Auto/Light/Dark), each with an icon and label.
 
 ### JS
+- Kept minimal — goal is to rely on as little JS as possible.
 - Inline `<script>` in `<head>`: reads `localStorage('theme')` and sets `data-theme` on `<html>` immediately to prevent FOUC.
 - Main `<script>` at end of `<body>`:
-  - Detects OS via `navigator.userAgent` and swaps the Auto option icon (`#auto-icon`) to `brand-apple.svg`, `brand-windows.svg`, or `brand-android.svg` (fallback: `settings-automation.svg`).
   - Click on trigger toggles `.open` class on popover (for touch).
   - Click on an option: saves to `localStorage`, sets `data-theme`, updates `.active` class, closes popover.
   - Click outside `.theme-toggle` removes `.open`.
 
 ## Icon inventory (`img/appearance/`)
+- `auto.svg` — Auto option
 - `sun.svg` — Light option
 - `moon.svg` — Dark option
-- `brand-apple.svg` — Auto on macOS/iOS
-- `brand-windows.svg` — Auto on Windows
-- `brand-android.svg` — Auto on Android
-- `settings-automation.svg` — Auto fallback (Linux/other)

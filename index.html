@@ -21,6 +21,7 @@
             --blockquote-bg: #eee;
             --border: #eee;
             --icon-filter: none;
+            --icon-hover-bg: var(--blockquote-bg);
         }
 
         @media (prefers-color-scheme: dark) {
@@ -35,6 +36,7 @@
                 --blockquote-bg: #242424;
                 --border: #2a2a2a;
                 --icon-filter: invert(1);
+                --icon-hover-bg: var(--blockquote-bg);
             }
         }
 
@@ -49,6 +51,7 @@
             --blockquote-bg: #242424;
             --border: #2a2a2a;
             --icon-filter: invert(1);
+            --icon-hover-bg: var(--blockquote-bg);
         }
 
         body {
@@ -175,6 +178,13 @@
             filter: var(--icon-filter);
         }
 
+        #menu > li > a:has(> img):hover > img {
+            background: var(--icon-hover-bg);
+            padding: 6px;
+            margin: -6px;
+            border-radius: 8px;
+        }
+
         /* Theme toggle */
         .theme-toggle {
             position: relative;
@@ -185,6 +195,13 @@
             display: block;
             height: 25px;
             filter: var(--icon-filter);
+        }
+
+        .theme-toggle:hover .theme-toggle-icon {
+            background: var(--icon-hover-bg);
+            padding: 6px;
+            margin: -6px;
+            border-radius: 8px;
         }
 
         .theme-popover {
@@ -373,6 +390,14 @@
         .icon-row img {
             filter: var(--icon-filter);
         }
+
+        .icon-row a:hover img {
+            background: var(--icon-hover-bg);
+            padding: 6px;
+            margin: -6px;
+            border-radius: 8px;
+        }
+
     </style>
 </head>
 <body>
@@ -398,7 +423,7 @@
                         <img src="img/appearance.svg" class="theme-toggle-icon" alt="Theme">
                         <div class="theme-popover">
                             <button data-theme-value="auto" class="theme-option">
-                                <img src="img/appearance/settings-automation.svg" id="auto-icon" alt="">
+                                <img src="img/appearance/auto.svg" alt="">
                                 <span>Auto</span>
                             </button>
                             <button data-theme-value="light" class="theme-option">
@@ -462,19 +487,6 @@
 
     <script>
         (function() {
-            // Detect OS for the auto icon
-            var ua = navigator.userAgent;
-            var autoSrc = 'img/appearance/settings-automation.svg';
-            if (/Mac|iPhone|iPad|iPod/.test(ua)) {
-                autoSrc = 'img/appearance/brand-apple.svg';
-            } else if (/Windows/.test(ua)) {
-                autoSrc = 'img/appearance/brand-windows.svg';
-            } else if (/Android/.test(ua)) {
-                autoSrc = 'img/appearance/brand-android.svg';
-            }
-            var autoIcon = document.getElementById('auto-icon');
-            if (autoIcon) autoIcon.src = autoSrc;
-
             // Read saved preference
             var saved = localStorage.getItem('theme') || 'auto';
             document.documentElement.setAttribute('data-theme', saved);
