@@ -5,13 +5,14 @@ All changes are in `index.html`. The appearance (moon) icon in `<ul id="menu">` 
 
 ### CSS
 - All hardcoded colors replaced with CSS custom properties (`:root` block): `--bg`, `--text`, `--text-secondary`, `--text-tertiary`, `--heading`, `--link`, `--link-hover`, `--blockquote-bg`, `--border`, `--icon-filter`.
-- All icon `<img>` elements (nav, theme toggle, footer) have `padding: 6px; border-radius: 8px` and show a subtle `var(--blockquote-bg)` background on hover.
 - Dark theme variables defined in two places (identical values):
   - `[data-theme="dark"]` — forced dark mode.
   - `@media (prefers-color-scheme: dark) { [data-theme="auto"] { ... } }` — follows OS preference.
 - Icons (all `stroke="currentColor"` SVGs loaded via `<img>`) use `filter: var(--icon-filter)` which is `none` in light and `invert(1)` in dark.
 - Nav icon selector narrowed to `#menu > li > a > img` to avoid specificity conflicts with popover icons.
+- `.theme-toggle` has `padding: 0 15px; margin: 0 -15px` to widen the hover zone without shifting layout.
 - Popover shown via `@media (hover: hover)` on desktop; `.open` class toggled via JS for touch devices. Invisible `::before` pseudo-element bridges the gap between trigger and popover.
+- Icon hover tinting (changing icon color on mouseover) is not yet implemented. `filter: invert(1)` on `<img>` tags inverts any background/box-shadow applied to the same element. The clean fix is inlining the SVGs so `currentColor` works natively — planned for when the static site generator templating is set up.
 - Popover sizing: min-width 200px, padding 10px, border-radius 16px. Options: font-size 18px, padding 12px 16px, icons 24px. 4px gap between options.
 - Active option: bold weight + subtle background (`color-mix(in srgb, var(--blockquote-bg) 50%, transparent)`). Hover overrides to full `var(--blockquote-bg)` on all options including the active one.
 
