@@ -1,34 +1,110 @@
-# Dark Mode Popover
+# tim.dev — Personal Blog
 
-## What was done
-All changes are in `index.html`. The appearance (moon) icon in `<ul id="menu">` is now a `.theme-toggle` `<li>` with a hover popover offering Auto/Light/Dark options.
+Built with [Ignite](https://github.com/twostraws/Ignite), a Swift static site generator with SwiftUI-like syntax.
 
-### CSS
-- All hardcoded colors replaced with CSS custom properties (`:root` block): `--bg`, `--text`, `--text-secondary`, `--text-tertiary`, `--heading`, `--link`, `--link-hover`, `--blockquote-bg`, `--border`, `--icon-filter`.
-- Dark theme variables defined in two places (identical values):
-  - `[data-theme="dark"]` — forced dark mode.
-  - `@media (prefers-color-scheme: dark) { [data-theme="auto"] { ... } }` — follows OS preference.
-- Icons (all `stroke="currentColor"` SVGs loaded via `<img>`) use `filter: var(--icon-filter)` which is `none` in light and `invert(1)` in dark.
-- Nav icon selector narrowed to `#menu > li > a > img` to avoid specificity conflicts with popover icons.
-- `.theme-toggle` has `padding: 0 15px; margin: 0 -15px` to widen the hover zone without shifting layout.
-- Popover shown via `@media (hover: hover)` on desktop; `.open` class toggled via JS for touch devices. Invisible `::before` pseudo-element bridges the gap between trigger and popover.
-- Icon hover tinting (changing icon color on mouseover) is not yet implemented. `filter: invert(1)` on `<img>` tags inverts any background/box-shadow applied to the same element. The clean fix is inlining the SVGs so `currentColor` works natively — planned for when the static site generator templating is set up.
-- Popover sizing: min-width 200px, padding 10px, border-radius 16px. Options: font-size 18px, padding 12px 16px, icons 24px. 4px gap between options.
-- Active option: bold weight + subtle background (`color-mix(in srgb, var(--blockquote-bg) 50%, transparent)`). Hover overrides to full `var(--blockquote-bg)` on all options including the active one.
+## Project Structure
 
-### HTML
-- `.theme-toggle` is an `<li>` inside `#menu`, positioned before the RSS icon.
-- Contains the moon icon trigger (`img/appearance.svg`) and a `.theme-popover` div with 3 `<button>` elements (Auto/Light/Dark), each with an icon and label.
+```
+Sources/
+├── Site.swift              # Site config (@main entry point, ExampleSite: Site)
+├── Layouts/MainLayout.swift # Page wrapper (nav, content, footer)
+└── Pages/Home.swift         # Homepage (StaticPage)
+Content/                     # Markdown articles (YAML front matter)
+Assets/                      # Static files (images, fonts) — copied to Build/
+Includes/                    # Raw HTML snippets, loaded via Include("file.html")
+Build/                       # Generated output (deploy this)
+Template/                    # Previous hand-coded HTML/CSS design (reference)
+Package.swift                # Swift package — depends on Ignite (main branch)
+```
 
-### JS
-- Kept minimal — goal is to rely on as little JS as possible.
-- Inline `<script>` in `<head>`: reads `localStorage('theme')` and sets `data-theme` on `<html>` immediately to prevent FOUC.
-- Main `<script>` at end of `<body>`:
-  - Click on trigger toggles `.open` class on popover (for touch).
-  - Click on an option: saves to `localStorage`, sets `data-theme`, updates `.active` class, closes popover.
-  - Click outside `.theme-toggle` removes `.open`.
+## Ignite Framework Reference
 
-## Icon inventory (`img/appearance/`)
-- `auto.svg` — Auto option
-- `sun.svg` — Light option
-- `moon.svg` — Dark option
+### Core Protocols
+- **`Site`** — Top-level config: `name`, `url`, `homePage`, `layout`, plus optional `author`, `titleSuffix`, `lightTheme`/`darkTheme`, `feedConfiguration`, `favicon`, `builtInIconsEnabled`, etc.
+- **`StaticPage`** — Swift-defined page: requires `title: String` and `var body: some HTML`. Optional `path`, `description`, `image`.
+- **`Layout`** — Page wrapper: `var body: some Document`. Use `content` to place page body. Wraps all pages.
+- **`ArticlePage`** — Template for Markdown articles. Access `article` property for metadata/content.
+- **`TagPage`** — Template for tag archive pages. Access `tag` property.
+- **`ErrorPage`** — Custom 404 page.
+- **`Theme`** — Full visual theming: colors (`accent`, `primary`, `background`, `link`, etc.), typography (`font`, `headingFont`, `rootFontSize`), responsive sizing.
+
+### Key Elements
+| Category | Elements |
+|----------|----------|
+| Text | `Text`, `Span`, `Strong`, `Emphasis`, `Code`, `CodeBlock`, `Quote`, `Strikethrough`, `Underline` |
+| Structure | `Section`, `Group`, `Body`, `Head` |
+| Layout | `HStack`, `VStack`, `ZStack`, `Grid`, `Column`, `Row`, `Spacer` |
+| Navigation | `NavigationBar`, `Link`, `LinkGroup`, `Dropdown` |
+| Media | `Image`, `Video`, `Audio`, `Embed` |
+| Interactive | `Button`, `ButtonGroup`, `Modal`, `Accordion`, `Carousel` |
+| Forms | `Form`, `Input`, `TextField`, `Label`, `SubscribeForm` |
+| Content | `Card`, `Badge`, `Alert`, `Divider`, `Table`, `ArticlePreview` |
+| Meta | `MetaTag`, `MetaLink`, `MetaStyle`, `Script`, `Include` |
+| Utility | `ForEach`, `Tag`, `String` (raw HTML) |
+
+### Common Modifiers
+- **Typography:** `.font(.title1)`, `.fontWeight(.bold)`, `.lineSpacing()`, `.letterSpacing()`
+- **Color:** `.foregroundStyle(Color)`, `.background(Color)`, `.opacity(Double)`
+- **Spacing:** `.padding()`, `.padding(.top, 5)`, `.margin()`
+- **Size:** `.frame(width:height:)`, `.aspectRatio()`
+- **Visual:** `.border()`, `.cornerRadius()`, `.shadow()`, `.clipped()`
+- **Custom:** `.id()`, `.class()`, `.style()`, `.data()`, `.aria()`, `.customAttribute()`
+- **Interaction:** `.onClick {}`, `.onHover {}`, `.cursor(.pointer)`
+- **Visibility:** `.hidden()`, `.disabled()`
+
+### Content System (Markdown Articles)
+Place `.md` files in `Content/` subfolders. Front matter:
+```yaml
+---
+title: Post Title
+date: 2024-02-24
+tags: swift,web
+author: Name
+published: true
+image: /images/hero.jpg
+layout: CustomArticlePage
+---
+```
+Article properties: `title`, `description`, `text`, `date`, `lastModified`, `tags`, `path`, `estimatedReadingMinutes`, `image`, `isPublished`.
+
+### Environment
+```swift
+@Environment(\.articles) var articles  // ArticleLoader — .all, .tagged("swift")
+@Environment(\.site) var site          // SiteMetadata — .name, .url
+@Environment(\.themes) var themes
+@Environment(\.author) var author
+```
+
+### Assets & Images
+- Files in `Assets/` are copied to `Build/` automatically.
+- Dark mode image variants: `logo~dark.svg` alongside `logo.svg`.
+- Retina: `icon@2x.png` alongside `icon.png`.
+- Bootstrap icons: `Image(systemName: "heart-fill")` (requires `builtInIconsEnabled`).
+
+### Custom CSS/HTML
+- **Inline style:** `MetaStyle(content: "css here")` in `Head`
+- **External stylesheet:** `MetaLink(relationship: .stylesheet, href: "/css/custom.css")`
+- **HTML snippet:** `Include("file.html")` — loads from `Includes/`
+- **Raw HTML:** `String("<div>raw</div>")`
+
+### Theming
+- Set `lightTheme` / `darkTheme` on `Site` for automatic light/dark mode.
+- `SwitchTheme(themeName:)` action for manual theme switching.
+- Colors: `Color(hex:)`, `Color.blue`, `.opacity()`, `.weighted(.lighter/.darker)`.
+- Units: `.px()`, `.rem()`, `.em()`, `.percentage()`.
+
+### Build & Deploy
+- Run the executable to build: output goes to `Build/`.
+- `Build/` contains static HTML/CSS/JS ready for any web server.
+- RSS feed at `feed.xml` if `feedConfiguration` is set.
+- `robots.txt` and `sitemap.xml` auto-generated.
+
+## Previous Design (Template/)
+The hand-coded `Template/index.html` contains the original blog design with:
+- Custom dark mode popover (Auto/Light/Dark) using CSS custom properties and minimal JS
+- SVG icons with `filter: var(--icon-filter)` for dark mode inversion
+- Touch-friendly popover with hover zone bridging
+- localStorage-based theme persistence with FOUC prevention
+- Icon inventory in `Template/img/appearance/` (auto.svg, sun.svg, moon.svg)
+
+This design should be ported to Ignite's component system.
