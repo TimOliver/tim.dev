@@ -16,7 +16,6 @@ struct IgniteWebsite {
 
 struct TimDevSite: Site {
     var name = "[tim.dev]"
-    var titleSuffix = " – [tim.dev]"
     var url = URL(static: "https://tim.dev")
     var useDefaultBootstrapURLs = BootstrapOptions.none
     var builtInIconsEnabled = BootstrapOptions.none
