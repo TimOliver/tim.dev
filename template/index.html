@@ -17,8 +17,8 @@
             --text-secondary: rgba(60, 60, 67, 0.6);
             --text-tertiary: rgba(60, 60, 67, 0.3);
             --heading: #000;
-            --link: var(--text);
-            --link-hover: var(--text);
+            --link: #FA233B;
+            --link-hover: #FA233B;
             --blockquote-bg: rgba(120, 120, 128, 0.16);
             --border: #eee;
             --icon-filter: none;
@@ -34,8 +34,8 @@
                 --text-secondary: rgba(235, 235, 245, 0.6);
                 --text-tertiary: rgba(235, 235, 245, 0.3);
                 --heading: #e8e8e8;
-                --link: var(--text);
-                --link-hover: var(--text);
+                --link: #F82D48;
+                --link-hover: #F82D48;
                 --blockquote-bg: rgba(120, 120, 128, 0.32);
                 --border: #2a2a2a;
                 --icon-filter: invert(1);
@@ -51,8 +51,8 @@
             --text-secondary: rgba(235, 235, 245, 0.6);
             --text-tertiary: rgba(235, 235, 245, 0.3);
             --heading: #e8e8e8;
-            --link: var(--text);
-            --link-hover: var(--text);
+            --link: #F82D48;
+            --link-hover: #F82D48;
             --blockquote-bg: rgba(120, 120, 128, 0.32);
             --border: #2a2a2a;
             --icon-filter: invert(1);
@@ -90,15 +90,22 @@
 
         a {
             color: var(--link);
-            text-decoration-line: underline;
-            text-decoration-thickness: 1.0px;
-            text-underline-offset: 6px;
-            text-decoration-color: color-mix(in srgb, var(--link) 50%, transparent);
+            text-decoration-line: none;
         }
 
         a:hover {
             color: var(--link-hover);
-            text-decoration-color: var(--link-hover);
+            text-decoration-line: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+        }
+
+        h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+            color: var(--heading);
+        }
+
+        h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover {
+            color: var(--text-secondary);
         }
 
         h1 {
