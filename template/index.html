@@ -299,6 +299,20 @@
             display: block;
         }
 
+        .menu-toggle-input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .hamburger-button .icon-close {
+            display: none;
+        }
+
         @media (max-width: 1000px) {
             header {
                 padding: 16px 0 24px;
@@ -376,6 +390,36 @@
                 height: 18px;
             }
 
+            #header-content:has(.menu-toggle-input:checked) {
+                align-items: flex-start;
+            }
+
+            #header-content:has(.menu-toggle-input:checked) #logo {
+                padding-top: 6px;
+            }
+
+            #header-content:has(.menu-toggle-input:checked) #menu {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 14px;
+            }
+
+            #header-content:has(.menu-toggle-input:checked) #menu > li {
+                display: flex;
+            }
+
+            #header-content:has(.menu-toggle-input:checked) .menu-hamburger {
+                order: -1;
+            }
+
+            #header-content:has(.menu-toggle-input:checked) .icon-hamburger {
+                display: none;
+            }
+
+            #header-content:has(.menu-toggle-input:checked) .icon-close {
+                display: block;
+            }
+
             main .container {
                 padding: 0 16px;
             }
@@ -397,6 +441,10 @@
         @media (max-width: 389px) {
             .menu-priority {
                 display: none;
+            }
+
+            #header-content:has(.menu-toggle-input:checked) .menu-priority {
+                display: flex;
             }
         }
 
@@ -574,13 +622,18 @@
                     </li>
                     <li><a href="https://twitch.tv/timXD" target="_blank"><img src="img/rss.svg"></a></li>
                     <li class="menu-hamburger">
-                        <button class="hamburger-button" aria-label="Open menu" type="button">
-                            <svg width="28" height="22" viewBox="0 0 28 22" fill="none" aria-hidden="true">
+                        <input type="checkbox" id="menu-toggle" class="menu-toggle-input">
+                        <label class="hamburger-button" for="menu-toggle" aria-label="Toggle menu">
+                            <svg class="icon-hamburger" width="28" height="22" viewBox="0 0 28 22" fill="none" aria-hidden="true">
                                 <line x1="4" y1="4.5" x2="24" y2="4.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                                 <line x1="4" y1="11" x2="24" y2="11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                                 <line x1="4" y1="17.5" x2="24" y2="17.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                             </svg>
-                        </button>
+                            <svg class="icon-close" width="28" height="22" viewBox="0 0 28 22" fill="none" aria-hidden="true">
+                                <line x1="6" y1="3" x2="22" y2="19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                                <line x1="22" y1="3" x2="6" y2="19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            </svg>
+                        </label>
                     </li>
                 </ul>
             </nav>
