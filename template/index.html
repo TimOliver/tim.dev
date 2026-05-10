@@ -854,6 +854,21 @@
                 return capsule.querySelector('.menu-closed-bar');
             }
 
+            var iconHam = document.querySelector('.icon-hamburger');
+            var iconX = document.querySelector('.icon-close');
+
+            function lockIconTransitions() {
+                if (iconHam) iconHam.style.transition = 'none';
+                if (iconX) iconX.style.transition = 'none';
+            }
+
+            function unlockIconTransitions() {
+                requestAnimationFrame(function() {
+                    if (iconHam) iconHam.style.transition = '';
+                    if (iconX) iconX.style.transition = '';
+                });
+            }
+
             checkbox.addEventListener('change', function() {
                 if (animating) return;
 
@@ -867,6 +882,8 @@
             function animateOpen() {
                 animating = true;
 
+                lockIconTransitions();
+
                 // checkbox already checked (CSS in open state). Capture both heights via temp-toggle.
                 var endHeight = capsule.offsetHeight;
                 checkbox.checked = false;
@@ -877,6 +894,16 @@
                 capsule.style.overflow = 'hidden';
                 capsule.offsetHeight; // force reflow
 
+                // Manual icon swap so CSS transition doesn't double-fire on cancel.
+                var hamAnim = iconHam.animate(
+                    [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(0)' }],
+                    { duration: 250, easing: iosEase, fill: 'forwards' }
+                );
+                var xAnim = iconX.animate(
+                    [{ opacity: 0, transform: 'scale(0)' }, { opacity: 1, transform: 'scale(1)' }],
+                    { duration: 250, easing: iosEase, fill: 'forwards' }
+                );
+
                 var heightAnim = capsule.animate(
                     [{ height: startHeight + 'px' }, { height: endHeight + 'px' }],
                     { duration: heightDuration, easing: iosEase, fill: 'forwards' }
@@ -885,6 +912,9 @@
                     capsule.style.height = '';
                     capsule.style.overflow = '';
                     heightAnim.cancel();
+                    hamAnim.cancel();
+                    xAnim.cancel();
+                    unlockIconTransitions();
                     animating = false;
                 };
 
@@ -946,6 +976,10 @@
             function animateClose() {
                 animating = true;
 
+                lockIconTransitions();
+                // Fade bg out at start (CSS bg transition handles it) instead of at end.
+                label.style.background = 'transparent';
+
                 // Currently checkbox is unchecked (just toggled by user).
                 // To keep open layout during animation, re-open it programmatically.
                 var endHeight = capsule.offsetHeight; // closed height
@@ -957,8 +991,6 @@
                 capsule.offsetHeight;
 
                 // Manually drive the icon swap (X -> hamburger) since CSS is in open state
-                var iconHam = document.querySelector('.icon-hamburger');
-                var iconX = document.querySelector('.icon-close');
                 var hamAnim = iconHam.animate(
                     [{ opacity: 0, transform: 'scale(0)' }, { opacity: 1, transform: 'scale(1)' }],
                     { duration: 250, easing: iosEase, fill: 'forwards' }
@@ -998,12 +1030,14 @@
                     checkbox.checked = false; // commit closed state at end
                     capsule.style.height = '';
                     capsule.style.overflow = '';
+                    label.style.background = ''; // clear inline override; CSS already says no bg in closed state
                     heightAnim.cancel();
                     hamAnim.cancel();
                     xAnim.cancel();
                     itemAnims.forEach(function(a) { a.cancel(); });
                     if (iconsAnim) iconsAnim.cancel();
                     if (closedBarAnim) closedBarAnim.cancel();
+                    unlockIconTransitions();
                     animating = false;
                 };
             }
