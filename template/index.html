@@ -287,6 +287,11 @@
             display: contents;
         }
 
+        .menu-mobile-only {
+            display: none;
+        }
+
+
         .hamburger-button {
             background: none;
             border: none;
@@ -405,6 +410,7 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 24px;
+                padding-bottom: 12px;
             }
 
             #header-content:has(.menu-toggle-input:checked) #logo {
@@ -420,24 +426,27 @@
                 line-height: 1.5;
             }
 
-            #header-content:has(.menu-toggle-input:checked) .menu-row-icons .theme-toggle-icon,
-            #header-content:has(.menu-toggle-input:checked) .menu-row-icons > a > img {
-                height: 28px;
-            }
-
             #header-content:has(.menu-toggle-input:checked) #menu > li {
                 display: flex;
             }
 
             #header-content:has(.menu-toggle-input:checked) .menu-row-icons {
+                position: absolute;
+                bottom: 18px;
+                right: 18px;
                 display: flex;
-                gap: 14px;
+                gap: 20px;
                 align-items: center;
-                margin-top: 4px;
             }
 
             #header-content:has(.menu-toggle-input:checked) .menu-row-icons .theme-toggle {
                 margin: 0;
+                padding: 0;
+            }
+
+            #header-content:has(.menu-toggle-input:checked) .menu-row-icons .theme-toggle-icon,
+            #header-content:has(.menu-toggle-input:checked) .menu-row-icons > a > img {
+                height: 28px;
             }
 
             #header-content:has(.menu-toggle-input:checked) .menu-hamburger {
