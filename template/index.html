@@ -291,7 +291,7 @@
             display: none;
         }
 
-        .menu-closed-priority {
+        .menu-closed-bar {
             display: none;
         }
 
@@ -409,12 +409,25 @@
                 gap: 20px;
             }
 
-            #menu > li:not(.menu-hamburger):not(.menu-closed-priority) {
+            #menu > li:not(.menu-hamburger) {
                 display: none;
             }
 
-            .menu-closed-priority {
+            .menu-closed-bar {
                 display: flex;
+                position: absolute;
+                top: 8px;
+                right: 64px;
+                height: 34px;
+                gap: 25px;
+                align-items: center;
+                font-size: 1em;
+                font-weight: 600;
+            }
+
+            .menu-closed-bar a {
+                color: var(--heading);
+                text-decoration: none;
             }
 
             .menu-hamburger {
@@ -451,8 +464,9 @@
                 display: flex;
             }
 
-            #header-content:has(.menu-toggle-input:checked) #menu > li.menu-closed-priority {
-                display: none;
+            #header-content:has(.menu-toggle-input:checked) .menu-closed-bar {
+                opacity: 0;
+                pointer-events: none;
             }
 
             #header-content:has(.menu-toggle-input:checked) .menu-row-icons {
@@ -517,7 +531,7 @@
         }
 
         @media (max-width: 389px) {
-            .menu-closed-priority {
+            .menu-closed-bar {
                 display: none;
             }
         }
@@ -669,6 +683,10 @@
             </div>
 
             <nav>
+                <div class="menu-closed-bar">
+                    <a href="#">About</a>
+                    <a href="#">Archive</a>
+                </div>
                 <ul id="menu">
                     <li><a href="#">About</a></li>
                     <li><a href="#">Apps</a></li>
@@ -697,8 +715,6 @@
                         </div>
                         <a href="https://twitch.tv/timXD" target="_blank"><img src="img/rss.svg"></a>
                     </li>
-                    <li class="menu-closed-priority"><a href="#">About</a></li>
-                    <li class="menu-closed-priority"><a href="#">Archive</a></li>
                     <li class="menu-hamburger">
                         <input type="checkbox" id="menu-toggle" class="menu-toggle-input">
                         <label class="hamburger-button" for="menu-toggle" aria-label="Toggle menu">
@@ -834,6 +850,10 @@
                 return menu.querySelector('.menu-row-icons');
             }
 
+            function getClosedBar() {
+                return capsule.querySelector('.menu-closed-bar');
+            }
+
             checkbox.addEventListener('change', function() {
                 if (animating) return;
 
@@ -909,6 +929,18 @@
                         iconsAnim.cancel();
                     };
                 }
+
+                // Fade out closed-bar (was visible in closed state)
+                var closedBar = getClosedBar();
+                if (closedBar) {
+                    var closedBarAnim = closedBar.animate(
+                        [{ opacity: 1 }, { opacity: 0 }],
+                        { duration: fadeDuration, easing: iosEase, fill: 'forwards' }
+                    );
+                    closedBarAnim.onfinish = function() {
+                        closedBarAnim.cancel();
+                    };
+                }
             }
 
             function animateClose() {
@@ -955,6 +987,13 @@
                     { duration: fadeDuration, easing: iosEase, fill: 'forwards' }
                 ) : null;
 
+                // Fade closed-bar IN as menu shrinks
+                var closedBar = getClosedBar();
+                var closedBarAnim = closedBar ? closedBar.animate(
+                    [{ opacity: 0 }, { opacity: 1 }],
+                    { duration: heightDuration, easing: iosEase, fill: 'forwards' }
+                ) : null;
+
                 heightAnim.onfinish = function() {
                     checkbox.checked = false; // commit closed state at end
                     capsule.style.height = '';
@@ -964,6 +1003,7 @@
                     xAnim.cancel();
                     itemAnims.forEach(function(a) { a.cancel(); });
                     if (iconsAnim) iconsAnim.cancel();
+                    if (closedBarAnim) closedBarAnim.cancel();
                     animating = false;
                 };
             }
