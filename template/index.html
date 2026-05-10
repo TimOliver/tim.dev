@@ -283,6 +283,10 @@
             display: none;
         }
 
+        .menu-row-icons {
+            display: contents;
+        }
+
         .hamburger-button {
             background: none;
             border: none;
@@ -363,7 +367,7 @@
                 backdrop-filter: blur(20px) saturate(180%);
                 -webkit-backdrop-filter: blur(20px) saturate(180%);
                 border: 1px solid var(--capsule-border);
-                border-radius: 999px;
+                border-radius: 26px;
                 padding: 8px 8px 8px 20px;
                 gap: 12px;
                 position: absolute;
@@ -398,25 +402,49 @@
             }
 
             #header-content:has(.menu-toggle-input:checked) {
+                flex-direction: column;
                 align-items: flex-start;
+                gap: 24px;
             }
 
             #header-content:has(.menu-toggle-input:checked) #logo {
-                padding-top: 6px;
+                padding-top: 8px;
             }
 
             #header-content:has(.menu-toggle-input:checked) #menu {
                 flex-direction: column;
-                align-items: flex-end;
-                gap: 14px;
+                align-items: flex-start;
+                gap: 0;
+                font-size: 1.35em;
+                font-weight: 600;
+                line-height: 1.5;
+            }
+
+            #header-content:has(.menu-toggle-input:checked) .menu-row-icons .theme-toggle-icon,
+            #header-content:has(.menu-toggle-input:checked) .menu-row-icons > a > img {
+                height: 28px;
             }
 
             #header-content:has(.menu-toggle-input:checked) #menu > li {
                 display: flex;
             }
 
+            #header-content:has(.menu-toggle-input:checked) .menu-row-icons {
+                display: flex;
+                gap: 14px;
+                align-items: center;
+                margin-top: 4px;
+            }
+
+            #header-content:has(.menu-toggle-input:checked) .menu-row-icons .theme-toggle {
+                margin: 0;
+            }
+
             #header-content:has(.menu-toggle-input:checked) .menu-hamburger {
-                order: -1;
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                margin-left: 0;
             }
 
             #header-content:has(.menu-toggle-input:checked) .icon-hamburger {
@@ -610,24 +638,26 @@
                     <li><a href="#">Talks</a></li>
                     <li class="menu-priority"><a href="#">Archive</a></li>
                     <li><a href="#">Contact</a></li>
-                    <li class="theme-toggle">
-                        <img src="img/appearance.svg" class="theme-toggle-icon" alt="Theme">
-                        <div class="theme-popover">
-                            <button data-theme-value="auto" class="theme-option">
-                                <img src="img/appearance/auto.svg" alt="">
-                                <span>Auto</span>
-                            </button>
-                            <button data-theme-value="light" class="theme-option">
-                                <img src="img/appearance/sun.svg" alt="">
-                                <span>Light</span>
-                            </button>
-                            <button data-theme-value="dark" class="theme-option">
-                                <img src="img/appearance/moon.svg" alt="">
-                                <span>Dark</span>
-                            </button>
+                    <li class="menu-row-icons">
+                        <div class="theme-toggle">
+                            <img src="img/appearance.svg" class="theme-toggle-icon" alt="Theme">
+                            <div class="theme-popover">
+                                <button data-theme-value="auto" class="theme-option">
+                                    <img src="img/appearance/auto.svg" alt="">
+                                    <span>Auto</span>
+                                </button>
+                                <button data-theme-value="light" class="theme-option">
+                                    <img src="img/appearance/sun.svg" alt="">
+                                    <span>Light</span>
+                                </button>
+                                <button data-theme-value="dark" class="theme-option">
+                                    <img src="img/appearance/moon.svg" alt="">
+                                    <span>Dark</span>
+                                </button>
+                            </div>
                         </div>
+                        <a href="https://twitch.tv/timXD" target="_blank"><img src="img/rss.svg"></a>
                     </li>
-                    <li><a href="https://twitch.tv/timXD" target="_blank"><img src="img/rss.svg"></a></li>
                     <li class="menu-hamburger">
                         <input type="checkbox" id="menu-toggle" class="menu-toggle-input">
                         <label class="hamburger-button" for="menu-toggle" aria-label="Toggle menu">
