@@ -914,24 +914,56 @@
             function animateClose() {
                 animating = true;
 
-                // checkbox already unchecked. Capture both heights via temp-toggle.
-                var endHeight = capsule.offsetHeight;
-                checkbox.checked = true;
-                var startHeight = capsule.offsetHeight;
-                checkbox.checked = false;
+                // Currently checkbox is unchecked (just toggled by user).
+                // To keep open layout during animation, re-open it programmatically.
+                var endHeight = capsule.offsetHeight; // closed height
+                checkbox.checked = true;              // restore open layout
+                var startHeight = capsule.offsetHeight; // open height
 
                 capsule.style.height = startHeight + 'px';
                 capsule.style.overflow = 'hidden';
                 capsule.offsetHeight;
 
+                // Manually drive the icon swap (X -> hamburger) since CSS is in open state
+                var iconHam = document.querySelector('.icon-hamburger');
+                var iconX = document.querySelector('.icon-close');
+                var hamAnim = iconHam.animate(
+                    [{ opacity: 0, transform: 'scale(0)' }, { opacity: 1, transform: 'scale(1)' }],
+                    { duration: 250, easing: iosEase, fill: 'forwards' }
+                );
+                var xAnim = iconX.animate(
+                    [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(0)' }],
+                    { duration: 250, easing: iosEase, fill: 'forwards' }
+                );
+
                 var heightAnim = capsule.animate(
                     [{ height: startHeight + 'px' }, { height: endHeight + 'px' }],
                     { duration: heightDuration, easing: iosEase, fill: 'forwards' }
                 );
+
+                // Fade out column items + icons row in parallel
+                var columnItems = getColumnItems();
+                var itemAnims = columnItems.map(function(item) {
+                    return item.animate(
+                        [{ opacity: 1 }, { opacity: 0 }],
+                        { duration: fadeDuration, easing: iosEase, fill: 'forwards' }
+                    );
+                });
+                var iconsRow = getIconsRow();
+                var iconsAnim = iconsRow ? iconsRow.animate(
+                    [{ opacity: 1 }, { opacity: 0 }],
+                    { duration: fadeDuration, easing: iosEase, fill: 'forwards' }
+                ) : null;
+
                 heightAnim.onfinish = function() {
+                    checkbox.checked = false; // commit closed state at end
                     capsule.style.height = '';
                     capsule.style.overflow = '';
                     heightAnim.cancel();
+                    hamAnim.cancel();
+                    xAnim.cancel();
+                    itemAnims.forEach(function(a) { a.cancel(); });
+                    if (iconsAnim) iconsAnim.cancel();
                     animating = false;
                 };
             }
