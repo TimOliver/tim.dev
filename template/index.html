@@ -80,6 +80,8 @@
             background-color: var(--bg);
             width: 100%;
             overflow-wrap: break-word;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
         p {
@@ -89,8 +91,8 @@
         a {
             color: var(--link);
             text-decoration-line: underline;
-            text-decoration-thickness: 1.5px;
-            text-underline-offset: 3px;
+            text-decoration-thickness: 1.0px;
+            text-underline-offset: 6px;
             text-decoration-color: color-mix(in srgb, var(--link) 50%, transparent);
         }
 
@@ -661,6 +663,26 @@
 
         .icon-row img {
             filter: var(--icon-filter);
+        }
+
+        @media (max-width: 374.98px) {
+            body {
+                font-size: 15px;
+            }
+
+            header {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+
+            #header-content {
+                left: 8px;
+                right: 8px;
+            }
+
+            main .container {
+                padding: 0 8px;
+            }
         }
 
         @media (max-width: 519.98px) {
