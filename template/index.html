@@ -663,7 +663,39 @@
             filter: var(--icon-filter);
         }
 
+        @media (max-width: 519.98px) {
+            footer .container {
+                flex-direction: column-reverse;
+                justify-content: center;
+                gap: 14px;
+            }
 
+            .footer-left,
+            .footer-right {
+                text-align: center;
+            }
+
+            /* Byline + commit + builder all same size, all on one row */
+            .footer-left {
+                font-size: 1.2em;
+            }
+
+            footer .footer-left span {
+                font-size: 1em;
+            }
+
+            footer .footer-left br {
+                display: none;
+            }
+
+            footer .footer-left span::after {
+                content: " \2022 ";
+            }
+
+            .icon-row {
+                justify-content: center;
+            }
+        }
 
     </style>
 </head>
