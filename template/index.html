@@ -291,6 +291,10 @@
             display: none;
         }
 
+        .menu-closed-priority {
+            display: none;
+        }
+
 
         .hamburger-button {
             background: none;
@@ -318,8 +322,24 @@
             padding: 0;
         }
 
+        .hamburger-button {
+            position: relative;
+            transition: background 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+
+        .hamburger-button .icon-hamburger,
         .hamburger-button .icon-close {
-            display: none;
+            transition:
+                opacity 0.25s cubic-bezier(0.32, 0.72, 0, 1),
+                transform 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+
+        .hamburger-button .icon-close {
+            position: absolute;
+            inset: 6px 10px;
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
         }
 
         @media (max-width: 1000px) {
@@ -389,8 +409,12 @@
                 gap: 20px;
             }
 
-            #menu > li:not(.menu-hamburger):not(.menu-priority) {
+            #menu > li:not(.menu-hamburger):not(.menu-closed-priority) {
                 display: none;
+            }
+
+            .menu-closed-priority {
+                display: flex;
             }
 
             .menu-hamburger {
@@ -427,6 +451,10 @@
                 display: flex;
             }
 
+            #header-content:has(.menu-toggle-input:checked) #menu > li.menu-closed-priority {
+                display: none;
+            }
+
             #header-content:has(.menu-toggle-input:checked) .menu-row-icons {
                 position: absolute;
                 top: 8px;
@@ -456,11 +484,14 @@
             }
 
             #header-content:has(.menu-toggle-input:checked) .icon-hamburger {
-                display: none;
+                opacity: 0;
+                transform: scale(0);
             }
 
             #header-content:has(.menu-toggle-input:checked) .icon-close {
-                display: block;
+                opacity: 1;
+                transform: scale(1);
+                pointer-events: auto;
             }
 
             #header-content:has(.menu-toggle-input:checked) .hamburger-button {
@@ -486,12 +517,8 @@
         }
 
         @media (max-width: 389px) {
-            .menu-priority {
+            .menu-closed-priority {
                 display: none;
-            }
-
-            #header-content:has(.menu-toggle-input:checked) .menu-priority {
-                display: flex;
             }
         }
 
@@ -643,12 +670,12 @@
 
             <nav>
                 <ul id="menu">
-                    <li class="menu-priority"><a href="#">About</a></li>
+                    <li><a href="#">About</a></li>
                     <li><a href="#">Apps</a></li>
                     <li><a href="#">Code</a></li>
                     <li><a href="#">Art</a></li>
                     <li><a href="#">Talks</a></li>
-                    <li class="menu-priority"><a href="#">Archive</a></li>
+                    <li><a href="#">Archive</a></li>
                     <li><a href="#">Contact</a></li>
                     <li class="menu-row-icons">
                         <div class="theme-toggle">
@@ -670,6 +697,8 @@
                         </div>
                         <a href="https://twitch.tv/timXD" target="_blank"><img src="img/rss.svg"></a>
                     </li>
+                    <li class="menu-closed-priority"><a href="#">About</a></li>
+                    <li class="menu-closed-priority"><a href="#">Archive</a></li>
                     <li class="menu-hamburger">
                         <input type="checkbox" id="menu-toggle" class="menu-toggle-input">
                         <label class="hamburger-button" for="menu-toggle" aria-label="Toggle menu">
@@ -771,6 +800,141 @@
                     popover.classList.remove('open');
                 }
             });
+        })();
+
+        // Hamburger menu open/close animation
+        (function() {
+            var checkbox = document.getElementById('menu-toggle');
+            var label = document.querySelector('label[for="menu-toggle"]');
+            var capsule = document.getElementById('header-content');
+            var menu = document.getElementById('menu');
+            if (!checkbox || !label || !capsule || !menu) return;
+
+            var iosEase = 'cubic-bezier(0.32, 0.72, 0, 1)';
+            var heightDuration = 450;
+            var fadeDuration = 280;
+            var staggerStep = 35;
+
+            var animating = false;
+
+            function getOpenItems() {
+                return Array.prototype.slice.call(
+                    menu.querySelectorAll('li:not(.menu-closed-priority):not(.menu-hamburger)')
+                );
+            }
+
+            function getColumnItems() {
+                // Items in the vertical list (excludes the absolute-positioned icons row)
+                return Array.prototype.slice.call(
+                    menu.querySelectorAll('li:not(.menu-closed-priority):not(.menu-hamburger):not(.menu-row-icons)')
+                );
+            }
+
+            function getIconsRow() {
+                return menu.querySelector('.menu-row-icons');
+            }
+
+            checkbox.addEventListener('change', function() {
+                if (animating) return;
+
+                if (checkbox.checked) {
+                    animateOpen();
+                } else {
+                    animateClose();
+                }
+            });
+
+            function animateOpen() {
+                animating = true;
+
+                // checkbox already checked (CSS in open state). Capture both heights via temp-toggle.
+                var endHeight = capsule.offsetHeight;
+                checkbox.checked = false;
+                var startHeight = capsule.offsetHeight;
+                checkbox.checked = true;
+
+                capsule.style.height = startHeight + 'px';
+                capsule.style.overflow = 'hidden';
+                capsule.offsetHeight; // force reflow
+
+                var heightAnim = capsule.animate(
+                    [{ height: startHeight + 'px' }, { height: endHeight + 'px' }],
+                    { duration: heightDuration, easing: iosEase, fill: 'forwards' }
+                );
+                heightAnim.onfinish = function() {
+                    capsule.style.height = '';
+                    capsule.style.overflow = '';
+                    heightAnim.cancel();
+                    animating = false;
+                };
+
+                // Stagger fade in column items
+                var columnItems = getColumnItems();
+                columnItems.forEach(function(item) {
+                    item.style.opacity = '0';
+                });
+                capsule.offsetHeight;
+
+                columnItems.forEach(function(item, i) {
+                    var anim = item.animate(
+                        [
+                            { opacity: 0, transform: 'translateY(-4px)' },
+                            { opacity: 1, transform: 'translateY(0)' }
+                        ],
+                        {
+                            duration: fadeDuration,
+                            delay: i * staggerStep,
+                            easing: iosEase,
+                            fill: 'both'
+                        }
+                    );
+                    anim.onfinish = function() {
+                        item.style.opacity = '';
+                        item.style.transform = '';
+                        anim.cancel();
+                    };
+                });
+
+                // Crossfade the icons row in (no stagger, quick)
+                var iconsRow = getIconsRow();
+                if (iconsRow) {
+                    iconsRow.style.opacity = '0';
+                    capsule.offsetHeight;
+                    var iconsAnim = iconsRow.animate(
+                        [{ opacity: 0 }, { opacity: 1 }],
+                        { duration: fadeDuration, delay: 60, easing: iosEase, fill: 'both' }
+                    );
+                    iconsAnim.onfinish = function() {
+                        iconsRow.style.opacity = '';
+                        iconsAnim.cancel();
+                    };
+                }
+            }
+
+            function animateClose() {
+                animating = true;
+
+                // checkbox already unchecked. Capture both heights via temp-toggle.
+                var endHeight = capsule.offsetHeight;
+                checkbox.checked = true;
+                var startHeight = capsule.offsetHeight;
+                checkbox.checked = false;
+
+                capsule.style.height = startHeight + 'px';
+                capsule.style.overflow = 'hidden';
+                capsule.offsetHeight;
+
+                var heightAnim = capsule.animate(
+                    [{ height: startHeight + 'px' }, { height: endHeight + 'px' }],
+                    { duration: heightDuration, easing: iosEase, fill: 'forwards' }
+                );
+                heightAnim.onfinish = function() {
+                    capsule.style.height = '';
+                    capsule.style.overflow = '';
+                    heightAnim.cancel();
+                    animating = false;
+                };
+            }
         })();
     </script>
 
