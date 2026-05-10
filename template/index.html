@@ -132,9 +132,15 @@
             align-items: center;
             gap: clamp(20px, 4vw, 70px);
             margin: 0 auto;
-            max-width: 1470px;
-            padding: 0 35px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 0 48px;
             display: flex;
+        }
+
+        #header-content nav {
+            flex: 1;
+            min-width: 0;
         }
 
         #logo {
@@ -158,10 +164,11 @@
         #menu {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             list-style: none;
             font-size: 1.35em;
             font-weight: 600;
-            gap: clamp(15px, 3vw, 70px);
+            gap: clamp(5px, 3vw, 70px);
             margin: 0;
             padding: 0;
         }
@@ -262,6 +269,40 @@
             height: 24px;
             width: 24px;
             filter: var(--icon-filter);
+        }
+
+        @media (max-width: 1000px) {
+            header {
+                padding: 16px 0 24px;
+            }
+
+            #header-content {
+                gap: clamp(16px, 3.2vw, 56px);
+                padding: 0 26px;
+            }
+
+            #logo img {
+                height: 19px;
+            }
+
+            #logo a {
+                font-size: 24px;
+            }
+
+            #menu {
+                font-size: 1.08em;
+                gap: clamp(8px, 2.4vw, 56px);
+            }
+
+            #menu > li > a > img,
+            .theme-toggle-icon {
+                height: 20px;
+            }
+
+            .theme-toggle {
+                padding: 0 12px;
+                margin: 0 -12px;
+            }
         }
 
         .container {
