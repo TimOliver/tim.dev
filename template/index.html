@@ -454,9 +454,12 @@
                 display: flex;
                 position: absolute;
                 top: 8px;
-                right: 64px;
+                /* Right offset and inter-link gap shrink at narrow viewports.
+                   Right is clamped >= 56px so Archive never overlaps the
+                   hamburger (which spans 8-56px from the right edge). */
+                right: clamp(56px, calc(100vw - 350px), 64px);
                 height: 34px;
-                gap: 25px;
+                gap: clamp(8px, calc(100vw - 381px), 25px);
                 align-items: center;
                 font-size: 1em;
                 font-weight: 600;
