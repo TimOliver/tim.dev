@@ -1050,7 +1050,7 @@
 
             var iosEase = 'cubic-bezier(0.32, 0.72, 0, 1)';
             var heightDuration = 450;
-            var fadeDuration = 600;
+            var fadeDuration = 500;
             var staggerStep = 35;
 
             var animating = false;
@@ -1112,6 +1112,16 @@
                 animating = true;
                 label.style.pointerEvents = 'none';
 
+                // Pre-hide column items + icons row + closed-bar BEFORE the
+                // checkbox toggle so they don't flash visible for one frame
+                // when CSS enters the open state.
+                var columnItems = getColumnItems();
+                columnItems.forEach(function(item) {
+                    item.style.opacity = '0';
+                });
+                var iconsRow = getIconsRow();
+                if (iconsRow) iconsRow.style.opacity = '0';
+
                 // checkbox already checked (CSS in open state). Capture both heights + colors via temp-toggle.
                 var endHeight = capsule.offsetHeight;
                 var bgToColor = getComputedStyle(label).backgroundColor;
@@ -1152,13 +1162,7 @@
                     animating = false;
                 };
 
-                // Stagger fade in column items
-                var columnItems = getColumnItems();
-                columnItems.forEach(function(item) {
-                    item.style.opacity = '0';
-                });
-                capsule.offsetHeight;
-
+                // Stagger fade in column items (opacity was pre-set at the top)
                 columnItems.forEach(function(item, i) {
                     var anim = item.animate(
                         [
@@ -1180,10 +1184,7 @@
                 });
 
                 // Crossfade the icons row in (no stagger, quick)
-                var iconsRow = getIconsRow();
                 if (iconsRow) {
-                    iconsRow.style.opacity = '0';
-                    capsule.offsetHeight;
                     var iconsAnim = iconsRow.animate(
                         [{ opacity: 0 }, { opacity: 1 }],
                         { duration: fadeDuration, delay: 60, easing: iosEase, fill: 'both' }
