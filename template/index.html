@@ -328,9 +328,9 @@
            horizontal safe-area insets (notch/Dynamic Island in landscape).
            The env() * 1000 trick: if inset is 0 the max-width is 0 (never matches);
            if inset > 0 it becomes a huge value (always matches). */
-        @media (max-width: 1049.98px),
-               (max-width: calc(env(safe-area-inset-left) * 1000)),
-               (max-width: calc(env(safe-area-inset-right) * 1000)) {
+        @media (min-width: 720.02px) and (max-width: 1049.98px),
+               (min-width: 720.02px) and (max-width: calc(env(safe-area-inset-left) * 1000)),
+               (min-width: 720.02px) and (max-width: calc(env(safe-area-inset-right) * 1000)) {
             .theme-popover {
                 left: auto;
                 right: 0;
