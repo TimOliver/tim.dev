@@ -260,7 +260,6 @@
             position: absolute;
             top: calc(100% + 8px);
             left: 50%;
-            transform: translateX(-50%);
             background: var(--capsule-bg);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -272,6 +271,16 @@
             gap: 4px;
             min-width: 200px;
             z-index: 100;
+            /* Hidden / exit state */
+            opacity: 0;
+            transform: translateX(-50%) scale(0.9);
+            filter: blur(8px);
+            transform-origin: top center;
+            transition:
+                opacity 0.2s ease-out,
+                transform 0.2s ease-out,
+                filter 0.2s ease-out,
+                display 0.2s allow-discrete;
         }
 
         .theme-popover::before {
@@ -286,11 +295,33 @@
         @media (hover: hover) {
             .theme-toggle:hover .theme-popover {
                 display: flex;
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+                filter: blur(0);
             }
         }
 
         .theme-popover.open {
             display: flex;
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+            filter: blur(0);
+        }
+
+        @starting-style {
+            @media (hover: hover) {
+                .theme-toggle:hover .theme-popover {
+                    opacity: 0;
+                    transform: translateX(-50%) scale(0.9);
+                    filter: blur(8px);
+                }
+            }
+
+            .theme-popover.open {
+                opacity: 0;
+                transform: translateX(-50%) scale(0.9);
+                filter: blur(8px);
+            }
         }
 
         .theme-option {
