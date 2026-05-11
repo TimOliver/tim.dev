@@ -14,6 +14,7 @@
         :root {
             --bg: #fff;
             --bg-secondary: #F2F2F2;
+            --bg-tertiary: rgba(120, 120, 120, 0.12);
             --text: #333;
             --text-secondary: rgba(60, 60, 67, 0.6);
             --text-tertiary: rgba(60, 60, 67, 0.3);
@@ -32,6 +33,7 @@
             [data-theme="auto"] {
                 --bg: #161616;
                 --bg-secondary: #1C1C1C;
+                --bg-tertiary: rgba(120, 120, 120, 0.24);
                 --text: #d4d4d4;
                 --text-secondary: rgba(235, 235, 245, 0.6);
                 --text-tertiary: rgba(235, 235, 245, 0.3);
@@ -50,6 +52,7 @@
         [data-theme="dark"] {
             --bg: #161616;
             --bg-secondary: #1C1C1C;
+            --bg-tertiary: rgba(120, 120, 120, 0.24);
             --text: #d4d4d4;
             --text-secondary: rgba(235, 235, 245, 0.6);
             --text-tertiary: rgba(235, 235, 245, 0.3);
@@ -643,7 +646,7 @@
             }
 
             #header-content:has(.menu-toggle-input:checked) .hamburger-button {
-                background: var(--icon-hover-bg);
+                background: var(--bg-tertiary);
             }
 
             main .container {
