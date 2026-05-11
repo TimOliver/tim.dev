@@ -13,6 +13,7 @@
     <style>
         :root {
             --bg: #fff;
+            --bg-secondary: #F2F2F2;
             --text: #333;
             --text-secondary: rgba(60, 60, 67, 0.6);
             --text-tertiary: rgba(60, 60, 67, 0.3);
@@ -30,6 +31,7 @@
         @media (prefers-color-scheme: dark) {
             [data-theme="auto"] {
                 --bg: #161616;
+                --bg-secondary: #1C1C1C;
                 --text: #d4d4d4;
                 --text-secondary: rgba(235, 235, 245, 0.6);
                 --text-tertiary: rgba(235, 235, 245, 0.3);
@@ -47,6 +49,7 @@
 
         [data-theme="dark"] {
             --bg: #161616;
+            --bg-secondary: #1C1C1C;
             --text: #d4d4d4;
             --text-secondary: rgba(235, 235, 245, 0.6);
             --text-tertiary: rgba(235, 235, 245, 0.3);
@@ -260,7 +263,7 @@
             position: absolute;
             top: calc(100% + 8px);
             left: 50%;
-            background: var(--bg);
+            background: var(--bg-secondary);
             border: 1px solid var(--capsule-border);
             border-radius: 16px;
             padding: 10px;
