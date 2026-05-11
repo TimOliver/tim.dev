@@ -2,7 +2,7 @@
 <html lang="en" data-theme="auto">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>[tim.dev]</title>
     <script>
         (function() {
@@ -75,10 +75,11 @@
             font-size: 18px;
             line-height: 1.75;
             margin: 0;
-            padding: 0;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             color: var(--text);
             background-color: var(--bg);
             width: 100%;
+            box-sizing: border-box;
             overflow-wrap: break-word;
             -webkit-text-size-adjust: 100%;
             text-size-adjust: 100%;
