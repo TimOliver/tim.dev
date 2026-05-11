@@ -260,6 +260,29 @@
             filter: var(--icon-filter);
         }
 
+        /* Show moon by default (dark theme), sun when light theme is active. */
+        .theme-icon-light {
+            display: none;
+        }
+
+        [data-theme="light"] .theme-icon-dark {
+            display: none;
+        }
+
+        [data-theme="light"] .theme-icon-light {
+            display: block;
+        }
+
+        @media (prefers-color-scheme: light) {
+            [data-theme="auto"] .theme-icon-dark {
+                display: none;
+            }
+
+            [data-theme="auto"] .theme-icon-light {
+                display: block;
+            }
+        }
+
 
         .theme-popover {
             display: none;
@@ -892,7 +915,8 @@
                     <li><a href="#">Contact</a></li>
                     <li class="menu-row-icons">
                         <div class="theme-toggle">
-                            <img src="img/appearance.svg" class="theme-toggle-icon" alt="Theme">
+                            <img src="img/appearance/moon.svg" class="theme-toggle-icon theme-icon-dark" alt="Theme">
+                            <img src="img/appearance/sun-bold.svg" class="theme-toggle-icon theme-icon-light" alt="Theme">
                             <div class="theme-popover">
                                 <button data-theme-value="auto" class="theme-option">
                                     <img src="img/appearance/auto.svg" alt="">
@@ -987,10 +1011,13 @@
                 if (btn.dataset.themeValue === saved) btn.classList.add('active');
             });
 
-            // Toggle popover on click (needed for touch devices)
-            toggle.querySelector('.theme-toggle-icon').addEventListener('click', function(e) {
-                e.stopPropagation();
-                popover.classList.toggle('open');
+            // Toggle popover on click (needed for touch devices) — attach to
+            // all theme-toggle-icons (moon + sun) so both work.
+            toggle.querySelectorAll('.theme-toggle-icon').forEach(function(icon) {
+                icon.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    popover.classList.toggle('open');
+                });
             });
 
             // Handle option selection
