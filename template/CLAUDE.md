@@ -136,6 +136,9 @@ If the source image is narrower than ~1400px, skip generating the 1400 variant. 
 ### Format pragma
 The mockup currently uses PNG variants because macOS ImageIO can't write WebP. In production, prefer WebP for ~70% smaller files. Install via `brew install webp` and shell out to `cwebp -q 75 -m 6 <in> -o <out>` from the Ignite build, or use a Swift WebP encoder package if one becomes available.
 
+### Sizing constraints
+`article img` is capped at `max-height: 650px` to prevent tall portrait images from dominating the layout. Combined with the inline `aspect-ratio` and `max-width: 100%`, the browser proportionally narrows the width when height clamps. Centered horizontally via `margin: 0 auto 1.75em` — block-level images with auto side margins center within the section even when wrapped by an inline lightbox anchor (the anchor doesn't establish a containing block for the block img). Landscape images at full width are unaffected; only height-clamped images visibly shift to center.
+
 ### ThumbHash was considered and rejected
 We initially used [evanw/thumbhash](https://github.com/evanw/thumbhash) (procedural ~30-byte hashes). The Swift port exists and is buildable, but:
 - Decoded placeholders are colored blobs, not recognizable miniatures of the image — looks like a glitch on stylized/transparent content.
