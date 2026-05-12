@@ -19,7 +19,7 @@
                 </a>
             </div>
 
-            <nav>
+            <nav aria-label="Primary">
                 <div class="menu-closed-bar">
                     <a href="#">About</a>
                     <a href="#">Archive</a>
@@ -34,28 +34,30 @@
                     <li><a href="#">Contact</a></li>
                     <li class="menu-row-icons">
                         <div class="theme-toggle">
-                            <img src="img/appearance/moon.svg" class="theme-toggle-icon theme-icon-dark" alt="Theme">
-                            <img src="img/appearance/sun-bold.svg" class="theme-toggle-icon theme-icon-light" alt="Theme">
-                            <div class="theme-popover">
-                                <button data-theme-value="auto" class="theme-option">
+                            <button type="button" class="theme-toggle-button" aria-label="Theme" aria-haspopup="true" aria-expanded="false">
+                                <img src="img/appearance/moon.svg" class="theme-toggle-icon theme-icon-dark" alt="" aria-hidden="true">
+                                <img src="img/appearance/sun-bold.svg" class="theme-toggle-icon theme-icon-light" alt="" aria-hidden="true">
+                            </button>
+                            <div class="theme-popover" aria-label="Theme choices">
+                                <button type="button" data-theme-value="auto" class="theme-option">
                                     <img src="img/appearance/auto.svg" alt="">
                                     <span>Auto</span>
                                 </button>
-                                <button data-theme-value="light" class="theme-option">
+                                <button type="button" data-theme-value="light" class="theme-option">
                                     <img src="img/appearance/sun.svg" alt="">
                                     <span>Light</span>
                                 </button>
-                                <button data-theme-value="dark" class="theme-option">
+                                <button type="button" data-theme-value="dark" class="theme-option">
                                     <img src="img/appearance/moon.svg" alt="">
                                     <span>Dark</span>
                                 </button>
                             </div>
                         </div>
-                        <a href="" target="_blank"><img src="img/rss.svg"></a>
+                        <a href="/feed.xml" aria-label="RSS feed"><img src="img/rss.svg" alt=""></a>
                     </li>
                     <li class="menu-hamburger">
                         <input type="checkbox" id="menu-toggle" class="menu-toggle-input">
-                        <label class="hamburger-button" for="menu-toggle" aria-label="Toggle menu">
+                        <label class="hamburger-button" for="menu-toggle" aria-label="Toggle menu" aria-controls="menu" aria-expanded="false">
                             <svg class="icon-hamburger" width="28" height="22" viewBox="0 0 28 22" fill="none" aria-hidden="true">
                                 <line x1="4" y1="4.5" x2="24" y2="4.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                                 <line x1="4" y1="11" x2="24" y2="11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
@@ -97,8 +99,8 @@
                     </a>
                     <noscript><a href="https://icomics.net/img/iComics-Devices-2x.webp"><img srcset="img/iComics-Devices-700.png 700w, img/iComics-Devices-1400.png 1400w" sizes="(max-width: 720px) 100vw, 700px" src="img/iComics-Devices-700.png" width="2581" height="1672" alt=""></a></noscript>
                     <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio nam libero tempore.</p>
-                    <lite-youtube videoid="dQw4w9WgXcQ" params="modestbranding=1&rel=0"></lite-youtube>
-                    <noscript><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?modestbranding=1&rel=0" title="YouTube video" frameborder="0" allowfullscreen></iframe></noscript>
+                    <lite-youtube videoid="dQw4w9WgXcQ" params="modestbranding=1&amp;rel=0"></lite-youtube>
+                    <noscript><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?modestbranding=1&amp;rel=0" title="YouTube video" allowfullscreen></iframe></noscript>
 
                     <!-- Twitter: custom card using the OG bird identity + classic palette,
                          deliberately ignoring the 2023 X rebrand. Twitter's public API is locked
@@ -106,13 +108,15 @@
                     <blockquote class="embed_social" data-platform="twitter">
                         <div class="header">
                             <a class="name_header" href="https://twitter.com/handle">
-                                <img class="avatar" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 46'%3E%3Crect width='46' height='46' rx='23' fill='%231DA1F2'/%3E%3C/svg%3E" alt="" width="46" height="46">
+                                <img class="avatar" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NiA0NiI+PHJlY3Qgd2lkdGg9IjQ2IiBoZWlnaHQ9IjQ2IiByeD0iMjMiIGZpbGw9IiMxREExRjIiLz48L3N2Zz4=" alt="" width="46" height="46">
                                 <div class="name">
                                     <span class="display_name">Author Name</span>
                                     <span class="account_name">@handle</span>
                                 </div>
                             </a>
-                            <svg class="embed_logo" viewBox="0 0 24 24" role="img" aria-hidden="true" width="32"><use href="img/social-logos.svg#twitter"/></svg>
+                            <svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32">
+                                <use href="img/social-logos.svg#twitter"/>
+                            </svg>
                         </div>
                         <p class="text">Sample post text. Replace this with the real post content. Build-time fetch isn't available for free — paste the post text, handle, avatar, and date manually.</p>
                         <p class="meta">
@@ -130,7 +134,9 @@
                                     <span class="account_name">@miketakespics.bsky.social</span>
                                 </div>
                             </a>
-                            <svg class="embed_logo" viewBox="0 0 600 530" role="img" aria-hidden="true" width="40"><use href="img/social-logos.svg#bluesky"/></svg>
+                            <svg class="embed_logo" viewBox="0 0 600 530" aria-hidden="true" width="40">
+                                <use href="img/social-logos.svg#bluesky"/>
+                            </svg>
                         </div>
                         <p class="text">&ldquo;Almost everything will work again if you unplug it for a few minutes. Including you.&rdquo;
  ~ Anne Lamott
@@ -152,13 +158,15 @@ Good morning my friends! Resetting is self-care, so don't be shy about it. Life 
                     <blockquote class="embed_social" data-platform="mastodon">
                         <div class="header">
                             <a class="name_header" href="https://mastodon.social/@timoliver">
-                                <img class="avatar" src="https://files.mastodon.social/accounts/avatars/000/322/351/original/7a6defa03a16a5e7.png" alt="">
+                                <img class="avatar" src="https://files.mastodon.social/accounts/avatars/000/322/351/original/7a6defa03a16a5e7.png" alt="" width="46" height="46">
                                 <div class="name">
                                     <span class="display_name">Tim Oliver</span>
                                     <span class="account_name">@timoliver@mastodon.social</span>
                                 </div>
                             </a>
-                            <svg class="embed_logo" viewBox="0 0 79 75" role="img" aria-hidden="true" width="40"><use href="img/social-logos.svg#mastodon"/></svg>
+                            <svg class="embed_logo" viewBox="0 0 79 75" aria-hidden="true" width="40">
+                                <use href="img/social-logos.svg#mastodon"/>
+                            </svg>
                         </div>
                         <p class="text">&ldquo;Don't talk to me or my son ever again.&rdquo;</p>
                         <div class="media">
@@ -182,22 +190,20 @@ Good morning my friends! Resetting is self-care, so don't be shy about it. Life 
 
     <footer>
         <div class="container">
-            <div class="footer-left">By <a href="#">Tim Oliver</a></div>
+            <p class="footer-byline">By <a href="#">Tim Oliver</a></p>
 
-            <div class="footer-center">
-                <nav aria-label="Social media">
-                    <div class="icon-row">
-                        <a href="https://linkedin.com/in/timoliver" target="_blank"><img src="img/brand-linkedin.svg" alt="LinkedIn"></a>
-                        <a href="https://github.com/timoliver" target="_blank"><img src="img/brand-github.svg" alt="GitHub"></a>
-                        <a href="https://youtube.com/timXD" target="_blank"><img src="img/brand-youtube.svg" alt="YouTube"></a>
-                        <a href="https://twitch.tv/timXD" target="_blank"><img src="img/brand-twitch.svg" alt="Twitch"></a>
-                        <a href="https://bsky.app/profile/tim.dev" target="_blank"><img src="img/brand-bluesky.svg" alt="Bluesky"></a>
-                        <a href="https://mastodon.social/@timoliver" target="_blank"><img src="img/brand-mastodon.svg" alt="Mastodon"></a>
-                    </div>
-                </nav>
-            </div>
+            <nav class="footer-social" aria-label="Social media">
+                <div class="icon-row">
+                    <a href="https://linkedin.com/in/timoliver" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/brand-icons.svg#linkedin"/></svg></a>
+                    <a href="https://github.com/timoliver" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/brand-icons.svg#github"/></svg></a>
+                    <a href="https://youtube.com/timXD" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/brand-icons.svg#youtube"/></svg></a>
+                    <a href="https://twitch.tv/timXD" target="_blank" rel="noopener" aria-label="Twitch"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/brand-icons.svg#twitch"/></svg></a>
+                    <a href="https://bsky.app/profile/tim.dev" target="_blank" rel="noopener" aria-label="Bluesky"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/brand-icons.svg#bluesky"/></svg></a>
+                    <a href="https://mastodon.social/@timoliver" target="_blank" rel="noopener" aria-label="Mastodon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="img/brand-icons.svg#mastodon"/></svg></a>
+                </div>
+            </nav>
 
-            <div class="footer-right"><a href="#">Built</a> with <a href="https://github.com/twostraws/Ignite" target="_blank">Ignite</a>.</div>
+            <p class="footer-credit"><a href="https://github.com/twostraws/Ignite" target="_blank" rel="noopener">Built</a> with <a href="https://github.com/twostraws/Ignite" target="_blank" rel="noopener">Ignite</a>.</p>
         </div>
     </footer>
 

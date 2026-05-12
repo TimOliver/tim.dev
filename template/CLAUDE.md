@@ -10,16 +10,16 @@ Template/
 │   ├── theme.js            Head script: FOUC prevention + data-theme/data-color-scheme sync
 │   └── site.js             Body script: theme popover, hamburger animation, LQIP swap
 ├── img/
-│   ├── social-logos.svg    SVG symbol sprite — Twitter/Bluesky/Mastodon embed logos
-│   ├── brand-*.svg         Outline-style brand icons used in the footer
+│   ├── social-logos.svg    SVG symbol sprite — filled Twitter/Bluesky/Mastodon logos used inside embed cards
+│   ├── brand-icons.svg     SVG symbol sprite — outline Tabler-style icons used in the footer (LinkedIn, GitHub, YouTube, Twitch, Bluesky, Mastodon)
 │   ├── appearance/         Theme picker icons (auto/sun/moon)
 │   └── (sample images)
 └── CLAUDE.md               This file
 ```
 
-The three social embed logos live in `img/social-logos.svg` as `<symbol>` definitions and are referenced from markup via `<svg viewBox="..."><use href="img/social-logos.svg#twitter"/></svg>` so they preserve `fill: currentColor` for theme-aware coloring. The footer's brand icons (`brand-*.svg`) are a different visual treatment — Tabler-style outline icons — and stay as plain `<img>` tags.
+Both icon sets live in SVG sprite files (`img/social-logos.svg` for filled embed logos, `img/brand-icons.svg` for outline footer icons). Each sprite is a single `<svg style="display: none">` containing multiple `<symbol>` definitions; markup references them via `<svg viewBox="..."><use href="img/brand-icons.svg#linkedin"/></svg>`. This preserves `fill`/`stroke="currentColor"` for theme-aware coloring (the footer drops the old `filter: var(--icon-filter)` hack in favor of `color: var(--text)` on the wrapping svg).
 
-**Gotcha**: the wrapping `<svg>` *must* repeat the symbol's `viewBox` attribute — the `<symbol>`'s viewBox does NOT propagate to the wrapping `<svg>` for layout sizing. Without it, the wrapping `<svg>` falls back to the browser's default `300×150` placeholder size and blows out the embed header. With it (plus `height: auto` in CSS), height is computed correctly from the aspect ratio.
+**Gotcha**: the wrapping `<svg>` in markup *must* repeat the symbol's `viewBox` attribute — the `<symbol>`'s viewBox does NOT propagate to the wrapping `<svg>` for layout sizing. Without it, the wrapping `<svg>` falls back to the browser's default `300×150` placeholder size and blows out whatever container it's in. With it (plus explicit width/height in CSS), the icon scales correctly.
 
 Originally the CSS + JS lived inline in `index.html`; it was extracted once the design stabilized. **`theme.js` must load synchronously in `<head>` before any paintable content** — it sets `data-color-scheme` before the first paint to prevent FOUC. Don't add `defer` or `async`.
 
@@ -33,7 +33,7 @@ Three states: `auto` (follows OS), `light`, `dark`. Stored in `localStorage` und
 
 - **Two attributes on `<html>`**: `data-theme` is the user's saved choice (`auto` | `light` | `dark`); `data-color-scheme` is the *resolved* effective scheme (`light` | `dark`). CSS targets `data-color-scheme` so dark-mode rules only need one selector instead of two (the dual `[data-theme="dark"]` + `[data-theme="auto"] @media-dark` pattern). The head script computes `data-color-scheme` from `data-theme` + `matchMedia('(prefers-color-scheme: dark)')`, and keeps them in sync via a `MutationObserver` on `data-theme` + a matchMedia `change` listener (auto-mode follows OS).
 - **FOUC prevention**: `js/theme.js` (synchronous `<script>` in `<head>`) reads `localStorage` and sets `data-theme` + `data-color-scheme` *before* paint. Don't move it to a deferred / async script.
-- **Light-mode icon swap**: the moon icon in the header automatically replaces with `sun-bold.svg` (stroke-width 2.5) when the effective theme is light. Driven by CSS class selectors keyed off `[data-theme]`, no JS.
+- **Light-mode icon swap**: the moon icon in the header automatically replaces with `sun-bold.svg` (stroke-width 2.5) when the effective theme is light. Driven by CSS selectors keyed off the resolved `[data-color-scheme]`, no runtime JS toggle logic.
 - **Popover background must be opaque** (`var(--bg-secondary)`), not translucent. Stacking `backdrop-filter: blur` on the popover *and* the capsule header underneath looked bad on iOS.
 - **Theme popover position**: right-aligned only when viewport ≤ 1049.98px or horizontal safe-area insets are non-zero (Dynamic Island landscape). Centered otherwise. Don't right-align always — looks weird on desktop.
 
@@ -91,10 +91,11 @@ Don't remove any of these. They each catch a different race condition.
 
 ## Footer
 
-Two-column layout (left: text, right: social icons), stacking to column-reverse below 519.98px.
+Three-zone layout (left: byline, center: social icons, right: build credit), stacking below 519.98px with icons first, then byline, then build credit.
 
-- **Left**: `By [Tim Oliver] • Built with [Ignite] ([305ca60]).` — three links: name → about (TBD), commit hash → GitHub commit URL, Ignite → upstream repo.
-- **Right**: social icon row using brand SVGs with `filter: var(--icon-filter)` for dark mode inversion.
+- **Left**: `By [Tim Oliver]` — name link → about (TBD).
+- **Center**: social icon row using `img/brand-icons.svg` symbols with `currentColor` so light/dark color follows normal text color.
+- **Right**: `Built with [Ignite] ([305ca60]).` — Ignite link → upstream repo, commit hash → GitHub commit URL.
 - **Link styling**: links use `color: var(--text)` + `font-weight: 600` + underline on hover. No `<strong>` tags — the weight is on the `<a>` directly.
 
 ---
@@ -257,7 +258,7 @@ We deliberately use the OG Twitter identity (bird logo, classic blue) rather tha
 The `.media` grid uses 2 columns by default, collapsing to 1 column via `:has(> a:only-child)` when there's a single attachment. Clicking opens the original-resolution image via Lightbox3. Drop `<div class="media">` entirely for text-only posts.
 
 ### Styling
-Width caps at 508px (matches Mastodon's official embed minus padding). CSS Grid handles the header layout. Per-platform link accent flows through a single `--accent` custom property set on the blockquote based on `data-platform`, with light/dark variants for Mastodon and Bluesky. The brand SVG inside `.embed_logo` inherits `currentColor: var(--text-secondary)`. No `!important` overrides — we control all the markup.
+Width caps at 508px (matches Mastodon's official embed minus padding). CSS Grid handles the header layout. Per-platform link accent flows through a single `--accent` custom property set on the blockquote based on `data-platform`, with light/dark variants for Mastodon and Bluesky. The brand SVG inside `.embed_logo` inherits that accent through `currentColor`. No `!important` overrides — we control all the markup.
 
 The generic article `blockquote::before` rule (which draws a 5px gray left bar for pull-quotes) is explicitly suppressed on `.embed_social` via `content: none;` — otherwise it leaked into the embed cards and made them look like double-quoted content. Pull-quote blockquotes elsewhere on the page keep their bar.
 

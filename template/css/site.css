@@ -12,6 +12,10 @@
     --icon-filter: none;
     --capsule-bg: rgba(245, 245, 247, 0.7);
     --capsule-border: rgba(0, 0, 0, 0.06);
+    --hover-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --menu-ease: cubic-bezier(0.32, 0.72, 0, 1);
+    --control-hover: rgba(120, 120, 128, 0.18);
+    --control-active: rgba(120, 120, 128, 0.10);
 }
 
 [data-color-scheme="dark"] {
@@ -28,6 +32,12 @@
     --icon-filter: invert(1);
     --capsule-bg: rgba(32, 32, 32, 0.7);
     --capsule-border: rgba(255, 255, 255, 0.08);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 body {
@@ -48,7 +58,6 @@ body {
     color: var(--text);
     background-color: var(--bg);
     width: 100%;
-    box-sizing: border-box;
     overflow-wrap: break-word;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
@@ -92,10 +101,6 @@ article lite-youtube {
     margin: 0 auto 1.75em;
 }
 
-/* Social embeds: unified custom-card facade for Mastodon, Bluesky, and
-   X/Twitter. No iframes, no widget JS — just HTML + CSS, so dark mode
-   Just Works via our existing theme variables. Base pattern lifted
-   from alexwlchan.net/2025/good-embedded-toots/. */
 article .embed_social {
     --accent: var(--link);
     --embed-bg: var(--bg-secondary);
@@ -110,18 +115,11 @@ article .embed_social {
     padding: 16px;
     margin: 0 auto 1.75em;
 }
-/* Suppress the generic pull-quote left-bar pseudo on embed cards. */
+
 article .embed_social::before {
     content: none;
 }
 
-/* Each platform redefines `--accent` + the `--embed-*` palette to
-   opt out of the site's theme variables, so the cards always look
-   unmistakably native to their platform regardless of host site
-   theme. Dark-mode values live in the single `[data-color-scheme="dark"]`
-   block further down. */
-
-/* Mastodon: app/web palette + brand purple accent. */
 article .embed_social[data-platform="mastodon"] {
     --accent: #6364FF;
     --embed-bg: #FFFFFF;
@@ -130,8 +128,6 @@ article .embed_social[data-platform="mastodon"] {
     --embed-text-secondary: #606984;
 }
 
-/* Twitter: pre-rebrand identity (bird logo + classic Twitter palette).
-   Light = "default" theme, dark = "Dim" theme. */
 article .embed_social[data-platform="twitter"] {
     --accent: #1DA1F2;
     --embed-bg: #F5F8FA;
@@ -140,7 +136,6 @@ article .embed_social[data-platform="twitter"] {
     --embed-text-secondary: #657786;
 }
 
-/* Bluesky: web app palette + brand blue accent. */
 article .embed_social[data-platform="bluesky"] {
     --accent: #0085FF;
     --embed-bg: #FFFFFF;
@@ -156,12 +151,14 @@ article .embed_social[data-platform="bluesky"] {
     --embed-text: #FFFFFF;
     --embed-text-secondary: #9BAEA0;
 }
+
 [data-color-scheme="dark"] article .embed_social[data-platform="twitter"] {
     --embed-bg: #15202B;
     --embed-border: #38444D;
     --embed-text: #FFFFFF;
     --embed-text-secondary: #8899A6;
 }
+
 [data-color-scheme="dark"] article .embed_social[data-platform="bluesky"] {
     --accent: #208BFE;
     --embed-bg: #161E27;
@@ -170,29 +167,9 @@ article .embed_social[data-platform="bluesky"] {
     --embed-text-secondary: #8D9AAA;
 }
 
-/* Shared text + logo styling — same for every platform via the unified
-   `--embed-*` vars. */
-article .embed_social .name .display_name,
-article .embed_social .text {
-    color: var(--embed-text);
-}
-article .embed_social .name .account_name,
-article .embed_social .meta a {
-    color: var(--embed-text-secondary);
-}
-article .embed_social .embed_logo {
-    color: var(--accent);
-}
-/* Twitter + Bluesky use circular avatars (matching their apps);
-   Mastodon keeps the default 8px rounded square. */
-article .embed_social[data-platform="twitter"] .avatar,
-article .embed_social[data-platform="bluesky"] .avatar {
-    border-radius: 50%;
-}
-
 .embed_social .header {
     display: grid;
-    grid-column-gap: 10px;
+    gap: 10px;
     grid-template-columns: 1fr 40px;
     align-items: center;
     margin-bottom: 16px;
@@ -206,10 +183,15 @@ article .embed_social[data-platform="bluesky"] .avatar {
     display: block;
 }
 
+.embed_social[data-platform="twitter"] .avatar,
+.embed_social[data-platform="bluesky"] .avatar {
+    border-radius: 50%;
+}
+
 .embed_social a.name_header {
     line-height: 22px;
     display: grid;
-    grid-column-gap: 10px;
+    gap: 10px;
     grid-template-columns: 46px 1fr;
     align-items: center;
     text-decoration: none;
@@ -217,7 +199,11 @@ article .embed_social[data-platform="bluesky"] .avatar {
 
 .embed_social a.name_header:hover .display_name {
     text-decoration: underline;
-    text-decoration-color: var(--text);
+    text-decoration-color: var(--embed-text);
+}
+
+.embed_social .name {
+    min-width: 0;
 }
 
 .embed_social .name .display_name,
@@ -228,25 +214,21 @@ article .embed_social[data-platform="bluesky"] .avatar {
 
 .embed_social .name .display_name {
     font-weight: 600;
-    color: var(--text);
+    color: var(--embed-text);
 }
 
 .embed_social .name .account_name {
-    color: var(--text-secondary);
+    color: var(--embed-text-secondary);
 }
 
 .embed_social .embed_logo {
     width: 40px;
     height: auto;
-    color: var(--text-secondary);
-}
-
-.embed_social .embed_logo path {
-    fill: currentColor;
+    color: var(--accent);
 }
 
 .embed_social .text {
-    color: var(--text);
+    color: var(--embed-text);
     font-size: 19px;
     line-height: 24px;
     margin: 0;
@@ -272,7 +254,7 @@ article .embed_social[data-platform="bluesky"] .avatar {
 }
 
 .embed_social .meta a {
-    color: var(--text-secondary);
+    color: var(--embed-text-secondary);
     font-size: 14px;
 }
 
@@ -282,13 +264,16 @@ article .embed_social[data-platform="bluesky"] .avatar {
     gap: 4px;
     grid-template-columns: 1fr 1fr;
 }
+
 .embed_social .media:has(> a:only-child) {
     grid-template-columns: 1fr;
 }
+
 .embed_social .media a {
     display: block;
     line-height: 0;
 }
+
 .embed_social .media img {
     display: block;
     width: 100%;
@@ -389,7 +374,7 @@ header::before {
     height: 24px;
     display: block;
     filter: var(--icon-filter);
-    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.6s var(--hover-spring);
 }
 
 #logo a:hover img {
@@ -399,7 +384,7 @@ header::before {
 
 #logo a {
     color: var(--heading);
-    text-decoration: none !important;
+    text-decoration: none;
     font-size: 30px;
     font-weight: 800;
 }
@@ -420,7 +405,7 @@ header::before {
     color: var(--heading);
     text-decoration-line: none;
     display: inline-block;
-    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.6s var(--hover-spring);
 }
 
 #menu a:hover {
@@ -436,7 +421,7 @@ header::before {
 
 .menu-closed-bar a {
     display: inline-block;
-    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.6s var(--hover-spring);
 }
 
 .menu-closed-bar a:hover {
@@ -462,9 +447,20 @@ header::before {
 /* Theme toggle */
 .theme-toggle {
     position: relative;
-    cursor: pointer;
     padding: 0 15px;
     margin: 0 -15px;
+}
+
+.theme-toggle-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--heading);
+    cursor: pointer;
+    font: inherit;
 }
 
 .theme-toggle-icon {
@@ -473,29 +469,17 @@ header::before {
     filter: var(--icon-filter);
 }
 
-/* Show moon by default (dark theme), sun when light theme is active. */
 .theme-icon-light {
     display: none;
 }
 
-[data-theme="light"] .theme-icon-dark {
+[data-color-scheme="light"] .theme-icon-dark {
     display: none;
 }
 
-[data-theme="light"] .theme-icon-light {
+[data-color-scheme="light"] .theme-icon-light {
     display: block;
 }
-
-@media (prefers-color-scheme: light) {
-    [data-theme="auto"] .theme-icon-dark {
-        display: none;
-    }
-
-    [data-theme="auto"] .theme-icon-light {
-        display: block;
-    }
-}
-
 
 .theme-popover {
     display: none;
@@ -619,12 +603,12 @@ header::before {
 
 .theme-option:hover,
 .theme-option.active:hover {
-    background: rgba(120, 120, 128, 0.18);
+    background: var(--control-hover);
 }
 
 .theme-option.active {
     font-weight: 700;
-    background: rgba(120, 120, 128, 0.10);
+    background: var(--control-active);
 }
 
 .theme-option img {
@@ -647,6 +631,7 @@ header::before {
 
 
 .hamburger-button {
+    position: relative;
     background: none;
     border: none;
     padding: 6px 10px;
@@ -671,10 +656,6 @@ header::before {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
-}
-
-.hamburger-button {
-    position: relative;
 }
 
 .hamburger-button .icon-close {
@@ -935,7 +916,7 @@ header::before {
 .title {
     text-align: center;
     text-wrap: balance;
-    margin: 0 !important;
+    margin: 0;
 }
 
 .date {
@@ -999,7 +980,7 @@ footer {
     line-height: 1.5em;
     color: var(--text-secondary);
     font-weight: 500;
-    font-size: 0.55em;
+    font-size: 0.78em;
 }
 
 footer .container {
@@ -1008,40 +989,40 @@ footer .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 14px;
+    gap: 24px;
     padding: 20px;
     width: 100%;
     border-top: 1px solid var(--border);
 }
 
-.footer-left,
-.footer-right {
+.footer-byline,
+.footer-credit {
     flex: 1;
-    font-size: 1.4em;
+    margin: 0;
 }
 
-.footer-left {
+.footer-byline {
     text-align: left;
 }
 
-.footer-right {
+.footer-credit {
     text-align: right;
 }
 
-.footer-left a,
-.footer-right a {
-    color: var(--text);
+.footer-byline a,
+.footer-credit a {
+    color: var(--heading);
     font-weight: 600;
     text-decoration: none;
 }
 
-.footer-left a:hover,
-.footer-right a:hover {
+.footer-byline a:hover,
+.footer-credit a:hover {
     text-decoration: underline;
 }
 
-.footer-center {
-    flex: 1;
+.footer-social {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1051,54 +1032,54 @@ footer .container {
     display: flex;
     gap: 25px;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .icon-row a {
     text-decoration-line: none;
 }
 
-.icon-row img,
 .icon-row svg {
+    width: 25px;
     height: 25px;
+    color: var(--text);
+    fill: none;
+    stroke: currentColor;
+    display: block;
+    transition: transform 0.6s var(--hover-spring);
 }
 
-.icon-row img {
-    filter: var(--icon-filter);
-    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.icon-row a:hover img {
+.icon-row a:hover svg {
     transform: scale(1.15);
     transition: transform 0.15s ease-out;
 }
 
 @media (max-width: 519.98px) {
+    /* Compact layout: icons on their own row at top, then byline + credit
+       wrap onto a shared row beneath, separated by a bullet pseudo. */
     footer .container {
         flex-wrap: wrap;
         justify-content: center;
         row-gap: 14px;
         column-gap: 0;
+        text-align: center;
     }
 
-    .footer-center {
+    .footer-social {
         flex: 1 0 100%;
         order: -1;
     }
 
-    .footer-left,
-    .footer-right {
+    .footer-byline,
+    .footer-credit {
         flex: 0 0 auto;
+        text-align: center;
     }
 
-    .footer-left::after {
+    .footer-byline::after {
         content: " \2022 ";
-        padding: 0 8px;
+        padding: 0 0.4em 0 0.2em;
         color: var(--text-secondary);
-    }
-
-    .icon-row {
-        justify-content: center;
     }
 }
 
@@ -1121,5 +1102,3 @@ footer .container {
         padding: 0 8px;
     }
 }
-
-

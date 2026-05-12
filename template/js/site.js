@@ -49,44 +49,56 @@
 })();
 
 (function() {
-    // Saved preference (data-theme already applied by the head script for FOUC prevention)
-    var saved = localStorage.getItem('theme') || 'auto';
-
+    var root = document.documentElement;
     var toggle = document.querySelector('.theme-toggle');
+    var trigger = document.querySelector('.theme-toggle-button');
     var popover = document.querySelector('.theme-popover');
     var options = document.querySelectorAll('.theme-option');
+    var allowedThemes = /^(auto|light|dark)$/;
+    if (!toggle || !trigger || !popover || !options.length) return;
 
-    // Mark the active option
-    options.forEach(function(btn) {
-        if (btn.dataset.themeValue === saved) btn.classList.add('active');
-    });
+    function setPopoverOpen(open) {
+        popover.classList.toggle('open', open);
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
 
-    // Toggle popover on click (needed for touch devices) — attach to
-    // all theme-toggle-icons (moon + sun) so both work.
-    toggle.querySelectorAll('.theme-toggle-icon').forEach(function(icon) {
-        icon.addEventListener('click', function(e) {
-            e.stopPropagation();
-            popover.classList.toggle('open');
+    function markActive(value) {
+        options.forEach(function(btn) {
+            var active = btn.dataset.themeValue === value;
+            btn.classList.toggle('active', active);
+            btn.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
+    }
+
+    var activeTheme = root.getAttribute('data-theme') || 'auto';
+    markActive(allowedThemes.test(activeTheme) ? activeTheme : 'auto');
+
+    trigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        setPopoverOpen(!popover.classList.contains('open'));
     });
 
-    // Handle option selection
     options.forEach(function(btn) {
         btn.addEventListener('click', function() {
             var value = btn.dataset.themeValue;
-            localStorage.setItem('theme', value);
-            document.documentElement.setAttribute('data-theme', value);
-            options.forEach(function(b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-            popover.classList.remove('open');
+            if (!allowedThemes.test(value)) return;
+            try {
+                localStorage.setItem('theme', value);
+            } catch (e) {}
+            root.setAttribute('data-theme', value);
+            markActive(value);
+            setPopoverOpen(false);
         });
     });
 
-    // Close popover when clicking outside
     document.addEventListener('click', function(e) {
-        if (!toggle.contains(e.target)) {
-            popover.classList.remove('open');
-        }
+        if (!toggle.contains(e.target)) setPopoverOpen(false);
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Escape') return;
+        setPopoverOpen(false);
+        trigger.blur();
     });
 })();
 
@@ -96,9 +108,12 @@
     var label = document.querySelector('label[for="menu-toggle"]');
     var capsule = document.getElementById('header-content');
     var menu = document.getElementById('menu');
-    if (!checkbox || !label || !capsule || !menu) return;
+    var iconHam = document.querySelector('.icon-hamburger');
+    var iconX = document.querySelector('.icon-close');
+    if (!checkbox || !label || !capsule || !menu || !iconHam || !iconX) return;
 
-    var iosEase = 'cubic-bezier(0.32, 0.72, 0, 1)';
+    var iosEase = getComputedStyle(document.documentElement).getPropertyValue('--menu-ease').trim()
+        || 'cubic-bezier(0.32, 0.72, 0, 1)';
     var heightDuration = 450;
     var fadeDuration = 500;
     var iconDuration = 250;
@@ -106,13 +121,16 @@
 
     var animating = false;
 
-    var iconHam = document.querySelector('.icon-hamburger');
-    var iconX = document.querySelector('.icon-close');
+    function setExpanded(expanded) {
+        label.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    }
+
+    setExpanded(checkbox.checked);
 
     function getColumnItems() {
         // Items in the vertical list (excludes the absolute-positioned icons row)
         return Array.prototype.slice.call(
-            menu.querySelectorAll('li:not(.menu-closed-priority):not(.menu-hamburger):not(.menu-row-icons)')
+            menu.querySelectorAll('li:not(.menu-hamburger):not(.menu-row-icons)')
         );
     }
 
@@ -155,8 +173,11 @@
             // Revert checkbox back to its pre-click state so CSS state
             // doesn't desync with the in-flight animation.
             checkbox.checked = !checkbox.checked;
+            setExpanded(checkbox.checked);
             return;
         }
+
+        setExpanded(checkbox.checked);
 
         if (checkbox.checked) {
             animateOpen();
@@ -300,6 +321,7 @@
 
         heightAnim.onfinish = function() {
             checkbox.checked = false; // commit closed state at end
+            setExpanded(false);
             capsule.style.height = '';
             capsule.style.overflow = '';
             heightAnim.cancel();
