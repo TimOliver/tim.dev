@@ -440,7 +440,7 @@
             z-index: 10;
             width: 100%;
             top: 0;
-            padding: 10px 0 20px;
+            padding: 5px 0 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -782,8 +782,21 @@
         }
 
         @media (max-width: 1000px) {
+            /* Body text drops to 95% (17.1px) at this breakpoint, matching
+               the scaled-down header content. */
+            body {
+                font-size: 17.1px;
+            }
+
             header {
-                padding: 16px 0 24px;
+                padding: 8px 0 24px;
+            }
+
+            /* Shrink the legibility gradient pseudo to match the scaled-down
+               header content — without this the fade looks proportionally too
+               tall against the smaller logo + menu. */
+            header::before {
+                bottom: 10px;
             }
 
             #header-content {
@@ -816,6 +829,12 @@
         }
 
         @media (max-width: 720px) {
+            /* Body text drops further to 90% (16.2px) once the hamburger
+               menu takes over — matches the more compact phone layout. */
+            body {
+                font-size: 16.2px;
+            }
+
             header::before {
                 display: none;
             }

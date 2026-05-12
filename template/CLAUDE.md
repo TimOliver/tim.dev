@@ -38,6 +38,8 @@ A floating "capsule" — sticky, backdrop-blurred, centered, with a max-width.
 ### Responsive scaling
 Below 941px the entire header content scales (font-sizes shrink, gap clamps tighten). This is preferable to reflowing or wrapping the menu.
 
+At the 1000px breakpoint the legibility gradient (`header::before`) also gets a `bottom: 10px` inset so the fade shrinks proportionally to the smaller logo + menu. Without it, the gradient looks proportionally too tall against the scaled-down content. The pseudo otherwise stays at `inset: 0` and inherits the header's full height.
+
 ---
 
 ## Hamburger Menu
@@ -344,13 +346,15 @@ The mockup uses these breakpoint boundaries (not all are arbitrary — the .98 s
 | Width | Trigger |
 |-------|---------|
 | 1049.98px | Theme popover right-aligns |
-| 1000px | (reserved for content max-width) |
+| 1000px | Body text 18px → 17.1px (95%); legibility gradient shrinks; header content + padding scale down |
 | 941px | Header content starts scaling |
-| 720px | Hamburger menu activates |
+| 720px | Body text 17.1px → 16.2px (90%); hamburger menu activates |
 | 519.98px | Footer stacks vertically |
 | 389px | Hamburger menu uses 2-column grid (iPod touch landscape) |
-| 374.98px | Outer padding shrinks 16px → 8px, body font scales to 85% |
+| 374.98px | Outer padding shrinks 16px → 8px, body font drops to 15px |
 | `orientation: landscape` + `max-height: 500px` | Images/YouTube embeds capped at 320px height (iPhone-class landscape) |
+
+**Body text scale progression** (relative to the 18px desktop default): 100% → 95% (≤1000px) → 90% (≤720px) → ~83% (≤374.98px). Set via absolute pixel values on `body` inside each media query rather than percentages, because CSS percentage units on `body.font-size` resolve against `<html>` (16px), not the previously-cascaded body size.
 
 ---
 
