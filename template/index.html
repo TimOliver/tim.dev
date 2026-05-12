@@ -1008,9 +1008,8 @@
 
     <script>
         (function() {
-            // Read saved preference
+            // Saved preference (data-theme already applied by the head script for FOUC prevention)
             var saved = localStorage.getItem('theme') || 'auto';
-            document.documentElement.setAttribute('data-theme', saved);
 
             var toggle = document.querySelector('.theme-toggle');
             var popover = document.querySelector('.theme-popover');
@@ -1061,15 +1060,13 @@
             var iosEase = 'cubic-bezier(0.32, 0.72, 0, 1)';
             var heightDuration = 450;
             var fadeDuration = 500;
+            var iconDuration = 250;
             var staggerStep = 35;
 
             var animating = false;
 
-            function getOpenItems() {
-                return Array.prototype.slice.call(
-                    menu.querySelectorAll('li:not(.menu-closed-priority):not(.menu-hamburger)')
-                );
-            }
+            var iconHam = document.querySelector('.icon-hamburger');
+            var iconX = document.querySelector('.icon-close');
 
             function getColumnItems() {
                 // Items in the vertical list (excludes the absolute-positioned icons row)
@@ -1086,21 +1083,30 @@
                 return capsule.querySelector('.menu-closed-bar');
             }
 
-            var iconHam = document.querySelector('.icon-hamburger');
-            var iconX = document.querySelector('.icon-close');
-
-            function lockIconTransitions() {
-                if (iconHam) iconHam.style.transition = 'none';
-                if (iconX) iconX.style.transition = 'none';
-                if (label) label.style.transition = 'none';
-            }
-
-            function unlockIconTransitions() {
-                requestAnimationFrame(function() {
-                    if (iconHam) iconHam.style.transition = '';
-                    if (iconX) iconX.style.transition = '';
-                    if (label) label.style.transition = '';
-                });
+            // Swap hamburger <-> X icons + cross-fade label background. Returns
+            // the three animation handles so the caller can cancel them.
+            function animateIconSwap(opening, fromBg, toBg) {
+                var hamFrom = opening ? 1 : 0;
+                var hamTo   = opening ? 0 : 1;
+                var xFrom   = opening ? 0 : 1;
+                var xTo     = opening ? 1 : 0;
+                var opts = { duration: iconDuration, easing: iosEase, fill: 'forwards' };
+                return [
+                    iconHam.animate(
+                        [{ opacity: hamFrom, transform: 'scale(' + hamFrom + ')' },
+                         { opacity: hamTo,   transform: 'scale(' + hamTo   + ')' }],
+                        opts
+                    ),
+                    iconX.animate(
+                        [{ opacity: xFrom, transform: 'scale(' + xFrom + ')' },
+                         { opacity: xTo,   transform: 'scale(' + xTo   + ')' }],
+                        opts
+                    ),
+                    label.animate(
+                        [{ backgroundColor: fromBg }, { backgroundColor: toBg }],
+                        opts
+                    )
+                ];
             }
 
             checkbox.addEventListener('change', function() {
@@ -1144,18 +1150,7 @@
                 capsule.style.overflow = 'hidden';
                 capsule.offsetHeight; // force reflow
 
-                var hamAnim = iconHam.animate(
-                    [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(0)' }],
-                    { duration: 250, easing: iosEase, fill: 'forwards' }
-                );
-                var xAnim = iconX.animate(
-                    [{ opacity: 0, transform: 'scale(0)' }, { opacity: 1, transform: 'scale(1)' }],
-                    { duration: 250, easing: iosEase, fill: 'forwards' }
-                );
-                var bgAnim = label.animate(
-                    [{ backgroundColor: bgFromColor }, { backgroundColor: bgToColor }],
-                    { duration: 250, easing: iosEase, fill: 'forwards' }
-                );
+                var iconAnims = animateIconSwap(true, bgFromColor, bgToColor);
 
                 var heightAnim = capsule.animate(
                     [{ height: startHeight + 'px' }, { height: endHeight + 'px' }],
@@ -1165,9 +1160,7 @@
                     capsule.style.height = '';
                     capsule.style.overflow = '';
                     heightAnim.cancel();
-                    hamAnim.cancel();
-                    xAnim.cancel();
-                    bgAnim.cancel();
+                    iconAnims.forEach(function(a) { a.cancel(); });
                     label.style.pointerEvents = '';
                     animating = false;
                 };
@@ -1236,18 +1229,7 @@
                 capsule.offsetHeight;
 
                 // Manually drive the icon swap (X -> hamburger) since CSS is in open state
-                var hamAnim = iconHam.animate(
-                    [{ opacity: 0, transform: 'scale(0)' }, { opacity: 1, transform: 'scale(1)' }],
-                    { duration: 250, easing: iosEase, fill: 'forwards' }
-                );
-                var xAnim = iconX.animate(
-                    [{ opacity: 1, transform: 'scale(1)' }, { opacity: 0, transform: 'scale(0)' }],
-                    { duration: 250, easing: iosEase, fill: 'forwards' }
-                );
-                var bgAnim = label.animate(
-                    [{ backgroundColor: bgFromColor }, { backgroundColor: 'transparent' }],
-                    { duration: 250, easing: iosEase, fill: 'forwards' }
-                );
+                var iconAnims = animateIconSwap(false, bgFromColor, 'transparent');
 
                 var heightAnim = capsule.animate(
                     [{ height: startHeight + 'px' }, { height: endHeight + 'px' }],
@@ -1280,9 +1262,7 @@
                     capsule.style.height = '';
                     capsule.style.overflow = '';
                     heightAnim.cancel();
-                    hamAnim.cancel();
-                    xAnim.cancel();
-                    bgAnim.cancel();
+                    iconAnims.forEach(function(a) { a.cancel(); });
                     itemAnims.forEach(function(a) { a.cancel(); });
                     if (iconsAnim) iconsAnim.cancel();
                     if (closedBarAnim) closedBarAnim.cancel();
