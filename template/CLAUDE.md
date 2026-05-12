@@ -1,8 +1,29 @@
 # Template/ — Design Mockup Notes
 
-This folder is a single-file (`index.html`) hand-coded mockup that establishes the design language for `tim.dev`. It's the source of truth for visual + interaction decisions that need to be ported to Ignite components/plugins.
+This folder is the hand-coded mockup that establishes the design language for `tim.dev`. It's the source of truth for visual + interaction decisions that need to be ported to Ignite components/plugins.
 
-The mockup is intentionally monolithic — all CSS and JS lives inline so the whole site can be reasoned about in one place. When porting, prefer to **preserve behavior verbatim** rather than "improve" it; many decisions below came from iteration and have non-obvious reasons.
+```
+Template/
+├── index.html              Markup only — semantics + content
+├── css/site.css            All styles
+├── js/
+│   ├── theme.js            Head script: FOUC prevention + data-theme/data-color-scheme sync
+│   └── site.js             Body script: theme popover, hamburger animation, LQIP swap
+├── img/
+│   ├── social-logos.svg    SVG symbol sprite — Twitter/Bluesky/Mastodon embed logos
+│   ├── brand-*.svg         Outline-style brand icons used in the footer
+│   ├── appearance/         Theme picker icons (auto/sun/moon)
+│   └── (sample images)
+└── CLAUDE.md               This file
+```
+
+The three social embed logos live in `img/social-logos.svg` as `<symbol>` definitions and are referenced from markup via `<svg viewBox="..."><use href="img/social-logos.svg#twitter"/></svg>` so they preserve `fill: currentColor` for theme-aware coloring. The footer's brand icons (`brand-*.svg`) are a different visual treatment — Tabler-style outline icons — and stay as plain `<img>` tags.
+
+**Gotcha**: the wrapping `<svg>` *must* repeat the symbol's `viewBox` attribute — the `<symbol>`'s viewBox does NOT propagate to the wrapping `<svg>` for layout sizing. Without it, the wrapping `<svg>` falls back to the browser's default `300×150` placeholder size and blows out the embed header. With it (plus `height: auto` in CSS), height is computed correctly from the aspect ratio.
+
+Originally the CSS + JS lived inline in `index.html`; it was extracted once the design stabilized. **`theme.js` must load synchronously in `<head>` before any paintable content** — it sets `data-color-scheme` before the first paint to prevent FOUC. Don't add `defer` or `async`.
+
+When porting, prefer to **preserve behavior verbatim** rather than "improve" it; many decisions below came from iteration and have non-obvious reasons.
 
 ---
 
@@ -11,7 +32,7 @@ The mockup is intentionally monolithic — all CSS and JS lives inline so the wh
 Three states: `auto` (follows OS), `light`, `dark`. Stored in `localStorage` under key `theme`.
 
 - **Two attributes on `<html>`**: `data-theme` is the user's saved choice (`auto` | `light` | `dark`); `data-color-scheme` is the *resolved* effective scheme (`light` | `dark`). CSS targets `data-color-scheme` so dark-mode rules only need one selector instead of two (the dual `[data-theme="dark"]` + `[data-theme="auto"] @media-dark` pattern). The head script computes `data-color-scheme` from `data-theme` + `matchMedia('(prefers-color-scheme: dark)')`, and keeps them in sync via a `MutationObserver` on `data-theme` + a matchMedia `change` listener (auto-mode follows OS).
-- **FOUC prevention**: an inline `<script>` in `<head>` reads `localStorage` and sets `data-theme` *before* paint. Don't move this to a deferred script.
+- **FOUC prevention**: `js/theme.js` (synchronous `<script>` in `<head>`) reads `localStorage` and sets `data-theme` + `data-color-scheme` *before* paint. Don't move it to a deferred / async script.
 - **Light-mode icon swap**: the moon icon in the header automatically replaces with `sun-bold.svg` (stroke-width 2.5) when the effective theme is light. Driven by CSS class selectors keyed off `[data-theme]`, no JS.
 - **Popover background must be opaque** (`var(--bg-secondary)`), not translucent. Stacking `backdrop-filter: blur` on the popover *and* the capsule header underneath looked bad on iOS.
 - **Theme popover position**: right-aligned only when viewport ≤ 1049.98px or horizontal safe-area insets are non-zero (Dynamic Island landscape). Centered otherwise. Don't right-align always — looks weird on desktop.
