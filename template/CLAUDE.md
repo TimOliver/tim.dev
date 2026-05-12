@@ -211,8 +211,13 @@ All three platforms use a **unified custom-card facade** — no third-party widg
 - **Avatar shape** — Twitter + Bluesky are circular (`border-radius: 50%`); Mastodon uses an 8px rounded square (matches the Mastodon app).
 - **Brand SVG** picked per-platform in the markup (logo paths live inline so they get `fill: currentColor`). Mastodon's logo inherits `--text-secondary`; Twitter and Bluesky override to their brand blue.
 
-### Per-platform palettes (Twitter + Bluesky)
-Twitter and Bluesky both opt out of the site's theme variables for surface colors — they override `background`, `border-color`, text, and secondary text via a per-platform set of custom properties, so the embeds always look unmistakably "Twitter" or "Bluesky" regardless of host site theme.
+### Per-platform palettes
+All three platforms opt out of the site's theme variables for surface colors. Each defines a per-platform set of custom properties — `--ma-*`, `--tw-*`, `--bs-*` — that override `background`, `border-color`, text, and secondary text. The embeds always look unmistakably native to their platform regardless of host site theme.
+
+**Mastodon (`--ma-*`)** — the Mastodon web/app palette.
+- Light: `#FFFFFF` bg, `#C0CDD9` border, `#191B22` text, `#606984` handle/meta
+- Dark: `#282C37` bg, `#393F4F` border, `#FFFFFF` text, `#9BAEA0` (the iconic Mastodon greenish-gray) handle/meta
+- Elephant logo + link accent: `#6364FF` light, `#8C8DFF` dark.
 
 **Twitter (`--tw-*`)** — pre-rebrand identity. Light = "default" theme, dark = "Dim".
 - Light: `#F5F8FA` bg, `#E1E8ED` border, `#14171A` text, `#657786` handle/meta
@@ -222,11 +227,9 @@ Twitter and Bluesky both opt out of the site's theme variables for surface color
 **Bluesky (`--bs-*`)** — the Bluesky web app palette.
 - Light: `#FFFFFF` bg, `#D4DBE2` border, `#0B0F19` text, `#42576C` handle/meta
 - Dark: `#161E27` bg, `#2E3641` border, `#FFFFFF` text, `#8D9AAA` handle/meta
-- Butterfly logo + link accent: `#0085FF` light, `#208BFE` dark (slightly brighter for contrast).
+- Butterfly logo + link accent: `#0085FF` light, `#208BFE` dark.
 
 We deliberately use the OG Twitter identity (bird logo, classic blue) rather than the 2023 X rebrand. This is an opinionated styling choice baked into the platform, not configurable per-post. If you want to honor the X rebrand on individual posts, override `data-platform="x"` with the X glyph and a black/white palette.
-
-Mastodon stays on the site's theme variables (`--bg-secondary`, `--border`, `--text`, `--text-secondary`) — its visual identity is the purple `--accent` + the Mastodon logo, not the surface color.
 
 The `.media` grid uses 2 columns by default, collapsing to 1 column via `:has(> a:only-child)` when there's a single attachment. Clicking opens the original-resolution image via Lightbox3. Drop `<div class="media">` entirely for text-only posts.
 

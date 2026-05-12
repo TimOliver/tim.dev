@@ -149,18 +149,24 @@
             content: none;
         }
 
-        /* Platform-specific link accent (the "inline link" color inside the
-           post body). Light/dark variants where applicable. */
+        /* Each platform card opts out of the site's theme variables and uses
+           its own brand palette — light/dark surfaces, text, secondary text,
+           and accent — so embeds always look unmistakably "Twitter",
+           "Bluesky", or "Mastodon" regardless of host site theme. */
+
+        /* Mastodon: app/web palette + brand purple accent. */
         article .embed_social[data-platform="mastodon"] {
-            --accent: rgb(97, 97, 255);
+            --accent: #6364FF;
+            --ma-bg: #FFFFFF;
+            --ma-border: #C0CDD9;
+            --ma-text: #191B22;
+            --ma-text-secondary: #606984;
+            background: var(--ma-bg);
+            border-color: var(--ma-border);
         }
-        article .embed_social[data-platform="bluesky"] {
-            --accent: rgb(16, 131, 254);
-        }
-        /* Twitter uses its pre-rebrand identity (bird logo + classic Twitter
-           palette) — light = "default" theme, dark = "Dim" theme. The card
-           defines its own `--tw-*` variables instead of inheriting from the
-           site's theme, so the embed always looks unmistakably Twitter. */
+
+        /* Twitter: pre-rebrand identity (bird logo + classic Twitter palette).
+           Light = "default" theme, dark = "Dim" theme. */
         article .embed_social[data-platform="twitter"] {
             --accent: #1DA1F2;
             --tw-bg: #F5F8FA;
@@ -171,9 +177,7 @@
             border-color: var(--tw-border);
         }
 
-        /* Bluesky uses its own brand palette too — white-ish surface in light,
-           dark-navy in dark. The butterfly logo and link accent are always
-           Bluesky blue. */
+        /* Bluesky: web app palette + brand blue accent. */
         article .embed_social[data-platform="bluesky"] {
             --accent: #0085FF;
             --bs-bg: #FFFFFF;
@@ -186,7 +190,11 @@
 
         @media (prefers-color-scheme: dark) {
             [data-theme="auto"] article .embed_social[data-platform="mastodon"] {
-                --accent: rgb(140, 141, 255);
+                --accent: #8C8DFF;
+                --ma-bg: #282C37;
+                --ma-border: #393F4F;
+                --ma-text: #FFFFFF;
+                --ma-text-secondary: #9BAEA0;
             }
             [data-theme="auto"] article .embed_social[data-platform="bluesky"] {
                 --accent: #208BFE;
@@ -203,7 +211,11 @@
             }
         }
         [data-theme="dark"] article .embed_social[data-platform="mastodon"] {
-            --accent: rgb(140, 141, 255);
+            --accent: #8C8DFF;
+            --ma-bg: #282C37;
+            --ma-border: #393F4F;
+            --ma-text: #FFFFFF;
+            --ma-text-secondary: #9BAEA0;
         }
         [data-theme="dark"] article .embed_social[data-platform="bluesky"] {
             --accent: #208BFE;
@@ -248,6 +260,21 @@
         }
         article .embed_social[data-platform="bluesky"] .avatar {
             border-radius: 50%;
+        }
+
+        /* Mastodon override: platform colors for text, brand purple for the
+           elephant logo. Avatar keeps the 8px rounded-square shape used by
+           the Mastodon app. */
+        article .embed_social[data-platform="mastodon"] .name .display_name,
+        article .embed_social[data-platform="mastodon"] .text {
+            color: var(--ma-text);
+        }
+        article .embed_social[data-platform="mastodon"] .name .account_name,
+        article .embed_social[data-platform="mastodon"] .meta a {
+            color: var(--ma-text-secondary);
+        }
+        article .embed_social[data-platform="mastodon"] .embed_logo {
+            color: var(--accent);
         }
 
         .embed_social .header {
@@ -413,7 +440,7 @@
             z-index: 10;
             width: 100%;
             top: 0;
-            padding: 10px 0 30px;
+            padding: 10px 0 20px;
             display: flex;
             justify-content: center;
             align-items: center;
