@@ -166,6 +166,96 @@ Clicking any blog image opens [Lightbox3](https://github.com/lokesh/lightbox3) f
 
 ---
 
+## Social Embeds (X / Bluesky / Mastodon)
+
+All three platforms use a **unified custom-card facade** — no third-party widget JS, no iframes. Base pattern lifted from [alexwlchan.net/2025/good-embedded-toots/](https://alexwlchan.net/2025/good-embedded-toots/), extended to all three platforms via a `data-platform="..."` attribute. Dark mode adapts automatically through the site's existing CSS variables.
+
+### Why the same pattern for all three
+- ✅ Zero runtime JS for embeds (drop ~200 KB of widget scripts).
+- ✅ Dark mode Just Works — no per-widget theme attribute juggling, no iframe filter hacks, no re-mount on toggle.
+- ✅ Identical visual rhythm across platforms; same border, same padding, same typography.
+- ❌ Like/reply counts are frozen at build time (not live).
+- ❌ Embedded media (polls, multi-image grids, quote-of-quote) need bespoke rendering — currently only images are supported.
+
+### Unified markup pattern
+
+```html
+<blockquote class="embed_social" data-platform="<mastodon|bluesky|twitter>">
+    <div class="header">
+        <a class="name_header" href="<profile-url>">
+            <img class="avatar" src="<avatar-url>" alt="" width="46" height="46">
+            <div class="name">
+                <span class="display_name">Display Name</span>
+                <span class="account_name">@handle</span>
+            </div>
+        </a>
+        <svg class="embed_logo" viewBox="..." aria-hidden="true" width="40">
+            <title>Mastodon|Bluesky|X</title>
+            <path d="..." fill="currentColor"/>
+        </svg>
+    </div>
+    <p class="text">Post body. Use `<br><br>` for paragraph breaks; inline `<a>` for hashtags/mentions/URLs.</p>
+    <div class="media">
+        <a href="<full-resolution-url>" data-lightbox>
+            <img src="<preview-url>" alt="<description>" loading="lazy">
+        </a>
+    </div>
+    <p class="meta">
+        <a href="<post-url>"><time datetime="<iso-8601>">DD MMM YYYY at HH:MM</time></a>
+    </p>
+</blockquote>
+```
+
+`data-platform` controls:
+- **Link accent color** (`--accent`) — Mastodon purple, Bluesky blue, Twitter text-color (X doesn't have a strong link tint).
+- **Avatar shape** — Twitter avatars are circular (`border-radius: 50%`); Mastodon + Bluesky use 8px rounded squares.
+- **Brand SVG** picked per-platform in the markup (logo paths live inline so they get `fill: currentColor` from the host site's `--text-secondary`).
+
+The `.media` grid uses 2 columns by default, collapsing to 1 column via `:has(> a:only-child)` when there's a single attachment. Clicking opens the original-resolution image via Lightbox3. Drop `<div class="media">` entirely for text-only posts.
+
+### Styling
+Width caps at 508px (matches Mastodon's official embed minus padding). CSS Grid handles the header layout. Per-platform link accent flows through a single `--accent` custom property set on the blockquote based on `data-platform`, with light/dark variants for Mastodon and Bluesky. The brand SVG inside `.embed_logo` inherits `currentColor: var(--text-secondary)`. No `!important` overrides — we control all the markup.
+
+### Per-platform fetching
+
+**Mastodon — public per-instance API**
+```
+GET https://<instance>/api/v1/statuses/<status-id>
+```
+- `content` (HTML) → `.text`. Convert `<p>...</p><p>...</p>` to `...<br><br>...`; strip `<span class="invisible">` URL display tricks.
+- `account.{display_name, acct, avatar, url}` → header (prepend `@` to `acct`, append `@<instance>`).
+- `url` + `created_at` → `.meta`.
+- `media_attachments[].{preview_url, url, description}` → `.media` (Lightbox3 anchor wrapping each).
+
+**Bluesky — public AT Proto API (no auth)**
+```
+GET https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at://<did>/app.bsky.feed.post/<rkey>&depth=0
+```
+- Resolve handle → DID via `com.atproto.identity.resolveHandle?handle=<handle>` if you only have the friendly URL.
+- `thread.post.author.{handle, displayName, avatar}` → header.
+- `thread.post.record.text` → `.text` (plain text; if you want clickable mentions/hashtags, walk `thread.post.record.facets` and slice the text into runs).
+- `thread.post.record.createdAt` → `<time datetime>`.
+- `thread.post.embed.images[].{thumb, fullsize, alt}` → `.media`.
+
+**X / Twitter — no free API**
+The public oEmbed endpoint returns 401 unauthenticated; the paid API is overkill for a blog. Practical paths:
+1. **Manual paste** of all fields (post text, handle, display name, avatar URL, date) into the markup. Fine for occasional embeds.
+2. **Local archive** — if you have a Twitter Archive download, the plugin can read post data from there.
+3. **Scraper** — fragile, against ToS.
+
+### Caching
+Mirror avatars + media locally at build time. Store under `Assets/social-cache/<post-hash>/` so embeds survive the original CDN going away. The mockup currently references CDN URLs directly for convenience — production should swap to local paths.
+
+### Ignite plugin sketch
+Three views, one shared output template:
+- `MastodonPost("POST_URL")` — hit `<instance>/api/v1/statuses/<id>` at build time, transform, emit `.embed_social[data-platform="mastodon"]`.
+- `BlueskyPost("POST_URL")` — resolve handle → DID, hit `getPostThread`, emit `.embed_social[data-platform="bluesky"]`.
+- `Tweet(handle:displayName:avatarPath:text:statusURL:date:)` — fields-in API since there's no public fetch path. Emit `.embed_social[data-platform="twitter"]`.
+
+No runtime widget scripts needed; embed loaders should be removed from the layout entirely.
+
+---
+
 ## YouTube Embeds (lite-youtube-embed)
 
 YouTube's native `<iframe>` ships ~1 MB+ of JS just to render the player chrome — bad for Lighthouse on pages where the video isn't always played. We use the **facade pattern** via Paul Irish's [`lite-youtube-embed`](https://github.com/paulirish/lite-youtube-embed) (~3 KB): render a thumbnail + play button, swap in the real iframe only on click.
@@ -202,6 +292,20 @@ For self-hosting later, copy `lite-yt-embed.css` and `lite-yt-embed.js` to `Asse
 
 ---
 
+## Third-party Dependencies
+
+All loaded from `cdn.jsdelivr.net` or platform-specific CDNs. Pin exact versions; for self-hosting later, copy the files into `Assets/` and update URLs.
+
+| Purpose | Files | Notes |
+|---------|-------|-------|
+| Lightbox3 image viewer | `lightbox3@1.1.0/dist/lightbox3.css` + `dist/lightbox3.umd.js` | Zero-dep. Auto-binds to `<a data-lightbox>`. |
+| YouTube facade | `lite-youtube-embed@0.3.4/src/lite-yt-embed.css` + `src/lite-yt-embed.js` | ~3 KB. Web component (`<lite-youtube>`). |
+| Social embed assets (per-post) | platform CDNs (`files.mastodon.social`, `cdn.bsky.app`, etc.) | Avatars + media images only. Social embeds are all custom CSS facades — no runtime widget JS. Cache locally at build time. |
+
+Total weight when all loaded: ~10-30 KB transferred (Lightbox3 + lite-youtube-embed). When porting to Ignite, layout views should conditionally inject only the loaders that this page actually needs.
+
+---
+
 ## iOS / Safe-Area Concerns
 
 - **Viewport meta**: `viewport-fit=cover` is required to extend the background under the notch/island. Combined with `padding: env(safe-area-inset-*)` on `<body>` to inset content from the unsafe regions.
@@ -230,19 +334,34 @@ The mockup uses these breakpoint boundaries (not all are arbitrary — the .98 s
 
 ## When porting to Ignite
 
-Likely plugin/component scaffolding:
-
-- **`LazyImage` view**: combines build-time LQIP generation + lightbox wrapping. Emits the full `<a>` + `<img class="lqip">` + `<noscript>` triple.
-- **`CapsuleHeader` layout**: the sticky backdrop-blurred header with the menu/logo/theme/social icons.
+### Components / layouts
+- **`CapsuleHeader` layout**: the sticky backdrop-blurred header with the menu/logo/theme/social icons. Includes the `::before` mask gradient for fade-out below the capsule.
 - **`HamburgerMenu` component**: encapsulates the WAAPI animation logic + checkbox toggle. The JS is verbose enough to belong in a separate `Includes/hamburger.js` rather than re-emitted inline per page.
-- **`ThemeToggle` component**: the popover with auto/light/dark options. Pair with a head-script `Include` for FOUC prevention.
-- **Asset pipeline**: hook into Ignite's build to pre-generate LQIP base64 for any image referenced in Markdown. Likely a custom `Plugin` or post-processing step.
+- **`ThemeToggle` component**: the popover with auto/light/dark options. Pair with a head-script `Include` for FOUC prevention. Don't forget the right-align media queries for narrow + notched-landscape viewports.
+- **`Footer` component**: two-column responsive footer with the byline + GitHub + Ignite + commit links on the left and social icons on the right.
 
-The mockup's CSS can be split into:
-- `theme.css` (variables + body)
-- `header.css` (capsule, menu, hamburger)
+### Content views (Markdown extensions)
+- **`LazyImage`**: build-time LQIP generation + 700/1400 variant generation + lightbox-anchor wrapping. Emits the full `<a>` + `<img class="lqip">` + `<noscript>` triple. Reads source dimensions; caches variants by source hash.
+- **`YouTube("VIDEO_ID")`**: emits `<lite-youtube>` + `<noscript>` iframe.
+- **`Tweet(handle:displayName:avatarPath:text:statusURL:date:)`**: fields-in markup (no free API). Emits `.embed_social[data-platform="twitter"]`.
+- **`BlueskyPost("POST_URL")`**: at build time, resolves handle → DID, hits `getPostThread`, caches avatar + media locally, emits `.embed_social[data-platform="bluesky"]`.
+- **`MastodonPost("POST_URL")`**: at build time, hits `<instance>/api/v1/statuses/<status-id>`, caches avatar + media locally, converts `<p>` paragraphs to `<br><br>`-separated text, emits `.embed_social[data-platform="mastodon"]`. All three are pure HTML/CSS — no runtime widget needed.
+
+### Asset pipeline plugin
+A single build-time pass that:
+1. Walks Markdown for `LazyImage` references.
+2. For each unique source, generates LQIP base64 + 700/1400 variants (with the skip-short-circuit). Caches by source content hash.
+3. Copies the originals to `Build/` for the lightbox target.
+4. Pre-fetches Bluesky/Mastodon oembed responses and stashes them by URL hash so rebuilds don't re-hit the API.
+
+### Loader injection
+Layouts should inject embed/widget loaders **only on pages that use them**. Cleanest approach: each content view sets a flag in `@Environment` during render; the layout's `<body>` end reads those flags and emits the corresponding loader scripts.
+
+### CSS split suggestion
+- `theme.css` — variables (light + dark sets) + base body
+- `header.css` — capsule, menu, hamburger
 - `footer.css`
-- `article.css` (typography, hr, img.lqip)
-- `lightbox-overrides.css` (if any)
+- `article.css` — typography, hr, `img.lqip`, social embed margins, lite-youtube overrides
+- `iphone-landscape.css` — the `@media (orientation: landscape) and (max-height: 500px)` rules
 
 Match the existing class names where possible so the mockup remains a reference.

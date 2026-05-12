@@ -130,6 +130,160 @@
             margin: 0 auto 1.75em;
         }
 
+        /* Social embeds: unified custom-card facade for Mastodon, Bluesky, and
+           X/Twitter. No iframes, no widget JS — just HTML + CSS, so dark mode
+           Just Works via our existing theme variables. Base pattern lifted
+           from alexwlchan.net/2025/good-embedded-toots/. */
+        article .embed_social {
+            --accent: var(--link);
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            min-width: 270px;
+            max-width: 508px;
+            padding: 16px;
+            margin: 0 auto 1.75em;
+        }
+
+        /* Platform-specific link accent (the "inline link" color inside the
+           post body). Light/dark variants where applicable. */
+        article .embed_social[data-platform="mastodon"] {
+            --accent: rgb(97, 97, 255);
+        }
+        article .embed_social[data-platform="bluesky"] {
+            --accent: rgb(16, 131, 254);
+        }
+        article .embed_social[data-platform="twitter"] {
+            --accent: var(--text);
+        }
+        @media (prefers-color-scheme: dark) {
+            [data-theme="auto"] article .embed_social[data-platform="mastodon"] {
+                --accent: rgb(140, 141, 255);
+            }
+            [data-theme="auto"] article .embed_social[data-platform="bluesky"] {
+                --accent: rgb(80, 162, 254);
+            }
+        }
+        [data-theme="dark"] article .embed_social[data-platform="mastodon"] {
+            --accent: rgb(140, 141, 255);
+        }
+        [data-theme="dark"] article .embed_social[data-platform="bluesky"] {
+            --accent: rgb(80, 162, 254);
+        }
+
+        .embed_social .header {
+            display: grid;
+            grid-column-gap: 10px;
+            grid-template-columns: 1fr 40px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .embed_social .avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 8px;
+            margin: 0;
+            display: block;
+        }
+
+        /* X/Twitter avatars are typically circles. */
+        .embed_social[data-platform="twitter"] .avatar {
+            border-radius: 50%;
+        }
+
+        .embed_social a.name_header {
+            line-height: 22px;
+            display: grid;
+            grid-column-gap: 10px;
+            grid-template-columns: 46px 1fr;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .embed_social a.name_header:hover .display_name {
+            text-decoration: underline;
+            text-decoration-color: var(--text);
+        }
+
+        .embed_social .name .display_name,
+        .embed_social .name .account_name {
+            display: block;
+            font-size: 15px;
+        }
+
+        .embed_social .name .display_name {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .embed_social .name .account_name {
+            color: var(--text-secondary);
+        }
+
+        .embed_social .embed_logo {
+            width: 40px;
+            height: auto;
+            color: var(--text-secondary);
+        }
+
+        .embed_social .embed_logo path {
+            fill: currentColor;
+        }
+
+        .embed_social .text {
+            color: var(--text);
+            font-size: 19px;
+            line-height: 24px;
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .embed_social .text a,
+        .embed_social .meta a {
+            text-decoration: none;
+        }
+
+        .embed_social .text a {
+            color: var(--accent);
+        }
+
+        .embed_social .text a:hover,
+        .embed_social .meta a:hover {
+            text-decoration: underline;
+        }
+
+        .embed_social .meta {
+            margin: 16px 0 0;
+        }
+
+        .embed_social .meta a {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .embed_social .media {
+            margin-top: 12px;
+            display: grid;
+            gap: 4px;
+            grid-template-columns: 1fr 1fr;
+        }
+        .embed_social .media:has(> a:only-child) {
+            grid-template-columns: 1fr;
+        }
+        .embed_social .media a {
+            display: block;
+            line-height: 0;
+        }
+        .embed_social .media img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: none;
+            border-radius: 8px;
+            margin: 0;
+        }
+
         /* iPhone-class landscape: cap media so it doesn't overflow the viewport */
         @media (orientation: landscape) and (max-height: 500px) {
             article img {
@@ -1035,6 +1189,85 @@
                     <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio nam libero tempore.</p>
                     <lite-youtube videoid="dQw4w9WgXcQ" params="modestbranding=1&rel=0"></lite-youtube>
                     <noscript><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?modestbranding=1&rel=0" title="YouTube video" frameborder="0" allowfullscreen></iframe></noscript>
+
+                    <!-- X / Twitter: custom card. Twitter's public API is locked down, so build-time fetch isn't viable for free-tier — paste post fields manually into the markup. -->
+                    <blockquote class="embed_social" data-platform="twitter">
+                        <div class="header">
+                            <a class="name_header" href="https://twitter.com/handle">
+                                <img class="avatar" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 46'%3E%3Crect width='46' height='46' rx='23' fill='%23ccc'/%3E%3C/svg%3E" alt="" width="46" height="46">
+                                <div class="name">
+                                    <span class="display_name">Author Name</span>
+                                    <span class="account_name">@handle</span>
+                                </div>
+                            </a>
+                            <svg class="embed_logo" viewBox="0 0 1200 1227" role="img" aria-hidden="true" width="32">
+                                <title>X</title>
+                                <path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887 357.328 0H0L468.492 681.821 0 1226.37H105.866L515.491 750.218 842.672 1226.37H1200L714.137 519.284h.026ZM569.165 687.828L521.697 619.934 144.011 79.6944H306.615L611.412 515.685 658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z"/>
+                            </svg>
+                        </div>
+                        <p class="text">Sample post text. Replace this with the real post content. Build-time fetch isn't available for free — paste the post text, handle, avatar, and date manually.</p>
+                        <p class="meta">
+                            <a href="https://twitter.com/handle/status/1234567890"><time datetime="2026-05-12T00:00:00Z">12 May 2026</time></a>
+                        </p>
+                    </blockquote>
+
+                    <!-- Bluesky: custom card facade with build-time-fetched data from the public AT Proto API (no auth required). -->
+                    <blockquote class="embed_social" data-platform="bluesky">
+                        <div class="header">
+                            <a class="name_header" href="https://bsky.app/profile/miketakespics.bsky.social">
+                                <img class="avatar" src="https://cdn.bsky.app/img/avatar/plain/did:plc:57xkhqs3luqrfeesm2beckej/bafkreid4e7242uzjbuejmho2ay4fuqelft2dfrp7zju5s2nlgzz7nbxuoq" alt="" width="46" height="46">
+                                <div class="name">
+                                    <span class="display_name">Mike Hargis</span>
+                                    <span class="account_name">@miketakespics.bsky.social</span>
+                                </div>
+                            </a>
+                            <svg class="embed_logo" viewBox="0 0 600 530" role="img" aria-hidden="true" width="40">
+                                <title>Bluesky</title>
+                                <path d="M135.72 44.03C202.216 93.951 273.74 195.17 300 249.49c26.262-54.316 97.782-155.54 164.28-205.46C512.26 8.009 590-19.862 590 68.825c0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.38-3.69-10.832-3.708-7.896-.017-2.936-1.193.516-3.707 7.896-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.45-163.25-81.433C20.15 217.612 9.997 86.535 9.997 68.825c0-88.688 77.742-60.816 125.72-24.795z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <p class="text">&ldquo;Almost everything will work again if you unplug it for a few minutes. Including you.&rdquo;
+ ~ Anne Lamott
+
+Good morning my friends! Resetting is self-care, so don't be shy about it. Life is better when we feel refreshed. Have a beautiful day ❤️</p>
+                        <div class="media">
+                            <a href="https://cdn.bsky.app/img/feed_fullsize/plain/did:plc:57xkhqs3luqrfeesm2beckej/bafkreibjecq5vz4jejpxbqyfoe5hja2rnbsuc2janckd2zcxojkn3uuqim" data-lightbox>
+                                <img src="https://cdn.bsky.app/img/feed_thumbnail/plain/did:plc:57xkhqs3luqrfeesm2beckej/bafkreibjecq5vz4jejpxbqyfoe5hja2rnbsuc2janckd2zcxojkn3uuqim" alt="" loading="lazy">
+                            </a>
+                        </div>
+                        <p class="meta">
+                            <a href="https://bsky.app/profile/miketakespics.bsky.social/post/3mlnzfqhix22y"><time datetime="2026-05-12T14:40:15Z">12 May 2026 at 14:40</time></a>
+                        </p>
+                    </blockquote>
+
+                    <!-- Mastodon: custom blockquote facade based on alexwlchan.net/2025/good-embedded-toots/.
+                         Renders entirely from build-time-fetched post data (handle, avatar, text, date) — no
+                         iframe, so we keep full theme control (light/dark adapts via our CSS variables). -->
+                    <blockquote class="embed_social" data-platform="mastodon">
+                        <div class="header">
+                            <a class="name_header" href="https://mastodon.social/@timoliver">
+                                <img class="avatar" src="https://files.mastodon.social/accounts/avatars/000/322/351/original/7a6defa03a16a5e7.png" alt="">
+                                <div class="name">
+                                    <span class="display_name">Tim Oliver</span>
+                                    <span class="account_name">@timoliver@mastodon.social</span>
+                                </div>
+                            </a>
+                            <svg class="embed_logo" viewBox="0 0 79 75" role="img" aria-hidden="true" width="40">
+                                <title>Mastodon</title>
+                                <path d="M74.7135 16.6043C73.6199 8.54587 66.5351 2.19527 58.1366 0.964691C56.7196 0.756754 51.351 0 38.9148 0H38.822C26.3824 0 23.7135 0.756754 22.2966 0.964691C14.1319 2.16118 6.67571 7.86752 4.86669 16.0214C3.99657 20.0369 3.90371 24.4888 4.06535 28.5726C4.29578 34.4289 4.34049 40.275 4.877 46.1075C5.24791 49.9817 5.89495 53.8251 6.81328 57.6088C8.53288 64.5968 15.4938 70.4122 22.3138 72.7848C29.6155 75.259 37.468 75.6697 44.9919 73.971C45.8196 73.7801 46.6381 73.5586 47.4475 73.3063C49.2737 72.7302 51.4164 72.086 52.9915 70.9542C53.0131 70.9384 53.0308 70.9178 53.0433 70.8942C53.0558 70.8706 53.0628 70.8445 53.0637 70.8179V65.1661C53.0634 65.1412 53.0574 65.1167 53.0462 65.0944C53.035 65.0721 53.0189 65.0525 52.9992 65.0371C52.9794 65.0218 52.9564 65.011 52.9318 65.0056C52.9073 65.0002 52.8819 65.0003 52.8574 65.0059C48.0369 66.1472 43.0971 66.7193 38.141 66.7103C29.6118 66.7103 27.3178 62.6981 26.6609 61.0278C26.1329 59.5842 25.7976 58.0784 25.6636 56.5486C25.6622 56.5229 25.667 56.4973 25.6775 56.4738C25.688 56.4502 25.7039 56.4295 25.724 56.4132C25.7441 56.397 25.7678 56.3856 25.7931 56.3801C25.8185 56.3746 25.8448 56.3751 25.8699 56.3816C30.6101 57.5151 35.4693 58.0873 40.3455 58.086C41.5183 58.086 42.6876 58.086 43.8604 58.0553C48.7647 57.919 53.9339 57.6701 58.7591 56.7361C58.8794 56.7123 58.9998 56.6918 59.103 56.6611C66.7139 55.2124 73.9569 50.665 74.6929 39.1501C74.7204 38.6967 74.7892 34.4016 74.7892 33.9312C74.7926 32.3325 75.3085 22.5901 74.7135 16.6043ZM62.9996 45.3371H54.9966V25.9069C54.9966 21.8163 53.277 19.7302 49.7793 19.7302C45.9343 19.7302 44.0083 22.1981 44.0083 27.0727V37.7082H36.0534V27.0727C36.0534 22.1981 34.124 19.7302 30.279 19.7302C26.8019 19.7302 25.0651 21.8163 25.0617 25.9069V45.3371H17.0656V25.3172C17.0656 21.2266 18.1191 17.9769 20.2262 15.568C22.3998 13.1648 25.2509 11.9308 28.7898 11.9308C32.8859 11.9308 35.9812 13.492 38.0447 16.6111L40.036 19.9245L42.0308 16.6111C44.0943 13.492 47.1896 11.9308 51.2788 11.9308C54.8143 11.9308 57.6654 13.1648 59.8459 15.568C61.9529 17.9746 63.0065 21.2243 63.0065 25.3172L62.9996 45.3371Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <p class="text">&ldquo;Don't talk to me or my son ever again.&rdquo;</p>
+                        <div class="media">
+                            <a href="https://files.mastodon.social/media_attachments/files/116/520/721/294/554/741/original/473698ef95e105bc.jpg" data-lightbox>
+                                <img src="https://files.mastodon.social/media_attachments/files/116/520/721/294/554/741/small/473698ef95e105bc.jpg" alt="" loading="lazy">
+                            </a>
+                        </div>
+                        <p class="meta">
+                            <a href="https://mastodon.social/@timoliver/116520721376464267"><time datetime="2026-05-05T07:11:48Z">5 May 2026 at 07:11</time></a>
+                        </p>
+                    </blockquote>
+                    
                     <blockquote>
                         <strong>Eiusmod tempor:</strong> Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
                     </blockquote>
@@ -1067,6 +1300,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/lightbox3@1.1.0/dist/lightbox3.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.4/src/lite-yt-embed.js"></script>
+
     <script>
         // LQIP swap: each <img.lqip> ships with an inline tiny base64 PNG as
         // its initial `src` and a responsive `data-srcset` (+ `data-sizes`).
