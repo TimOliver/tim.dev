@@ -124,6 +124,22 @@
             display: none;
         }
 
+        article lite-youtube {
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 0 auto 1.75em;
+        }
+
+        /* iPhone-class landscape: cap media so it doesn't overflow the viewport */
+        @media (orientation: landscape) and (max-height: 500px) {
+            article img {
+                max-height: 320px;
+            }
+            article lite-youtube {
+                max-width: calc(320px * 16 / 9);
+            }
+        }
+
         a {
             color: var(--link);
             text-decoration-line: none;
@@ -927,6 +943,7 @@
 
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightbox3@1.1.0/dist/lightbox3.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.4/src/lite-yt-embed.css">
 </head>
 <body>
 
@@ -1016,6 +1033,8 @@
                     </a>
                     <noscript><a href="https://icomics.net/img/iComics-Devices-2x.webp"><img srcset="img/iComics-Devices-700.png 700w, img/iComics-Devices-1400.png 1400w" sizes="(max-width: 720px) 100vw, 700px" src="img/iComics-Devices-700.png" width="2581" height="1672" alt=""></a></noscript>
                     <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio nam libero tempore.</p>
+                    <lite-youtube videoid="dQw4w9WgXcQ" params="modestbranding=1&rel=0"></lite-youtube>
+                    <noscript><iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?modestbranding=1&rel=0" title="YouTube video" frameborder="0" allowfullscreen></iframe></noscript>
                     <blockquote>
                         <strong>Eiusmod tempor:</strong> Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
                     </blockquote>
@@ -1047,6 +1066,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/lightbox3@1.1.0/dist/lightbox3.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.4/src/lite-yt-embed.js"></script>
     <script>
         // LQIP swap: each <img.lqip> ships with an inline tiny base64 PNG as
         // its initial `src` and a responsive `data-srcset` (+ `data-sizes`).

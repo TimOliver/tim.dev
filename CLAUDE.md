@@ -99,12 +99,15 @@ Article properties: `title`, `description`, `text`, `date`, `lastModified`, `tag
 - RSS feed at `feed.xml` if `feedConfiguration` is set.
 - `robots.txt` and `sitemap.xml` auto-generated.
 
-## Previous Design (Template/)
-The hand-coded `Template/index.html` contains the original blog design with:
-- Custom dark mode popover (Auto/Light/Dark) using CSS custom properties and minimal JS
-- SVG icons with `filter: var(--icon-filter)` for dark mode inversion
-- Touch-friendly popover with hover zone bridging
-- localStorage-based theme persistence with FOUC prevention
-- Icon inventory in `Template/img/appearance/` (auto.svg, sun.svg, moon.svg)
+## Design Mockup (Template/)
+`Template/index.html` is a single-file hand-coded mockup that's the source of truth for visual + interaction decisions. See `Template/CLAUDE.md` for detailed patterns and decisions, including:
+- Theme system (light/dark/auto, FOUC prevention, opaque popover requirement)
+- Sticky capsule header with backdrop-filter
+- Hamburger menu (WAAPI-driven, change-event pattern, animation defenses)
+- Footer structure and link styling
+- Lazy image system (LQIP + responsive variants + lightbox target)
+- Lightbox3 integration for full-screen image viewing
+- YouTube embeds via lite-youtube-embed facade
+- iOS/safe-area concerns and breakpoint table
 
-This design should be ported to Ignite's component system.
+When porting to Ignite components/plugins, preserve behavior verbatim — many decisions there came from iteration and have non-obvious reasons.

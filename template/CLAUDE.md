@@ -139,6 +139,10 @@ The mockup currently uses PNG variants because macOS ImageIO can't write WebP. I
 ### Sizing constraints
 `article img` is capped at `max-height: 650px` to prevent tall portrait images from dominating the layout. Combined with the inline `aspect-ratio` and `max-width: 100%`, the browser proportionally narrows the width when height clamps. Centered horizontally via `margin: 0 auto 1.75em` — block-level images with auto side margins center within the section even when wrapped by an inline lightbox anchor (the anchor doesn't establish a containing block for the block img). Landscape images at full width are unaffected; only height-clamped images visibly shift to center.
 
+On iPhone-class landscape viewports (`@media (orientation: landscape) and (max-height: 500px)`), the cap tightens to 320px so media doesn't dominate the short viewport:
+- Images: `max-height: 320px` (works directly with aspect-ratio).
+- `lite-youtube`: `max-width: calc(320px * 16 / 9)` (~569px). The library enforces 16:9 via `padding-bottom` on a `::after` pseudo, which doesn't respect `max-height` — so we cap *width* such that 16:9 gives a 320px height. Update this if the library ever switches to native `aspect-ratio`.
+
 ### ThumbHash was considered and rejected
 We initially used [evanw/thumbhash](https://github.com/evanw/thumbhash) (procedural ~30-byte hashes). The Swift port exists and is buildable, but:
 - Decoded placeholders are colored blobs, not recognizable miniatures of the image — looks like a glitch on stylized/transparent content.
@@ -159,6 +163,42 @@ Clicking any blog image opens [Lightbox3](https://github.com/lokesh/lightbox3) f
 - Loaded from jsdelivr CDN: `lightbox3@1.1.0/dist/lightbox3.css` + `dist/lightbox3.umd.js`.
 - For self-hosting later, copy both files to `Assets/` and update the URLs.
 - The `<a href="real.webp" data-lightbox>` wraps the LQIP `<img>`. Both the lazy load and the lightbox bindings work on the same element without conflict.
+
+---
+
+## YouTube Embeds (lite-youtube-embed)
+
+YouTube's native `<iframe>` ships ~1 MB+ of JS just to render the player chrome — bad for Lighthouse on pages where the video isn't always played. We use the **facade pattern** via Paul Irish's [`lite-youtube-embed`](https://github.com/paulirish/lite-youtube-embed) (~3 KB): render a thumbnail + play button, swap in the real iframe only on click.
+
+### Markup pattern
+```html
+<lite-youtube videoid="VIDEO_ID" params="modestbranding=1&rel=0"></lite-youtube>
+<noscript>
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/VIDEO_ID?modestbranding=1&rel=0" title="YouTube video" frameborder="0" allowfullscreen></iframe>
+</noscript>
+```
+
+- **`videoid`** is the only required attribute — the YouTube video ID (11 chars).
+- **`params`** are URL-encoded querystring params passed to the embed iframe on click. Use `modestbranding=1&rel=0` to suppress related videos and minimize YouTube branding.
+- **Thumbnail fetched at runtime** from `i.ytimg.com/vi/<id>/hqdefault.jpg` by the library. No build-time fetch required.
+- **Uses `youtube-nocookie.com`** domain by default — privacy-respecting (no tracking until play).
+- **`<noscript>` fallback** loads a regular iframe directly so JS-disabled users still see the video. Same privacy domain.
+
+### CSS overrides (applied in the template)
+```css
+article lite-youtube {
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 0 auto 1.75em;
+}
+```
+
+The library's defaults handle aspect ratio (16:9 via padding-bottom trick), maximum width (720px), and the play-button overlay. We just round the corners and match the article spacing.
+
+### Build-time work (Ignite side)
+A simple `YouTube("VIDEO_ID", params: "modestbranding=1&rel=0")` view that emits the `<lite-youtube>` element + the `<noscript>` fallback. No asset generation needed — thumbnails come from YouTube's CDN at runtime.
+
+For self-hosting later, copy `lite-yt-embed.css` and `lite-yt-embed.js` to `Assets/` and update the CDN URLs. The library file sizes are tiny (~3 KB combined), so this is mostly about avoiding the third-party request.
 
 ---
 
@@ -184,6 +224,7 @@ The mockup uses these breakpoint boundaries (not all are arbitrary — the .98 s
 | 519.98px | Footer stacks vertically |
 | 389px | Hamburger menu uses 2-column grid (iPod touch landscape) |
 | 374.98px | Outer padding shrinks 16px → 8px, body font scales to 85% |
+| `orientation: landscape` + `max-height: 500px` | Images/YouTube embeds capped at 320px height (iPhone-class landscape) |
 
 ---
 
