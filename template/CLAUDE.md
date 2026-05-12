@@ -10,7 +10,7 @@ The mockup is intentionally monolithic — all CSS and JS lives inline so the wh
 
 Three states: `auto` (follows OS), `light`, `dark`. Stored in `localStorage` under key `theme`.
 
-- **Selector pattern**: `[data-theme="dark"]` + `[data-theme="auto"]` inside a `prefers-color-scheme: dark` media query both apply the dark variable set. The `data-theme` attribute is set on `<html>`.
+- **Two attributes on `<html>`**: `data-theme` is the user's saved choice (`auto` | `light` | `dark`); `data-color-scheme` is the *resolved* effective scheme (`light` | `dark`). CSS targets `data-color-scheme` so dark-mode rules only need one selector instead of two (the dual `[data-theme="dark"]` + `[data-theme="auto"] @media-dark` pattern). The head script computes `data-color-scheme` from `data-theme` + `matchMedia('(prefers-color-scheme: dark)')`, and keeps them in sync via a `MutationObserver` on `data-theme` + a matchMedia `change` listener (auto-mode follows OS).
 - **FOUC prevention**: an inline `<script>` in `<head>` reads `localStorage` and sets `data-theme` *before* paint. Don't move this to a deferred script.
 - **Light-mode icon swap**: the moon icon in the header automatically replaces with `sun-bold.svg` (stroke-width 2.5) when the effective theme is light. Driven by CSS class selectors keyed off `[data-theme]`, no JS.
 - **Popover background must be opaque** (`var(--bg-secondary)`), not translucent. Stacking `backdrop-filter: blur` on the popover *and* the capsule header underneath looked bad on iOS.
@@ -214,19 +214,19 @@ All three platforms use a **unified custom-card facade** — no third-party widg
 - **Brand SVG** picked per-platform in the markup (logo paths live inline so they get `fill: currentColor`). Mastodon's logo inherits `--text-secondary`; Twitter and Bluesky override to their brand blue.
 
 ### Per-platform palettes
-All three platforms opt out of the site's theme variables for surface colors. Each defines a per-platform set of custom properties — `--ma-*`, `--tw-*`, `--bs-*` — that override `background`, `border-color`, text, and secondary text. The embeds always look unmistakably native to their platform regardless of host site theme.
+All three platforms opt out of the site's theme variables for surface colors. They share a single set of unified custom properties — `--accent`, `--embed-bg`, `--embed-border`, `--embed-text`, `--embed-text-secondary` — that each platform redefines per `data-platform` value, with dark-mode overrides in a single `[data-color-scheme="dark"]` block. The base rule reads these vars; per-platform rules just supply different values. New platforms only need to define the vars; no rule duplication needed.
 
-**Mastodon (`--ma-*`)** — the Mastodon web/app palette.
+**Mastodon** — the Mastodon web/app palette.
 - Light: `#FFFFFF` bg, `#C0CDD9` border, `#191B22` text, `#606984` handle/meta
 - Dark: `#282C37` bg, `#393F4F` border, `#FFFFFF` text, `#9BAEA0` (the iconic Mastodon greenish-gray) handle/meta
 - Elephant logo + link accent: `#6364FF` light, `#8C8DFF` dark.
 
-**Twitter (`--tw-*`)** — pre-rebrand identity. Light = "default" theme, dark = "Dim".
+**Twitter** — pre-rebrand identity. Light = "default" theme, dark = "Dim".
 - Light: `#F5F8FA` bg, `#E1E8ED` border, `#14171A` text, `#657786` handle/meta
 - Dark: `#15202B` bg, `#38444D` border, `#FFFFFF` text, `#8899A6` handle/meta
 - Bird logo: `#1DA1F2` (classic Twitter blue) in both modes.
 
-**Bluesky (`--bs-*`)** — the Bluesky web app palette.
+**Bluesky** — the Bluesky web app palette.
 - Light: `#FFFFFF` bg, `#D4DBE2` border, `#0B0F19` text, `#42576C` handle/meta
 - Dark: `#161E27` bg, `#2E3641` border, `#FFFFFF` text, `#8D9AAA` handle/meta
 - Butterfly logo + link accent: `#0085FF` light, `#208BFE` dark.
