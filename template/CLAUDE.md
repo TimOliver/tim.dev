@@ -207,14 +207,33 @@ All three platforms use a **unified custom-card facade** — no third-party widg
 ```
 
 `data-platform` controls:
-- **Link accent color** (`--accent`) — Mastodon purple, Bluesky blue, Twitter text-color (X doesn't have a strong link tint).
-- **Avatar shape** — Twitter avatars are circular (`border-radius: 50%`); Mastodon + Bluesky use 8px rounded squares.
-- **Brand SVG** picked per-platform in the markup (logo paths live inline so they get `fill: currentColor` from the host site's `--text-secondary`).
+- **Link accent color** (`--accent`) — Mastodon purple, Bluesky blue, Twitter blue.
+- **Avatar shape** — Twitter + Bluesky are circular (`border-radius: 50%`); Mastodon uses an 8px rounded square (matches the Mastodon app).
+- **Brand SVG** picked per-platform in the markup (logo paths live inline so they get `fill: currentColor`). Mastodon's logo inherits `--text-secondary`; Twitter and Bluesky override to their brand blue.
+
+### Per-platform palettes (Twitter + Bluesky)
+Twitter and Bluesky both opt out of the site's theme variables for surface colors — they override `background`, `border-color`, text, and secondary text via a per-platform set of custom properties, so the embeds always look unmistakably "Twitter" or "Bluesky" regardless of host site theme.
+
+**Twitter (`--tw-*`)** — pre-rebrand identity. Light = "default" theme, dark = "Dim".
+- Light: `#F5F8FA` bg, `#E1E8ED` border, `#14171A` text, `#657786` handle/meta
+- Dark: `#15202B` bg, `#38444D` border, `#FFFFFF` text, `#8899A6` handle/meta
+- Bird logo: `#1DA1F2` (classic Twitter blue) in both modes.
+
+**Bluesky (`--bs-*`)** — the Bluesky web app palette.
+- Light: `#FFFFFF` bg, `#D4DBE2` border, `#0B0F19` text, `#42576C` handle/meta
+- Dark: `#161E27` bg, `#2E3641` border, `#FFFFFF` text, `#8D9AAA` handle/meta
+- Butterfly logo + link accent: `#0085FF` light, `#208BFE` dark (slightly brighter for contrast).
+
+We deliberately use the OG Twitter identity (bird logo, classic blue) rather than the 2023 X rebrand. This is an opinionated styling choice baked into the platform, not configurable per-post. If you want to honor the X rebrand on individual posts, override `data-platform="x"` with the X glyph and a black/white palette.
+
+Mastodon stays on the site's theme variables (`--bg-secondary`, `--border`, `--text`, `--text-secondary`) — its visual identity is the purple `--accent` + the Mastodon logo, not the surface color.
 
 The `.media` grid uses 2 columns by default, collapsing to 1 column via `:has(> a:only-child)` when there's a single attachment. Clicking opens the original-resolution image via Lightbox3. Drop `<div class="media">` entirely for text-only posts.
 
 ### Styling
 Width caps at 508px (matches Mastodon's official embed minus padding). CSS Grid handles the header layout. Per-platform link accent flows through a single `--accent` custom property set on the blockquote based on `data-platform`, with light/dark variants for Mastodon and Bluesky. The brand SVG inside `.embed_logo` inherits `currentColor: var(--text-secondary)`. No `!important` overrides — we control all the markup.
+
+The generic article `blockquote::before` rule (which draws a 5px gray left bar for pull-quotes) is explicitly suppressed on `.embed_social` via `content: none;` — otherwise it leaked into the embed cards and made them look like double-quoted content. Pull-quote blockquotes elsewhere on the page keep their bar.
 
 ### Per-platform fetching
 
