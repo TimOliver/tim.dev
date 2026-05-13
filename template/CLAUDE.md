@@ -38,12 +38,17 @@ Three states: `auto` (follows OS), `light`, `dark`. Stored in `localStorage` und
 - **Theme popover position**: right-aligned only when viewport ≤ 1049.98px or horizontal safe-area insets are non-zero (Dynamic Island landscape). Centered otherwise. Don't right-align always — looks weird on desktop.
 
 ### Color palette
-iOS UIColor-aligned semantic variables. When porting, define both light and dark sets:
+Loosely iOS UIColor-aligned semantic variables, with alphas adjusted for WCAG over strict iOS parity (iOS's 0.6/0.3 alphas are tuned for native hierarchies, not web contrast minimums). When porting, define both light and dark sets:
 - `--bg`, `--bg-secondary`, `--bg-tertiary` (translucent overlay)
-- `--text`, `--text-secondary` (60% alpha), `--text-tertiary` (30%)
+- `--text`, `--text-secondary`, `--text-tertiary`
+  - Light: secondary `rgba(60, 60, 67, 0.72)` (~4.7:1, AA body), tertiary `rgba(60, 60, 67, 0.55)` (~3:1, large-text only)
+  - Dark: secondary `rgba(235, 235, 245, 0.6)` (~5.7:1, AA body), tertiary `rgba(235, 235, 245, 0.45)` (~3.7:1, large-text)
+  - Favour WCAG over iOS exact alpha values. Don't drop tertiary below ~3:1; don't drop secondary below 4.5:1.
 - `--heading`
 - `--link` / `--link-hover` — currently Apple Music red (`#FA233B` light, `#F82D48` dark), but the body text isn't styled with link colors — link styling is only used on certain UI elements (footer links use `--text` directly).
 - `--capsule-bg` (translucent for backdrop-filter), `--capsule-border`
+
+`.subtitle` uses `--text-secondary` (not tertiary). The subtitle is content, not decoration — it needs to be legible, and at narrower viewports it drops below WCAG's "large text" size threshold (24px) where the 3:1 tertiary tier would fail AA.
 
 ---
 

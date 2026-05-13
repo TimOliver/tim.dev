@@ -3,8 +3,8 @@
     --bg-secondary: #F2F2F2;
     --bg-tertiary: rgba(120, 120, 120, 0.12);
     --text: #333;
-    --text-secondary: rgba(60, 60, 67, 0.6);
-    --text-tertiary: rgba(60, 60, 67, 0.3);
+    --text-secondary: rgba(60, 60, 67, 0.72);
+    --text-tertiary: rgba(60, 60, 67, 0.55);
     --heading: #000;
     --link: #FA233B;
     --link-hover: #FA233B;
@@ -24,7 +24,7 @@
     --bg-tertiary: rgba(120, 120, 120, 0.24);
     --text: #d4d4d4;
     --text-secondary: rgba(235, 235, 245, 0.6);
-    --text-tertiary: rgba(235, 235, 245, 0.3);
+    --text-tertiary: rgba(235, 235, 245, 0.45);
     --heading: #e8e8e8;
     --link: #F82D48;
     --link-hover: #F82D48;
@@ -935,7 +935,7 @@ header::before {
     margin: 0.1rem auto 0;
     text-align: center;
     text-wrap: balance;
-    color: var(--text-tertiary);
+    color: var(--text-secondary);
 }
 
 article {
