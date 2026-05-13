@@ -700,14 +700,42 @@ header::before {
     }
 
     header {
-        padding: 8px 0 38px;
+        padding: 8px 0 33px;
     }
 
-    /* Shrink the legibility gradient pseudo to match the scaled-down
-       header content — without this the fade looks proportionally too
-       tall against the smaller logo + menu. */
+    /* Push the solid plateau further down at this breakpoint — the
+       scaled-down content still takes up a larger fraction of the
+       (shorter) header, so the desktop 40% solid stop falls before
+       the menu text ends. */
     header::before {
-        bottom: 10px;
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            rgb(0, 0, 0) 0%,
+            rgb(0, 0, 0) 50%,
+            rgba(0, 0, 0, 0.98) 60%,
+            rgba(0, 0, 0, 0.93) 68%,
+            rgba(0, 0, 0, 0.84) 74%,
+            rgba(0, 0, 0, 0.70) 80%,
+            rgba(0, 0, 0, 0.52) 86%,
+            rgba(0, 0, 0, 0.33) 91%,
+            rgba(0, 0, 0, 0.15) 96%,
+            rgba(0, 0, 0, 0.05) 99%,
+            rgba(0, 0, 0, 0) 100%
+        );
+        mask-image: linear-gradient(
+            to bottom,
+            rgb(0, 0, 0) 0%,
+            rgb(0, 0, 0) 50%,
+            rgba(0, 0, 0, 0.98) 60%,
+            rgba(0, 0, 0, 0.93) 68%,
+            rgba(0, 0, 0, 0.84) 74%,
+            rgba(0, 0, 0, 0.70) 80%,
+            rgba(0, 0, 0, 0.52) 86%,
+            rgba(0, 0, 0, 0.33) 91%,
+            rgba(0, 0, 0, 0.15) 96%,
+            rgba(0, 0, 0, 0.05) 99%,
+            rgba(0, 0, 0, 0) 100%
+        );
     }
 
     #header-content {
