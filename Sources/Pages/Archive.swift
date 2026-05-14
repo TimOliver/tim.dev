@@ -28,8 +28,8 @@ enum ArchivePage {
         var s = #"<div class="archive">"#
 
         // Header
-        s += #"<h1 class="archive-title">Archive</h1>"#
-        s += #"<p class="archive-summary">\#(summaryText(postCount: posts.count, yearCount: years.count))</p>"#
+        s += #"<h1 class="page-title">Archive</h1>"#
+        s += #"<p class="page-subtitle">\#(summaryText(postCount: posts.count, yearCount: years.count))</p>"#
 
         // Decorative search
         s += #"<input class="archive-search" type="search" placeholder="Search \#(posts.count) posts… (decorative)" disabled>"#
@@ -61,7 +61,7 @@ enum ArchivePage {
                 let href = escape(article.path)
                 s += #"<div class="archive-row">"#
                 s += #"<span class="archive-month">\#(monthLabel)</span>"#
-                s += #"<a class="archive-link" href="\#(href)">\#(title)</a>"#
+                s += #"<a class="text-link" href="\#(href)">\#(title)</a>"#
                 s += #"<span class="archive-date">\#(dayLabel(article.date))</span>"#
                 s += "</div>"
             }

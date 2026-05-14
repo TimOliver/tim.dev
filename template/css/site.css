@@ -1172,9 +1172,9 @@ footer .container {
     }
 }
 
-/* ---------- Archive ---------- */
+/* ---------- Page header (shared by sub-pages: archive, about, etc.) ---------- */
 
-.archive-title {
+.page-title {
     text-align: center;
     font-size: 3.4em;
     font-weight: 800;
@@ -1182,11 +1182,14 @@ footer .container {
     margin: 0 auto 0.4rem;
 }
 
-.archive-summary {
+.page-subtitle {
     text-align: center;
     color: var(--text-secondary);
     margin: 0 auto 1.6rem;
 }
+
+/* ---------- Archive ---------- */
+
 
 .archive-search {
     display: block;
@@ -1272,12 +1275,15 @@ footer .container {
     font-weight: 500;
 }
 
-.archive-link {
+/* Text-colored link: blends in with body text, underlines on hover. Use
+   outside article prose where the default red link color would feel
+   intrusive (archive rows, lists, future sub-pages). */
+.text-link {
     color: var(--text);
     text-decoration: none;
 }
 
-.archive-link:hover {
+.text-link:hover {
     color: var(--text);
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -1291,7 +1297,7 @@ footer .container {
 }
 
 @media (max-width: 720px) {
-    .archive-title {
+    .page-title {
         font-size: 2.4em;
     }
     .archive-year-header h2 {
