@@ -79,8 +79,18 @@ article img {
     max-height: 650px;
     width: auto;
     height: auto;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     margin: 0 auto 1.75em;
+}
+
+[data-color-scheme="dark"] article img {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Hero / featured image rendered right after the title block. */
+article img.hero {
+    margin: 2em auto;
 }
 
 article img.lqip {

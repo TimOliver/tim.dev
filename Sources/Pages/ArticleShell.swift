@@ -36,6 +36,9 @@ enum ArticleShell {
         if let subtitle = article.subtitle, !subtitle.isEmpty {
             s += "<p class=\"subtitle\">\(escape(subtitle))</p>"
         }
+        if let image = article.image, !image.isEmpty {
+            s += #"<img class="hero" src="\#(escape(image))" alt="">"#
+        }
         s += "<section>\(article.text)</section>"
         s += "</article>"
         return s
