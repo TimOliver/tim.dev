@@ -765,6 +765,10 @@ header::before {
         padding: 0 12px;
         margin: 0 -12px;
     }
+
+    main .container {
+        margin-top: 35px;
+    }
 }
 
 @media (max-width: 720px) {
@@ -936,12 +940,12 @@ header::before {
     }
 
     main .container {
-        margin-top: 15px;
-        padding: 0 16px;
+        margin-top: 50px;
+        padding: 0 20px;
     }
 
     h1 {
-        font-size: 2.1em;
+        font-size: 2.0em;
     }
 
     article .subtitle {
@@ -961,7 +965,7 @@ header::before {
 }
 
 .container {
-    margin: 10px auto 30px;
+    margin: 40px auto 30px;
     max-width: 75ch;
     padding: 0 35px;
     position: relative;
@@ -999,7 +1003,7 @@ article {
 }
 
 article section {
-    margin-top: 1rem;
+    margin-top: 2rem;
 }
 
 blockquote {
