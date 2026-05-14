@@ -22,6 +22,10 @@ struct TimDevSite: Site {
 
     var author = "Tim Oliver"
 
+    // Ignite's prettifier (SwiftSoup) lowercases SVG attribute names like
+    // viewBox → viewbox, which breaks <use>-referenced sprites. Ship raw.
+    var prettifyHTML = false
+
     var homePage = Home()
     var layout = MainLayout()
 }

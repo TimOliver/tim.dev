@@ -5,7 +5,6 @@ struct Home: StaticPage {
     var title = "Home"
 
     var body: some HTML {
-        Text("Hello world!")
-            .font(.title1)
+        Include("home-article.html")
     }
 }
