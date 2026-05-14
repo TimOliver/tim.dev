@@ -21,6 +21,8 @@ Both icon sets live in SVG sprite files (`img/social-logos.svg` for filled embed
 
 **Gotcha**: the wrapping `<svg>` in markup *must* repeat the symbol's `viewBox` attribute — the `<symbol>`'s viewBox does NOT propagate to the wrapping `<svg>` for layout sizing. Without it, the wrapping `<svg>` falls back to the browser's default `300×150` placeholder size and blows out whatever container it's in. With it (plus explicit width/height in CSS), the icon scales correctly.
 
+**Safari gotcha**: external `<use href="sprite.svg#id">` references can intermittently fail to render on first paint — the icons appear blank until the page is re-navigated (not just hard-refreshed). The fix is `<link rel="preload" href="..." as="image" type="image/svg+xml">` in `<head>` for each sprite, which biases the fetch order so the sprite is in cache by the time `<use>` resolves. Both `brand-icons.svg` and `social-logos.svg` are preloaded for this reason. If symptoms recur, inline-sprite-injection is the bulletproof alternative (~3 KB inline, no external fetch, no race).
+
 Originally the CSS + JS lived inline in `index.html`; it was extracted once the design stabilized. **`theme.js` must load synchronously in `<head>` before any paintable content** — it sets `data-color-scheme` before the first paint to prevent FOUC. Don't add `defer` or `async`.
 
 When porting, prefer to **preserve behavior verbatim** rather than "improve" it; many decisions below came from iteration and have non-obvious reasons.
