@@ -285,7 +285,13 @@ def strip_metadata(path: Path) -> None:
             img.save(path, format="JPEG", quality="keep", optimize=False)
     elif suffix == ".png":
         with Image.open(path) as img:
-            if "exif" not in img.info:
+            # PNGs can carry EXIF or text chunks (parameters/comment); strip
+            # whenever any of those are present.
+            if not (
+                "exif" in img.info
+                or "parameters" in img.info
+                or "comment" in img.info
+            ):
                 return
             img.load()
             img.save(path, format="PNG")

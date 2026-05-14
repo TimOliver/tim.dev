@@ -15,8 +15,10 @@ pre-rotated by browsers/editors of the era, so this isn't a practical issue.
 
 Idempotent: re-running on already-stripped images is a no-op (no EXIF found).
 
-Run from repo root:
-    python3 Scripts/strip-exif.py
+Usage:
+    python3 Scripts/strip-exif.py             # walks Assets/img/posts/
+    python3 Scripts/strip-exif.py <path>...   # processes specific files
+                                              # (used by the pre-commit hook)
 """
 
 from __future__ import annotations
@@ -66,17 +68,26 @@ def strip(path: Path) -> bool:
 
 
 def main() -> None:
-    if not TARGET.exists():
-        print(f"error: {TARGET} not found", file=sys.stderr)
-        sys.exit(1)
-    files = sorted(p for p in TARGET.rglob("*") if p.is_file())
+    if len(sys.argv) > 1:
+        files = [Path(arg) for arg in sys.argv[1:] if Path(arg).is_file()]
+        base: Path | None = None
+    else:
+        if not TARGET.exists():
+            print(f"error: {TARGET} not found", file=sys.stderr)
+            sys.exit(1)
+        files = sorted(p for p in TARGET.rglob("*") if p.is_file())
+        base = TARGET
+
     stripped = []
     for p in files:
         try:
             if strip(p):
-                stripped.append(p.relative_to(TARGET))
+                stripped.append(p.relative_to(base) if base else p)
         except Exception as e:
-            print(f"  error processing {p.relative_to(TARGET)}: {e}", file=sys.stderr)
+            display = p.relative_to(base) if base else p
+            print(f"  error processing {display}: {e}", file=sys.stderr)
+    if base is None and not stripped:
+        return  # quiet when invoked from the hook with nothing to do
     print(f"scanned: {len(files)} files")
     print(f"stripped: {len(stripped)}")
     for p in stripped:
