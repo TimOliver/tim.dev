@@ -1171,3 +1171,134 @@ footer .container {
         padding: 0 8px;
     }
 }
+
+/* ---------- Archive ---------- */
+
+.archive-title {
+    text-align: center;
+    font-size: 3.4em;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 auto 0.4rem;
+}
+
+.archive-summary {
+    text-align: center;
+    color: var(--text-secondary);
+    margin: 0 auto 1.6rem;
+}
+
+.archive-search {
+    display: block;
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: 0.9em;
+    margin: 0 auto 1rem;
+    box-sizing: border-box;
+}
+
+.archive-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 auto 3em;
+}
+
+.archive-chip {
+    padding: 4px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    font-size: 0.85em;
+    color: var(--text);
+    text-decoration: none;
+    line-height: 1.6;
+}
+
+.archive-chip:hover {
+    background: var(--control-hover);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.archive-year {
+    margin: 0 auto 3em;
+}
+
+.archive-year-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5em;
+    margin: 0 0 0.8em;
+}
+
+.archive-year-header h2 {
+    font-size: 2.3em;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0;
+}
+
+.archive-year-count {
+    font-size: 0.72em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.archive-list {
+    display: grid;
+}
+
+.archive-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+    padding: 6px 0;
+}
+
+.archive-month {
+    font-size: 0.75em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+}
+
+.archive-link {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.archive-link:hover {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.archive-date {
+    font-size: 0.82em;
+    color: var(--text-secondary);
+    text-align: right;
+    white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+    .archive-title {
+        font-size: 2.4em;
+    }
+    .archive-year-header h2 {
+        font-size: 2.2em;
+    }
+    .archive-row {
+        grid-template-columns: 42px 1fr auto;
+        gap: 10px;
+    }
+}
