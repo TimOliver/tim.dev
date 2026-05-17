@@ -297,15 +297,16 @@ article .embed_social[data-platform="bluesky"] {
 }
 
 a {
-    color: var(--link);
-    text-decoration-line: none;
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--text-secondary);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
 }
 
 a:hover {
-    color: var(--link-hover);
-    text-decoration-line: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+    color: var(--text);
+    text-decoration-color: var(--text);
 }
 
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
@@ -1198,89 +1199,6 @@ footer .container {
     margin: 0 auto 1.6rem;
 }
 
-/* ---------- Archive ---------- */
-
-
-.archive-search {
-    display: block;
-    width: 100%;
-    padding: 12px 18px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: var(--bg-secondary);
-    color: var(--text-secondary);
-    font: inherit;
-    font-size: 0.9em;
-    margin: 0 auto 1rem;
-    box-sizing: border-box;
-}
-
-.archive-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0 auto 3em;
-}
-
-.archive-chip {
-    padding: 4px 14px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    font-size: 0.85em;
-    color: var(--text);
-    text-decoration: none;
-    line-height: 1.6;
-}
-
-.archive-chip:hover {
-    background: var(--control-hover);
-    color: var(--text);
-    text-decoration: none;
-}
-
-.archive-year {
-    margin: 0 auto 3em;
-}
-
-.archive-year-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.5em;
-    margin: 0 0 0.8em;
-}
-
-.archive-year-header h2 {
-    font-size: 2.3em;
-    font-weight: 700;
-    line-height: 1;
-    margin: 0;
-}
-
-.archive-year-count {
-    font-size: 0.82em;
-    color: var(--text-secondary);
-}
-
-.archive-list {
-    display: grid;
-}
-
-.archive-row {
-    display: grid;
-    grid-template-columns: 56px 1fr auto;
-    gap: 16px;
-    align-items: baseline;
-    padding: 6px 0;
-}
-
-.archive-month {
-    font-size: 0.85em;
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-
 /* Text-colored link: blends in with body text, underlines on hover. Use
    outside article prose where the default red link color would feel
    intrusive (archive rows, lists, future sub-pages). */
@@ -1295,28 +1213,8 @@ footer .container {
     text-underline-offset: 3px;
 }
 
-.archive-date {
-    font-size: 0.82em;
-    color: var(--text-secondary);
-    text-align: right;
-    white-space: nowrap;
-}
-
-@media (max-width: 720px) {
-    .page-title {
-        font-size: 2.4em;
-    }
-    .archive-year-header h2 {
-        font-size: 2.2em;
-    }
-    .archive-row {
-        grid-template-columns: 42px 1fr auto;
-        gap: 10px;
-    }
-}
-
-/* ---------- Section label (small caps, shared across sub-pages) ---------- */
-
+/* Small-caps section label, shared across sub-pages (About, Apps, etc.).
+   Apple-style "eyebrow" heading — tracked, muted, all-caps. */
 .section-label {
     font-size: 0.78em;
     font-weight: 600;
@@ -1326,152 +1224,8 @@ footer .container {
     margin: 0 0 1em;
 }
 
-/* ---------- About ---------- */
-
-.about-intro {
-    display: grid;
-    grid-template-columns: 1fr 200px;
-    gap: 2.5em;
-    align-items: start;
-    margin: 0 0 3em;
-}
-
-.about-intro-text > p:last-child {
-    margin-bottom: 0;
-}
-
-.about-portrait {
-    margin: 0;
-    text-align: center;
-}
-
-.about-portrait img {
-    width: 200px;
-    height: 240px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin: 0 auto 0.6em;
-    display: block;
-    object-fit: cover;
-}
-
-.about-portrait figcaption {
-    font-size: 0.85em;
-    color: var(--text-secondary);
-    line-height: 1.4;
-}
-
-.about-section {
-    margin: 0 0 3em;
-}
-
-.about-section > p:last-child {
-    margin-bottom: 0;
-}
-
-.about-prof {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5em;
-}
-
-.about-prof h3 {
-    font-size: 1.25em;
-    font-weight: 700;
-    margin: 0 0 0.2em;
-}
-
-.about-prof-meta {
-    font-size: 0.85em;
-    color: var(--text-secondary);
-    margin: 0 0 0.8em;
-}
-
-.about-jobs {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.about-job {
-    margin: 0 0 1.4em;
-}
-
-.about-job:last-child {
-    margin-bottom: 0;
-}
-
-.about-job-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1em;
-}
-
-.about-job-co {
-    font-weight: 700;
-}
-
-.about-job-meta {
-    font-size: 0.85em;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
-
-.about-job-role {
-    display: block;
-    font-size: 0.95em;
-    color: var(--text-secondary);
-    margin-bottom: 0.3em;
-}
-
-.about-job p {
-    margin: 0;
-}
-
-.hobby-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1em;
-}
-
-.hobby-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 18px 20px;
-}
-
-.hobby-icon {
-    font-size: 1.4em;
-    line-height: 1;
-    margin-bottom: 0.4em;
-}
-
-.hobby-card h3 {
-    font-size: 1.05em;
-    font-weight: 700;
-    margin: 0 0 0.3em;
-}
-
-.hobby-card p {
-    margin: 0;
-    font-size: 0.92em;
-    color: var(--text-secondary);
-    line-height: 1.55;
-}
-
 @media (max-width: 720px) {
-    .about-intro {
-        grid-template-columns: 1fr;
-        gap: 1.5em;
-    }
-    .about-portrait img {
-        width: 160px;
-        height: 192px;
-    }
-    .about-prof,
-    .hobby-grid {
-        grid-template-columns: 1fr;
+    .page-title {
+        font-size: 2.4em;
     }
 }
