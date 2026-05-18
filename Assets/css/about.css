@@ -22,10 +22,10 @@
     color: var(--text);
 }
 
-/* Body prose inside .about-cols (e.g., the "A brief history" right column)
-   reads as long-form content, so promote it back to --text. The :not()
-   keeps the .about-meta date lines muted. */
-.about-cols > div > p:not(.about-meta) {
+/* Body prose inside .about-cols (the "A brief history" right column AND
+   job description paragraphs in Work) reads as long-form content, so
+   promote it back to --text. The :not() keeps .about-meta lines muted. */
+.about-cols p:not(.about-meta) {
     color: var(--text);
 }
 
@@ -39,6 +39,7 @@
     align-items: center;
     margin: 0 0 4em;
     font-size: 16.5pt;
+    color: var(--text);
 }
 
 .about-intro .page-title {
@@ -183,13 +184,6 @@
     transform: translateX(-50%);
 }
 
-.about-timeline-label {
-    display: block;
-    font-size: 0.8em;
-    color: var(--text-secondary);
-    margin-bottom: 0.15em;
-}
-
 .about-timeline h4 {
     font-size: 1em;
     font-weight: 700;
@@ -200,6 +194,21 @@
     font-size: 0.85em;
     color: var(--text-secondary);
     margin: 0.2em 0 0;
+}
+
+/* Small grey eyebrow label used across About — timeline entries, column
+   headers ("Currently"/"Previously"), and sub-labels inside job entries. */
+.about-label {
+    display: block;
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    margin: 0 0 1em;
+}
+
+/* Tighter margin when nested inside an individual entry. */
+.about-job .about-label,
+.about-timeline .about-label {
+    margin: 0 0 0.15em;
 }
 
 /* Job rows (Work section) */
@@ -216,6 +225,18 @@
 
 .about-job:last-child {
     margin-bottom: 0;
+}
+
+/* Featured variant — used in "Currently" column with a big-h3 heading
+   over a meta line and a bright description. */
+.about-job--featured {
+    margin-bottom: 2.5em;
+}
+
+.about-job--featured h3 {
+    font-size: 1.7em;
+    font-weight: 700;
+    margin: 0 0 0.2em;
 }
 
 .about-job-head {
