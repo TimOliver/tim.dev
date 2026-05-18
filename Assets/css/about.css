@@ -22,6 +22,13 @@
     color: var(--text);
 }
 
+/* Body prose inside .about-cols (e.g., the "A brief history" right column)
+   reads as long-form content, so promote it back to --text. The :not()
+   keeps the .about-meta date lines muted. */
+.about-cols > div > p:not(.about-meta) {
+    color: var(--text);
+}
+
 /* Hero — page title, tagline and blurb stacked in the left column with the
    portrait pinned on the right. */
 
@@ -94,7 +101,7 @@
 
 .about-section-header h2 {
     font-size: 2.8em;
-    font-weight: 800;
+    font-weight: 700;
     line-height: 1;
     margin: 0;
 }
@@ -103,7 +110,7 @@
     font-size: 1.05em;
     font-weight: 500;
     color: var(--text-secondary);
-    margin: 0.5em 0 0;
+    margin: 0.8em 0 0;
 }
 
 /* Two-column body layout, shared by "A brief history" and "Work" */

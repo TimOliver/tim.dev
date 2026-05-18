@@ -341,18 +341,18 @@ h2 {
     margin: 30px auto 15px;
 }
 
-header {
+body > header {
     position: sticky;
     z-index: 10;
     width: 100%;
     top: 0;
-    padding: 5px 0 45px;
+    padding: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-header::before {
+body > header::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -712,7 +712,7 @@ header::before {
         font-size: 14.7pt;
     }
 
-    header {
+    body > header {
         padding: 8px 0 33px;
     }
 
@@ -720,7 +720,7 @@ header::before {
        scaled-down content still takes up a larger fraction of the
        (shorter) header, so the desktop 40% solid stop falls before
        the menu text ends. */
-    header::before {
+    body > header::before {
         -webkit-mask-image: linear-gradient(
             to bottom,
             rgb(0, 0, 0) 0%,
@@ -787,11 +787,11 @@ header::before {
         font-size: 14pt;
     }
 
-    header::before {
+    body > header::before {
         display: none;
     }
 
-    header {
+    body > header {
         padding: 12px 16px;
         box-sizing: border-box;
         min-height: 76px;
@@ -1168,7 +1168,7 @@ footer .container {
         font-size: 12.9pt;
     }
 
-    header {
+    body > header {
         padding-left: 8px;
         padding-right: 8px;
     }
