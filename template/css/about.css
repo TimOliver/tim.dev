@@ -15,7 +15,7 @@
 }
 
 .about p:not(.about-tagline) {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25em;
 }
 
 .about-job-co {
@@ -36,13 +36,9 @@
     display: grid;
     grid-template-columns: 1fr 330px;
     gap: 2.5em;
-    align-items: start;
+    align-items: center;
     margin: 0 0 4em;
     font-size: 16.5pt;
-}
-
-.about-intro > div {
-    padding-top: 1.2em;
 }
 
 .about-intro .page-title {
@@ -58,7 +54,7 @@
     line-height: 1.3;
     color: var(--text);
     text-wrap: balance;
-    margin: 0 0 0.8em;
+    margin: 0 0 0.5em;
 }
 
 .about-intro p:last-child {
@@ -122,6 +118,12 @@
     gap: 2.5em;
 }
 
+/* Narrow first column variant — for "A brief history" the timeline only
+   needs about a quarter of the row; the prose gets the remaining 3/4. */
+.about-cols--narrow {
+    grid-template-columns: 1fr 3fr;
+}
+
 .about-cols h3 {
     font-size: 1.25em;
     font-weight: 700;
@@ -134,31 +136,34 @@
     margin: 0 0 1em;
 }
 
-/* Timeline (A brief history) — vertical hairline with a coloured dot per
-   entry. Each <li> sets its own dot colour via the --dot-color custom
-   property inline; the dot's halo matches --bg so the line doesn't poke
-   through visually. */
+/* Timeline (A brief history) — vertical hairline with a black/white dot
+   per entry. Each entry has a small grey label (category or date) above
+   the heading and a short grey description below. Line and dot are both
+   centered on the same x via translateX(-50%) so they sit on the same
+   axis; the dot's halo matches --bg so the line doesn't poke through
+   the dot visually. */
 
 .about-timeline {
     list-style: none;
     margin: 0;
-    padding-left: 1.5em;
+    padding-left: 28px;
     position: relative;
 }
 
 .about-timeline::before {
     content: '';
     position: absolute;
-    left: 0.5em;
+    left: 10px;
     top: 0.5em;
     bottom: 0.5em;
     width: 1px;
     background: var(--border);
+    transform: translateX(-50%);
 }
 
 .about-timeline li {
     position: relative;
-    margin-bottom: 1.4em;
+    margin-bottom: 1.6em;
 }
 
 .about-timeline li:last-child {
@@ -168,27 +173,33 @@
 .about-timeline li::before {
     content: '';
     position: absolute;
-    left: -1em;
-    top: 0.45em;
+    left: -18px;
+    top: 0.35em;
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: var(--dot-color, var(--text-secondary));
+    background: var(--heading);
     box-shadow: 0 0 0 3px var(--bg);
+    transform: translateX(-50%);
 }
 
-.about-timeline time {
+.about-timeline-label {
     display: block;
     font-size: 0.8em;
-    font-weight: 500;
     color: var(--text-secondary);
-    margin-bottom: 0.1em;
+    margin-bottom: 0.15em;
 }
 
 .about-timeline h4 {
     font-size: 1em;
-    font-weight: 600;
+    font-weight: 700;
     margin: 0;
+}
+
+.about-timeline p {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    margin: 0.2em 0 0;
 }
 
 /* Job rows (Work section) */
@@ -281,12 +292,6 @@
     .about-intro {
         grid-template-columns: 1fr;
         gap: 1.5em;
-    }
-    .about-intro > div {
-        padding-top: 0;
-    }
-    .about-portrait {
-        margin-top: 0;
     }
     .about-portrait img {
         width: 240px;
