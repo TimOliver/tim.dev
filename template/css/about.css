@@ -63,7 +63,7 @@
 }
 
 .about-intro p:not(.about-tagline) {
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .about-portrait {
@@ -91,6 +91,14 @@
 
 .about-section {
     margin: 0 0 4em;
+}
+
+/* "Card" variant — separates meta content (About this site) from the
+   bio sections above with a hairline above and extra top breathing room. */
+.about-section--card {
+    border-top: 1px solid var(--border);
+    padding-top: 3em;
+    margin-top: 2em;
 }
 
 .about-section-header {
@@ -123,6 +131,12 @@
    needs about a quarter of the row; the prose gets the remaining 3/4. */
 .about-cols--narrow {
     grid-template-columns: 1fr 3fr;
+}
+
+/* Wide-left variant — 60/40 split. Used by "Work" where the Currently
+   column gets the spotlight and the Previously list stays compact. */
+.about-cols--wide-left {
+    grid-template-columns: 3fr 2fr;
 }
 
 .about-cols h3 {
@@ -277,7 +291,6 @@
 }
 
 .hobby-card {
-    background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 18px 18px 20px;
@@ -307,6 +320,39 @@
     font-size: 0.92em;
     color: var(--text-secondary);
     line-height: 1.55;
+}
+
+/* Colophon card (About this site). Inner elevated surface that sits on
+   the outer .about-section--card. Inside: an .about-label eyebrow and a
+   <dl> grid where dt is the label and dd is the value, right-aligned. */
+
+.about-colophon {
+    padding: 24px 28px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    margin: 0;
+}
+
+.about-colophon dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 1.5em;
+    row-gap: 0.75em;
+    margin: 1em 0 0;
+}
+
+.about-colophon dt {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    align-self: center;
+}
+
+.about-colophon dd {
+    margin: 0;
+    text-align: right;
+    font-size: 0.9em;
+    color: var(--text);
 }
 
 @media (max-width: 720px) {
