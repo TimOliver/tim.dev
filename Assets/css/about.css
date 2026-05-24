@@ -228,6 +228,16 @@
     margin: 0 0 0.15em;
 }
 
+/* Column headers ("Currently"/"Previously") — a bolder, slightly larger take
+   on the eyebrow that reads as a section divider. Kept muted-grey and below the
+   1em company names in size so it never competes with the bold job titles below
+   it. Colour inherits (--text-secondary). */
+.about-label--section {
+    font-size: 0.95em;
+    font-weight: 700;
+    margin: 0 0 0.4em;
+}
+
 /* Job rows (Work section) */
 
 .about-jobs {
