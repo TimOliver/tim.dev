@@ -433,7 +433,7 @@ body > header::before {
     align-items: center;
     justify-content: space-between;
     list-style: none;
-    font-size: 1.35em;
+    font-size: 1.2em;
     font-weight: 600;
     gap: 10px;
     margin: 0;
@@ -973,7 +973,7 @@ body > header::before {
 }
 
 .container {
-    margin: clamp(10px, 1dvh, 40px) auto 30px;
+    margin: clamp(10px, 4dvh, 56px) auto 30px;
     max-width: 65ch;
     padding: 0 35px;
     position: relative;
