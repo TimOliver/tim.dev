@@ -3,7 +3,7 @@
 /* The About page is mostly sub-column layouts, so widen the host container
    well past the default 65ch reading-column. */
 .container:has(> .about) {
-    max-width: 1175px;
+    max-width: 1100px;
 }
 
 /* Body text on About sits at the secondary muted colour — Apple's pattern
@@ -34,8 +34,8 @@
 
 .about-intro {
     display: grid;
-    grid-template-columns: 1fr 330px;
-    gap: 2.5em;
+    grid-template-columns: 1fr 350px;
+    gap: 1.5em;
     align-items: center;
     margin: 0 0 4em;
     font-size: 16.5pt;
@@ -63,7 +63,10 @@
 }
 
 .about-intro p:not(.about-tagline) {
+    font-size: 1.1em;
     font-weight: 400;
+    line-height: 1.4;
+    text-wrap: balance;
 }
 
 .about-portrait {
@@ -72,10 +75,10 @@
 }
 
 .about-portrait img {
-    width: 330px;
-    height: 400px;
+    width: 350px;
+    height: 424px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 30px;
     margin: 0 auto 0.6em;
     display: block;
     object-fit: cover;
