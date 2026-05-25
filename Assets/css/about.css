@@ -294,9 +294,9 @@
     margin: 0;
 }
 
-/* Hobby cards (Off the clock) — a bento mosaic. A 12-column grid places a
-   tall feature card (Video games) beside two stacked compact cards, with a
-   row of compact cards below and a dashed "room for a sixth" placeholder.
+/* Hobby cards (Off the clock) — a bento mosaic. A 12-column grid lays the
+   six cards out in three rows of two, with the dividing line alternating:
+   2/3 on row 1, 1/3 on row 2, 2/3 on row 3. Every card is the same size.
    Per-card tint is set via --photo-tint (inline). Photos flex-grow to fill
    each card so the grid stays flush; the diagonal swatch is the empty state
    until a real image is dropped into .hobby-photo as a background-image. The
@@ -308,13 +308,13 @@
     gap: 18px;
 }
 
-/* Bento placement, by source order. */
-.hobby-card:nth-child(1) { grid-column: 1 / 8;  grid-row: 1 / 3; }  /* Video games (feature) */
-.hobby-card:nth-child(2) { grid-column: 8 / 13; grid-row: 1 / 2; }  /* Karaoke */
-.hobby-card:nth-child(3) { grid-column: 8 / 13; grid-row: 2 / 3; }  /* Badminton */
-.hobby-card:nth-child(4) { grid-column: 1 / 5;  grid-row: 3 / 4; }  /* Open source */
-.hobby-card:nth-child(5) { grid-column: 5 / 9;  grid-row: 3 / 4; }  /* Spicy food */
-.hobby-card:nth-child(6) { grid-column: 9 / 13; grid-row: 3 / 4; }  /* room for a sixth */
+/* Bento placement, by source order. Divider alternates 2/3 · 1/3 · 2/3. */
+.hobby-card:nth-child(1) { grid-column: 1 / 9;  grid-row: 1 / 2; }  /* row 1 left  · 2/3 */
+.hobby-card:nth-child(2) { grid-column: 9 / 13; grid-row: 1 / 2; }  /* row 1 right · 1/3 */
+.hobby-card:nth-child(3) { grid-column: 1 / 5;  grid-row: 2 / 3; }  /* row 2 left  · 1/3 */
+.hobby-card:nth-child(4) { grid-column: 5 / 13; grid-row: 2 / 3; }  /* row 2 right · 2/3 */
+.hobby-card:nth-child(5) { grid-column: 1 / 9;  grid-row: 3 / 4; }  /* row 3 left  · 2/3 */
+.hobby-card:nth-child(6) { grid-column: 9 / 13; grid-row: 3 / 4; }  /* row 3 right · 1/3 */
 
 .hobby-card {
     display: flex;
@@ -328,7 +328,7 @@
 .hobby-photo {
     position: relative;
     flex: 1 1 auto;
-    min-height: 150px;
+    min-height: 210px;
     background:
         repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
         var(--photo-tint, var(--bg-tertiary));
@@ -359,7 +359,7 @@
 
 .hobby-body {
     flex: 0 0 auto;
-    padding: 15px 20px;
+    padding: 18px 22px;
 }
 
 .hobby-head {
@@ -370,52 +370,21 @@
 }
 
 .hobby-card h3 {
-    font-size: 1.2em;
+    font-size: 1.5em;
     font-weight: 700;
     color: var(--heading);
     margin: 0;
 }
 
-/* Every card shows its description beneath the title bar. */
-.hobby-body p {
+/* Every card shows its description beneath the title bar. The extra
+   ancestor classes out-specify the broad ".about p" body-prose rule so the
+   description keeps its zero bottom margin (the body padding handles the
+   gap) instead of inheriting that rule's 1.25em. */
+.about .hobby-card .hobby-body p {
     margin: 0.5em 0 0;
     font-size: 0.95em;
     color: var(--text-secondary);
     line-height: 1.55;
-}
-
-/* Feature card: larger photo and title. */
-.hobby-card--feature .hobby-photo {
-    min-height: 300px;
-}
-
-.hobby-card--feature .hobby-body {
-    padding: 20px 22px 22px;
-}
-
-.hobby-card--feature h3 {
-    font-size: 1.5em;
-}
-
-/* "Room for a sixth" — a dashed empty slot that keeps the bento balanced. */
-.hobby-card--empty {
-    border: 1px dashed color-mix(in srgb, var(--text) 22%, transparent);
-    background: none;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 24px;
-    min-height: 150px;
-}
-
-.hobby-empty-text {
-    font-size: 0.92em;
-    line-height: 1.6;
-    color: var(--text-tertiary);
-}
-
-.hobby-empty-text span {
-    opacity: 0.8;
 }
 
 /* Colophon card (About this site). Inner elevated surface that sits on
@@ -482,8 +451,5 @@
     }
     .hobby-photo {
         min-height: 200px;
-    }
-    .hobby-card--empty {
-        display: none;
     }
 }
