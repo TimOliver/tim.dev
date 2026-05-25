@@ -294,45 +294,128 @@
     margin: 0;
 }
 
-/* Hobby cards (Off the clock). Icon background + color set per-card via
-   the --icon-bg / --icon-color custom properties (inline on .hobby-card). */
+/* Hobby cards (Off the clock) — a bento mosaic. A 12-column grid places a
+   tall feature card (Video games) beside two stacked compact cards, with a
+   row of compact cards below and a dashed "room for a sixth" placeholder.
+   Per-card tint is set via --photo-tint (inline). Photos flex-grow to fill
+   each card so the grid stays flush; the diagonal swatch is the empty state
+   until a real image is dropped into .hobby-photo as a background-image. The
+   tints are fixed across themes since they stand in for photos. */
 
 .hobby-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(12, 1fr);
+    gap: 18px;
+}
+
+/* Bento placement, by source order. */
+.hobby-card:nth-child(1) { grid-column: 1 / 8;  grid-row: 1 / 3; }  /* Video games (feature) */
+.hobby-card:nth-child(2) { grid-column: 8 / 13; grid-row: 1 / 2; }  /* Karaoke */
+.hobby-card:nth-child(3) { grid-column: 8 / 13; grid-row: 2 / 3; }  /* Badminton */
+.hobby-card:nth-child(4) { grid-column: 1 / 5;  grid-row: 3 / 4; }  /* Open source */
+.hobby-card:nth-child(5) { grid-column: 5 / 9;  grid-row: 3 / 4; }  /* Spicy food */
+.hobby-card:nth-child(6) { grid-column: 9 / 13; grid-row: 3 / 4; }  /* room for a sixth */
+
+.hobby-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+.hobby-photo {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 150px;
+    background:
+        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
+        var(--photo-tint, var(--bg-tertiary));
+    background-size: cover;
+    background-position: center;
+}
+
+.hobby-photo-label,
+.hobby-photo-caption {
+    position: absolute;
+    left: 18px;
+    font-size: 0.72em;
+}
+
+.hobby-photo-label {
+    top: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.hobby-photo-caption {
+    bottom: 16px;
+    right: 18px;
+    color: rgba(0, 0, 0, 0.62);
+}
+
+.hobby-body {
+    flex: 0 0 auto;
+    padding: 15px 20px;
+}
+
+.hobby-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
     gap: 1em;
 }
 
-.hobby-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 18px 20px;
-}
-
-.hobby-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2em;
-    margin-bottom: 0.8em;
-    background: var(--icon-bg, var(--bg-tertiary));
-    color: var(--icon-color, var(--text));
-}
-
 .hobby-card h3 {
-    font-size: 1.05em;
+    font-size: 1.2em;
     font-weight: 700;
-    margin: 0 0 0.3em;
+    color: var(--heading);
+    margin: 0;
 }
 
-.hobby-card p {
-    margin: 0;
-    font-size: 0.92em;
+/* Every card shows its description beneath the title bar. */
+.hobby-body p {
+    margin: 0.5em 0 0;
+    font-size: 0.95em;
     color: var(--text-secondary);
     line-height: 1.55;
+}
+
+/* Feature card: larger photo and title. */
+.hobby-card--feature .hobby-photo {
+    min-height: 300px;
+}
+
+.hobby-card--feature .hobby-body {
+    padding: 20px 22px 22px;
+}
+
+.hobby-card--feature h3 {
+    font-size: 1.5em;
+}
+
+/* "Room for a sixth" — a dashed empty slot that keeps the bento balanced. */
+.hobby-card--empty {
+    border: 1px dashed color-mix(in srgb, var(--text) 22%, transparent);
+    background: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    min-height: 150px;
+}
+
+.hobby-empty-text {
+    font-size: 0.92em;
+    line-height: 1.6;
+    color: var(--text-tertiary);
+}
+
+.hobby-empty-text span {
+    opacity: 0.8;
 }
 
 /* Colophon card (About this site). Inner elevated surface that sits on
@@ -383,7 +466,24 @@
     .about-cols {
         grid-template-columns: 1fr;
     }
+    /* Bento collapses to a single stacked column; the placeholder slot and
+       the per-card grid placement are dropped. */
     .hobby-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+    }
+    .hobby-card:nth-child(1),
+    .hobby-card:nth-child(2),
+    .hobby-card:nth-child(3),
+    .hobby-card:nth-child(4),
+    .hobby-card:nth-child(5),
+    .hobby-card:nth-child(6) {
+        grid-column: auto;
+        grid-row: auto;
+    }
+    .hobby-photo {
+        min-height: 200px;
+    }
+    .hobby-card--empty {
+        display: none;
     }
 }
