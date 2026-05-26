@@ -334,3 +334,30 @@
         };
     }
 })();
+
+// Embla Carousel: pointer drag (mouse + touch), arrow buttons, and snapping, without native scroll.
+// (.gallery-track) as the slide container.
+(function() {
+    var viewport = document.querySelector('.gallery-scroller');
+    if (!viewport || typeof EmblaCarousel === 'undefined') return;
+    var prev = document.querySelector('.gallery-arrow--prev');
+    var next = document.querySelector('.gallery-arrow--next');
+
+    // Rest each slide one overhang-width in from the viewport edge so the
+    // leading card sits at the column edge, clear of the fade — mirrors the
+    // track's padding-inline. Same clamp as the CSS --overhang; recomputed
+    // by Embla on reInit (resize).
+    function startInset() {
+        return Math.min(60, Math.max(0, (window.innerWidth - 1100) / 2));
+    }
+    var embla = EmblaCarousel(viewport, { align: startInset, containScroll: 'trimSnaps' });
+
+    function update() {
+        if (prev) prev.disabled = !embla.canScrollPrev();
+        if (next) next.disabled = !embla.canScrollNext();
+    }
+    if (prev) prev.addEventListener('click', function() { embla.scrollPrev(); });
+    if (next) next.addEventListener('click', function() { embla.scrollNext(); });
+    embla.on('select', update).on('reInit', update);
+    update();
+})();

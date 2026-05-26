@@ -381,6 +381,115 @@
     line-height: 1.55;
 }
 
+.gallery {
+    margin-top: 2.5em;
+}
+
+/* Prev/next controls — a small right-aligned row above the strip. Native
+   trackpad/touch scroll still works; these give mouse and keyboard users a
+   click target. Hidden on touch widths (see media query). */
+.gallery-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.gallery-arrow {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.gallery-arrow:hover:not(:disabled) {
+    background: var(--bg-secondary);
+}
+
+.gallery-arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.gallery-arrow svg {
+    display: block;
+}
+
+/* Embla viewport — pulled 60px past the column on each side so cards bleed
+   into the margins, with the mask fading them out entirely within that
+   overhang (crisp inside the column, gradient lives outside it). --overhang
+   drives both the negative margin and the mask so they stay in sync, and is
+   capped at the available gutter so it never forces a horizontal scrollbar. */
+.gallery-scroller {
+    --overhang: clamp(0px, calc((100vw - 1100px) / 2), 60px);
+    overflow: hidden;
+    margin-inline: calc(var(--overhang) * -1);
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--overhang), #000 calc(100% - var(--overhang)), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, #000 var(--overhang), #000 calc(100% - var(--overhang)), transparent 100%);
+}
+
+/* Embla container — the flex track Embla translates on drag / arrow press.
+   Padded by the overhang so the first/last cards rest at the column edges
+   (clear of the fade) rather than out in the bleed. */
+.gallery-track {
+    display: flex;
+    gap: 18px;
+    padding-inline: var(--overhang);
+}
+
+.gallery-card {
+    flex: 0 0 clamp(260px, 72vw, 440px);
+    min-width: 0;
+    margin: 0;
+}
+
+.gallery-card-photo {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: 14px;
+    overflow: hidden;
+    background:
+        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
+        var(--photo-tint, var(--bg-tertiary));
+    background-size: cover;
+    background-position: center;
+}
+
+.gallery-card-label,
+.gallery-card-caption {
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    font-size: 0.72em;
+}
+
+.gallery-card-label {
+    top: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.gallery-card-caption {
+    bottom: 16px;
+    color: rgba(0, 0, 0, 0.62);
+}
+
+.gallery-card-meta {
+    margin-top: 0.7em;
+    font-size: 0.85em;
+    color: var(--text-secondary);
+}
+
 /* Colophon card (About this site). Inner elevated surface that sits on
    the outer .about-section--card. Inside: an .about-label eyebrow and a
    <dl> grid where dt is the label and dd is the value, right-aligned. */
@@ -445,5 +554,9 @@
     }
     .hobby-photo {
         min-height: 200px;
+    }
+    /* Touch users swipe; the arrows are desktop-only. */
+    .gallery-nav {
+        display: none;
     }
 }

@@ -45,6 +45,7 @@ struct MainLayout: Layout {
             Include("footer.html")
             Script(file: "https://cdn.jsdelivr.net/npm/lightbox3@1.1.0/dist/lightbox3.umd.js")
             Script(file: "https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.4/src/lite-yt-embed.js")
+            Script(file: "/js/embla-carousel.umd.js")
             Script(file: "/js/site.js")
         }
         .ignorePageGutters()
