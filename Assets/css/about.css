@@ -136,12 +136,6 @@
     grid-template-columns: 1fr 3fr;
 }
 
-/* Wide-left variant — 60/40 split. Used by "Work" where the Currently
-   column gets the spotlight and the Previously list stays compact. */
-.about-cols--wide-left {
-    grid-template-columns: 3fr 2fr;
-}
-
 .about-cols h3 {
     font-size: 1.25em;
     font-weight: 700;
