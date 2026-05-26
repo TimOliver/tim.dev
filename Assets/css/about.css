@@ -437,18 +437,27 @@
 }
 
 /* Embla container — the flex track Embla translates on drag / arrow press.
-   Padded by the overhang so the first/last cards rest at the column edges
-   (clear of the fade) rather than out in the bleed. */
+   Left padding insets the first card to the column edge. A trailing
+   .gallery-edge spacer does the same for the last card: Embla measures the
+   scroll extent from the last slide, so the spacer (a real slide) is what
+   lets trimSnaps land the last card inside the column rather than out in the
+   right bleed. */
 .gallery-track {
     display: flex;
     gap: 18px;
-    padding-inline: var(--overhang);
+    padding-left: var(--overhang);
 }
 
 .gallery-card {
     flex: 0 0 clamp(260px, 72vw, 440px);
     min-width: 0;
     margin: 0;
+}
+
+/* Empty trailing slide — width is the overhang minus the flex gap that
+   precedes it, so the last card lands at the column's right edge. */
+.gallery-edge {
+    flex: 0 0 max(0px, calc(var(--overhang) - 18px));
 }
 
 .gallery-card-photo {
