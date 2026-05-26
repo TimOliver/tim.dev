@@ -20,14 +20,14 @@
     --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-/* Dark palette uses an elevated content surface (#1A1A1C) rather than pure
-   black, and eases primary text/headings off pure white. Pure #000 + ~#fff is
-   ~20:1 and "halates" on OLED, which read as overpowering; the lift settles it
-   (and matches Apple, whose dark *content* surfaces are elevated greys, not
-   #000). Surfaces step up #1A1A1C → #2C2C2E so cards/popovers still separate.
-   Secondary/tertiary text stay alpha-based and remain ≥4.5:1 / ≥3:1 here. */
+/* Dark palette uses a dark content surface (#141414, matching macguru.dev)
+   rather than pure black, and eases primary text/headings off pure white.
+   Pure #000 + ~#fff is ~20:1 and "halates" on OLED, which read as
+   overpowering; lifting off black settles it. Surfaces step up #141414 →
+   #2C2C2E so cards/popovers still separate. Secondary/tertiary text stay
+   alpha-based and remain ≥4.5:1 / ≥3:1 here. */
 [data-color-scheme="dark"] {
-    --bg: #1A1A1C;
+    --bg: #141414;
     --bg-secondary: #2C2C2E;
     --bg-tertiary: rgba(120, 120, 120, 0.24);
     --text: #E4E4EA;
@@ -51,7 +51,7 @@
 body {
     font-family: var(--font-text);
     font-size: 15pt;
-    line-height: 1.55;
+    line-height: 1.6;
     /* Grayscale (not subpixel) smoothing — renders SF lighter/thinner rather
        than the heavier default. macOS/WebKit only; a no-op elsewhere. */
     -webkit-font-smoothing: antialiased;
@@ -67,7 +67,9 @@ body {
 }
 
 p {
-    margin: 0 auto 2.5rem;
+    /* ~one line-height of space between paragraphs. em (not rem) so it
+       scales with the responsive body size instead of staying a fixed 40px. */
+    margin: 0 auto 1.5em;
 }
 
 hr {
