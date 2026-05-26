@@ -20,17 +20,23 @@
     --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+/* Dark palette uses an elevated content surface (#1A1A1C) rather than pure
+   black, and eases primary text/headings off pure white. Pure #000 + ~#fff is
+   ~20:1 and "halates" on OLED, which read as overpowering; the lift settles it
+   (and matches Apple, whose dark *content* surfaces are elevated greys, not
+   #000). Surfaces step up #1A1A1C → #2C2C2E so cards/popovers still separate.
+   Secondary/tertiary text stay alpha-based and remain ≥4.5:1 / ≥3:1 here. */
 [data-color-scheme="dark"] {
-    --bg: #000;
-    --bg-secondary: #1C1C1C;
+    --bg: #1A1A1C;
+    --bg-secondary: #2C2C2E;
     --bg-tertiary: rgba(120, 120, 120, 0.24);
-    --text: #F5F5F7;
+    --text: #E4E4EA;
     --text-secondary: rgba(235, 235, 245, 0.6);
     --text-tertiary: rgba(235, 235, 245, 0.45);
-    --heading: #fff;
+    --heading: #F5F5F7;
     --link: #F82D48;
     --link-hover: #F82D48;
-    --border: #2a2a2a;
+    --border: #38383C;
     --icon-filter: invert(1);
     --capsule-bg: rgba(32, 32, 32, 0.7);
     --capsule-border: rgba(255, 255, 255, 0.08);
@@ -44,8 +50,12 @@
 
 body {
     font-family: var(--font-text);
-    font-size: 15.5pt;
+    font-size: 15pt;
     line-height: 1.55;
+    /* Grayscale (not subpixel) smoothing — renders SF lighter/thinner rather
+       than the heavier default. macOS/WebKit only; a no-op elsewhere. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     margin: 0;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     color: var(--text);
@@ -706,10 +716,10 @@ body > header::before {
 }
 
 @media (max-width: 1000px) {
-    /* Body text drops to 95% (14.7pt) at this breakpoint, matching
+    /* Body text drops to 95% (14.25pt) at this breakpoint, matching
        the scaled-down header content. */
     body {
-        font-size: 14.7pt;
+        font-size: 14.25pt;
     }
 
     body > header {
@@ -781,10 +791,10 @@ body > header::before {
 }
 
 @media (max-width: 720px) {
-    /* Body text drops further to 90% (14pt) once the hamburger
+    /* Body text drops further to 90% (13.5pt) once the hamburger
        menu takes over — matches the more compact phone layout. */
     body {
-        font-size: 14pt;
+        font-size: 13.5pt;
     }
 
     body > header::before {
@@ -974,7 +984,7 @@ body > header::before {
 
 .container {
     margin: clamp(10px, 4dvh, 56px) auto 30px;
-    max-width: 65ch;
+    max-width: 70ch;
     padding: 0 35px;
     position: relative;
     display: block;
@@ -1165,7 +1175,7 @@ footer .container {
 
 @media (max-width: 374.98px) {
     body {
-        font-size: 12.9pt;
+        font-size: 12.4pt;
     }
 
     body > header {
