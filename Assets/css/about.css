@@ -1,7 +1,7 @@
 /* ---------- About page ---------- */
 
 /* The About page is mostly sub-column layouts, so widen the host container
-   well past the default 65ch reading-column. */
+   well past the default ~775px reading column. */
 .container:has(> .about) {
     max-width: 1100px;
 }
@@ -508,6 +508,15 @@
     background: var(--bg-secondary);
     border-radius: 12px;
     margin: 0;
+    /* Hug the content height instead of stretching to match the prose column. */
+    align-self: start;
+}
+
+/* "Tech Specs" title — larger + bold, brighter than the rows below it. */
+.about-colophon .about-label {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--heading);
 }
 
 .about-colophon dl {
@@ -516,13 +525,15 @@
     column-gap: 1.5em;
     row-gap: 0.75em;
     margin: 1em 0 0;
+    /* Label and value share a baseline per row, so a multi-line value lines up
+       with its label on the first line instead of centring against it. */
+    align-items: baseline;
 }
 
 .about-colophon dt {
     font-size: 0.9em;
     font-weight: 600;
     color: var(--text-secondary);
-    align-self: center;
 }
 
 .about-colophon dd {
