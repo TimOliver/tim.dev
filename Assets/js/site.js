@@ -379,11 +379,11 @@
     var container = document.querySelector('main .container');
     if (!container || !window.history || !window.fetch || !window.DOMParser) return;
 
-    // Only operate on Apps pages (grid or a detail page).
-    function isAppsPath(path) {
-        return path === '/apps/' || /^\/apps\/[^/]+\/$/.test(path);
+    // Only operate on Apps/Code pages (grid or a detail page).
+    function isCollectionPath(path) {
+        return /^\/(apps|code)\/$/.test(path) || /^\/(apps|code)\/[^/]+\/$/.test(path);
     }
-    if (!isAppsPath(location.pathname)) return;
+    if (!isCollectionPath(location.pathname)) return;
 
     // Represent the initial page in history so the first back press is real.
     history.replaceState({ apps: true }, '', location.href);
@@ -401,8 +401,8 @@
                 container.innerHTML = incoming.innerHTML;
                 // Fade only the swapped-in content (not fresh page loads); the
                 // class is freshly attached to a new node so the animation runs.
-                var root = container.querySelector('.apps, .app-detail');
-                if (root) root.classList.add('app-swapped');
+                var root = container.querySelector('.collection');
+                if (root) root.classList.add('collection-swapped');
                 if (push) history.pushState({ apps: true }, '', url);
                 window.scrollTo(0, 0);
             })
@@ -420,7 +420,7 @@
         if (!a) return;
         var href = a.getAttribute('href');
         if (!href || a.target === '_blank' || a.origin !== location.origin) return;
-        if (!isAppsPath(a.pathname)) return;
+        if (!isCollectionPath(a.pathname)) return;
         e.preventDefault();
         swapTo(a.href, true);
     });
@@ -428,7 +428,7 @@
     // Back/forward: swap to whatever URL history lands on (within /apps/);
     // outside the section, let the browser do a normal load.
     window.addEventListener('popstate', function() {
-        if (isAppsPath(location.pathname)) {
+        if (isCollectionPath(location.pathname)) {
             swapTo(location.href, false);
         } else {
             window.location.reload();
