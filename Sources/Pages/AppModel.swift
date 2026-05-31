@@ -49,41 +49,23 @@ enum AppRenderer {
     /// pairs. Whitespace is trimmed; pairs without `=` or an empty key are
     /// skipped. Only the first `=` splits, so values may contain `=`.
     static func parseDetails(_ s: String) -> [(String, String)] {
-        s.split(separator: ";").compactMap { chunk -> (String, String)? in
-            let parts = chunk.split(separator: "=", maxSplits: 1).map {
-                $0.trimmingCharacters(in: .whitespaces)
-            }
-            guard parts.count == 2, !parts[0].isEmpty else { return nil }
-            return (parts[0], parts[1])
-        }
+        CollectionRenderer.parseDetails(s)
     }
 
     /// Writes an HTML string to `Includes/_apps/<key>.html` and returns the
     /// matching `Include`.
     static func include(key: String, html: String) -> Include {
-        let dir = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-            .appendingPathComponent("Includes")
-            .appendingPathComponent("_apps")
-        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        let file = dir.appendingPathComponent("\(key).html")
-        try? html.write(to: file, atomically: true, encoding: .utf8)
-        return Include("_apps/\(key).html")
+        CollectionRenderer.include(key: key, dir: "apps", html: html)
     }
 
     /// Derives a filesystem-safe key from an app path, e.g.
     /// `/apps/mercari-japan/` → `mercari-japan`.
     static func key(for path: String) -> String {
-        var s = path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
-        if s.hasPrefix("apps/") { s.removeFirst("apps/".count) }
-        s = s.replacingOccurrences(of: "/", with: "_")
-        return s.isEmpty ? "untitled" : s
+        CollectionRenderer.key(for: path, dir: "apps")
     }
 
     static func escape(_ s: String) -> String {
-        s.replacingOccurrences(of: "&", with: "&amp;")
-            .replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
-            .replacingOccurrences(of: "\"", with: "&quot;")
+        CollectionRenderer.escape(s)
     }
 
     /// Year + platform chip pair, shared by card and detail header.
