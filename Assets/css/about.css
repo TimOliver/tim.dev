@@ -93,15 +93,7 @@
 /* Sections — heading + optional subtitle, separated by a hairline */
 
 .about-section {
-    margin: 0 0 4em;
-}
-
-/* "Card" variant — separates meta content (About this site) from the
-   bio sections above with a hairline above and extra top breathing room. */
-.about-section--card {
-    border-top: 1px solid var(--border);
-    padding-top: 3em;
-    margin-top: 2em;
+    margin: 0 0 5em;
 }
 
 .about-section-header {
@@ -383,16 +375,20 @@
 
 .gallery {
     margin-top: 2.5em;
+    position: relative;
 }
 
-/* Prev/next controls — a small right-aligned row above the strip. Native
-   trackpad/touch scroll still works; these give mouse and keyboard users a
-   click target. Hidden on touch widths (see media query). */
+/* Prev/next controls — floated just below the strip (out of flow) and right-
+   aligned, so their height doesn't add to the section's whitespace. Native
+   trackpad/touch scroll still works; these give mouse/keyboard a click target.
+   Hidden on touch widths (see media query). */
 .gallery-nav {
+    position: absolute;
+    top: 100%;
+    right: 0;
     display: flex;
-    justify-content: flex-end;
     gap: 8px;
-    margin-bottom: 14px;
+    margin-top: 14px;
 }
 
 .gallery-arrow {
@@ -429,11 +425,49 @@
    drives both the negative margin and the mask so they stay in sync, and is
    capped at the available gutter so it never forces a horizontal scrollbar. */
 .gallery-scroller {
-    --overhang: clamp(0px, calc((100vw - 1100px) / 2), 60px);
+    /* --overhang: how far the cards bleed past the column into the page margin
+       (capped at the available gutter so it never forces a scrollbar). The
+       first/last cards rest at the content edge regardless of this — overhang
+       only sets how far cards slide out under the fades as you scroll.
+       --fade: width of the solid edge strip. Its inner edge sits (overhang -
+       fade) = 85px out in the margin, and the box-shadow below blooms inward
+       from there, landing just shy of the content edge so the gradient clears
+       the resting card. Raise the 85px to pull the fade further out (more
+       clearance); lower it to creep onto the card. Retune if the shadow's
+       reach changes. */
+    --overhang: clamp(0px, calc((100vw - 1100px) / 2), 220px);
+    --fade: calc(var(--overhang) - 85px);
     overflow: hidden;
+    position: relative;
     margin-inline: calc(var(--overhang) * -1);
-    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--overhang), #000 calc(100% - var(--overhang)), transparent 100%);
-            mask-image: linear-gradient(to right, transparent 0, #000 var(--overhang), #000 calc(100% - var(--overhang)), transparent 100%);
+}
+
+/* Edge fade — same trick as the header scrim: a solid var(--bg) strip sits over
+   the bleeding cards in each overhang, and a colour-matched box-shadow blooms
+   inward from it. The shadow's Gaussian, browser-dithered falloff avoids the
+   banding a mask gradient shows. The strip is a fixed --fade wide, pinned to
+   each edge; the shadow (offset/blur/spread) is the part to tune by eye.
+   pointer-events:none keeps drag/swipe working across the faded region. */
+.gallery-scroller::before,
+.gallery-scroller::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--fade);
+    z-index: 2;
+    background: var(--bg);
+    pointer-events: none;
+}
+
+.gallery-scroller::before {
+    left: 0;
+    box-shadow: 15px -15px 30px 25px var(--bg);
+}
+
+.gallery-scroller::after {
+    right: 0;
+    box-shadow: -15px -15px 30px 25px var(--bg);
 }
 
 /* Embla container — the flex track Embla translates on drag / arrow press.
@@ -499,9 +533,9 @@
     color: var(--text-secondary);
 }
 
-/* Colophon card (About this site). Inner elevated surface that sits on
-   the outer .about-section--card. Inside: an .about-label eyebrow and a
-   <dl> grid where dt is the label and dd is the value, right-aligned. */
+/* Tech Specs card (About this site). Inner elevated surface in the section's
+   right column: a bold title above a <dl> grid where dt is the label and dd
+   is the value, right-aligned. */
 
 .about-colophon {
     padding: 24px 28px;
@@ -522,18 +556,35 @@
 .about-colophon dl {
     display: grid;
     grid-template-columns: max-content 1fr;
-    column-gap: 1.5em;
-    row-gap: 0.75em;
+    /* No column-gap: a real gap would break the row hairline between the two
+       cells. The label/value spacing is recreated as dt padding-right below,
+       which the border-top spans — so the line reads as one continuous rule. */
+    column-gap: 0;
+    row-gap: 0.45em;
     margin: 1em 0 0;
     /* Label and value share a baseline per row, so a multi-line value lines up
        with its label on the first line instead of centring against it. */
     align-items: baseline;
 }
 
+/* Subtle hairline between spec rows (every row but the first), spanning both
+   columns so the eye can track a label across to its value. Reuses the card's
+   own faint border token, so it stays barely-there and theme-aware. The
+   row-gap above sits over the line and the padding-top below it, keeping the
+   hairline centred in the gap without growing the card much. */
+.about-colophon dd + dt,
+.about-colophon dd:not(:first-of-type) {
+    border-top: 1px solid var(--border);
+    padding-top: 0.45em;
+}
+
 .about-colophon dt {
     font-size: 0.9em;
     font-weight: 600;
     color: var(--text-secondary);
+    /* Stands in for the removed column-gap, but sits inside the cell so the
+       hairline runs unbroken across to the value column. */
+    padding-right: 1.5em;
 }
 
 .about-colophon dd {

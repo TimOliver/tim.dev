@@ -396,7 +396,7 @@ body > header {
     z-index: 10;
     width: 100%;
     top: 0;
-    padding: 15px;
+    padding: 15px 0 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -407,34 +407,13 @@ body > header::before {
     position: absolute;
     inset: 0;
     background-color: var(--bg);
-    -webkit-mask-image: linear-gradient(
-        to bottom,
-        rgb(0, 0, 0) 0%,
-        rgb(0, 0, 0) 40%,
-        rgba(0, 0, 0, 0.98) 52%,
-        rgba(0, 0, 0, 0.93) 61%,
-        rgba(0, 0, 0, 0.84) 69%,
-        rgba(0, 0, 0, 0.70) 76%,
-        rgba(0, 0, 0, 0.52) 83%,
-        rgba(0, 0, 0, 0.33) 89%,
-        rgba(0, 0, 0, 0.15) 95%,
-        rgba(0, 0, 0, 0.05) 99%,
-        rgba(0, 0, 0, 0) 100%
-    );
-    mask-image: linear-gradient(
-        to bottom,
-        rgb(0, 0, 0) 0%,
-        rgb(0, 0, 0) 40%,
-        rgba(0, 0, 0, 0.98) 52%,
-        rgba(0, 0, 0, 0.93) 61%,
-        rgba(0, 0, 0, 0.84) 69%,
-        rgba(0, 0, 0, 0.70) 76%,
-        rgba(0, 0, 0, 0.52) 83%,
-        rgba(0, 0, 0, 0.33) 89%,
-        rgba(0, 0, 0, 0.15) 95%,
-        rgba(0, 0, 0, 0.05) 99%,
-        rgba(0, 0, 0, 0) 100%
-    );
+    /* The bar is a solid plateau; the fade below it is a colour-matched
+       drop shadow, not a gradient mask. A box-shadow's blur is Gaussian and
+       browser-dithered, so it sheds the 8-bit banding a wide, flat
+       linear-gradient alpha ramp shows. The y-offset (1st value) carries the
+       solid down past the bar's zero bottom-padding; the blur (2nd) sets the
+       fade length. */
+    box-shadow: 0 0px 25px 25px var(--bg);
     z-index: -1;
 }
 
@@ -766,40 +745,6 @@ body > header::before {
         padding: 8px 0 33px;
     }
 
-    /* Push the solid plateau further down at this breakpoint — the
-       scaled-down content still takes up a larger fraction of the
-       (shorter) header, so the desktop 40% solid stop falls before
-       the menu text ends. */
-    body > header::before {
-        -webkit-mask-image: linear-gradient(
-            to bottom,
-            rgb(0, 0, 0) 0%,
-            rgb(0, 0, 0) 50%,
-            rgba(0, 0, 0, 0.98) 60%,
-            rgba(0, 0, 0, 0.93) 68%,
-            rgba(0, 0, 0, 0.84) 74%,
-            rgba(0, 0, 0, 0.70) 80%,
-            rgba(0, 0, 0, 0.52) 86%,
-            rgba(0, 0, 0, 0.33) 91%,
-            rgba(0, 0, 0, 0.15) 96%,
-            rgba(0, 0, 0, 0.05) 99%,
-            rgba(0, 0, 0, 0) 100%
-        );
-        mask-image: linear-gradient(
-            to bottom,
-            rgb(0, 0, 0) 0%,
-            rgb(0, 0, 0) 50%,
-            rgba(0, 0, 0, 0.98) 60%,
-            rgba(0, 0, 0, 0.93) 68%,
-            rgba(0, 0, 0, 0.84) 74%,
-            rgba(0, 0, 0, 0.70) 80%,
-            rgba(0, 0, 0, 0.52) 86%,
-            rgba(0, 0, 0, 0.33) 91%,
-            rgba(0, 0, 0, 0.15) 96%,
-            rgba(0, 0, 0, 0.05) 99%,
-            rgba(0, 0, 0, 0) 100%
-        );
-    }
 
     #header-content {
         gap: clamp(16px, 3.2vw, 56px);
