@@ -2,18 +2,15 @@
    Shared structure lives in collection.css. This holds repo-card internals,
    the landscape screenshot placeholder, and the no-icon detail header. */
 
-/* Card: screenshot sits flush at the card's top edge, body padded below. The
-   shared .collection-card has 24px padding; pull the shot out to the edges. */
-.code-card {
-    padding: 0;
-    overflow: hidden;
-}
-
+/* Cardless: the screenshot is a standalone rounded element; the body text sits
+   flush-left beneath it (no card surface or side padding). */
 .code-body {
-    padding: 20px 24px 24px;
+    padding: 14px 0 0;
 }
 
-/* Landscape screenshot placeholder — hatch fill + centered caption. */
+/* Landscape screenshot placeholder — hatch fill + centered caption. The card's
+   imagery; stays rounded even in the cardless resting state ("only images
+   rounded"). */
 .code-shot {
     aspect-ratio: 16 / 10;
     display: flex;
@@ -22,7 +19,9 @@
     background:
         repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
         var(--bg-tertiary);
-    border-bottom: 1px solid var(--border);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    corner-shape: squircle;
 }
 
 .code-shot-caption {
@@ -113,9 +112,14 @@
     margin-bottom: 2.5em;
 }
 
+/* Inside the detail wrapper the .code-shot's own border/radius/lift are
+   redundant — the wrapper provides them. Neutralise so there's no double border
+   and no stray hover transform on the (non-card) detail page. */
 .code-detail-shot .code-shot {
     aspect-ratio: 16 / 9;
-    border-bottom: none;
+    border: none;
+    border-radius: 0;
+    transition: none;
 }
 
 /* Links list (text links with a trailing arrow). */

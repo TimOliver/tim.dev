@@ -58,7 +58,7 @@
     padding: 3px 8px;
 }
 
-/* Placeholder phone frames. */
+/* Placeholder phone frames — the card's imagery. */
 .app-frames {
     display: flex;
     gap: 16px;

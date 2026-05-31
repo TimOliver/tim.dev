@@ -15,6 +15,17 @@ body:has(.collection) footer .container {
     max-width: 1100px;
 }
 
+/* Detail pages read a touch wider than the 1100px base (the prose + sidebar
+   want a little more room). They're excluded from the grid's wide tier below,
+   so this is their fixed width at all sizes. */
+.container:has(> .collection-detail) {
+    max-width: 1250px;
+}
+
+body:has(.collection-detail) footer .container {
+    max-width: 1250px;
+}
+
 .collection {
     margin-top: 70px;
 }
@@ -35,38 +46,43 @@ body:has(.collection) footer .container {
     line-height: 1.5;
 }
 
-/* Card grid — fluid columns: 2 default, 3 at the wide tier, 1 on mobile. */
+/* Card grid — fluid columns: 2 default, 3 at the wide tier, 1 on mobile.
+   Generous gap so the cardless tiles breathe; the card padding (below) adds
+   further inset, and the hover surface fits within it. */
 .collection-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: 10px;
 }
 
-/* Card shell — grey surface + Apple-style fluid hover zoom. Page-specific
-   internals (icon/frames vs screenshot/repo) layer on top in apps/code css. */
+/* Cardless at rest — transparent surface, so only the imagery (rounded) shows
+   against the page. Constant padding + rounding are always present so the card
+   surface can fade IN on hover with no layout shift: the rounded rectangle
+   quickly appears behind the content as the hover state. */
 .collection-card {
     display: block;
     text-decoration: none;
     color: inherit;
-    background: var(--bg-secondary);
+    padding: 16px;
     border-radius: 18px;
     corner-shape: squircle;
-    padding: 24px;
-    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
-                background 0.3s ease;
+    background: transparent;
+    transition: background 0.2s ease,
+                transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
     will-change: transform;
 }
 
 @media (hover: hover) {
     .collection-card:hover {
-        background: var(--bg-tertiary);
-        transform: scale(1.03);
+        background: var(--bg-secondary);
+        transform: scale(1.02);
     }
 }
 
+/* Reduced motion: keep the surface fade, drop the zoom. */
 @media (prefers-reduced-motion: reduce) {
     .collection-card {
-        transition: background 0.3s ease;
+        transition: background 0.2s ease;
     }
     .collection-card:hover {
         transform: none;
@@ -170,14 +186,18 @@ body:has(.collection) footer .container {
     }
 }
 
-/* Wide screens — widen container + footer and step to 3 columns (the cap).
-   Threshold at 1350px so the 3→2 snap fires partway through the range. */
-@media (min-width: 1350px) {
-    .container:has(> .collection) {
-        max-width: 1500px;
+/* Wide tier → 3 columns. Threshold == the container's 3-col cap (1650px), so
+   3 columns only appear once there's room for full-size cards — never shrunk.
+   Below 1650px it's 2 columns shrinking fluidly down to the mobile 1-col break;
+   the snap from 3→2 happens exactly as the cards would start to shrink. */
+@media (min-width: 1650px) {
+    /* Only the GRID widens — detail pages (.collection-detail) keep the 1100px
+       reading width from the base rule, so they don't go comically wide. */
+    .container:has(> .collection:not(.collection-detail)) {
+        max-width: 1650px;
     }
-    body:has(.collection) footer .container {
-        max-width: 1500px;
+    body:has(.collection:not(.collection-detail)) footer .container {
+        max-width: 1650px;
     }
     .collection-grid {
         grid-template-columns: repeat(3, 1fr);
