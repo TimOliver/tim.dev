@@ -79,6 +79,7 @@
     height: 424px;
     border: 1px solid var(--border);
     border-radius: 30px;
+    corner-shape: squircle;
     margin: 0 auto 0.6em;
     display: block;
     object-fit: cover;
@@ -269,13 +270,6 @@
     white-space: nowrap;
 }
 
-.about-job-role {
-    display: block;
-    font-size: 0.95em;
-    color: var(--text-secondary);
-    margin-bottom: 0.3em;
-}
-
 .about-job p {
     margin: 0;
 }
@@ -307,6 +301,7 @@
     flex-direction: column;
     border: 1px solid var(--border);
     border-radius: 14px;
+    corner-shape: squircle;
     overflow: hidden;
     background: var(--bg);
 }
@@ -419,11 +414,9 @@
     display: block;
 }
 
-/* Embla viewport — pulled 60px past the column on each side so cards bleed
-   into the margins, with the mask fading them out entirely within that
-   overhang (crisp inside the column, gradient lives outside it). --overhang
-   drives both the negative margin and the mask so they stay in sync, and is
-   capped at the available gutter so it never forces a horizontal scrollbar. */
+/* Embla viewport — pulled past the column on each side (negative margin-inline)
+   so cards bleed into the page margins. The edge fades are colour-matched
+   box-shadow strips, not a mask (see the ::before/::after block below). */
 .gallery-scroller {
     /* --overhang: how far the cards bleed past the column into the page margin
        (capped at the available gutter so it never forces a scrollbar). The
@@ -498,6 +491,7 @@
     position: relative;
     aspect-ratio: 4 / 3;
     border-radius: 14px;
+    corner-shape: squircle;
     overflow: hidden;
     background:
         repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
@@ -541,6 +535,7 @@
     padding: 24px 28px;
     background: var(--bg-secondary);
     border-radius: 12px;
+    corner-shape: squircle;
     margin: 0;
     /* Hug the content height instead of stretching to match the prose column. */
     align-self: start;

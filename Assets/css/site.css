@@ -89,6 +89,7 @@ article img {
     height: auto;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 15px;
+    corner-shape: squircle;
     margin: 0 auto 1.75em;
 }
 
@@ -106,6 +107,7 @@ article img.hero {
     max-width: calc(100% + var(--hero-bleed) * 2);
     margin: 1.5em calc(var(--hero-bleed) * -1) 2em;
     border-radius: 30px;
+    corner-shape: squircle;
 }
 
 /* On phones the side padding is tight, so drop the banner's bleed entirely —
@@ -130,6 +132,7 @@ article img.lqip.loading {
 
 article lite-youtube {
     border-radius: 15px;
+    corner-shape: squircle;
     overflow: hidden;
     margin: 0 auto 1.75em;
 }
@@ -142,6 +145,7 @@ article .embed_social {
     --embed-text-secondary: var(--text-secondary);
     background: var(--embed-bg);
     border-radius: 8px;
+    corner-shape: squircle;
     border: 1px solid var(--embed-border);
     min-width: 270px;
     max-width: 508px;
@@ -212,6 +216,7 @@ article .embed_social[data-platform="bluesky"] {
     width: 46px;
     height: 46px;
     border-radius: 8px;
+    corner-shape: squircle;
     margin: 0;
     display: block;
 }
@@ -219,6 +224,9 @@ article .embed_social[data-platform="bluesky"] {
 .embed_social[data-platform="twitter"] .avatar,
 .embed_social[data-platform="bluesky"] .avatar {
     border-radius: 50%;
+    /* These are circular; reset the squircle inherited from the base
+       .avatar rule so corner-shape doesn't turn them into rounded squares. */
+    corner-shape: round;
 }
 
 .embed_social a.name_header {
@@ -313,6 +321,7 @@ article .embed_social[data-platform="bluesky"] {
     height: auto;
     max-height: none;
     border-radius: 8px;
+    corner-shape: squircle;
     margin: 0;
 }
 
@@ -557,6 +566,7 @@ body > header::before {
     background: var(--bg-secondary);
     border: 1px solid var(--capsule-border);
     border-radius: 16px;
+    corner-shape: squircle;
     padding: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     flex-direction: column;
@@ -662,6 +672,7 @@ body > header::before {
     background: none;
     cursor: pointer;
     border-radius: 12px;
+    corner-shape: squircle;
     font-size: 18px;
     font-weight: 500;
     color: var(--text);
@@ -709,6 +720,7 @@ body > header::before {
     align-items: center;
     justify-content: center;
     border-radius: 999px;
+    corner-shape: squircle;
 }
 
 .hamburger-button svg {
@@ -798,6 +810,7 @@ body > header::before {
         -webkit-backdrop-filter: blur(20px) saturate(180%);
         border: 1px solid var(--capsule-border);
         border-radius: 26px;
+        corner-shape: squircle;
         padding: 8px 8px 8px 23px;
         gap: 12px;
         position: absolute;
@@ -1039,6 +1052,7 @@ blockquote::before {
     width: 5px;
     background: var(--text-secondary);
     border-radius: 999px;
+    corner-shape: squircle;
 }
 
 .article-separator {

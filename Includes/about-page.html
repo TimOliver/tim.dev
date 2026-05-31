@@ -45,6 +45,19 @@
                 <p>Outside of the day job, I dote heavily on the iOS Community — and it's been the dotting on the joy of it. Through writing, talks, conferences, friends and a few off-the-record helpers, I've found a great group of people who care.</p>
             </div>
         </div>
+        <!-- No-JS fallback: Embla never initialises, so the overflow:hidden
+             viewport would clip every card past the first with no way to reach
+             them. Fall back to native horizontal scrolling and drop the now-
+             inert arrows and edge fades (the fade strips are absolutely
+             positioned, so they'd scroll out of place over native scroll). -->
+        <noscript>
+            <style>
+                .gallery-scroller { overflow-x: auto; }
+                .gallery-scroller::before,
+                .gallery-scroller::after { display: none; }
+                .gallery-nav { display: none; }
+            </style>
+        </noscript>
         <div class="gallery">
             <div class="gallery-scroller">
                 <div class="gallery-track">
