@@ -320,8 +320,11 @@
 }
 
 /* Wide screens — widen the grid container and step to 3 columns (the cap).
-   The detail page isn't matched, so it keeps its 1100px reading width. */
-@media (min-width: 1200px) {
+   Threshold sits at the midpoint of the 3-col container range (1200–1500px) so
+   the 3→2 snap fires ~50% earlier — cards shrink through only the top half of
+   that range before dropping a column instead of all the way down. The detail
+   page isn't matched, so it keeps its 1100px reading width. */
+@media (min-width: 1350px) {
     .container:has(> .apps) {
         max-width: 1500px;
     }
