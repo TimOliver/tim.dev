@@ -7,7 +7,7 @@ struct Home: StaticPage {
     @Environment(\.articles) private var articles
 
     var body: some HTML {
-        let posts = articles.all.filter { !$0.path.hasPrefix("/apps/") }
+        let posts = articles.all.filter { !$0.path.hasPrefix("/apps/") && !$0.path.hasPrefix("/code/") }
         return ForEach(latestMonthPosts(posts)) { article in
             ArticleShell.include(for: article)
         }
