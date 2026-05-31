@@ -1,0 +1,295 @@
+/* ---------- Apps page ---------- */
+
+/* Widen the host container past the default reading column, like About. */
+.container:has(> .apps),
+.container:has(> .app-detail) {
+    max-width: 1100px;
+}
+
+.apps,
+.app-detail {
+    margin-top: 70px;
+}
+
+/* Index header reuses the page-title / subtitle treatment. */
+.apps .page-title {
+    text-align: center;
+    font-size: 2.7em;
+    font-weight: 800;
+    margin: 0 0 0.3em;
+}
+
+.apps .page-subtitle {
+    text-align: center;
+    font-size: 1.15em;
+    color: var(--text-secondary);
+    margin: 0 0 3em;
+    line-height: 1.5;
+}
+
+/* 2-up card grid, single column on mobile. */
+.apps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.app-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--bg-secondary);
+    border-radius: 18px;
+    corner-shape: squircle;
+    padding: 24px;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.app-card:hover {
+    background: var(--bg-tertiary);
+    transform: translateY(-2px);
+}
+
+.app-card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.app-icon {
+    flex: 0 0 auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 15px;
+    corner-shape: squircle;
+    overflow: hidden;
+}
+
+.app-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.app-card-meta {
+    min-width: 0;
+}
+
+.app-card-name {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: var(--heading);
+    margin: 0 0 0.15em;
+}
+
+.app-card-tagline {
+    font-size: 0.95em;
+    color: var(--text-secondary);
+    margin: 0 0 0.6em;
+}
+
+/* Year / platform chips. */
+.app-badges {
+    display: flex;
+    gap: 8px;
+}
+
+.app-badge {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.72em;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    corner-shape: squircle;
+    padding: 3px 8px;
+}
+
+/* Placeholder phone frames. */
+.app-frames {
+    display: flex;
+    gap: 16px;
+}
+
+.app-frame {
+    flex: 1 1 0;
+    background: var(--bg);
+    border-radius: 14px;
+    corner-shape: squircle;
+    padding: 8px;
+    box-shadow: 0 0 0 1px var(--border) inset;
+}
+
+.app-frame-bar {
+    height: 26px;
+    border-radius: 6px;
+    corner-shape: squircle;
+    margin-bottom: 8px;
+}
+
+.app-frame-body {
+    aspect-ratio: 9 / 16;
+    border-radius: 6px;
+    corner-shape: squircle;
+    background:
+        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
+        var(--bg-tertiary);
+}
+
+/* ----- Detail page ----- */
+
+.app-back {
+    display: inline-block;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-bottom: 1.5em;
+}
+
+.app-back:hover {
+    color: var(--text);
+}
+
+.app-detail-name {
+    font-size: 2.7em;
+    font-weight: 800;
+    color: var(--heading);
+    margin: 0 0 0.1em;
+}
+
+.app-detail-tagline {
+    font-size: 1.3em;
+    color: var(--text-secondary);
+    margin: 0 0 1.5em;
+}
+
+/* Screenshot row in a bordered surface. */
+.app-detail-shots {
+    display: flex;
+    gap: 24px;
+    background: var(--bg-secondary);
+    border-radius: 18px;
+    corner-shape: squircle;
+    padding: 32px;
+    margin-bottom: 2.5em;
+}
+
+/* Two-column body. */
+.app-detail-body {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3em;
+    align-items: start;
+}
+
+.app-detail-prose {
+    color: var(--text);
+    line-height: 1.7;
+}
+
+.app-detail-prose p {
+    margin: 0 0 1.25em;
+}
+
+/* Sidebar eyebrow label. */
+.app-eyebrow {
+    display: block;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    margin: 0 0 0.8em;
+}
+
+.app-eyebrow:not(:first-child) {
+    margin-top: 2em;
+}
+
+/* Details key/value table — hairline rows like the Tech Specs card. */
+.app-details {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 1em;
+    row-gap: 0;
+    margin: 0;
+}
+
+.app-details dt {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    padding: 0.6em 0;
+    border-top: 1px solid var(--border);
+}
+
+.app-details dt:first-of-type,
+.app-details dd:first-of-type {
+    border-top: none;
+}
+
+.app-details dd {
+    font-size: 0.9em;
+    color: var(--text);
+    text-align: right;
+    margin: 0;
+    padding: 0.6em 0;
+    border-top: 1px solid var(--border);
+}
+
+/* Links list. */
+.app-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.app-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.95em;
+    padding: 0.5em 0;
+}
+
+.app-link:hover {
+    color: var(--link);
+}
+
+.app-link-arrow {
+    color: var(--text-tertiary);
+}
+
+/* Swap transition — short fade, motion-safe. */
+@media (prefers-reduced-motion: no-preference) {
+    .apps,
+    .app-detail {
+        animation: app-fade-in 0.25s ease;
+    }
+}
+
+@keyframes app-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Mobile. */
+@media (max-width: 720px) {
+    .apps-grid {
+        grid-template-columns: 1fr;
+    }
+    .app-detail-body {
+        grid-template-columns: 1fr;
+        gap: 2em;
+    }
+    .app-detail-shots {
+        padding: 18px;
+        gap: 14px;
+    }
+    .app-detail-name {
+        font-size: 2.1em;
+    }
+}
