@@ -7,7 +7,7 @@ struct Archive: StaticPage {
     @Environment(\.articles) private var articles
 
     var body: some HTML {
-        let html = ArchivePage.htmlString(for: articles.all)
+        let html = ArchivePage.htmlString(for: articles.all.filter { !$0.path.hasPrefix("/apps/") })
         let dir = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
             .appendingPathComponent("Includes")
             .appendingPathComponent("_posts")
