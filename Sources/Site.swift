@@ -37,5 +37,5 @@ struct TimDevSite: Site {
     var homePage = Home()
     var layout = MainLayout()
     var articlePages: [any ArticlePage] = [PostPage(), AppDetail()]
-    var staticPages: [any StaticPage] = [About(), Archive(), Apps()]
+    var staticPages: [any StaticPage] = [About(), Archive(), Apps(), Code()]
 }
