@@ -1073,7 +1073,10 @@ footer {
 }
 
 footer .container {
-    max-width: 1100px;
+    /* Matches the default reading-column width; pages that widen their content
+       (About, Apps) widen the footer in step via body:has() rules in their own
+       stylesheets, so the footer always aligns with the content above it. */
+    max-width: 775px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;

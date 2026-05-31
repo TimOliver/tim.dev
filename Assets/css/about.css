@@ -6,6 +6,11 @@
     max-width: 1100px;
 }
 
+/* Keep the footer aligned with the widened About content. */
+body:has(.about) footer .container {
+    max-width: 1100px;
+}
+
 /* Body text on About sits at the secondary muted colour — Apple's pattern
    for marketing/about-style pages. Headings (via global h1-h6 rule),
    the tagline and emphasized labels keep the brighter --text. */

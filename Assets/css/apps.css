@@ -8,6 +8,13 @@
     max-width: 1100px;
 }
 
+/* Keep the footer aligned with the widened Apps content (it widens further to
+   1500px at the 3-column tier — see the min-width rule below). */
+body:has(.apps) footer .container,
+body:has(.app-detail) footer .container {
+    max-width: 1100px;
+}
+
 .apps,
 .app-detail {
     margin-top: 70px;
@@ -338,6 +345,10 @@
    page isn't matched, so it keeps its 1100px reading width. */
 @media (min-width: 1350px) {
     .container:has(> .apps) {
+        max-width: 1500px;
+    }
+    /* Footer tracks the grid to its 3-column width so they stay edge-aligned. */
+    body:has(.apps) footer .container {
         max-width: 1500px;
     }
     .apps-grid {
