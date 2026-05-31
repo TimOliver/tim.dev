@@ -366,3 +366,68 @@
     embla.on('select', update).on('reInit', update);
     update();
 })();
+
+// Apps page: in-place content swap (progressive enhancement). Each app is a
+// real page at /apps/<slug>/ that works without JS; this intercepts in-section
+// navigation, fetches the target page, swaps only the .container contents, and
+// keeps real URLs via the History API (so back/forward, refresh, and direct
+// links all work). Any failure falls back to a normal navigation.
+(function() {
+    // The page content is a `.container` div inside <main> (class is
+    // "ig-main-content container"), so target `main .container`, NOT
+    // `main.container` (which matches nothing).
+    var container = document.querySelector('main .container');
+    if (!container || !window.history || !window.fetch || !window.DOMParser) return;
+
+    // Only operate on Apps pages (grid or a detail page).
+    function isAppsPath(path) {
+        return path === '/apps/' || /^\/apps\/[^/]+\/$/.test(path);
+    }
+    if (!isAppsPath(location.pathname)) return;
+
+    // Represent the initial page in history so the first back press is real.
+    history.replaceState({ apps: true }, '', location.href);
+
+    function swapTo(url, push) {
+        return fetch(url, { headers: { 'X-Requested-With': 'fetch' } })
+            .then(function(resp) {
+                if (!resp.ok) throw new Error('bad status ' + resp.status);
+                return resp.text();
+            })
+            .then(function(htmlText) {
+                var doc = new DOMParser().parseFromString(htmlText, 'text/html');
+                var incoming = doc.querySelector('main .container');
+                if (!incoming) throw new Error('no container in response');
+                container.innerHTML = incoming.innerHTML;
+                if (push) history.pushState({ apps: true }, '', url);
+                window.scrollTo(0, 0);
+            })
+            .catch(function() {
+                // Fallback: hard navigation always gets the user somewhere.
+                window.location.href = url;
+            });
+    }
+
+    // Intercept clicks on same-origin /apps/ links (cards + "Back to Apps").
+    document.addEventListener('click', function(e) {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey ||
+            e.shiftKey || e.altKey) return;
+        var a = e.target.closest('a');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href || a.target === '_blank' || a.origin !== location.origin) return;
+        if (!isAppsPath(a.pathname)) return;
+        e.preventDefault();
+        swapTo(a.href, true);
+    });
+
+    // Back/forward: swap to whatever URL history lands on (within /apps/);
+    // outside the section, let the browser do a normal load.
+    window.addEventListener('popstate', function() {
+        if (isAppsPath(location.pathname)) {
+            swapTo(location.href, false);
+        } else {
+            window.location.reload();
+        }
+    });
+})();
