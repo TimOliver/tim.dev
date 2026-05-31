@@ -47,13 +47,13 @@ extension AppRenderer {
             s += "</dl>"
         }
 
-        if !app.links.isEmpty {
-            s += #"<span class="app-eyebrow">Links</span>"#
-            s += #"<ul class="app-links">"#
-            for (label, url) in app.links {
-                s += #"<li><a class="app-link" href="\#(escape(url))" target="_blank" rel="noopener">\#(escape(label))<span class="app-link-arrow" aria-hidden="true">&#8599;</span></a></li>"#
-            }
-            s += "</ul>"
+        if let appStore = app.appStore {
+            // Centered "Download on the App Store" badge. The black variant is
+            // the <img>; dark mode swaps it for the white one via CSS `content`
+            // (see .app-store in apps.css). Both Apple badges live in /img/.
+            s += #"<a class="app-store" href="\#(escape(appStore))" target="_blank" rel="noopener">"#
+            s += #"<img src="/img/app-store-black.svg" alt="Download on the App Store">"#
+            s += "</a>"
         }
 
         s += "</aside>"

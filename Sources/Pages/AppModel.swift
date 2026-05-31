@@ -15,8 +15,9 @@ struct AppInfo {
     let path: String
     /// Ordered (label, value) rows for the detail sidebar table.
     let details: [(String, String)]
-    /// Ordered (label, url) links for the detail sidebar.
-    let links: [(String, String)]
+    /// App Store URL — rendered as a centered "Download on the App Store" badge
+    /// on the detail page. Nil when absent.
+    let appStore: String?
     /// Already-rendered HTML body (markdown compiled by Ignite).
     let bodyHTML: String
 
@@ -33,10 +34,8 @@ struct AppInfo {
             ?? "linear-gradient(135deg, #c7c7cc, #8e8e93)"
         path = a.path
         details = AppRenderer.parseDetails(a.metadata["details"] as? String ?? "")
-        var collectedLinks: [(String, String)] = []
-        if let u = a.metadata["appstore"] as? String, !u.isEmpty { collectedLinks.append(("App Store", u)) }
-        if let u = a.metadata["github"] as? String, !u.isEmpty { collectedLinks.append(("GitHub", u)) }
-        links = collectedLinks
+        let storeValue = a.metadata["appstore"] as? String
+        appStore = (storeValue.flatMap { $0.isEmpty ? nil : $0 })
         bodyHTML = a.text
     }
 }

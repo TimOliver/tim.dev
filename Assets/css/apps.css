@@ -46,12 +46,29 @@
     border-radius: 18px;
     corner-shape: squircle;
     padding: 24px;
-    transition: transform 0.15s ease, background 0.15s ease;
+    /* Apple-store-style hover: a gentle, fluid zoom. Long-ish duration + a
+       smooth ease-out (not the bouncy --hover-spring) so it glides rather than
+       snaps. will-change hints the compositor for a jank-free transform. */
+    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                background 0.3s ease;
+    will-change: transform;
 }
 
-.app-card:hover {
-    background: var(--bg-tertiary);
-    transform: translateY(-2px);
+@media (hover: hover) {
+    .app-card:hover {
+        background: var(--bg-tertiary);
+        transform: scale(1.03);
+    }
+}
+
+/* Respect reduced-motion: keep the subtle background cue, drop the zoom. */
+@media (prefers-reduced-motion: reduce) {
+    .app-card {
+        transition: background 0.3s ease;
+    }
+    .app-card:hover {
+        transform: none;
+    }
 }
 
 .app-card-head {
@@ -215,12 +232,13 @@
     margin: 0 0 1.25em;
 }
 
-/* Sidebar eyebrow label — small grey, sentence case (matches About's labels;
-   the site convention is no all-caps titles). */
+/* Sidebar section header — matches the About page's "Tech Specs" title
+   (.about-colophon .about-label): larger, bold, bright heading colour. */
 .app-eyebrow {
     display: block;
-    font-size: 0.8em;
-    color: var(--text-secondary);
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--heading);
     margin: 0 0 0.8em;
 }
 
@@ -262,29 +280,23 @@
     color: var(--text);
 }
 
-/* Links list. */
-.app-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+/* "Download on the App Store" badge — centered below the Details table,
+   replacing the old Links list. ~44px tall keeps it tappable without dominating
+   the sidebar. The black badge ships in the markup; dark mode swaps the <img>
+   for the white variant via `content` (the alt text carries through). */
+.app-store {
+    display: block;
+    text-align: center;
+    margin: 1.6em 0 0;
 }
 
-.app-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-decoration: none;
-    color: var(--text);
-    font-size: 0.95em;
-    padding: 0.5em 0;
+.app-store img {
+    width: 200px;
+    height: auto;
 }
 
-.app-link:hover {
-    color: var(--link);
-}
-
-.app-link-arrow {
-    color: var(--text-tertiary);
+[data-color-scheme="dark"] .app-store img {
+    content: url("/img/app-store-white.svg");
 }
 
 /* Swap transition — short fade, motion-safe. Applied by the JS content-swap
