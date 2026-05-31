@@ -1,82 +1,7 @@
-/* ---------- Apps page ---------- */
-
-/* The detail page keeps a comfortable reading width; the grid container widens
-   on larger screens (see the min-width rules below) so the 3rd column has room
-   without the cards getting cramped. */
-.container:has(> .apps),
-.container:has(> .app-detail) {
-    max-width: 1100px;
-}
-
-/* Keep the footer aligned with the widened Apps content (it widens further to
-   1500px at the 3-column tier — see the min-width rule below). */
-body:has(.apps) footer .container,
-body:has(.app-detail) footer .container {
-    max-width: 1100px;
-}
-
-.apps,
-.app-detail {
-    margin-top: 70px;
-}
-
-/* Index header reuses the page-title / subtitle treatment. */
-.apps .page-title {
-    text-align: center;
-    font-size: 2.7em;
-    font-weight: 800;
-    margin: 0 0 0.3em;
-}
-
-.apps .page-subtitle {
-    text-align: center;
-    font-size: 1.15em;
-    color: var(--text-secondary);
-    margin: 0 0 3em;
-    line-height: 1.5;
-}
-
-/* Card grid — fluid columns that fill the row and shrink edge-to-edge: 2 by
-   default, 3 on wide screens (the cap — never 4), 1 on mobile. The column count
-   steps via the media queries below; cards flex to fill whatever width remains. */
-.apps-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-}
-
-.app-card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    background: var(--bg-secondary);
-    border-radius: 18px;
-    corner-shape: squircle;
-    padding: 24px;
-    /* Apple-store-style hover: a gentle, fluid zoom. Long-ish duration + a
-       smooth ease-out (not the bouncy --hover-spring) so it glides rather than
-       snaps. will-change hints the compositor for a jank-free transform. */
-    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
-                background 0.3s ease;
-    will-change: transform;
-}
-
-@media (hover: hover) {
-    .app-card:hover {
-        background: var(--bg-tertiary);
-        transform: scale(1.03);
-    }
-}
-
-/* Respect reduced-motion: keep the subtle background cue, drop the zoom. */
-@media (prefers-reduced-motion: reduce) {
-    .app-card {
-        transition: background 0.3s ease;
-    }
-    .app-card:hover {
-        transform: none;
-    }
-}
+/* ---------- Apps page (app-specific) ----------
+   Shared structure (container, grid, card shell, detail layout, details table,
+   fade) lives in collection.css. This file holds only app-card internals and
+   the icon-bearing detail header. */
 
 .app-card-head {
     display: flex;
@@ -164,22 +89,7 @@ body:has(.app-detail) footer .container {
         var(--bg-tertiary);
 }
 
-/* ----- Detail page ----- */
-
-.app-back {
-    display: inline-block;
-    font-size: 0.85em;
-    color: var(--text-secondary);
-    text-decoration: none;
-    margin-bottom: 1.5em;
-}
-
-.app-back:hover {
-    color: var(--text);
-}
-
-/* Header row: icon tile + headings, left-aligned — mirrors .app-card-head so
-   the detail page reads as the expanded version of the card you clicked. */
+/* Detail header: icon tile + headings, left-aligned. */
 .app-detail-head {
     display: flex;
     align-items: center;
@@ -222,75 +132,7 @@ body:has(.app-detail) footer .container {
     margin-bottom: 2.5em;
 }
 
-/* Two-column body. */
-.app-detail-body {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 3em;
-    align-items: start;
-}
-
-.app-detail-prose {
-    color: var(--text);
-    line-height: 1.7;
-}
-
-.app-detail-prose p {
-    margin: 0 0 1.25em;
-}
-
-/* Sidebar section header — matches the About page's "Tech Specs" title
-   (.about-colophon .about-label): larger, bold, bright heading colour. */
-.app-eyebrow {
-    display: block;
-    font-size: 1.2em;
-    font-weight: 700;
-    color: var(--heading);
-    margin: 0 0 0.8em;
-}
-
-.app-eyebrow:not(:first-child) {
-    margin-top: 2em;
-}
-
-/* Details key/value table — matches the About page's Tech Specs card
-   (.about-colophon dl). No column-gap so the row hairline spans both cells;
-   the label/value spacing is recreated as dt padding-right, and the border
-   sits on every row but the first (dd + dt / dd:not(:first-of-type)). Label
-   and value share a baseline. */
-.app-details {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    column-gap: 0;
-    row-gap: 0.45em;
-    margin: 0;
-    align-items: baseline;
-}
-
-.app-details dd + dt,
-.app-details dd:not(:first-of-type) {
-    border-top: 1px solid var(--border);
-    padding-top: 0.45em;
-}
-
-.app-details dt {
-    font-size: 0.9em;
-    font-weight: 600;
-    color: var(--text-secondary);
-    padding-right: 1.5em;
-}
-
-.app-details dd {
-    margin: 0;
-    text-align: right;
-    font-size: 0.9em;
-    color: var(--text);
-}
-
-/* "Download on the App Store" badge — centered below the Details table,
-   replacing the old Links list. ~44px tall keeps it tappable without dominating
-   the sidebar. The black badge ships in the markup; dark mode swaps the <img>
-   for the white variant via `content` (the alt text carries through). */
+/* "Download on the App Store" badge — centered below the Details table. */
 .app-store {
     display: block;
     text-align: center;
@@ -306,52 +148,13 @@ body:has(.app-detail) footer .container {
     content: url("/img/app-store-white.svg");
 }
 
-/* Swap transition — short fade, motion-safe. Applied by the JS content-swap
-   only (via .app-swapped), so it fires on in-place navigation but NOT on a
-   fresh page load / entering from another page. */
-@media (prefers-reduced-motion: no-preference) {
-    .app-swapped {
-        animation: app-fade-in 0.25s ease;
-    }
-}
-
-@keyframes app-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* Mobile — single full-width column. */
+/* Mobile tweaks for app-specific detail bits. */
 @media (max-width: 720px) {
-    .apps-grid {
-        grid-template-columns: 1fr;
-    }
-    .app-detail-body {
-        grid-template-columns: 1fr;
-        gap: 2em;
-    }
     .app-detail-shots {
         padding: 18px;
         gap: 14px;
     }
     .app-detail-name {
         font-size: 2.1em;
-    }
-}
-
-/* Wide screens — widen the grid container and step to 3 columns (the cap).
-   Threshold sits at the midpoint of the 3-col container range (1200–1500px) so
-   the 3→2 snap fires ~50% earlier — cards shrink through only the top half of
-   that range before dropping a column instead of all the way down. The detail
-   page isn't matched, so it keeps its 1100px reading width. */
-@media (min-width: 1350px) {
-    .container:has(> .apps) {
-        max-width: 1500px;
-    }
-    /* Footer tracks the grid to its 3-column width so they stay edge-aligned. */
-    body:has(.apps) footer .container {
-        max-width: 1500px;
-    }
-    .apps-grid {
-        grid-template-columns: repeat(3, 1fr);
     }
 }

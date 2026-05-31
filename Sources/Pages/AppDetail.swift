@@ -15,11 +15,11 @@ struct AppDetail: ArticlePage {
 
 extension AppRenderer {
     static func detailHTML(for app: AppInfo) -> String {
-        var s = #"<div class="app-detail">"#
+        var s = #"<div class="collection collection-detail">"#
 
         // Back link, then an icon + name/tagline header row (mirrors the grid
         // card's .app-card-head, so the detail reads as the expanded card).
-        s += #"<a class="app-back" href="/apps/">&lsaquo; Back to Apps</a>"#
+        s += #"<a class="collection-back" href="/apps/">&lsaquo; Back to Apps</a>"#
         s += #"<div class="app-detail-head">"#
         s += iconTile(icon: app.icon, tint: app.tint)
         s += #"<div class="app-detail-headings">"#
@@ -34,18 +34,11 @@ extension AppRenderer {
         s += "</div>"
 
         // Two-column body: prose + sidebar
-        s += #"<div class="app-detail-body">"#
-        s += #"<div class="app-detail-prose">\#(app.bodyHTML)</div>"#
-        s += #"<aside class="app-detail-sidebar">"#
+        s += #"<div class="collection-detail-body">"#
+        s += #"<div class="collection-detail-prose">\#(app.bodyHTML)</div>"#
+        s += #"<aside class="collection-detail-sidebar">"#
 
-        if !app.details.isEmpty {
-            s += #"<span class="app-eyebrow">Details</span>"#
-            s += #"<dl class="app-details">"#
-            for (label, value) in app.details {
-                s += #"<dt>\#(escape(label))</dt><dd>\#(escape(value))</dd>"#
-            }
-            s += "</dl>"
-        }
+        s += CollectionRenderer.detailsBlock(app.details)
 
         if let appStore = app.appStore {
             // Centered "Download on the App Store" badge. The black variant is
@@ -57,8 +50,8 @@ extension AppRenderer {
         }
 
         s += "</aside>"
-        s += "</div>"  // app-detail-body
-        s += "</div>"  // app-detail
+        s += "</div>"  // collection-detail-body
+        s += "</div>"  // collection collection-detail
         return s
     }
 }

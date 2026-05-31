@@ -1,0 +1,185 @@
+/* ---------- Collection pages (shared by Apps + Code) ----------
+   Page-agnostic structure: container width, responsive grid, card shell +
+   hover, detail two-column layout, the Tech-Specs-style details table, and the
+   JS swap fade. Page-specific card internals live in apps.css / code.css. */
+
+/* Container: detail pages keep a reading width; grids widen at the 3-col tier
+   (see the min-width rule at the bottom). Both Apps and Code mark their root
+   with .collection, so these drive both pages identically. */
+.container:has(> .collection) {
+    max-width: 1100px;
+}
+
+/* Footer tracks the widened content width so they stay edge-aligned. */
+body:has(.collection) footer .container {
+    max-width: 1100px;
+}
+
+.collection {
+    margin-top: 70px;
+}
+
+/* Centered page title + subtitle. */
+.collection .page-title {
+    text-align: center;
+    font-size: 2.7em;
+    font-weight: 800;
+    margin: 0 0 0.3em;
+}
+
+.collection .page-subtitle {
+    text-align: center;
+    font-size: 1.15em;
+    color: var(--text-secondary);
+    margin: 0 0 3em;
+    line-height: 1.5;
+}
+
+/* Card grid — fluid columns: 2 default, 3 at the wide tier, 1 on mobile. */
+.collection-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+/* Card shell — grey surface + Apple-style fluid hover zoom. Page-specific
+   internals (icon/frames vs screenshot/repo) layer on top in apps/code css. */
+.collection-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--bg-secondary);
+    border-radius: 18px;
+    corner-shape: squircle;
+    padding: 24px;
+    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                background 0.3s ease;
+    will-change: transform;
+}
+
+@media (hover: hover) {
+    .collection-card:hover {
+        background: var(--bg-tertiary);
+        transform: scale(1.03);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .collection-card {
+        transition: background 0.3s ease;
+    }
+    .collection-card:hover {
+        transform: none;
+    }
+}
+
+/* ----- Detail page ----- */
+
+.collection-back {
+    display: inline-block;
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-bottom: 1.5em;
+}
+
+.collection-back:hover {
+    color: var(--text);
+}
+
+.collection-detail-body {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3em;
+    align-items: start;
+}
+
+.collection-detail-prose {
+    color: var(--text);
+    line-height: 1.7;
+}
+
+.collection-detail-prose p {
+    margin: 0 0 1.25em;
+}
+
+/* Sidebar section header — matches the About "Tech Specs" title. */
+.collection-eyebrow {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--heading);
+    margin: 0 0 0.8em;
+}
+
+.collection-eyebrow:not(:first-child) {
+    margin-top: 2em;
+}
+
+/* Details key/value table — Tech-Specs hairline styling. */
+.collection-details {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 0;
+    row-gap: 0.45em;
+    margin: 0;
+    align-items: baseline;
+}
+
+.collection-details dd + dt,
+.collection-details dd:not(:first-of-type) {
+    border-top: 1px solid var(--border);
+    padding-top: 0.45em;
+}
+
+.collection-details dt {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding-right: 1.5em;
+}
+
+.collection-details dd {
+    margin: 0;
+    text-align: right;
+    font-size: 0.9em;
+    color: var(--text);
+}
+
+/* Swap transition — applied by the JS content swap only (via .collection-swapped),
+   so it fires on in-place navigation but NOT on a fresh page load. */
+@media (prefers-reduced-motion: no-preference) {
+    .collection-swapped {
+        animation: collection-fade-in 0.25s ease;
+    }
+}
+
+@keyframes collection-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Mobile — single column. */
+@media (max-width: 720px) {
+    .collection-grid {
+        grid-template-columns: 1fr;
+    }
+    .collection-detail-body {
+        grid-template-columns: 1fr;
+        gap: 2em;
+    }
+}
+
+/* Wide screens — widen container + footer and step to 3 columns (the cap).
+   Threshold at 1350px so the 3→2 snap fires partway through the range. */
+@media (min-width: 1350px) {
+    .container:has(> .collection) {
+        max-width: 1500px;
+    }
+    body:has(.collection) footer .container {
+        max-width: 1500px;
+    }
+    .collection-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

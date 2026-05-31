@@ -19,12 +19,12 @@ struct Apps: StaticPage {
 
 extension AppRenderer {
     static func gridHTML(for apps: [AppInfo]) -> String {
-        var s = #"<div class="apps">"#
+        var s = #"<div class="collection">"#
         s += #"<h1 class="page-title">Apps</h1>"#
         s += #"<p class="page-subtitle">I've been crafting software for over two decades.<br>Here are some of the apps I've helped bring to life.</p>"#
-        s += #"<div class="apps-grid">"#
+        s += #"<div class="collection-grid">"#
         for app in apps {
-            s += #"<a class="app-card" href="\#(escape(app.path))">"#
+            s += #"<a class="collection-card" href="\#(escape(app.path))">"#
             s += #"<div class="app-card-head">"#
             s += iconTile(icon: app.icon, tint: app.tint)
             s += #"<div class="app-card-meta">"#
@@ -36,8 +36,8 @@ extension AppRenderer {
             s += #"<div class="app-frames">\#(frame(tint: app.tint))\#(frame(tint: app.tint))</div>"#
             s += "</a>"
         }
-        s += "</div>"  // apps-grid
-        s += "</div>"  // apps
+        s += "</div>"  // collection-grid
+        s += "</div>"  // collection
         return s
     }
 }
