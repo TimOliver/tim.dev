@@ -52,6 +52,7 @@ playground.xcworkspace
 Build/
 Includes/_posts/
 Includes/_apps/
+Includes/_code/
 Includes/_raw/
 
 # CocoaPods
