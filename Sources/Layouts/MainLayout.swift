@@ -30,6 +30,7 @@ struct MainLayout: Layout {
             MetaLink(href: "/css/about.css", rel: .stylesheet)
             MetaLink(href: "/css/collection.css", rel: .stylesheet)
             MetaLink(href: "/css/apps.css", rel: .stylesheet)
+            MetaLink(href: "/css/code.css", rel: .stylesheet)
             MetaLink(href: "https://cdn.jsdelivr.net/npm/lightbox3@1.1.0/dist/lightbox3.css", rel: .stylesheet)
             MetaLink(href: "https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.4/src/lite-yt-embed.css", rel: .stylesheet)
         }

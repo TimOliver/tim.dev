@@ -1,0 +1,155 @@
+/* ---------- Code page (code-specific) ----------
+   Shared structure lives in collection.css. This holds repo-card internals,
+   the landscape screenshot placeholder, and the no-icon detail header. */
+
+/* Card: screenshot sits flush at the card's top edge, body padded below. The
+   shared .collection-card has 24px padding; pull the shot out to the edges. */
+.code-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.code-body {
+    padding: 20px 24px 24px;
+}
+
+/* Landscape screenshot placeholder — hatch fill + centered caption. */
+.code-shot {
+    aspect-ratio: 16 / 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
+        var(--bg-tertiary);
+    border-bottom: 1px solid var(--border);
+}
+
+.code-shot-caption {
+    font-size: 0.8em;
+    color: var(--text-tertiary);
+}
+
+/* Repo line: github mark + owner/name. */
+.code-repo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.05em;
+    font-weight: 700;
+    color: var(--heading);
+}
+
+.code-gh-mark {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+}
+
+[data-color-scheme="dark"] .code-gh-mark {
+    content: url("/img/github-white.svg");
+}
+
+.code-owner {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.code-name {
+    color: var(--heading);
+}
+
+.code-tagline {
+    font-size: 0.95em;
+    color: var(--text-secondary);
+    margin: 0.6em 0 0.9em;
+    line-height: 1.45;
+}
+
+/* Stat row: language dot + label + stars. */
+.code-stats {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.85em;
+    color: var(--text-secondary);
+}
+
+.code-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.code-lang-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    corner-shape: round;
+    display: inline-block;
+}
+
+/* ----- Detail page ----- */
+
+.code-detail-name {
+    font-size: 2.7em;
+    line-height: 1.0;
+    color: var(--heading);
+    margin: 0;
+}
+
+.code-detail-tagline {
+    font-size: 1.3em;
+    color: var(--text-secondary);
+    margin: 0.3em 0 1.5em;
+}
+
+/* Large landscape screenshot in a bordered surface. */
+.code-detail-shot {
+    border-radius: 18px;
+    corner-shape: squircle;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 2.5em;
+}
+
+.code-detail-shot .code-shot {
+    aspect-ratio: 16 / 9;
+    border-bottom: none;
+}
+
+/* Links list (text links with a trailing arrow). */
+.code-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.code-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.95em;
+    padding: 0.5em 0;
+    border-top: 1px solid var(--border);
+}
+
+.code-links li:first-child .code-link {
+    border-top: none;
+}
+
+.code-link:hover {
+    color: var(--link);
+}
+
+.code-link-arrow {
+    color: var(--text-tertiary);
+}
+
+@media (max-width: 720px) {
+    .code-detail-name {
+        font-size: 2.1em;
+    }
+}
