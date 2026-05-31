@@ -343,12 +343,17 @@
     var prev = document.querySelector('.gallery-arrow--prev');
     var next = document.querySelector('.gallery-arrow--next');
 
-    // Rest each slide one overhang-width in from the viewport edge so the
-    // leading card sits at the column edge, clear of the fade — mirrors the
-    // track's padding-inline. Same clamp as the CSS --overhang; recomputed
-    // by Embla on reInit (resize).
+    // Rest each slide one overhang-width in from the viewport edge so every
+    // snapped card sits flush with the content column, clear of the edge fade.
+    // The scroller is pulled out into the page margin (negative margin-inline
+    // = --overhang), so a card aligned to the viewport's own start edge lands
+    // out in that bleed, behind the gradient — which is what made the snap
+    // positions look arbitrary. Read the resolved margin-left (a real px value)
+    // and offset every snap inward by it. Reading the computed margin rather
+    // than recomputing the clamp keeps this locked to the CSS --overhang no
+    // matter how that's retuned; Embla calls it again on reInit (resize).
     function startInset() {
-        return Math.min(60, Math.max(0, (window.innerWidth - 1100) / 2));
+        return -(parseFloat(getComputedStyle(viewport).marginLeft) || 0);
     }
     var embla = EmblaCarousel(viewport, { align: startInset, containScroll: 'trimSnaps' });
 
