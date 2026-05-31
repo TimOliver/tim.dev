@@ -17,10 +17,16 @@ extension AppRenderer {
     static func detailHTML(for app: AppInfo) -> String {
         var s = #"<div class="app-detail">"#
 
-        // Back link + header
+        // Back link, then an icon + name/tagline header row (mirrors the grid
+        // card's .app-card-head, so the detail reads as the expanded card).
         s += #"<a class="app-back" href="/apps/">&lsaquo; Back to Apps</a>"#
+        s += #"<div class="app-detail-head">"#
+        s += iconTile(icon: app.icon, tint: app.tint)
+        s += #"<div class="app-detail-headings">"#
         s += #"<h1 class="app-detail-name">\#(escape(app.title))</h1>"#
         s += #"<p class="app-detail-tagline">\#(escape(app.tagline))</p>"#
+        s += "</div>"  // app-detail-headings
+        s += "</div>"  // app-detail-head
 
         // Screenshot frames (three larger placeholders) in a surface
         s += #"<div class="app-detail-shots">"#

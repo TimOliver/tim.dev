@@ -399,6 +399,10 @@
                 var incoming = doc.querySelector('main .container');
                 if (!incoming) throw new Error('no container in response');
                 container.innerHTML = incoming.innerHTML;
+                // Fade only the swapped-in content (not fresh page loads); the
+                // class is freshly attached to a new node so the animation runs.
+                var root = container.querySelector('.apps, .app-detail');
+                if (root) root.classList.add('app-swapped');
                 if (push) history.pushState({ apps: true }, '', url);
                 window.scrollTo(0, 0);
             })

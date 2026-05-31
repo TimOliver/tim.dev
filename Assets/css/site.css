@@ -24,11 +24,11 @@
    rather than pure black, and eases primary text/headings off pure white.
    Pure #000 + ~#fff is ~20:1 and "halates" on OLED, which read as
    overpowering; lifting off black settles it. Surfaces step up #141414 →
-   #2C2C2E so cards/popovers still separate. Secondary/tertiary text stay
-   alpha-based and remain ≥4.5:1 / ≥3:1 here. */
+   #1E1E20 so cards/popovers still separate without reading too bright against
+   the page. Secondary/tertiary text stay alpha-based and remain ≥4.5:1 / ≥3:1 here. */
 [data-color-scheme="dark"] {
     --bg: #141414;
-    --bg-secondary: #2C2C2E;
+    --bg-secondary: #1E1E20;
     --bg-tertiary: rgba(120, 120, 120, 0.24);
     --text: #E4E4EA;
     --text-secondary: rgba(235, 235, 245, 0.6);
