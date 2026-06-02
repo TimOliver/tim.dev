@@ -754,7 +754,7 @@ body > header::before {
     }
 
     body > header {
-        padding: 8px 0 33px;
+        padding: 8px 0 0;
     }
 
 

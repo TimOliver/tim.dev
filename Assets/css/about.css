@@ -59,7 +59,6 @@ body:has(.about) footer .container {
     font-weight: 600;
     line-height: 1.3;
     color: var(--text);
-    text-wrap: balance;
     margin: 0 0 0.5em;
 }
 
@@ -71,7 +70,6 @@ body:has(.about) footer .container {
     font-size: 1.1em;
     font-weight: 400;
     line-height: 1.4;
-    text-wrap: balance;
 }
 
 .about-portrait {
@@ -468,6 +466,23 @@ body:has(.about) footer .container {
     box-shadow: -15px -15px 30px 25px var(--bg);
 }
 
+/* Under 1330px the carousel is narrow enough that the bleed + edge fades stop
+   earning their keep — drop them so cards sit edge-to-edge in the column,
+   clipping crisply at the edges. Zeroing --overhang removes the negative margin
+   bleed (and the track padding / edge spacer that derive from it); the fade
+   strips are hidden outright. overflow:hidden stays — Embla needs it to hide
+   off-screen slides. */
+@media (max-width: 1329.98px) {
+    .gallery-scroller {
+        --overhang: 0px;
+        overflow: visible;
+    }
+    .gallery-scroller::before,
+    .gallery-scroller::after {
+        display: none;
+    }
+}
+
 /* Embla container — the flex track Embla translates on drag / arrow press.
    Left padding insets the first card to the column edge. A trailing
    .gallery-edge spacer does the same for the last card: Embla measures the
@@ -592,6 +607,24 @@ body:has(.about) footer .container {
     text-align: right;
     font-size: 0.9em;
     color: var(--text);
+}
+
+/* Mid widths: between the single-column collapse (720px) and the full hero
+   width, the fixed 350px portrait squeezes the greeting text. Shrink the
+   portrait (~155px, keeping its 350:424 ratio) so the text gets room back. */
+/* Mid widths: the portrait column is fluid (grows with the viewport) so the
+   gap between the greeting and the photo stays ~constant instead of ballooning
+   as the window widens. Height tracks the width via aspect-ratio (the portrait
+   is 350:424 ≈ 0.825), so it stays in proportion at every size. */
+@media (min-width: 721px) and (max-width: 1000px) {
+    .about-intro {
+        grid-template-columns: 1fr clamp(260px, 28vw, 320px);
+    }
+    .about-portrait img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 350 / 424;
+    }
 }
 
 @media (max-width: 720px) {
