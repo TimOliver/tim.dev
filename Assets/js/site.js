@@ -439,15 +439,17 @@
 })();
 
 // Back-to-top: fade the button in after scrolling past a threshold; smooth-
-// scroll to top on click. No-op if the page doesn't render the button.
+// scroll to top on click. The button lives inside the swappable .container, so
+// the content swap (above) replaces the node — hence we re-query it each tick
+// and use event delegation for the click, rather than capturing the node once.
+// No-op on pages that don't render the button.
 (function() {
-    var btn = document.querySelector('.back-to-top');
-    if (!btn) return;
-
     var reduce = window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function update() {
+        var btn = document.querySelector('.back-to-top');
+        if (!btn) return;
         if (window.scrollY > 600) {
             btn.classList.add('visible');
         } else {
@@ -458,7 +460,9 @@
     window.addEventListener('scroll', update, { passive: true });
     update();
 
-    btn.addEventListener('click', function() {
+    // Delegated click survives the .container innerHTML swap.
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.back-to-top')) return;
         window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
     });
 })();
