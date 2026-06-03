@@ -1,0 +1,13 @@
+---
+title: New-follower alert
+layout: ArtDetail
+date: 2025-03-01 00:00:00
+tag: Play
+duration: 3s
+meta: Stream · 3s · 2025
+tint: linear-gradient(135deg, #ce93d8, #ab47bc)
+order: 4
+stats: Type=Alert; Length=3s; Year=2025
+path: /art/stream-art/new-follower/
+---
+A three-second new-follower alert — a little celebratory pop without derailing the moment.
