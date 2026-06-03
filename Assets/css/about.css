@@ -59,6 +59,7 @@ body:has(.about) footer .container {
     font-weight: 600;
     line-height: 1.3;
     color: var(--text);
+    text-wrap: balance;
     margin: 0 0 0.5em;
 }
 
@@ -124,6 +125,21 @@ body:has(.about) footer .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2.5em;
+}
+
+/* "About This Site": stack the prose + Tech Specs columns once the left column
+   would fall below ~450px — keyed off the SECTION's own width (a container
+   query), not the viewport, so it tracks the actual column size. With a 2.5em
+   (~37px) gap and equal columns, the left column hits 450px at a section width
+   of ~937px; round to 940px. */
+.about-section--site {
+    container-type: inline-size;
+}
+
+@container (max-width: 940px) {
+    .about-section--site .about-cols {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Narrow first column variant — for "A brief history" the timeline only
@@ -467,11 +483,14 @@ body:has(.about) footer .container {
 }
 
 /* Under 1330px the carousel is narrow enough that the bleed + edge fades stop
-   earning their keep — drop them so cards sit edge-to-edge in the column,
-   clipping crisply at the edges. Zeroing --overhang removes the negative margin
-   bleed (and the track padding / edge spacer that derive from it); the fade
-   strips are hidden outright. overflow:hidden stays — Embla needs it to hide
-   off-screen slides. */
+   earning their keep — drop them so cards sit edge-to-edge, clipping at the
+   viewport edge rather than the column edge. Zeroing --overhang removes the
+   negative margin bleed (and the derived track padding / edge spacer); the fade
+   strips are hidden. The scroller goes overflow:visible so off-screen cards
+   spill past the column toward the screen edge — but then `main` clips them at
+   the viewport so they don't widen the page (the bug `overflow: visible` alone
+   caused). `clip` (not `hidden`) creates no scroll container, so it can't
+   affect the sticky header (which lives outside `main` anyway). */
 @media (max-width: 1329.98px) {
     .gallery-scroller {
         --overhang: 0px;
@@ -480,6 +499,9 @@ body:has(.about) footer .container {
     .gallery-scroller::before,
     .gallery-scroller::after {
         display: none;
+    }
+    main:has(.gallery) {
+        overflow-x: clip;
     }
 }
 
@@ -609,13 +631,11 @@ body:has(.about) footer .container {
     color: var(--text);
 }
 
-/* Mid widths: between the single-column collapse (720px) and the full hero
-   width, the fixed 350px portrait squeezes the greeting text. Shrink the
-   portrait (~155px, keeping its 350:424 ratio) so the text gets room back. */
-/* Mid widths: the portrait column is fluid (grows with the viewport) so the
-   gap between the greeting and the photo stays ~constant instead of ballooning
-   as the window widens. Height tracks the width via aspect-ratio (the portrait
-   is 350:424 ≈ 0.825), so it stays in proportion at every size. */
+/* Mid widths (the "compressed" tablet band between the 720px single-column
+   collapse and the full hero width). The portrait column is fluid (grows with
+   the viewport) so the gap between the greeting and the photo stays ~constant
+   instead of ballooning. Height tracks width via aspect-ratio (portrait is
+   350:424 ≈ 0.825), keeping proportion at every size. */
 @media (min-width: 721px) and (max-width: 1000px) {
     .about-intro {
         grid-template-columns: 1fr clamp(260px, 28vw, 320px);
@@ -624,6 +644,23 @@ body:has(.about) footer .container {
         width: 100%;
         height: auto;
         aspect-ratio: 350 / 424;
+    }
+
+    /* Tighten the column gutter — at this width the 2.5em gap between Currently
+       and Previously reads as too much dead space. */
+    .about-cols {
+        gap: 1.5em;
+    }
+
+    /* Stack each Previously job's head: the narrow columns make the role wrap
+       while the right-pinned years detach. Put the years on their own line
+       below the company/role instead of fighting for space on the right. */
+    .about-job-head {
+        display: block;
+    }
+    .about-job-head .about-job-meta {
+        display: block;
+        margin-top: 0.15em;
     }
 }
 
