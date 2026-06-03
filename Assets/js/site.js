@@ -381,7 +381,9 @@
 
     // Only operate on Apps/Code pages (grid or a detail page).
     function isCollectionPath(path) {
-        return /^\/(apps|code)\/$/.test(path) || /^\/(apps|code)\/[^/]+\/$/.test(path);
+        return /^\/(apps|code|art)\/$/.test(path)
+            || /^\/(apps|code)\/[^/]+\/$/.test(path)
+            || /^\/art\/[^/]+\/[^/]+\/$/.test(path);
     }
     if (!isCollectionPath(location.pathname)) return;
 
@@ -433,5 +435,30 @@
         } else {
             window.location.reload();
         }
+    });
+})();
+
+// Back-to-top: fade the button in after scrolling past a threshold; smooth-
+// scroll to top on click. No-op if the page doesn't render the button.
+(function() {
+    var btn = document.querySelector('.back-to-top');
+    if (!btn) return;
+
+    var reduce = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function update() {
+        if (window.scrollY > 600) {
+            btn.classList.add('visible');
+        } else {
+            btn.classList.remove('visible');
+        }
+    }
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+
+    btn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
     });
 })();

@@ -1241,3 +1241,37 @@ footer .container {
         font-size: 2.4em;
     }
 }
+
+/* Back-to-top — a fixed button that fades in after scrolling down, scrolls to
+   the top on click. Shown/hidden by the .visible class (toggled in site.js).
+   Reusable on any long page that renders the button. */
+.back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    corner-shape: round;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--text);
+    font-size: 1.2em;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 20;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .back-to-top {
+        transition: none;
+    }
+}
