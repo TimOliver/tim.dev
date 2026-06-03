@@ -203,3 +203,28 @@ body:has(.collection-detail) footer .container {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+/* Jump-nav chips (shared) — a row of pill links to in-page sections, reusing
+   the Archive chip look. Used by the Art page; available to any long page. */
+.section-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 3em;
+}
+
+.section-chip {
+    padding: 4px 14px;
+    border-radius: 999px;
+    corner-shape: squircle;
+    border: 1px solid var(--border);
+    font-size: 0.85em;
+    color: var(--text);
+    text-decoration: none;
+    line-height: 1.6;
+}
+
+.section-chip:hover {
+    background: var(--control-hover);
+    color: var(--text);
+}
