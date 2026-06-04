@@ -30,8 +30,6 @@
 }
 
 /* ----- Featured hero (always pinned) ----- */
-/* The hero + search + filter blocks stay at the reading width and centered even
-   when the grid widens to the 3-col tier; only the card grid spans full width. */
 .talks-featured {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -39,8 +37,7 @@
     align-items: center;
     text-decoration: none;
     color: inherit;
-    max-width: 1100px;
-    margin: 1em auto 2.5em;
+    margin: 1em 0 2.5em;
 }
 
 .talks-featured .talks-thumb {
@@ -72,8 +69,7 @@
 
 /* ----- Search ----- */
 .talks-search-wrap {
-    max-width: 1100px;
-    margin: 0 auto 1.5em;
+    margin: 0 0 1.5em;
 }
 
 .talks-search {
@@ -99,8 +95,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.7em;
-    max-width: 1100px;
-    margin: 0 auto 2.5em;
+    margin: 0 0 2.5em;
 }
 
 .talks-filter-row {

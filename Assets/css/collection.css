@@ -201,11 +201,13 @@ body:has(.collection-detail) footer .container {
    the snap from 3→2 happens exactly as the cards would start to shrink. */
 @media (min-width: 1650px) {
     /* Only the GRID widens — detail pages (.collection-detail) keep the 1100px
-       reading width from the base rule, so they don't go comically wide. */
-    .container:has(> .collection:not(.collection-detail)) {
+       reading width from the base rule, so they don't go comically wide. Talks
+       also opts out (:not(.talks)): its featured hero + filter bar read best at
+       the 1100px width, and widening only the grid left them misaligned. */
+    .container:has(> .collection:not(.collection-detail):not(.talks)) {
         max-width: 1650px;
     }
-    body:has(.collection:not(.collection-detail)) footer .container {
+    body:has(.collection:not(.collection-detail):not(.talks)) footer .container {
         max-width: 1650px;
     }
     .collection-grid {
