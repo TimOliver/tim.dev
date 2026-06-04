@@ -56,6 +56,7 @@ extension TalksRenderer {
         // max width and stack (search on its own line) when shrunk.
         s += #"<div class="talks-controls">"#
         s += #"<div class="talks-search-wrap">"#
+        s += #"<svg class="talks-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>"#
         s += #"<input type="search" class="talks-search" aria-label="Search talks" placeholder="Search \#(total) talks by title, venue, or topic…">"#
         s += "</div>"
         s += #"<div class="talks-filter-row">"#

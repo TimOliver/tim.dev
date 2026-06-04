@@ -89,17 +89,30 @@
 }
 
 .talks-search-wrap {
+    position: relative;
     flex: 1 1 100%;
+}
+
+/* Magnifying-glass icon, vertically centred at the left of the capsule. */
+.talks-search-icon {
+    position: absolute;
+    left: 1.2em;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.05em;
+    height: 1.05em;
+    color: var(--text-tertiary);
+    pointer-events: none;
 }
 
 .talks-search {
     width: 100%;
-    padding: 0.85em 1.1em;
+    padding: 0.85em 1.3em 0.85em 2.9em;
     font: inherit;
     color: var(--text);
     background: var(--bg-secondary);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 999px;
     corner-shape: squircle;
 }
 
@@ -149,11 +162,11 @@
     color: var(--bg);
 }
 
-/* Wide tier: search joins the filter line, growing to fill the leftover space. */
+/* Wide tier: search joins the filter line on the far left, growing to fill the
+   space up to the Topic/Year groups. */
 @media (min-width: 1650px) {
     .talks-search-wrap {
         flex: 1 1 280px;
-        order: 1;
     }
 }
 
