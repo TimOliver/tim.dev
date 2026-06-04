@@ -518,3 +518,73 @@
         el.textContent = addr;
     });
 })();
+
+// Talks page: client-side search + topic + year filtering over the grid.
+// No-op unless the talks grid is present. Reads the current selection straight
+// from the DOM each run (no retained state), and binds via document-level
+// delegation, so it survives the content-swap re-inserting the index. With JS
+// off the full grid simply shows.
+(function() {
+    var YEAR_BUCKETS = {
+        '2023-26': [2023, 2026],
+        '2019-22': [2019, 2022],
+        '2015-18': [2015, 2018],
+        '2011-14': [2011, 2014]
+    };
+
+    function apply() {
+        var grid = document.querySelector('.talks-grid');
+        if (!grid) return;  // not on the talks page (or not yet swapped in)
+
+        var topicBtn = document.querySelector('.talks-filter-topic.is-active');
+        var yearBtn = document.querySelector('.talks-filter-year.is-active');
+        var search = document.querySelector('.talks-search');
+        var topic = topicBtn ? topicBtn.getAttribute('data-topic') : 'all';
+        var year = yearBtn ? yearBtn.getAttribute('data-year') : 'all';
+        var query = search ? search.value.trim().toLowerCase() : '';
+        var bucket = YEAR_BUCKETS[year];
+
+        var cards = grid.querySelectorAll('.talks-card');
+        var visible = 0;
+        Array.prototype.forEach.call(cards, function(card) {
+            var topics = (card.getAttribute('data-topics') || '').split(' ');
+            var cardYear = parseInt(card.getAttribute('data-year'), 10);
+            var hay = card.getAttribute('data-search') || '';
+            var okTopic = topic === 'all' || topics.indexOf(topic) !== -1;
+            var okYear = year === 'all' || (bucket && cardYear >= bucket[0] && cardYear <= bucket[1]);
+            var okQuery = query === '' || hay.indexOf(query) !== -1;
+            var show = okTopic && okYear && okQuery;
+            card.classList.toggle('hidden', !show);
+            if (show) visible++;
+        });
+
+        var count = document.querySelector('.talks-count');
+        if (count) {
+            var pristine = topic === 'all' && year === 'all' && query === '';
+            count.textContent = pristine
+                ? 'Showing all ' + count.getAttribute('data-total') + ' talks'
+                : 'Showing ' + visible + (visible === 1 ? ' talk' : ' talks');
+        }
+        var empty = document.querySelector('.talks-empty');
+        if (empty) empty.hidden = visible !== 0;
+        grid.classList.toggle('hidden', visible === 0);
+    }
+
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest ? e.target.closest('.talks-filter') : null;
+        if (!btn) return;
+        var row = btn.closest('.talks-filter-row');
+        if (!row) return;
+        var sibs = row.querySelectorAll('.talks-filter');
+        Array.prototype.forEach.call(sibs, function(s) {
+            s.classList.toggle('is-active', s === btn);
+        });
+        apply();
+    });
+
+    document.addEventListener('input', function(e) {
+        var t = e.target;
+        if (!t || !t.classList || !t.classList.contains('talks-search')) return;
+        apply();
+    });
+})();
