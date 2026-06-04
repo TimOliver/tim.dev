@@ -1,12 +1,12 @@
 /* ---------- Archive page ---------- */
 
 .container:has(> .archive) {
-    max-width: 900px;
+    max-width: 930px;
 }
 
 /* Footer tracks the widened content width so they stay edge-aligned. */
 body:has(.archive) footer .container {
-    max-width: 900px;
+    max-width: 930px;
 }
 
 .archive-search {
@@ -82,7 +82,12 @@ body:has(.archive) footer .container {
     grid-template-columns: 56px 1fr auto;
     gap: 16px;
     align-items: baseline;
-    padding: 6px 0;
+    padding: 7px 0;
+}
+
+/* Entry title — bumped a touch so the list fills the (narrower) column. */
+.archive-row .text-link {
+    font-size: 1.1em;
 }
 
 .archive-month {
