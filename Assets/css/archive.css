@@ -91,13 +91,13 @@ body:has(.archive) footer .container {
 }
 
 .archive-month {
-    font-size: 0.85em;
+    font-size: 0.94em;
     color: var(--text-secondary);
     font-weight: 500;
 }
 
 .archive-date {
-    font-size: 0.82em;
+    font-size: 0.9em;
     color: var(--text-secondary);
     text-align: right;
     white-space: nowrap;
