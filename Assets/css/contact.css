@@ -73,7 +73,7 @@ body:has(.contact) footer .container {
     font-weight: 700;
     line-height: 1;
     color: var(--heading);
-    margin: 3.5em 0 1.2em;
+    margin: 2.3em 0 0.5em;
 }
 
 .contact-prose {
