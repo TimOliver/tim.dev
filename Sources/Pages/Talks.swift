@@ -61,18 +61,22 @@ extension TalksRenderer {
         s += "</div>"
         s += #"<div class="talks-filter-row">"#
         s += #"<span class="talks-filter-label">Topic</span>"#
+        s += #"<div class="talks-filter-pills">"#
         s += #"<button type="button" class="talks-filter talks-filter-topic is-active" data-topic="all">All</button>"#
         for topic in topicList {
             s += #"<button type="button" class="talks-filter talks-filter-topic" data-topic="\#(escape(topic.lowercased()))">\#(escape(topic))</button>"#
         }
+        s += "</div>"  // talks-filter-pills
         s += "</div>"  // talks-filter-row (topic)
         s += #"<div class="talks-filter-row">"#
         s += #"<span class="talks-filter-label">Year</span>"#
+        s += #"<div class="talks-filter-pills">"#
         s += #"<button type="button" class="talks-filter talks-filter-year is-active" data-year="all">All</button>"#
         let buckets = [("2023-26", "2023–26"), ("2019-22", "2019–22"), ("2015-18", "2015–18"), ("2011-14", "2011–14")]
         for (id, label) in buckets {
             s += #"<button type="button" class="talks-filter talks-filter-year" data-year="\#(id)">\#(label)</button>"#
         }
+        s += "</div>"  // talks-filter-pills
         s += "</div>"  // talks-filter-row (year)
         s += "</div>"  // talks-controls
 
@@ -95,6 +99,9 @@ extension TalksRenderer {
 
         // Empty state — shown by site.js when filters match nothing.
         s += #"<p class="talks-empty" hidden>No talks match your filters.</p>"#
+
+        // Back-to-top (fixed; fades in on scroll — wired by site.js, styled in site.css).
+        s += #"<button type="button" class="back-to-top" aria-label="Back to top">&uarr;</button>"#
 
         s += "</div>"  // collection talks
         return s

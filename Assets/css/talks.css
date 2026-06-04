@@ -126,16 +126,25 @@
 }
 
 /* ----- Filter groups (Topic / Year) ----- */
+/* Label is a fixed-width, right-aligned column; the pills live in their own
+   wrapping column, so when stacked the labels line up (pills share a left edge)
+   and pills that wrap stay inset under the first pill — never under the label. */
 .talks-filter-row {
     display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.talks-filter-pills {
+    display: flex;
     flex-wrap: wrap;
-    align-items: center;
     gap: 8px;
 }
 
 .talks-filter-label {
     width: 3.5em;
     flex: 0 0 auto;
+    text-align: right;
     font-size: 0.8em;
     font-weight: 600;
     letter-spacing: 0.06em;
@@ -250,5 +259,4 @@
     .talks-featured .talks-thumb { flex-basis: auto; }
     .talks-featured-text { max-width: none; }
     .talks-featured-title { font-size: 1.9em; }
-    .talks-filter-label { width: auto; }
 }
