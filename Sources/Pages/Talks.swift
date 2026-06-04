@@ -52,8 +52,6 @@ extension TalksRenderer {
             s += "</a>"
         }
 
-        s += #"<hr class="talks-divider">"#
-
         // Search.
         s += #"<div class="talks-search-wrap">"#
         s += #"<input type="search" class="talks-search" aria-label="Search talks" placeholder="Search \#(total) talks by title, venue, or topic…">"#
@@ -77,9 +75,6 @@ extension TalksRenderer {
         }
         s += "</div>"  // talks-filter-row (year)
         s += "</div>"  // talks-filters
-
-        // Count line (data-total drives the "Showing all N" pristine label).
-        s += #"<p class="talks-count" data-total="\#(total)">Showing all \#(total) talks</p>"#
 
         // Grid — every talk (the featured one is intentionally also a card).
         s += #"<div class="collection-grid talks-grid">"#
