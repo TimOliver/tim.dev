@@ -1,0 +1,227 @@
+/* ---------- Talks page ----------
+   Built on the shared collection structure (collection.css gives the container
+   width, footer width, centered title/subtitle, grid columns, and card hover via
+   the .collection class). This file adds only the talk-specific pieces: the
+   featured hero, the tinted thumbnail, the search + filter bar, card internals,
+   topic badges, the empty state, and the detail video surface.
+   Tokens only; squircle; 720px collapse. */
+
+/* Tinted thumbnail surface — shared by the hero, the cards, and the detail
+   placeholder. The duration badge sits bottom-right. */
+.talks-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    corner-shape: squircle;
+    overflow: hidden;
+}
+
+.talks-duration {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    padding: 2px 7px;
+    border-radius: 6px;
+    corner-shape: squircle;
+    background: rgba(0, 0, 0, 0.72);
+    color: rgba(255, 255, 255, 1);
+    font-size: 0.78em;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ----- Featured hero (always pinned) ----- */
+.talks-featured {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5em;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    margin-top: 1em;
+}
+
+.talks-featured .talks-thumb {
+    aspect-ratio: 16 / 10;
+}
+
+.talks-eyebrow {
+    display: block;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8em;
+}
+
+.talks-featured-title {
+    font-size: 2.4em;
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--heading);
+    margin: 0 0 0.4em;
+}
+
+.talks-featured-meta {
+    color: var(--text-secondary);
+    margin: 0 0 1em;
+}
+
+/* ----- Divider ----- */
+.talks-divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 2.5em 0;
+}
+
+/* ----- Search ----- */
+.talks-search-wrap {
+    margin: 0 0 1.5em;
+}
+
+.talks-search {
+    width: 100%;
+    padding: 0.85em 1.1em;
+    font: inherit;
+    color: var(--text);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    corner-shape: squircle;
+}
+
+.talks-search::placeholder { color: var(--text-tertiary); }
+
+.talks-search:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* ----- Filter rows ----- */
+.talks-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7em;
+    margin: 0 0 1.5em;
+}
+
+.talks-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.talks-filter-label {
+    width: 3.5em;
+    flex: 0 0 auto;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+}
+
+.talks-filter {
+    padding: 4px 14px;
+    border-radius: 999px;
+    corner-shape: squircle;
+    border: 1px solid var(--border);
+    background: transparent;
+    font: inherit;
+    font-size: 0.85em;
+    line-height: 1.6;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.talks-filter:hover { background: var(--control-hover); }
+
+.talks-filter.is-active {
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--bg);
+}
+
+/* ----- Count line ----- */
+.talks-count {
+    margin: 0 0 1.5em;
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9em;
+    color: var(--text-secondary);
+}
+
+/* ----- Talk card internals (card shell + hover come from .collection-card) ----- */
+.talks-card-body { padding: 14px 2px 0; }
+
+.talks-card-title {
+    font-size: 1.05em;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--heading);
+    margin: 0 0 0.3em;
+}
+
+.talks-card-meta {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    margin: 0 0 0.7em;
+}
+
+/* ----- Topic badges ----- */
+.talks-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.talks-tag {
+    padding: 2px 9px;
+    border-radius: 6px;
+    corner-shape: squircle;
+    background: var(--bg-secondary);
+    font-size: 0.78em;
+    color: var(--text-secondary);
+}
+
+/* ----- Filtered-out cards + empty state (toggled by site.js) ----- */
+.talks-card.hidden,
+.talks-grid.hidden { display: none; }
+
+.talks-empty {
+    margin: 0;
+    padding: 2em 0;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+/* ----- Detail video surface ----- */
+.talks-detail-video {
+    margin-bottom: 2.5em;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    corner-shape: squircle;
+    overflow: hidden;
+}
+
+/* Inside the wrapper the thumb/embed shouldn't double the border or rounding. */
+.talks-detail-video .talks-thumb {
+    border-radius: 0;
+}
+
+.talks-detail-video lite-youtube {
+    display: block;
+    width: 100%;
+    border-radius: 0;
+}
+
+/* ----- Mobile ----- */
+@media (max-width: 720px) {
+    .talks-featured {
+        grid-template-columns: 1fr;
+        gap: 1.2em;
+    }
+    .talks-featured-title { font-size: 1.9em; }
+    .talks-filter-label { width: auto; }
+}
