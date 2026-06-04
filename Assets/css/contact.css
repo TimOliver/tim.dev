@@ -1,0 +1,135 @@
+/* ---------- Contact page ----------
+   Static page styled with the existing design system: global .page-title /
+   .page-subtitle for the header, the About "Tech Specs" card + hairline table
+   for the contact-details card, SF fonts, surface tokens. No eyebrows. */
+
+.container:has(> .contact) {
+    max-width: 1100px;
+}
+
+.contact {
+    margin-top: 70px;
+}
+
+/* Clamp the centered subtitle to a comfortable measure (the global rule sets
+   centering + color; this just bounds the width). */
+.contact .page-subtitle {
+    max-width: 600px;
+    font-size: 1.15em;
+    line-height: 1.5;
+    margin: 0 auto 3em;
+}
+
+/* Two-column rows (email/opportunities, then prose/card). */
+.contact-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3em;
+    align-items: start;
+}
+
+/* The big email — the lead element of the left column (no eyebrow above it). */
+.contact-email {
+    display: inline-block;
+    font-size: 2.4em;
+    font-weight: 700;
+    color: var(--heading);
+    text-decoration: none;
+    border-bottom: 2px solid var(--link);
+    padding-bottom: 0.05em;
+    margin-bottom: 0.5em;
+    word-break: break-word;
+}
+
+.contact-email:hover {
+    color: var(--heading);
+}
+
+.contact-blurb,
+.contact-avail {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.contact-avail + .contact-meta {
+    margin-top: 1.2em;
+}
+
+.contact-meta {
+    font-size: 0.85em;
+    color: var(--text-tertiary);
+    margin: 0;
+}
+
+.contact-divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 3.5em 0;
+}
+
+.contact-prose {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Contact-details card — recreates the About "Tech Specs" card + hairline
+   table (kept independent of .about-colophon so About's markup stays decoupled). */
+.contact-card {
+    padding: 24px 28px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    corner-shape: squircle;
+    margin: 0;
+    align-self: start;
+}
+
+.contact-card dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 0;
+    row-gap: 0.45em;
+    margin: 0;
+    align-items: baseline;
+}
+
+.contact-card dd + dt,
+.contact-card dd:not(:first-of-type) {
+    border-top: 1px solid var(--border);
+    padding-top: 0.45em;
+}
+
+.contact-card dt {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding-right: 1.5em;
+}
+
+.contact-card dd {
+    margin: 0;
+    text-align: right;
+    font-size: 0.9em;
+    color: var(--text);
+}
+
+.contact-link {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.contact-link:hover {
+    color: var(--link);
+}
+
+/* Stack both two-column rows on narrow viewports. */
+@media (max-width: 720px) {
+    .contact-cols {
+        grid-template-columns: 1fr;
+        gap: 2em;
+    }
+    .contact-email {
+        font-size: 2em;
+    }
+}
