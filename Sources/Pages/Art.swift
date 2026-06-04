@@ -40,14 +40,6 @@ extension ArtRenderer {
 
         for sec in sections {
             s += #"<section class="art-section" id="\#(escape(sec.slug))">"#
-            s += #"<div class="art-section-head">"#
-            if !sec.eyebrow.isEmpty {
-                s += #"<span class="art-eyebrow">\#(escape(sec.eyebrow))</span>"#
-            }
-            if !sec.meta.isEmpty {
-                s += #"<span class="art-section-meta">\#(escape(sec.meta))</span>"#
-            }
-            s += "</div>"
             s += #"<h2 class="art-section-title">\#(escape(sec.title))</h2>"#
             if !sec.blurb.isEmpty {
                 s += #"<p class="art-section-blurb">\#(escape(sec.blurb))</p>"#
@@ -70,9 +62,6 @@ extension ArtRenderer {
     static func card(_ item: ArtItem) -> String {
         var s = #"<a class="collection-card art-card" href="\#(escape(item.path))">"#
         s += #"<div class="art-shot" style="background: \#(escape(item.tint));">"#
-        if !item.tag.isEmpty {
-            s += #"<span class="art-tag">\#(escape(item.tag))</span>"#
-        }
         if !item.duration.isEmpty {
             s += #"<span class="art-duration">\#(escape(item.duration))</span>"#
         }

@@ -42,8 +42,17 @@ body:has(.collection-detail) footer .container {
     text-align: center;
     font-size: 1.15em;
     color: var(--text-secondary);
-    margin: 0 0 3em;
+    /* Clamp the page tagline to a comfortable measure, centered, on every
+       collection subpage (Apps / Code / Art). */
+    max-width: 850px;
+    margin: 0 auto 3em;
     line-height: 1.5;
+}
+
+/* When jump-nav chips follow the tagline (Art page), pull them up close to it
+   — the full 3em gap reads as dead space between them. */
+.collection .page-subtitle:has(+ .section-chips) {
+    margin-bottom: 1em;
 }
 
 /* Card grid — fluid columns: 2 default, 3 at the wide tier, 1 on mobile.
@@ -209,6 +218,7 @@ body:has(.collection-detail) footer .container {
 .section-chips {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 8px;
     margin: 0 0 3em;
 }

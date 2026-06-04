@@ -414,6 +414,26 @@
             });
     }
 
+    // In-page hash links (the jump-nav chips → #section) get an explicit,
+    // controlled smooth-scroll. Handling them here — rather than letting the
+    // native anchor jump run — avoids a race where the URL-hash change and the
+    // swap/popstate machinery briefly scroll the page back to the top.
+    var reduceMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.addEventListener('click', function(e) {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey ||
+            e.shiftKey || e.altKey) return;
+        var a = e.target.closest('a');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href || href.charAt(0) !== '#' || href.length < 2) return;
+        var target = document.getElementById(href.slice(1));
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        history.replaceState(history.state, '', href);
+    });
+
     // Intercept clicks on same-origin /apps/ links (cards + "Back to Apps").
     document.addEventListener('click', function(e) {
         if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey ||
@@ -422,6 +442,8 @@
         if (!a) return;
         var href = a.getAttribute('href');
         if (!href || a.target === '_blank' || a.origin !== location.origin) return;
+        // In-page hash links are handled by the smooth-scroll listener above.
+        if (href.charAt(0) === '#') return;
         if (!isCollectionPath(a.pathname)) return;
         e.preventDefault();
         swapTo(a.href, true);
@@ -450,7 +472,12 @@
     function update() {
         var btn = document.querySelector('.back-to-top');
         if (!btn) return;
-        if (window.scrollY > 600) {
+        // Visible once scrolled down, but hide again near the page bottom so the
+        // fixed button never floats over the footer content (the credit sits
+        // bottom-right, where the button lives).
+        var fromBottom = document.documentElement.scrollHeight
+            - (window.scrollY + window.innerHeight);
+        if (window.scrollY > 600 && fromBottom > 160) {
             btn.classList.add('visible');
         } else {
             btn.classList.remove('visible');

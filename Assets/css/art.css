@@ -4,40 +4,26 @@
    classes. This file holds the section headers, per-section grid, and the
    tinted thumbnail with tag/duration overlays. */
 
-/* Section header: eyebrow (left) + meta (right), then title, then blurb. */
 .art-section {
     margin: 0 0 3.5em;
     scroll-margin-top: 90px;   /* clear the sticky header when jumped to */
 }
 
-.art-section-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1em;
-    margin-bottom: 0.4em;
-}
-
-.art-eyebrow,
-.art-section-meta {
-    font-size: 0.78em;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--text-tertiary);
-}
-
+/* Section heading + blurb match the About page's section header + subtitle
+   (.about-section-header h2 / .about-section-subtitle) for a consistent look. */
 .art-section-title {
-    font-size: 2em;
-    font-weight: 800;
+    font-size: 2.2em;
+    font-weight: 700;
+    line-height: 1;
     color: var(--heading);
-    margin: 0 0 0.25em;
+    margin: 0;
 }
 
 .art-section-blurb {
-    font-style: italic;
+    font-size: 1.05em;
+    font-weight: 500;
     color: var(--text-secondary);
-    margin: 0 0 1.5em;
-    max-width: 48em;
+    margin: 0.8em 0 1.5em;
 }
 
 /* Per-section grid — column count from the inline --art-cols var. */
@@ -58,9 +44,12 @@
         repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 14px);
 }
 
-.art-tag,
+/* Duration overlay (bottom-right) on the thumbnail. The "tag" overlay was
+   removed — videos no longer carry a PROFESSIONAL/KARAOKE badge. */
 .art-duration {
     position: absolute;
+    bottom: 10px;
+    right: 10px;
     font-size: 0.7em;
     font-weight: 600;
     padding: 3px 8px;
@@ -68,18 +57,6 @@
     corner-shape: squircle;
     background: rgba(0, 0, 0, 0.45);
     color: #fff;
-}
-
-.art-tag {
-    top: 10px;
-    left: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-
-.art-duration {
-    bottom: 10px;
-    right: 10px;
 }
 
 .art-body {
