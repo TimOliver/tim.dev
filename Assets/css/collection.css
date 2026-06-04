@@ -30,11 +30,10 @@ body:has(.collection-detail) footer .container {
     margin-top: 70px;
 }
 
-/* Centered page title + subtitle. */
+/* Centered page title + subtitle. Size/weight come from the global .page-title
+   so every page's H1 matches; this only adjusts alignment + spacing. */
 .collection .page-title {
     text-align: center;
-    font-size: 2.7em;
-    font-weight: 800;
     margin: 0 0 0.3em;
 }
 

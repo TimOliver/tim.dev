@@ -1,5 +1,14 @@
 /* ---------- Archive page ---------- */
 
+.container:has(> .archive) {
+    max-width: 1100px;
+}
+
+/* Footer tracks the widened content width so they stay edge-aligned. */
+body:has(.archive) footer .container {
+    max-width: 1100px;
+}
+
 .archive-search {
     display: block;
     width: 100%;
