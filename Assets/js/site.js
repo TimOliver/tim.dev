@@ -505,3 +505,16 @@
         window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
     });
 })();
+
+// Contact email: assemble the mailto + reveal the real address from split
+// data-* attrs, so the raw address isn't in the static HTML for scrapers.
+// No-op on pages without such elements; degrades to the obfuscated text.
+(function() {
+    var els = document.querySelectorAll('[data-user][data-domain]');
+    if (!els.length) return;
+    Array.prototype.forEach.call(els, function(el) {
+        var addr = el.getAttribute('data-user') + '@' + el.getAttribute('data-domain');
+        if (el.tagName === 'A') el.setAttribute('href', 'mailto:' + addr);
+        el.textContent = addr;
+    });
+})();
