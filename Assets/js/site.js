@@ -379,17 +379,17 @@
     var container = document.querySelector('main .container');
     if (!container || !window.history || !window.fetch || !window.DOMParser) return;
 
-    // Only operate on Apps/Code pages (grid or a detail page).
+    // Only operate on Apps/Code/Art/Talks pages (grid or a detail page).
     function isCollectionPath(path) {
-        return /^\/(apps|code|art)\/$/.test(path)
-            || /^\/(apps|code)\/[^/]+\/$/.test(path)
+        return /^\/(apps|code|art|talks)\/$/.test(path)
+            || /^\/(apps|code|talks)\/[^/]+\/$/.test(path)
             || /^\/art\/[^/]+\/[^/]+\/$/.test(path);
     }
-    // A collection ITEM detail page (apps/code: 2-deep; art: 3-deep) — NOT a
-    // grid index. The content fade is reserved for navigating into an item, so
+    // A collection ITEM detail page (apps/code/talks: 2-deep; art: 3-deep) — NOT
+    // a grid index. The content fade is reserved for navigating into an item, so
     // moving between section grids (Apps ↔ Code via nav) doesn't crossfade.
     function isDetailPath(path) {
-        return /^\/(apps|code)\/[^/]+\/$/.test(path)
+        return /^\/(apps|code|talks)\/[^/]+\/$/.test(path)
             || /^\/art\/[^/]+\/[^/]+\/$/.test(path);
     }
     if (!isCollectionPath(location.pathname)) return;
