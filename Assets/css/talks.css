@@ -40,7 +40,9 @@
     gap: 2.5em;
     text-decoration: none;
     color: inherit;
-    margin: 1em 0 2.5em;
+    /* Generous gap below so the featured spotlight reads as separate from the
+       search/filter row, which is pulled in close to the grid it controls. */
+    margin: 1em 0 4em;
 }
 
 .talks-featured .talks-thumb {
@@ -85,7 +87,7 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.8em 2em;
-    margin: 0 0 2.5em;
+    margin: 0 0 1.25em;
 }
 
 .talks-search-wrap {
@@ -240,6 +242,10 @@
         flex-direction: column;
         align-items: stretch;
         gap: 1.2em;
+        /* Stacked on a phone, a hairline makes the split from the controls clear. */
+        margin-bottom: 2em;
+        padding-bottom: 2em;
+        border-bottom: 1px solid var(--border);
     }
     .talks-featured .talks-thumb { flex-basis: auto; }
     .talks-featured-text { max-width: none; }
