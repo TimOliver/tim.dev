@@ -1,12 +1,12 @@
 /* ---------- Archive page ---------- */
 
 .container:has(> .archive) {
-    max-width: 1100px;
+    max-width: 900px;
 }
 
 /* Footer tracks the widened content width so they stay edge-aligned. */
 body:has(.archive) footer .container {
-    max-width: 1100px;
+    max-width: 900px;
 }
 
 .archive-search {
