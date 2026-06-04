@@ -385,12 +385,19 @@
             || /^\/(apps|code)\/[^/]+\/$/.test(path)
             || /^\/art\/[^/]+\/[^/]+\/$/.test(path);
     }
+    // A collection ITEM detail page (apps/code: 2-deep; art: 3-deep) — NOT a
+    // grid index. The content fade is reserved for navigating into an item, so
+    // moving between section grids (Apps ↔ Code via nav) doesn't crossfade.
+    function isDetailPath(path) {
+        return /^\/(apps|code)\/[^/]+\/$/.test(path)
+            || /^\/art\/[^/]+\/[^/]+\/$/.test(path);
+    }
     if (!isCollectionPath(location.pathname)) return;
 
     // Represent the initial page in history so the first back press is real.
     history.replaceState({ apps: true }, '', location.href);
 
-    function swapTo(url, push) {
+    function swapTo(url, push, fade) {
         return fetch(url, { headers: { 'X-Requested-With': 'fetch' } })
             .then(function(resp) {
                 if (!resp.ok) throw new Error('bad status ' + resp.status);
@@ -401,10 +408,13 @@
                 var incoming = doc.querySelector('main .container');
                 if (!incoming) throw new Error('no container in response');
                 container.innerHTML = incoming.innerHTML;
-                // Fade only the swapped-in content (not fresh page loads); the
-                // class is freshly attached to a new node so the animation runs.
-                var root = container.querySelector('.collection');
-                if (root) root.classList.add('collection-swapped');
+                // Fade only when navigating INTO an item (fade === true): a fresh
+                // node gets the class so the animation runs. Grid↔grid nav and
+                // back-links swap without a crossfade.
+                if (fade) {
+                    var root = container.querySelector('.collection');
+                    if (root) root.classList.add('collection-swapped');
+                }
                 if (push) history.pushState({ apps: true }, '', url);
                 window.scrollTo(0, 0);
             })
@@ -446,7 +456,9 @@
         if (href.charAt(0) === '#') return;
         if (!isCollectionPath(a.pathname)) return;
         e.preventDefault();
-        swapTo(a.href, true);
+        // Fade only when the destination is an item detail page (clicking a
+        // card), not when moving between section grids via the nav.
+        swapTo(a.href, true, isDetailPath(a.pathname));
     });
 
     // Back/forward: swap to whatever URL history lands on (within /apps/);
