@@ -3,7 +3,7 @@ title: Designing for the Dynamic Island
 venue: iOSDevUK
 date: 2023-09-01 00:00:00
 duration: 36:42
-topics: UIKit
+topics: UI
 tint: linear-gradient(135deg, #6a3a8c, #3a1f52)
 youtube:
 layout: TalkDetail

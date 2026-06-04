@@ -52,13 +52,12 @@ extension TalksRenderer {
             s += "</a>"
         }
 
-        // Search.
+        // Controls: search + topic/year filters. They inline onto one row at
+        // max width and stack (search on its own line) when shrunk.
+        s += #"<div class="talks-controls">"#
         s += #"<div class="talks-search-wrap">"#
         s += #"<input type="search" class="talks-search" aria-label="Search talks" placeholder="Search \#(total) talks by title, venue, or topic…">"#
         s += "</div>"
-
-        // Filters: topic row + year row.
-        s += #"<div class="talks-filters">"#
         s += #"<div class="talks-filter-row">"#
         s += #"<span class="talks-filter-label">Topic</span>"#
         s += #"<button type="button" class="talks-filter talks-filter-topic is-active" data-topic="all">All</button>"#
@@ -74,7 +73,7 @@ extension TalksRenderer {
             s += #"<button type="button" class="talks-filter talks-filter-year" data-year="\#(id)">\#(label)</button>"#
         }
         s += "</div>"  // talks-filter-row (year)
-        s += "</div>"  // talks-filters
+        s += "</div>"  // talks-controls
 
         // Grid — every talk (the featured one is intentionally also a card).
         s += #"<div class="collection-grid talks-grid">"#

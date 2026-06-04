@@ -76,9 +76,20 @@
     margin: 0 0 1em;
 }
 
-/* ----- Search ----- */
+/* ----- Controls: search + Topic/Year filters -----
+   Stacked by default — search on its own line, the Topic and Year groups on the
+   line below. At the wide tier they all inline onto one row (see the min-width
+   rule below), the search box growing to fill the space beside the filters. */
+.talks-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8em 2em;
+    margin: 0 0 2.5em;
+}
+
 .talks-search-wrap {
-    margin: 0 0 1.5em;
+    flex: 1 1 100%;
 }
 
 .talks-search {
@@ -99,17 +110,7 @@
     border-color: var(--accent);
 }
 
-/* ----- Filter rows ----- */
-/* Topic and Year sit on one line (wrapping to stacked rows when there's no
-   room); the column-gap separates the two groups. */
-.talks-filters {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.7em 2.5em;
-    margin: 0 0 2.5em;
-}
-
+/* ----- Filter groups (Topic / Year) ----- */
 .talks-filter-row {
     display: flex;
     flex-wrap: wrap;
@@ -146,6 +147,14 @@
     background: var(--text);
     border-color: var(--text);
     color: var(--bg);
+}
+
+/* Wide tier: search joins the filter line, growing to fill the leftover space. */
+@media (min-width: 1650px) {
+    .talks-search-wrap {
+        flex: 1 1 280px;
+        order: 1;
+    }
 }
 
 /* ----- Talk card internals (card shell + hover come from .collection-card) ----- */
@@ -222,6 +231,5 @@
     .talks-featured .talks-thumb { flex-basis: auto; }
     .talks-featured-text { max-width: none; }
     .talks-featured-title { font-size: 1.9em; }
-    .talks-filters { flex-direction: column; }
     .talks-filter-label { width: auto; }
 }
