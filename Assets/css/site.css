@@ -102,19 +102,21 @@ article img {
    easing to 24px on narrow ones. 24px < the 35px padding, so it never reaches
    the viewport edge on mobile; the clamp's middle term caps it at the gutter
    beyond the ~70ch column so it can't force a horizontal scrollbar. */
+/* Hero image — capped height so a tall/portrait image doesn't dominate the fold.
+   Shown whole (no crop) and centered, so it shrinks within the column rather than
+   bleeding edge-to-edge. */
 article img.hero {
-    --hero-bleed: clamp(24px, calc((100vw - 775px) / 2), 60px);
-    max-width: calc(100% + var(--hero-bleed) * 2);
-    margin: 1.5em calc(var(--hero-bleed) * -1) 2em;
+    display: block;
+    max-width: 100%;
+    max-height: 440px;
+    margin: 1.5em auto 2em;
     border-radius: 30px;
     corner-shape: squircle;
 }
 
-/* On phones the side padding is tight, so drop the banner's bleed entirely —
-   it sits inside the column rather than overflowing toward the screen edge. */
 @media (max-width: 720px) {
     article img.hero {
-        --hero-bleed: 0px;
+        max-height: 300px;
     }
 }
 
