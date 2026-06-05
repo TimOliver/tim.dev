@@ -982,7 +982,7 @@ body > header::before {
 
 .container {
     margin: clamp(10px, 4dvh, 56px) auto 30px;
-    max-width: 775px;  /* reading-column width (~75 chars at the body size) */
+    max-width: 850px;  /* reading-column width; balanced text-wrap keeps lines readable */
     padding: 0 35px;
     position: relative;
     display: block;
@@ -1076,7 +1076,7 @@ footer .container {
     /* Matches the default reading-column width; pages that widen their content
        (About, Apps) widen the footer in step via body:has() rules in their own
        stylesheets, so the footer always aligns with the content above it. */
-    max-width: 775px;
+    max-width: 850px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
