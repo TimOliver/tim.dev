@@ -80,6 +80,13 @@ body:has(.collection-detail) footer .container {
     will-change: transform;
 }
 
+/* Cards are whole-surface links — never inherit the content-link red/underline
+   on hover (the global a:hover would otherwise out-specify text-decoration: none). */
+.collection-card:hover {
+    color: inherit;
+    text-decoration: none;
+}
+
 @media (hover: hover) {
     .collection-card:hover {
         background: var(--bg-secondary);

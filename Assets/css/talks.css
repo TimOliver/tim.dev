@@ -45,6 +45,12 @@
     margin: 1em 0 4em;
 }
 
+/* The hero is a whole-surface link too — suppress the content-link hover style. */
+.talks-featured:hover {
+    color: inherit;
+    text-decoration: none;
+}
+
 .talks-featured .talks-thumb {
     flex: 0 1 700px;
     aspect-ratio: 7 / 4;
