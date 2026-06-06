@@ -92,12 +92,16 @@ hr {
     border-top: 1px solid var(--border);
 }
 
-/* Home feed: clear breathing room between stacked posts. Only matches the
-   multi-post home page — single-post pages have just one <article>. To use a
-   hairline separator instead, add: border-top: 1px solid var(--border);
-   padding-top: 6rem; (and drop margin-top to match). */
-article + article {
-    margin-top: 6rem;
+/* Home feed: a soft, edge-fading grey rule between stacked posts (the gradient
+   technique from hypercritical.co, recoloured to our grey + page bg). Spans the
+   reading column so it aligns with the footer. Only matches the multi-post home
+   page — single-post pages have one <article>, so it never fires there. */
+article + article::before {
+    content: "";
+    display: block;
+    height: 1px;
+    margin: 4rem auto;
+    background: linear-gradient(to right, var(--bg) 0%, var(--border) 25%, var(--border) 50%, var(--border) 75%, var(--bg) 100%);
 }
 
 article img {
@@ -1133,7 +1137,10 @@ footer .container {
     gap: 24px;
     padding: 20px;
     width: 100%;
+    /* Same fading-grey gradient as the post separators (border-image paints the
+       1px top border with the gradient). */
     border-top: 1px solid var(--border);
+    border-image: linear-gradient(to right, var(--bg) 0%, var(--border) 25%, var(--border) 50%, var(--border) 75%, var(--bg) 100%) 1;
 }
 
 .footer-byline,
