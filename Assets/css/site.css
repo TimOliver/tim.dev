@@ -342,16 +342,14 @@ article .embed_social[data-platform="bluesky"] {
 }
 
 a {
-    color: var(--text);
-    text-decoration: underline;
-    text-decoration-color: var(--text-secondary);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+    color: var(--link);
+    text-decoration: none;
 }
 
 a:hover {
-    color: var(--text);
-    text-decoration-color: var(--text);
+    color: var(--link-hover);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
