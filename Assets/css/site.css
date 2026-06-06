@@ -34,8 +34,8 @@
     --text-secondary: rgba(235, 235, 245, 0.6);
     --text-tertiary: rgba(235, 235, 245, 0.45);
     --heading: #F5F5F7;
-    --link: #FF5C6E;
-    --link-hover: #FF5C6E;
+    --link: #FF566A;
+    --link-hover: #FF566A;
     --border: #38383C;
     --icon-filter: invert(1);
     --capsule-bg: rgba(32, 32, 32, 0.7);
@@ -48,8 +48,8 @@
    over-blowing on sRGB. */
 @supports (color: color(display-p3 1 1 1)) {
     [data-color-scheme="dark"] {
-        --link: color(display-p3 1 0.36 0.43);
-        --link-hover: color(display-p3 1 0.36 0.43);
+        --link: color(display-p3 1 0.34 0.42);
+        --link-hover: color(display-p3 1 0.34 0.42);
     }
 }
 
