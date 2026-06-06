@@ -34,12 +34,23 @@
     --text-secondary: rgba(235, 235, 245, 0.6);
     --text-tertiary: rgba(235, 235, 245, 0.45);
     --heading: #F5F5F7;
-    --link: #F43F5E;
-    --link-hover: #F43F5E;
+    --link: #FA2D48;
+    --link-hover: #FA2D48;
     --border: #38383C;
     --icon-filter: invert(1);
     --capsule-bg: rgba(32, 32, 32, 0.7);
     --capsule-border: rgba(255, 255, 255, 0.08);
+}
+
+/* Wide-gamut (P3) displays get a richer red than sRGB can express; the hex
+   values above are the sRGB fallback. Same components, but P3's wider primaries
+   render them more saturated — so the link "pops" on iPad/modern screens without
+   over-blowing on sRGB. */
+@supports (color: color(display-p3 1 1 1)) {
+    [data-color-scheme="dark"] {
+        --link: color(display-p3 0.98 0.176 0.282);
+        --link-hover: color(display-p3 0.98 0.176 0.282);
+    }
 }
 
 *,
