@@ -50,8 +50,8 @@
 
 body {
     font-family: var(--font-text);
-    font-size: 15pt;
-    line-height: 1.6;
+    font-size: 18px;
+    line-height: 1.7;
     /* Grayscale (not subpixel) smoothing — renders SF lighter/thinner rather
        than the heavier default. macOS/WebKit only; a no-op elsewhere. */
     -webkit-font-smoothing: antialiased;
@@ -1028,17 +1028,24 @@ article section {
     margin-top: 2rem;
 }
 
+article ul,
+article ol {
+    margin-block: 1.5em;
+    padding-inline-start: 1.4em;
+}
+
 article li {
-    margin-bottom: 0.6em;
+    margin-block: 0.55em;
+    padding-inline-start: 0.25em;
+    line-height: 1.65;
 }
 
 article li:last-child {
     margin-bottom: 0;
 }
 
-article ul,
-article ol {
-    margin-bottom: 2.5rem;
+article li::marker {
+    font-size: 0.8em;
 }
 
 blockquote {
