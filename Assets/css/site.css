@@ -92,6 +92,14 @@ hr {
     border-top: 1px solid var(--border);
 }
 
+/* Home feed: clear breathing room between stacked posts. Only matches the
+   multi-post home page — single-post pages have just one <article>. To use a
+   hairline separator instead, add: border-top: 1px solid var(--border);
+   padding-top: 6rem; (and drop margin-top to match). */
+article + article {
+    margin-top: 6rem;
+}
+
 article img {
     display: block;
     max-width: 100%;
