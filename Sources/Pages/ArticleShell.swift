@@ -39,7 +39,7 @@ enum ArticleShell {
         if let image = article.image, !image.isEmpty {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
         }
-        s += "<section>\(article.text)</section>"
+        s += "<section>\(InstagramEmbed.transform(article.text))</section>"
         s += "</article>"
         return s
     }
