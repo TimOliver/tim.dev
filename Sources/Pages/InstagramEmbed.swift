@@ -17,6 +17,12 @@ import Foundation
 enum InstagramEmbed {
     static func transform(_ html: String) -> String {
         var out = html
+        // Newer WordPress figure-wrapped embeds (`<figure class="…is-provider-
+        // instagram…">…</figure>`) → clean iframe. Done first so the whole
+        // figure (placeholder markup + links) is swapped wholesale.
+        out = replace(out, #"<figure\b[^>]*is-provider-instagram[^>]*>.*?</figure>"#) { fig in
+            shortcode(in: fig).map(embed)
+        }
         // Drop the dead Instagram embed script(s).
         out = replace(out, #"<script\b[^>]*instagram\.com[^>]*>.*?</script>"#) { _ in "" }
         // Mangled blockquote embeds → clean iframe (non-Instagram quotes kept).
