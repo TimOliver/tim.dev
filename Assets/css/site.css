@@ -1137,10 +1137,7 @@ footer .container {
     gap: 24px;
     padding: 20px;
     width: 100%;
-    /* Same fading-grey gradient as the post separators (border-image paints the
-       1px top border with the gradient). */
     border-top: 1px solid var(--border);
-    border-image: linear-gradient(to right, var(--bg) 0%, var(--border) 25%, var(--border) 50%, var(--border) 75%, var(--bg) 100%) 1;
 }
 
 .footer-byline,
