@@ -17,14 +17,20 @@ import Foundation
 enum InstagramEmbed {
     static func transform(_ html: String) -> String {
         var out = html
-        // Newer WordPress figure-wrapped embeds (`<figure class="…is-provider-
-        // instagram…">…</figure>`) → clean iframe. Done first so the whole
-        // figure (placeholder markup + links) is swapped wholesale.
+        // Drop the dead Instagram embed script(s).
+        out = replace(out, #"<script\b[^>]*instagram\.com[^>]*>.*?</script>"#) { _ in "" }
+        // Newer WordPress figure-wrapped embeds. Matching the whole
+        // `<figure>…</figure>` is self-bounding (stops at the first </figure>),
+        // so it can't over-consume an adjacent embed.
         out = replace(out, #"<figure\b[^>]*is-provider-instagram[^>]*>.*?</figure>"#) { fig in
             shortcode(in: fig).map(embed)
         }
-        // Drop the dead Instagram embed script(s).
-        out = replace(out, #"<script\b[^>]*instagram\.com[^>]*>.*?</script>"#) { _ in "" }
+        // Same placeholder, but wrapped in `<div align="center">` (no figure).
+        // Anchored on the inner padding placeholder, ending at the two closing
+        // divs (padding + align), so it stays within the one embed.
+        out = replace(out, #"<div align="center">\s*(?:&gt;|>)?\s*<div style="padding:[^"]*">.*?\]\(https?://(?:www\.)?instagram\.com/p/[A-Za-z0-9_-]+[^)]*\)(?:\s*\[[^\]]*\]\([^)]*\))?(?:[^<]*<time\b[^>]*>.*?</time>)?\s*(?:(?:&gt;|>)\s*)*</div>\s*</div>"#) { block in
+            shortcode(in: block).map(embed)
+        }
         // Mangled blockquote embeds → clean iframe (non-Instagram quotes kept).
         out = replace(out, #"<blockquote\b[^>]*>.*?</blockquote>"#) { block in
             shortcode(in: block).map(embed)
