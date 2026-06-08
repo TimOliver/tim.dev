@@ -1080,6 +1080,9 @@ article {
 
 article section {
     margin-top: 2rem;
+    /* The post reading text runs larger than the global base; the title, date,
+       and hero above it stay at the global scale. */
+    font-size: 18.5pt;
 }
 
 article ul,
