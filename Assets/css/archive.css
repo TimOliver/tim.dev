@@ -62,13 +62,20 @@ body:has(.archive) footer .container {
 }
 
 /* Year row — big year + post count on the left, a flat post list on the right.
-   A hairline separates every year (including the first, off the search bar). */
+   A hairline divides consecutive years (not above the first). */
 .archive-year {
     display: grid;
     grid-template-columns: 145px 1fr;
     column-gap: 2.5em;
-    padding: 2.5em 0;
+    padding: 2em 0;
+}
+
+.archive-year + .archive-year {
     border-top: 1px solid var(--border);
+}
+
+.archive-year:first-child {
+    padding-top: 0;
 }
 
 .archive-year-aside h2 {
