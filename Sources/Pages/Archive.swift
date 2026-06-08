@@ -46,7 +46,8 @@ enum ArchivePage {
             s += "</nav>"
         }
 
-        // Year sections
+        // Year sections — two columns, filled left-to-right, top-to-bottom.
+        s += #"<div class="archive-years">"#
         for group in grouped {
             s += #"<section class="archive-year" id="year-\#(group.year)">"#
             s += #"<div class="archive-year-header"><h2>\#(group.year)</h2>"#
@@ -71,6 +72,7 @@ enum ArchivePage {
             s += "</div>"  // archive-list
             s += "</section>"
         }
+        s += "</div>"  // archive-years
 
         s += #"<p class="archive-empty" hidden>No posts match your search.</p>"#
 
