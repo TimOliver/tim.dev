@@ -63,6 +63,9 @@ enum ArchivePage {
 
         s += #"<p class="archive-empty" hidden>No posts match your search.</p>"#
 
+        // Back-to-top (fixed; fades in on scroll — wired by site.js, styled in site.css).
+        s += #"<button type="button" class="back-to-top" aria-label="Back to top">&uarr;</button>"#
+
         s += "</div>"  // archive
         return s
     }

@@ -112,3 +112,9 @@ body:has(.archive) footer .container {
         font-size: 2.1em;
     }
 }
+
+/* Back-to-top sits just outside the Archive's narrower (1000px) column on wide
+   windows — the global rule is tuned for the 1650px collection pages. */
+body:has(.archive) .back-to-top {
+    right: max(24px, calc(50vw - 555px));
+}
