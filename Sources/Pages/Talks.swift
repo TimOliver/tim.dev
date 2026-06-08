@@ -44,7 +44,7 @@ extension TalksRenderer {
             s += #"<a class="talks-featured" href="\#(escape(featured.path))">"#
             s += thumb(tint: featured.tint, duration: featured.duration)
             s += #"<div class="talks-featured-text">"#
-            s += #"<span class="talks-eyebrow">Featured · Most recent</span>"#
+            s += #"<span class="talks-eyebrow">Featured</span>"#
             s += #"<h2 class="talks-featured-title">\#(escape(featured.title))</h2>"#
             s += #"<p class="talks-featured-meta">\#(metaLine(venue: featured.venue, year: featured.year, duration: featured.duration))</p>"#
             s += tagsBlock(featured.topics)
