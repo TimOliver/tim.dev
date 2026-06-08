@@ -243,4 +243,5 @@ body:has(.collection-detail) footer .container {
 .section-chip:hover {
     background: var(--control-hover);
     color: var(--text);
+    text-decoration: none;
 }

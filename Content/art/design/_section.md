@@ -3,7 +3,7 @@ title: Design
 eyebrow: Category
 meta: 3 pieces · iOS, macOS & web
 columns: 3
-order: 5
+order: 3
 slug: design
 published: false
 ---
