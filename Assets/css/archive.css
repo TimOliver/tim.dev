@@ -50,7 +50,6 @@ body:has(.archive) footer .container {
 
 /* Filtered-out rows / empty year sections + the no-results message (toggled by site.js). */
 .archive-row.hidden,
-.archive-month-group.hidden,
 .archive-year.hidden {
     display: none;
 }
@@ -86,16 +85,13 @@ body:has(.archive) footer .container {
     text-decoration: none;
 }
 
-/* Year row — big year + meta on the left, month-grouped posts on the right.
-   A hairline separates consecutive years. */
+/* Year row — big year + post count on the left, a flat post list on the right.
+   A hairline separates every year (including the first, off the search bar). */
 .archive-year {
     display: grid;
-    grid-template-columns: 132px 1fr;
+    grid-template-columns: 145px 1fr;
     column-gap: 2.5em;
     padding: 2.5em 0;
-}
-
-.archive-year + .archive-year {
     border-top: 1px solid var(--border);
 }
 
@@ -106,38 +102,11 @@ body:has(.archive) footer .container {
     margin: 0 0 0.35em;
 }
 
-.archive-year-count,
-.archive-year-months {
+.archive-year-count {
     display: block;
     font-size: 0.8em;
     color: var(--text-secondary);
     line-height: 1.5;
-}
-
-/* Month group: a small uppercase label + post count, over its rows. */
-.archive-month-group {
-    margin-bottom: 1.75em;
-}
-
-.archive-month-group:last-child {
-    margin-bottom: 0;
-}
-
-.archive-month-header {
-    font-size: 0.85em;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--text-secondary);
-    margin: 0 0 0.5em;
-}
-
-.archive-month-count {
-    margin-left: 0.5em;
-    font-size: 0.85em;
-    font-weight: 500;
-    letter-spacing: 0;
-    color: var(--text-tertiary);
 }
 
 .archive-row {
