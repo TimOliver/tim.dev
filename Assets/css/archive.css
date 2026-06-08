@@ -61,30 +61,6 @@ body:has(.archive) footer .container {
     margin: 0;
 }
 
-.archive-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0 auto 3em;
-}
-
-.archive-chip {
-    padding: 4px 14px;
-    border-radius: 999px;
-    corner-shape: squircle;
-    border: 1px solid var(--border);
-    font-size: 0.85em;
-    color: var(--text);
-    text-decoration: none;
-    line-height: 1.6;
-}
-
-.archive-chip:hover {
-    background: var(--control-hover);
-    color: var(--text);
-    text-decoration: none;
-}
-
 /* Year row — big year + post count on the left, a flat post list on the right.
    A hairline separates every year (including the first, off the search bar). */
 .archive-year {

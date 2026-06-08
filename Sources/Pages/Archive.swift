@@ -37,15 +37,6 @@ enum ArchivePage {
         s += #"<input class="archive-search" type="search" aria-label="Search posts by title" placeholder="Search \#(posts.count) posts by title…">"#
         s += "</div>"
 
-        // Decorative year chips
-        if !years.isEmpty {
-            s += #"<nav class="archive-chips" aria-label="Jump to year">"#
-            for year in years {
-                s += ##"<a class="archive-chip" href="#year-\##(year)">\##(year)</a>"##
-            }
-            s += "</nav>"
-        }
-
         // Year sections — year + post count on the left, a flat list of posts
         // (title + date) on the right. Years descend newest-first for scanning.
         for group in grouped {

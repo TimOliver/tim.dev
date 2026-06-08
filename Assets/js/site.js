@@ -621,7 +621,6 @@
     var input = document.querySelector('.archive-search');
     if (!input) return;
     var years = Array.prototype.slice.call(document.querySelectorAll('.archive-year'));
-    var chips = document.querySelector('.archive-chips');
     var empty = document.querySelector('.archive-empty');
     // Stash each year's original count so it can be restored when the query clears.
     Array.prototype.forEach.call(document.querySelectorAll('.archive-year-count'), function(el) {
@@ -643,7 +642,6 @@
                 : visible + (visible === 1 ? ' post' : ' posts');
             totalVisible += visible;
         });
-        if (chips) chips.style.display = q === '' ? '' : 'none';
         if (empty) empty.hidden = totalVisible !== 0;
     }
     input.addEventListener('input', apply);
