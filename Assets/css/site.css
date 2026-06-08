@@ -1314,7 +1314,10 @@ footer .container {
 .back-to-top {
     position: fixed;
     bottom: 24px;
-    right: 24px;
+    /* Sit just outside the content column's right edge when the window is wide
+       enough (the collection pages cap at 1650px → half is 825px; +44px button
+       +~11px gap). On narrower windows clamp to a 24px edge margin. */
+    right: max(24px, calc(50vw - 880px));
     width: 44px;
     height: 44px;
     border-radius: 50%;
