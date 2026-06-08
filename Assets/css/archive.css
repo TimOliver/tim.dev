@@ -101,6 +101,12 @@ body:has(.archive) footer .container {
     padding: 5px 0;
 }
 
+/* Archive post-title links sit a touch larger than the body to fill the wider
+   column (the global base stays 14.5pt). */
+.archive-row .text-link {
+    font-size: 15.5pt;
+}
+
 .archive-date {
     font-size: 0.85em;
     color: var(--text-secondary);
