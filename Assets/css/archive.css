@@ -13,7 +13,7 @@ body:has(.archive) footer .container {
    when the year chips hide during a search. */
 .archive-search-wrap {
     position: relative;
-    margin: 0 auto 2em;
+    margin: 0 auto 1em;
 }
 
 .archive-search-icon {
