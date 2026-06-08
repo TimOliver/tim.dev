@@ -39,7 +39,7 @@ enum ArticleShell {
         if let image = article.image, !image.isEmpty {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
         }
-        s += "<section>\(InstagramEmbed.transform(article.text))</section>"
+        s += "<section>\(fixBareImages(InstagramEmbed.transform(article.text)))</section>"
         s += "</article>"
         return s
     }
@@ -65,6 +65,47 @@ enum ArticleShell {
         s = s.replacingOccurrences(of: "/", with: "_")
         if s.isEmpty { s = "untitled" }
         return s
+    }
+
+    /// Converts Markdown image syntax that leaked into the compiled HTML as
+    /// literal text into real `<img>` tags. Old WordPress posts wrap images in
+    /// raw HTML (`<figure class="wp-block-image">![](…)</figure>`); because the
+    /// `![](…)` sits inside a raw-HTML block, the Markdown parser never renders
+    /// it. Properly-parsed images are already `<img>`, so only the leaked ones
+    /// match here.
+    private static func fixBareImages(_ html: String) -> String {
+        var out = html
+        // Linked thumbnails first: [![alt](thumb "title")](full) → <a><img></a>.
+        out = replaceRegex(out, #"\[!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)\]\(([^)\s]+)(?:\s+"[^"]*")?\)"#) { m, ns in
+            let alt = ns.substring(with: m.range(at: 1))
+            let thumb = ns.substring(with: m.range(at: 2))
+            let full = ns.substring(with: m.range(at: 3))
+            return #"<a href="\#(escape(full))"><img src="\#(escape(thumb))" alt="\#(escape(alt))" loading="lazy"></a>"#
+        }
+        // Then standalone images, with an optional Markdown title: ![alt](src "title").
+        out = replaceRegex(out, #"!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)"#) { m, ns in
+            let alt = ns.substring(with: m.range(at: 1))
+            let src = ns.substring(with: m.range(at: 2))
+            return #"<img src="\#(escape(src))" alt="\#(escape(alt))" loading="lazy">"#
+        }
+        return out
+    }
+
+    /// Splices each regex match's replacement into the string.
+    private static func replaceRegex(
+        _ s: String, _ pattern: String, _ make: (NSTextCheckingResult, NSString) -> String
+    ) -> String {
+        guard let re = try? NSRegularExpression(pattern: pattern) else { return s }
+        let ns = s as NSString
+        var result = ""
+        var last = 0
+        for m in re.matches(in: s, range: NSRange(location: 0, length: ns.length)) {
+            result += ns.substring(with: NSRange(location: last, length: m.range.location - last))
+            result += make(m, ns)
+            last = m.range.location + m.range.length
+        }
+        result += ns.substring(with: NSRange(location: last, length: ns.length - last))
+        return result
     }
 
     private static func escape(_ s: String) -> String {
