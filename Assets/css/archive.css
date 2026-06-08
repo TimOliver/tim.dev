@@ -1,12 +1,12 @@
 /* ---------- Archive page ---------- */
 
 .container:has(> .archive) {
-    max-width: 1100px;
+    max-width: 1000px;
 }
 
 /* Footer tracks the widened content width so they stay edge-aligned. */
 body:has(.archive) footer .container {
-    max-width: 1100px;
+    max-width: 1000px;
 }
 
 /* Bottom margin lives on the wrap so the gap to the first result survives even
@@ -104,7 +104,7 @@ body:has(.archive) footer .container {
 /* Archive post-title links sit a touch larger than the body to fill the wider
    column (the global base stays 14.5pt). */
 .archive-row .text-link {
-    font-size: 18.5pt;
+    font-size: 17pt;
 }
 
 .archive-date {
@@ -126,8 +126,8 @@ body:has(.archive) footer .container {
     }
 }
 
-/* Back-to-top sits just outside the Archive's (1100px) column on wide windows —
+/* Back-to-top sits just outside the Archive's (1000px) column on wide windows —
    the global rule is tuned for the 1650px collection pages. */
 body:has(.archive) .back-to-top {
-    right: max(24px, calc(50vw - 605px));
+    right: max(24px, calc(50vw - 555px));
 }
