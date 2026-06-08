@@ -59,7 +59,7 @@ body:has(.contact) footer .container {
 /* Contact-details card — recreates the About "Tech Specs" card + hairline
    table (kept independent of .about-colophon so About's markup stays decoupled). */
 .contact-card {
-    padding: 24px 28px;
+    padding: 30px 34px;
     background: var(--bg-secondary);
     border-radius: 12px;
     corner-shape: squircle;
@@ -71,7 +71,7 @@ body:has(.contact) footer .container {
     display: grid;
     grid-template-columns: max-content 1fr;
     column-gap: 0;
-    row-gap: 0.45em;
+    row-gap: 0.75em;
     margin: 0;
     align-items: baseline;
 }
@@ -79,11 +79,11 @@ body:has(.contact) footer .container {
 .contact-card dd + dt,
 .contact-card dd:not(:first-of-type) {
     border-top: 1px solid var(--border);
-    padding-top: 0.45em;
+    padding-top: 0.75em;
 }
 
 .contact-card dt {
-    font-size: 0.9em;
+    font-size: 1.05em;
     font-weight: 600;
     color: var(--text-secondary);
     padding-right: 1.5em;
@@ -92,7 +92,7 @@ body:has(.contact) footer .container {
 .contact-card dd {
     margin: 0;
     text-align: right;
-    font-size: 0.9em;
+    font-size: 1.05em;
     color: var(--text);
 }
 
