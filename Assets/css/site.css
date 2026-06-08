@@ -86,6 +86,14 @@ p {
     text-wrap: pretty;
 }
 
+/* On phones, let the main article text wrap normally — in a narrow column
+   `pretty` can leave awkwardly short lines / an uneven rag. */
+@media (max-width: 720px) {
+    article p {
+        text-wrap: wrap;
+    }
+}
+
 hr {
     margin: 1.5rem auto;
     border: 0;
