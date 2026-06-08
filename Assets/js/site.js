@@ -614,39 +614,47 @@
     });
 })();
 
-// Archive: client-side title filter. Hides rows whose title doesn't match, hides
-// year sections that empty out, updates per-year counts, and toggles a
-// no-results message. No-op on pages without the archive search box.
+// Archive: client-side title filter. Hides rows whose title doesn't match,
+// collapses month groups and year sections that empty out, keeps the per-month
+// and per-year counts live, and toggles a no-results message. No-op on pages
+// without the archive search box.
 (function() {
     var input = document.querySelector('.archive-search');
     if (!input) return;
     var years = Array.prototype.slice.call(document.querySelectorAll('.archive-year'));
     var chips = document.querySelector('.archive-chips');
     var empty = document.querySelector('.archive-empty');
-    // Stash each year's original count so it can be restored when the query clears.
-    years.forEach(function(section) {
-        var c = section.querySelector('.archive-year-count');
-        if (c) c.setAttribute('data-total', c.textContent);
-    });
+    // Stash each count's original text so it can be restored when the query clears.
+    Array.prototype.forEach.call(
+        document.querySelectorAll('.archive-year-count, .archive-year-months, .archive-month-count'),
+        function(el) { el.setAttribute('data-total', el.textContent); }
+    );
     function apply() {
         var q = input.value.trim().toLowerCase();
         var totalVisible = 0;
         years.forEach(function(section) {
-            var visible = 0;
-            var rows = section.querySelectorAll('.archive-row');
-            Array.prototype.forEach.call(rows, function(row) {
-                var show = q === '' || (row.getAttribute('data-title') || '').indexOf(q) !== -1;
-                row.classList.toggle('hidden', !show);
-                if (show) visible++;
+            var yearVisible = 0, monthsVisible = 0;
+            Array.prototype.forEach.call(section.querySelectorAll('.archive-month-group'), function(grp) {
+                var v = 0;
+                Array.prototype.forEach.call(grp.querySelectorAll('.archive-row'), function(row) {
+                    var show = q === '' || (row.getAttribute('data-title') || '').indexOf(q) !== -1;
+                    row.classList.toggle('hidden', !show);
+                    if (show) v++;
+                });
+                grp.classList.toggle('hidden', v === 0);
+                var mc = grp.querySelector('.archive-month-count');
+                if (mc) mc.textContent = q === '' ? mc.getAttribute('data-total') : v;
+                if (v > 0) monthsVisible++;
+                yearVisible += v;
             });
-            section.classList.toggle('hidden', visible === 0);
-            var count = section.querySelector('.archive-year-count');
-            if (count) {
-                count.textContent = q === ''
-                    ? count.getAttribute('data-total')
-                    : visible + (visible === 1 ? ' post' : ' posts');
-            }
-            totalVisible += visible;
+            section.classList.toggle('hidden', yearVisible === 0);
+            var pc = section.querySelector('.archive-year-count');
+            if (pc) pc.textContent = q === '' ? pc.getAttribute('data-total')
+                : yearVisible + (yearVisible === 1 ? ' post' : ' posts');
+            var ms = section.querySelector('.archive-year-months');
+            if (ms) ms.textContent = q === '' ? ms.getAttribute('data-total')
+                : monthsVisible + (monthsVisible === 1 ? ' month' : ' months');
+            totalVisible += yearVisible;
         });
         if (chips) chips.style.display = q === '' ? '' : 'none';
         if (empty) empty.hidden = totalVisible !== 0;

@@ -1,12 +1,12 @@
 /* ---------- Archive page ---------- */
 
 .container:has(> .archive) {
-    max-width: 930px;
+    max-width: 1000px;
 }
 
 /* Footer tracks the widened content width so they stay edge-aligned. */
 body:has(.archive) footer .container {
-    max-width: 930px;
+    max-width: 1000px;
 }
 
 /* Bottom margin lives on the wrap so the gap to the first result survives even
@@ -50,6 +50,7 @@ body:has(.archive) footer .container {
 
 /* Filtered-out rows / empty year sections + the no-results message (toggled by site.js). */
 .archive-row.hidden,
+.archive-month-group.hidden,
 .archive-year.hidden {
     display: none;
 }
@@ -85,69 +86,83 @@ body:has(.archive) footer .container {
     text-decoration: none;
 }
 
+/* Year row — big year + meta on the left, month-grouped posts on the right.
+   A hairline separates consecutive years. */
 .archive-year {
-    margin: 0 auto 3em;
-}
-
-.archive-year-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.5em;
-    margin: 0 0 0.8em;
-}
-
-.archive-year-header h2 {
-    font-size: 2.3em;
-    font-weight: 700;
-    line-height: 1;
-    margin: 0;
-}
-
-.archive-year-count {
-    font-size: 0.82em;
-    color: var(--text-secondary);
-}
-
-.archive-list {
     display: grid;
+    grid-template-columns: 132px 1fr;
+    column-gap: 2.5em;
+    padding: 2.5em 0;
+}
+
+.archive-year + .archive-year {
+    border-top: 1px solid var(--border);
+}
+
+.archive-year-aside h2 {
+    font-size: 2.8em;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0 0 0.35em;
+}
+
+.archive-year-count,
+.archive-year-months {
+    display: block;
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Month group: a small uppercase label + post count, over its rows. */
+.archive-month-group {
+    margin-bottom: 1.75em;
+}
+
+.archive-month-group:last-child {
+    margin-bottom: 0;
+}
+
+.archive-month-header {
+    font-size: 0.85em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    margin: 0 0 0.5em;
+}
+
+.archive-month-count {
+    margin-left: 0.5em;
+    font-size: 0.85em;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--text-tertiary);
 }
 
 .archive-row {
     display: grid;
-    grid-template-columns: 56px 1fr auto;
+    grid-template-columns: 1fr auto;
     gap: 16px;
     align-items: baseline;
-    padding: 7px 0;
-}
-
-/* Entry title — bumped a touch so the list fills the (narrower) column. */
-.archive-row .text-link {
-    font-size: 1.1em;
-}
-
-.archive-month {
-    font-size: 0.94em;
-    color: var(--text-secondary);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    padding: 5px 0;
 }
 
 .archive-date {
-    font-size: 0.9em;
+    font-size: 0.85em;
     color: var(--text-secondary);
     text-align: right;
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
 }
 
 @media (max-width: 720px) {
-    .archive-year-header h2 {
-        font-size: 2.2em;
+    .archive-year {
+        grid-template-columns: 1fr;
+        row-gap: 1.2em;
+        padding: 2em 0;
     }
-    .archive-row {
-        grid-template-columns: 42px 1fr auto;
-        gap: 10px;
+    .archive-year-aside h2 {
+        font-size: 2.4em;
     }
 }

@@ -46,29 +46,41 @@ enum ArchivePage {
             s += "</nav>"
         }
 
-        // Year sections
+        // Year sections — year + meta on the left, month-grouped posts on the
+        // right. Years (and months within) descend newest-first for scanning.
         for group in grouped {
-            s += #"<section class="archive-year" id="year-\#(group.year)">"#
-            s += #"<div class="archive-year-header"><h2>\#(group.year)</h2>"#
-            s += #"<span class="archive-year-count">\#(group.posts.count) post\#(group.posts.count == 1 ? "" : "s")</span></div>"#
-
-            s += #"<div class="archive-list">"#
-            var lastMonth: Int = -1
             let cal = monthCalendar()
-            for article in group.posts {
-                let month = cal.component(.month, from: article.date)
-                let monthLabel = month != lastMonth ? monthAbbrev(month) : ""
-                lastMonth = month
-
-                let title = escape(article.title)
-                let href = escape(article.path)
-                s += #"<div class="archive-row" data-title="\#(escape(article.title.lowercased()))">"#
-                s += #"<span class="archive-month">\#(monthLabel)</span>"#
-                s += #"<a class="text-link" href="\#(href)">\#(title)</a>"#
-                s += #"<span class="archive-date">\#(dayLabel(article.date))</span>"#
-                s += "</div>"
+            var byMonth: [Int: [Article]] = [:]
+            for a in group.posts {
+                byMonth[cal.component(.month, from: a.date), default: []].append(a)
             }
-            s += "</div>"  // archive-list
+            let months = byMonth.keys.sorted(by: >)
+
+            s += #"<section class="archive-year" id="year-\#(group.year)">"#
+
+            s += #"<div class="archive-year-aside">"#
+            s += #"<h2>\#(group.year)</h2>"#
+            s += #"<span class="archive-year-count">\#(group.posts.count) post\#(group.posts.count == 1 ? "" : "s")</span>"#
+            s += #"<span class="archive-year-months">\#(months.count) month\#(months.count == 1 ? "" : "s")</span>"#
+            s += "</div>"  // archive-year-aside
+
+            s += #"<div class="archive-year-main">"#
+            for month in months {
+                let mposts = byMonth[month] ?? []
+                s += #"<div class="archive-month-group">"#
+                s += #"<h3 class="archive-month-header">\#(monthAbbrev(month))<span class="archive-month-count">\#(mposts.count)</span></h3>"#
+                for article in mposts {
+                    let title = escape(article.title)
+                    let href = escape(article.path)
+                    s += #"<div class="archive-row" data-title="\#(escape(article.title.lowercased()))">"#
+                    s += #"<a class="text-link" href="\#(href)">\#(title)</a>"#
+                    s += #"<span class="archive-date">\#(dayLabel(article.date))</span>"#
+                    s += "</div>"
+                }
+                s += "</div>"  // archive-month-group
+            }
+            s += "</div>"  // archive-year-main
+
             s += "</section>"
         }
 
