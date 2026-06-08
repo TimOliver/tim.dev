@@ -9,10 +9,28 @@ body:has(.archive) footer .container {
     max-width: 930px;
 }
 
+/* Bottom margin lives on the wrap so the gap to the first result survives even
+   when the year chips hide during a search. */
+.archive-search-wrap {
+    position: relative;
+    margin: 0 auto 2em;
+}
+
+.archive-search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: var(--text-tertiary);
+    pointer-events: none;
+}
+
 .archive-search {
     display: block;
     width: 100%;
-    padding: 12px 18px;
+    padding: 12px 18px 12px 46px;
     border-radius: 999px;
     corner-shape: squircle;
     border: 1px solid var(--border);
@@ -20,7 +38,7 @@ body:has(.archive) footer .container {
     color: var(--text-secondary);
     font: inherit;
     font-size: 0.9em;
-    margin: 0 auto 1rem;
+    margin: 0;
     box-sizing: border-box;
 }
 
