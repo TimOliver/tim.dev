@@ -61,7 +61,7 @@
 
 body {
     font-family: var(--font-text);
-    font-size: 14.5pt;
+    font-size: 15.5pt;
     line-height: 1.6;
     /* Grayscale (not subpixel) smoothing — renders SF lighter/thinner rather
        than the heavier default. macOS/WebKit only; a no-op elsewhere. */

@@ -1,12 +1,12 @@
 /* ---------- Archive page ---------- */
 
 .container:has(> .archive) {
-    max-width: 1000px;
+    max-width: 1200px;
 }
 
 /* Footer tracks the widened content width so they stay edge-aligned. */
 body:has(.archive) footer .container {
-    max-width: 1000px;
+    max-width: 1200px;
 }
 
 /* Bottom margin lives on the wrap so the gap to the first result survives even
@@ -120,8 +120,8 @@ body:has(.archive) footer .container {
     }
 }
 
-/* Back-to-top sits just outside the Archive's narrower (1000px) column on wide
-   windows — the global rule is tuned for the 1650px collection pages. */
+/* Back-to-top sits just outside the Archive's (1200px) column on wide windows —
+   the global rule is tuned for the 1650px collection pages. */
 body:has(.archive) .back-to-top {
-    right: max(24px, calc(50vw - 555px));
+    right: max(24px, calc(50vw - 655px));
 }
