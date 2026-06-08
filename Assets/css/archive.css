@@ -96,8 +96,8 @@ body:has(.archive) footer .container {
 }
 
 .archive-year-aside h2 {
-    font-size: 2.8em;
-    font-weight: 800;
+    font-size: 2.4em;
+    font-weight: 700;
     line-height: 1;
     margin: 0 0 0.1em;
 }
@@ -133,6 +133,6 @@ body:has(.archive) footer .container {
         padding: 2em 0;
     }
     .archive-year-aside h2 {
-        font-size: 2.4em;
+        font-size: 2.1em;
     }
 }
