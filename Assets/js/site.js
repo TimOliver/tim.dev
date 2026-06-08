@@ -613,3 +613,43 @@
         }
     });
 })();
+
+// Archive: client-side title filter. Hides rows whose title doesn't match, hides
+// year sections that empty out, updates per-year counts, and toggles a
+// no-results message. No-op on pages without the archive search box.
+(function() {
+    var input = document.querySelector('.archive-search');
+    if (!input) return;
+    var years = Array.prototype.slice.call(document.querySelectorAll('.archive-year'));
+    var chips = document.querySelector('.archive-chips');
+    var empty = document.querySelector('.archive-empty');
+    // Stash each year's original count so it can be restored when the query clears.
+    years.forEach(function(section) {
+        var c = section.querySelector('.archive-year-count');
+        if (c) c.setAttribute('data-total', c.textContent);
+    });
+    function apply() {
+        var q = input.value.trim().toLowerCase();
+        var totalVisible = 0;
+        years.forEach(function(section) {
+            var visible = 0;
+            var rows = section.querySelectorAll('.archive-row');
+            Array.prototype.forEach.call(rows, function(row) {
+                var show = q === '' || (row.getAttribute('data-title') || '').indexOf(q) !== -1;
+                row.classList.toggle('hidden', !show);
+                if (show) visible++;
+            });
+            section.classList.toggle('hidden', visible === 0);
+            var count = section.querySelector('.archive-year-count');
+            if (count) {
+                count.textContent = q === ''
+                    ? count.getAttribute('data-total')
+                    : visible + (visible === 1 ? ' post' : ' posts');
+            }
+            totalVisible += visible;
+        });
+        if (chips) chips.style.display = q === '' ? '' : 'none';
+        if (empty) empty.hidden = totalVisible !== 0;
+    }
+    input.addEventListener('input', apply);
+})();

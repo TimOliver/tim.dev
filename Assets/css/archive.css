@@ -24,6 +24,25 @@ body:has(.archive) footer .container {
     box-sizing: border-box;
 }
 
+.archive-search:focus {
+    outline: none;
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+/* Filtered-out rows / empty year sections + the no-results message (toggled by site.js). */
+.archive-row.hidden,
+.archive-year.hidden {
+    display: none;
+}
+
+.archive-empty {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 2em 0;
+    margin: 0;
+}
+
 .archive-chips {
     display: flex;
     flex-wrap: wrap;

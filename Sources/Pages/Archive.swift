@@ -31,8 +31,8 @@ enum ArchivePage {
         s += #"<h1 class="page-title">Archive</h1>"#
         s += #"<p class="page-subtitle">\#(summaryText(postCount: posts.count, yearCount: years.count))</p>"#
 
-        // Decorative search
-        s += #"<input class="archive-search" type="search" placeholder="Search \#(posts.count) posts… (decorative)" disabled>"#
+        // Search (client-side title filter; wired in site.js)
+        s += #"<input class="archive-search" type="search" aria-label="Search posts by title" placeholder="Search \#(posts.count) posts by title…">"#
 
         // Decorative year chips
         if !years.isEmpty {
@@ -59,7 +59,7 @@ enum ArchivePage {
 
                 let title = escape(article.title)
                 let href = escape(article.path)
-                s += #"<div class="archive-row">"#
+                s += #"<div class="archive-row" data-title="\#(escape(article.title.lowercased()))">"#
                 s += #"<span class="archive-month">\#(monthLabel)</span>"#
                 s += #"<a class="text-link" href="\#(href)">\#(title)</a>"#
                 s += #"<span class="archive-date">\#(dayLabel(article.date))</span>"#
@@ -68,6 +68,8 @@ enum ArchivePage {
             s += "</div>"  // archive-list
             s += "</section>"
         }
+
+        s += #"<p class="archive-empty" hidden>No posts match your search.</p>"#
 
         s += "</div>"  // archive
         return s
