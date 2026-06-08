@@ -94,6 +94,8 @@ body:has(.archive) footer .container {
     font-size: 0.94em;
     color: var(--text-secondary);
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .archive-date {
