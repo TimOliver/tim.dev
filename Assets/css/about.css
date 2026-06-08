@@ -239,7 +239,7 @@ body:has(.about) footer .container {
    1em company names in size so it never competes with the bold job titles below
    it. Colour inherits (--text-secondary). */
 .about-label--section {
-    font-size: 0.95em;
+    font-size: 0.85em;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
