@@ -13,7 +13,7 @@ body:has(.contact) footer .container {
 }
 
 .contact {
-    margin-top: 70px;
+    margin-top: 40px;
 }
 
 /* Clamp the centered subtitle to a comfortable measure (the global rule sets

@@ -27,7 +27,7 @@ body:has(.collection-detail) footer .container {
 }
 
 .collection {
-    margin-top: 70px;
+    margin-top: 40px;
 }
 
 /* Centered page title + subtitle. Size/weight come from the global .page-title

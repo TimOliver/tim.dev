@@ -16,7 +16,7 @@ body:has(.about) footer .container {
    the tagline and emphasized labels keep the brighter --text. */
 .about {
     color: var(--text-secondary);
-    margin-top: 70px;
+    margin-top: 40px;
 }
 
 .about p:not(.about-tagline) {
@@ -671,11 +671,21 @@ body:has(.about) footer .container {
 @media (max-width: 720px) {
     .about-intro {
         grid-template-columns: 1fr;
-        gap: 1.5em;
+        gap: 1.25em;
+        margin-bottom: 2.5em;
+        /* Drop the oversized intro base (16.5pt) so the title/tagline/body
+           scale down proportionally on a phone. */
+        font-size: 16px;
+    }
+    .about-intro .page-title {
+        font-size: 2.1em;
+    }
+    .about-tagline {
+        font-size: 1.25em;
     }
     .about-portrait img {
-        width: 240px;
-        height: 291px;
+        width: 220px;
+        height: 267px;
     }
     .about-section-header h2 {
         font-size: 2.1em;

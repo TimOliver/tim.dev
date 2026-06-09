@@ -139,16 +139,16 @@ article img {
    easing to 24px on narrow ones. 24px < the 35px padding, so it never reaches
    the viewport edge on mobile; the clamp's middle term caps it at the gutter
    beyond the ~70ch column so it can't force a horizontal scrollbar. */
-/* Hero image — overhangs the column by 30px each side. At full width it keeps its
-   natural aspect ratio (no fixed height), so it doesn't dominate medium screens
-   like an iPad mini in landscape. The ≤720px rule still caps it as a banner.
-   object-fit (inert here without a height) is inherited by that mobile rule. */
+/* Hero image — fits within the content column (no overhang) and keeps its natural
+   aspect ratio (no fixed height), so it scales down with the column instead of
+   dominating medium screens like an iPad mini. The ≤720px rule still caps it as a
+   banner. object-fit (inert here without a height) is inherited by that mobile rule. */
 article img.hero {
     display: block;
-    width: calc(100% + 60px);
-    max-width: none;
+    width: 100%;
+    height: auto;
     object-fit: cover;
-    margin: 1.5em -30px 2em;
+    margin: 1.5em 0 2em;
     border-radius: 30px;
     corner-shape: squircle;
 }
@@ -156,7 +156,7 @@ article img.hero {
 @media (max-width: 720px) {
     article img.hero {
         width: 100%;
-        height: 300px;
+        height: auto;
         margin: 1.5em 0 2em;
     }
 }
@@ -807,10 +807,11 @@ body > header::before {
 }
 
 @media (max-width: 1000px) {
-    /* Body text drops to 95% (14.25pt) at this breakpoint, matching
-       the scaled-down header content. */
+    /* Mid-width (tablet) scale-down: body + header drop a notch so the full nav
+       isn't cramped above the 720px hamburger breakpoint (e.g. iPad mini
+       portrait). Slightly below the 18px base. */
     body {
-        font-size: 14.25pt;
+        font-size: 17px;
     }
 
     body > header {
@@ -819,26 +820,26 @@ body > header::before {
 
 
     #header-content {
-        gap: clamp(16px, 3.2vw, 56px);
-        padding: 0 26px;
+        gap: clamp(12px, 3vw, 56px);
+        padding: 0 24px;
     }
 
     #logo img {
-        height: 19px;
+        height: 18px;
     }
 
     #logo a {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     #menu {
-        font-size: 1.08em;
-        gap: 8px;
+        font-size: 1em;
+        gap: 6px;
     }
 
     #menu > li > a > img,
     .theme-toggle-icon {
-        height: 20px;
+        height: 18px;
     }
 
     .theme-toggle {
@@ -848,10 +849,10 @@ body > header::before {
 }
 
 @media (max-width: 720px) {
-    /* Body text drops further to 90% (13.5pt) once the hamburger
-       menu takes over — matches the more compact phone layout. */
+    /* Body text steps down to 16px on phones once the hamburger menu takes
+       over — a touch under the 17px tablet size for the narrow column. */
     body {
-        font-size: 13.5pt;
+        font-size: 16px;
     }
 
     body > header::before {
@@ -1251,7 +1252,7 @@ footer .container {
 
 @media (max-width: 374.98px) {
     body {
-        font-size: 12.4pt;
+        font-size: 15.5px;
     }
 
     body > header {
