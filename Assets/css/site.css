@@ -1048,6 +1048,13 @@ body > header::before {
     display: block;
 }
 
+/* Nudge blog content (home + posts) down a touch so the first date clears the
+   sticky header's bottom fade on short viewports (e.g. iPad mini landscape).
+   padding (not margin) so it can't collapse into the container's top margin. */
+body:has(article) .container {
+    padding-top: 8px;
+}
+
 .title {
     text-align: center;
     text-wrap: balance;
