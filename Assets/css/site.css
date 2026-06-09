@@ -139,14 +139,14 @@ article img {
    easing to 24px on narrow ones. 24px < the 35px padding, so it never reaches
    the viewport edge on mobile; the clamp's middle term caps it at the gutter
    beyond the ~70ch column so it can't force a horizontal scrollbar. */
-/* Hero image — a fixed-height banner that overhangs the column by 30px each side.
-   object-fit: cover fills the box (cropping top/bottom as needed) so the height
-   stays capped while the overhang reads as a deliberate bleed. */
+/* Hero image — overhangs the column by 30px each side. At full width it keeps its
+   natural aspect ratio (no fixed height), so it doesn't dominate medium screens
+   like an iPad mini in landscape. The ≤720px rule still caps it as a banner.
+   object-fit (inert here without a height) is inherited by that mobile rule. */
 article img.hero {
     display: block;
     width: calc(100% + 60px);
     max-width: none;
-    height: 440px;
     object-fit: cover;
     margin: 1.5em -30px 2em;
     border-radius: 30px;
