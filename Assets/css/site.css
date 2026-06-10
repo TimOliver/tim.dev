@@ -1367,4 +1367,74 @@ footer .container {
     .back-to-top {
         transition: none;
     }
+    .post-comments-arrow {
+        transition: none;
+    }
+}
+
+/* ---------- Post links + comment cue (home feed → post pages) ---------- */
+
+/* Feed only: date + title link to the post's own page. Hover-only cue — at rest
+   they look exactly like the standalone post headings. The .title/.date rules
+   out-specify the global `a` colour, so resting colour is unchanged and hover
+   doesn't pick up the content-link red. */
+article .title a,
+article .date a {
+    color: inherit;
+    text-decoration: none;
+}
+
+article .title a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+article .date a:hover {
+    color: var(--text);
+}
+
+/* End-of-post comment cue (feed): subtle icon + label + arrow. */
+.post-comments-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1.75em;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.post-comments-cue:hover {
+    color: var(--link);
+}
+
+.post-comments-icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+}
+
+.post-comments-arrow {
+    transition: transform 0.2s ease;
+}
+
+.post-comments-cue:hover .post-comments-arrow {
+    transform: translateX(3px);
+}
+
+/* Comments section on the standalone post page (Comentario mounts inside). */
+.post-comments {
+    margin-top: 2.5em;
+    padding-top: 1.5em;
+    border-top: 1px solid var(--border);
+}
+
+.post-comments-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 1.4em;
+    font-weight: 700;
 }
