@@ -87,7 +87,12 @@ enum ArticleShell {
             s += #"<h2 class="post-comments-title">"#
             s += commentIcon("post-comments-icon")
             s += "<span>Comments</span></h2>"
-            s += "<!-- Comentario embed mounts here later -->"
+            // Comentario widget (self-hosted at comments.tim.dev). The script
+            // loads once per page; the thread is keyed to this post's URL path
+            // automatically. Only emitted on the standalone post page (.page),
+            // never the home feed.
+            s += #"<script defer src="https://comments.tim.dev/comentario.js"></script>"#
+            s += "<comentario-comments></comentario-comments>"
             s += "</section>"
         }
 
