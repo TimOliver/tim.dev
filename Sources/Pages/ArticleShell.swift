@@ -73,7 +73,10 @@ enum ArticleShell {
         case .feed:
             s += #"<a class="post-comments-cue" href="\#(href)#comments">"#
             s += commentIcon("post-comments-icon")
-            s += "<span>Comments</span>"
+            // Live comment count for this post (keyed to its path). Falls back to
+            // plain "Comments" while loading, when zero, or on error. comentario.js
+            // is loaded site-wide in MainLayout.
+            s += #"<comentario-count path="\#(href)" suffix=" Comments" placeholder="Comments" zero-text="Comments" error-text="Comments"></comentario-count>"#
             s += #"<span class="post-comments-arrow" aria-hidden="true">&rarr;</span>"#
             s += "</a>"
         case .page:
@@ -81,11 +84,8 @@ enum ArticleShell {
             s += #"<h2 class="post-comments-title">"#
             s += commentIcon("post-comments-icon")
             s += "<span>Comments</span></h2>"
-            // Comentario widget (self-hosted at comments.tim.dev). The script
-            // loads once per page; the thread is keyed to this post's URL path
-            // automatically. Only emitted on the standalone post page (.page),
-            // never the home feed.
-            s += #"<script defer src="https://comments.tim.dev/comentario.js"></script>"#
+            // Comentario widget (self-hosted). comentario.js is loaded site-wide
+            // in MainLayout; the thread is keyed to this post's URL path.
             s += "<comentario-comments></comentario-comments>"
             s += "</section>"
         }

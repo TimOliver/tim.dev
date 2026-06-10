@@ -53,6 +53,10 @@ struct MainLayout: Layout {
             Script(file: "https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.4/src/lite-yt-embed.js")
             Script(file: "/js/embla-carousel.umd.js")
             Script(file: "/js/site.js")
+            // Comentario (self-hosted comments). Powers <comentario-comments> on
+            // post pages and <comentario-count> in the home feed; harmless on
+            // pages with neither. Loaded site-wide like the other third-party JS.
+            Script(file: "https://comments.tim.dev/comentario.js")
         }
         .ignorePageGutters()
     }
