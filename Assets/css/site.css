@@ -1046,7 +1046,7 @@ body > header::before {
         margin-top: 0.15rem;
     }
 
-    article .date {
+    article .post-meta {
         font-size: 1em;
     }
 }
@@ -1078,14 +1078,31 @@ body:has(article) .container {
     margin: 0;
 }
 
-.date {
-    display: block;
-    color: var(--text-secondary);
-    font-size: 1.1em;
-    font-weight: 500;
+/* Header meta line: date · Comments (centred, sits above the title). */
+.post-meta {
     text-align: center;
+    font-size: 1.1em;
     margin-bottom: 0.6rem;
     line-height: 100%;
+}
+
+.date {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.post-meta-sep {
+    margin: 0 0.5em;
+    color: var(--text-tertiary);
+}
+
+.post-comments-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.post-comments-link:hover {
+    color: var(--link);
 }
 
 .subtitle {
@@ -1398,7 +1415,7 @@ article .date a:hover {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin-top: 1.75em;
+    margin-top: 0.5em;
     color: var(--text-secondary);
     text-decoration: none;
     font-size: 0.9em;

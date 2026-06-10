@@ -47,13 +47,22 @@ enum ArticleShell {
         let href = escape(article.path)
         var s = "<article>"
 
-        // Header — date + title. In the feed both link to the post page.
+        // Header — meta line (date · Comments) + title. In the feed the date
+        // and title link to the post page; the comment link jumps to #comments.
         switch context {
         case .feed:
+            s += #"<div class="post-meta">"#
             s += #"<time class="date" datetime="\#(isoDate(article.date))"><a href="\#(href)">\#(displayDate(article.date))</a></time>"#
+            s += #"<span class="post-meta-sep" aria-hidden="true">·</span>"#
+            s += #"<a class="post-comments-link" href="\#(href)#comments">Comments</a>"#
+            s += "</div>"
             s += #"<h1 class="title"><a href="\#(href)">\#(escape(article.title))</a></h1>"#
         case .page:
+            s += #"<div class="post-meta">"#
             s += #"<time class="date" datetime="\#(isoDate(article.date))">\#(displayDate(article.date))</time>"#
+            s += #"<span class="post-meta-sep" aria-hidden="true">·</span>"#
+            s += "<a class=\"post-comments-link\" href=\"#comments\">Comments</a>"
+            s += "</div>"
             s += #"<h1 class="title">\#(escape(article.title))</h1>"#
         }
 
