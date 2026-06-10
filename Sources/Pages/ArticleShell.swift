@@ -18,21 +18,45 @@ enum ArticleShell {
     /// (including the actual GMT+8) shifts the day forward.
     static let displayTimeZone = TimeZone.gmt
 
-    static func include(for article: Article) -> Include {
+    /// Which surface a post is being rendered for.
+    enum Context {
+        case feed   // home page: date/title link to the post page; comment cue at the end
+        case page   // standalone post page: plain date/title; comments mount point at the end
+    }
+
+    /// Inline speech-bubble icon (stroke = currentColor), matching the project's
+    /// inline-SVG convention. `cssClass` tags it per use.
+    private static func commentIcon(_ cssClass: String) -> String {
+        #"<svg class="\#(cssClass)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.8-5.4A8.5 8.5 0 1 1 21 11.5Z"></path></svg>"#
+    }
+
+    static func include(for article: Article, context: Context) -> Include {
         let key = pathKey(article.path)
+        // Feed and page variants differ, so they must not share one file.
+        let suffix = context == .feed ? ".feed" : ""
         let dir = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
             .appendingPathComponent("Includes")
             .appendingPathComponent("_posts")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        let file = dir.appendingPathComponent("\(key).html")
-        try? htmlString(for: article).write(to: file, atomically: true, encoding: .utf8)
-        return Include("_posts/\(key).html")
+        let file = dir.appendingPathComponent("\(key)\(suffix).html")
+        try? htmlString(for: article, context: context).write(to: file, atomically: true, encoding: .utf8)
+        return Include("_posts/\(key)\(suffix).html")
     }
 
-    static func htmlString(for article: Article) -> String {
+    static func htmlString(for article: Article, context: Context) -> String {
+        let href = escape(article.path)
         var s = "<article>"
-        s += #"<time class="date" datetime="\#(isoDate(article.date))">\#(displayDate(article.date))</time>"#
-        s += "<h1 class=\"title\">\(escape(article.title))</h1>"
+
+        // Header — date + title. In the feed both link to the post page.
+        switch context {
+        case .feed:
+            s += #"<time class="date" datetime="\#(isoDate(article.date))"><a href="\#(href)">\#(displayDate(article.date))</a></time>"#
+            s += #"<h1 class="title"><a href="\#(href)">\#(escape(article.title))</a></h1>"#
+        case .page:
+            s += #"<time class="date" datetime="\#(isoDate(article.date))">\#(displayDate(article.date))</time>"#
+            s += #"<h1 class="title">\#(escape(article.title))</h1>"#
+        }
+
         if let subtitle = article.subtitle, !subtitle.isEmpty {
             s += "<p class=\"subtitle\">\(escape(subtitle))</p>"
         }
@@ -40,6 +64,24 @@ enum ArticleShell {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
         }
         s += "<section>\(fixBareImages(InstagramEmbed.transform(article.text)))</section>"
+
+        // Footer — comment cue (feed links to #comments) / comments mount (page).
+        switch context {
+        case .feed:
+            s += #"<a class="post-comments-cue" href="\#(href)#comments">"#
+            s += commentIcon("post-comments-icon")
+            s += "<span>Comments</span>"
+            s += #"<span class="post-comments-arrow" aria-hidden="true">&rarr;</span>"#
+            s += "</a>"
+        case .page:
+            s += #"<section class="post-comments" id="comments">"#
+            s += #"<h2 class="post-comments-title">"#
+            s += commentIcon("post-comments-icon")
+            s += "<span>Comments</span></h2>"
+            s += "<!-- Comentario embed mounts here later -->"
+            s += "</section>"
+        }
+
         s += "</article>"
         return s
     }

@@ -201,6 +201,14 @@ body:has(.collection-detail) footer .container {
     }
 }
 
+/* Landscape phones have the width for two cards per row — which shrinks each
+   card (and its imagery) down to a sensible size. Portrait stays single-column. */
+@media (max-width: 720px) and (orientation: landscape) {
+    .collection-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 /* Wide tier → 3 columns. Threshold == the container's 3-col cap (1650px), so
    3 columns only appear once there's room for full-size cards — never shrunk.
    Below 1650px it's 2 columns shrinking fluidly down to the mobile 1-col break;

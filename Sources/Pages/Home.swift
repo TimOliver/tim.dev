@@ -15,7 +15,7 @@ struct Home: StaticPage {
             .sorted { $0.date > $1.date }
             .prefix(Home.recentPostCount)
         return ForEach(Array(recent)) { article in
-            ArticleShell.include(for: article)
+            ArticleShell.include(for: article, context: .feed)
         }
     }
 }

@@ -180,6 +180,22 @@ article lite-youtube {
     margin: 0 auto 1.75em;
 }
 
+/* YouTube embeds arrive as fixed-width iframes (e.g. width="640"); without this
+   they overflow narrow viewports and force the whole page to scroll sideways on
+   a phone. Fill the column and hold a 16:9 box instead. Targeted by src so the
+   Instagram/social iframes below keep their own sizing. */
+article iframe[src*="youtube"] {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto 1.75em;
+    border: 0;
+    border-radius: 15px;
+    corner-shape: squircle;
+}
+
 /* Instagram embeds — token-free /embed/ iframe, centered at Instagram's natural
    width. Height starts as a placeholder and is auto-fitted to the post's real
    height by the resize listener in site.js. */

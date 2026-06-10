@@ -150,11 +150,68 @@
 
 /* Mobile tweaks for app-specific detail bits. */
 @media (max-width: 720px) {
-    .app-detail-shots {
-        padding: 18px;
-        gap: 14px;
+    /* Compact detail header — the desktop icon (128px) and headings dwarf a
+       phone screen, so step them down to App-Store-detail proportions. */
+    .app-detail-head {
+        gap: 16px;
+        margin-bottom: 1.25em;
+    }
+    .app-detail-head .app-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 18px;
     }
     .app-detail-name {
-        font-size: 2.1em;
+        font-size: 1.9em;
+    }
+    .app-detail-tagline {
+        font-size: 1.05em;
+    }
+
+    /* Screenshots become a full-bleed, one-at-a-time swipe pager. Native CSS
+       scroll-snap (not the Embla JS) because the app pages swap content in place
+       without re-running init — a scroll-snap pager needs no JS, so it survives
+       the swap. The desktop bordered surface is dropped; each shot snaps one per
+       view (with a peek of the next), edge-to-edge across the viewport. */
+    .app-detail-shots {
+        width: 100vw;
+        margin-left: 50%;
+        transform: translateX(-50%);
+        gap: 12px;
+        padding: 0 16px;
+        background: none;
+        border-radius: 0;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 16px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .app-detail-shots::-webkit-scrollbar {
+        display: none;
+    }
+    .app-detail-shots .app-frame {
+        flex: 0 0 74%;
+        scroll-snap-align: start;
+    }
+
+    /* Single-column cards span the full width here; in landscape that blows the
+       phone frames up huge (each ~290px wide → ~515px tall via the 9/16 ratio).
+       Cap the frame pair's width — which caps height via the aspect ratio — and
+       let it sit left-aligned rather than stretching across the card. */
+    .app-frames {
+        max-width: 360px;
+        justify-content: flex-start;
+    }
+}
+
+/* Landscape phones: a width-based slide (% of 100vw) makes the 9/16 shots
+   absurdly tall, since 100vw is the long edge. Size the slide off viewport
+   HEIGHT instead so each screenshot is about as tall as the screen — width then
+   derives from the locked aspect ratio (a slim phone), and several sit across
+   the wide viewport. */
+@media (max-width: 720px) and (orientation: landscape) {
+    .app-detail-shots .app-frame {
+        flex: 0 0 34vh;
     }
 }

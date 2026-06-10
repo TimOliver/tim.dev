@@ -3,6 +3,6 @@ import Ignite
 
 struct PostPage: ArticlePage {
     var body: some HTML {
-        ArticleShell.include(for: article)
+        ArticleShell.include(for: article, context: .page)
     }
 }

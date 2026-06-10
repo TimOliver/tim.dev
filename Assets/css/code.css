@@ -29,11 +29,14 @@
     color: var(--text-tertiary);
 }
 
-/* Repo line: github mark + owner/name. */
+/* Repo line: github mark + owner/name. Wraps rather than overflowing — long,
+   unbreakable repo names (e.g. TOPasswordViewController) otherwise push past the
+   card on a phone and make the page look lopsided. */
 .code-repo {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
     font-size: 1.05em;
     font-weight: 700;
     color: var(--heading);
@@ -56,6 +59,8 @@
 
 .code-name {
     color: var(--heading);
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .code-tagline {
