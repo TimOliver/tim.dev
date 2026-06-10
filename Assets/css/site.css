@@ -1046,7 +1046,7 @@ body > header::before {
         margin-top: 0.15rem;
     }
 
-    article .post-meta {
+    article .date {
         font-size: 1em;
     }
 }
@@ -1078,31 +1078,14 @@ body:has(article) .container {
     margin: 0;
 }
 
-/* Header meta line: date · Comments (centred, sits above the title). */
-.post-meta {
-    text-align: center;
+.date {
+    display: block;
+    color: var(--text-secondary);
     font-size: 1.1em;
+    font-weight: 500;
+    text-align: center;
     margin-bottom: 0.6rem;
     line-height: 100%;
-}
-
-.date {
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-
-.post-meta-sep {
-    margin: 0 0.5em;
-    color: var(--text-tertiary);
-}
-
-.post-comments-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-}
-
-.post-comments-link:hover {
-    color: var(--link);
 }
 
 .subtitle {
@@ -1391,23 +1374,22 @@ footer .container {
 
 /* ---------- Post links + comment cue (home feed → post pages) ---------- */
 
-/* Feed only: date + title link to the post's own page. Hover-only cue — at rest
-   they look exactly like the standalone post headings. The .title/.date rules
-   out-specify the global `a` colour, so resting colour is unchanged and hover
-   doesn't pick up the content-link red. */
-article .title a,
-article .date a {
+/* Feed: date + title are one link to the post. At rest they look exactly like
+   the standalone post headings; hovering anywhere on the link turns BOTH red
+   (no underline). */
+.post-head-link {
+    display: block;
     color: inherit;
     text-decoration: none;
 }
 
-article .title a:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+.post-head-link:hover {
+    text-decoration: none;
 }
 
-article .date a:hover {
-    color: var(--text);
+.post-head-link:hover .date,
+.post-head-link:hover .title {
+    color: var(--link);
 }
 
 /* End-of-post comment cue (feed): subtle icon + label + arrow. */
