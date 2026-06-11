@@ -30,6 +30,53 @@ enum ArticleShell {
         #"<svg class="\#(cssClass)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.8-5.4A8.5 8.5 0 1 1 21 11.5Z"></path></svg>"#
     }
 
+    /// Sprite icon from /img/ui-icons.svg (Tabler outline, currentColor stroke).
+    private static func spriteIcon(_ id: String) -> String {
+        #"<svg class="post-icon-glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/ui-icons.svg#\#(id)"/></svg>"#
+    }
+
+    /// Copy-link button. `labelled` adds visible text (pill variant); omit for
+    /// the bare icon-only variant. `path` is already HTML-escaped.
+    private static func copyButton(path: String, labelled: Bool) -> String {
+        let label = labelled ? #"<span class="post-icon-label">Copy link</span>"# : ""
+        return #"<button type="button" class="post-icon" data-copy-path="\#(path)" aria-label="Copy link">\#(spriteIcon("link"))\#(label)</button>"#
+    }
+
+    /// Native-share button. Hidden until capabilities.js confirms support.
+    /// `title` is already HTML-escaped.
+    private static func shareButton(path: String, title: String, labelled: Bool) -> String {
+        let label = labelled ? #"<span class="post-icon-label">Share</span>"# : ""
+        return #"<button type="button" class="post-icon share-button" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))\#(label)</button>"#
+    }
+
+    /// Comments link with live Comentario count. Bare: number only. Pill:
+    /// "N comments". `path` is already HTML-escaped.
+    private static func commentsLink(path: String, labelled: Bool) -> String {
+        let count = labelled
+            ? #"<comentario-count path="\#(path)" suffix=" comments" placeholder="comments" zero-text="0 comments" error-text="comments"></comentario-count>"#
+            : #"<comentario-count path="\#(path)" suffix="" placeholder="" zero-text="0" error-text=""></comentario-count>"#
+        return #"<a class="post-icon" href="\#(path)#comments" aria-label="Comments">\#(spriteIcon("comments"))\#(count)</a>"#
+    }
+
+    /// Borderless glance row under a feed heading: copy · share · comments.
+    private static func bareRow(path: String, title: String) -> String {
+        #"<div class="post-icons post-icons--bare">"#
+            + copyButton(path: path, labelled: false)
+            + shareButton(path: path, title: title, labelled: false)
+            + commentsLink(path: path, labelled: false)
+            + "</div>"
+    }
+
+    /// Explicit labelled pill bar at the end of an article. `includeComments`
+    /// is true in the feed (links to the thread) and false on the post page
+    /// (the thread renders immediately below).
+    private static func pillBar(path: String, title: String, includeComments: Bool) -> String {
+        var inner = copyButton(path: path, labelled: true)
+            + shareButton(path: path, title: title, labelled: true)
+        if includeComments { inner += commentsLink(path: path, labelled: true) }
+        return #"<div class="post-icons post-icons--pills">\#(inner)</div>"#
+    }
+
     static func include(for article: Article, context: Context) -> Include {
         let key = pathKey(article.path)
         // Feed and page variants differ, so they must not share one file.
@@ -63,23 +110,23 @@ enum ArticleShell {
         if let subtitle = article.subtitle, !subtitle.isEmpty {
             s += "<p class=\"subtitle\">\(escape(subtitle))</p>"
         }
+        // Feed only: borderless icon row under the heading (glance cue).
+        if context == .feed {
+            s += bareRow(path: href, title: escape(article.title))
+        }
         if let image = article.image, !image.isEmpty {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
         }
         s += "<section>\(fixBareImages(InstagramEmbed.transform(article.text)))</section>"
 
-        // Footer — comment cue (feed links to #comments) / comments mount (page).
+        // Footer — explicit pill bar. Feed includes the Comments pill (links to
+        // the thread on the post page); the post page omits it because the
+        // thread renders immediately below.
         switch context {
         case .feed:
-            s += #"<a class="post-comments-cue" href="\#(href)#comments">"#
-            s += commentIcon("post-comments-icon")
-            // Live comment count for this post (keyed to its path). Falls back to
-            // plain "Comments" while loading, when zero, or on error. comentario.js
-            // is loaded site-wide in MainLayout.
-            s += #"<comentario-count path="\#(href)" suffix=" Comments" placeholder="Comments" zero-text="Comments" error-text="Comments"></comentario-count>"#
-            s += #"<span class="post-comments-arrow" aria-hidden="true">&rarr;</span>"#
-            s += "</a>"
+            s += pillBar(path: href, title: escape(article.title), includeComments: true)
         case .page:
+            s += pillBar(path: href, title: escape(article.title), includeComments: false)
             s += #"<section class="post-comments" id="comments">"#
             s += #"<h2 class="post-comments-title">"#
             s += commentIcon("post-comments-icon")
