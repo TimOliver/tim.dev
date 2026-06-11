@@ -1367,7 +1367,7 @@ footer .container {
     .back-to-top {
         transition: none;
     }
-    .post-comments-arrow {
+    .post-icon {
         transition: none;
     }
 }
@@ -1392,34 +1392,95 @@ footer .container {
     color: var(--link);
 }
 
-/* End-of-post comment cue (feed): subtle icon + label + arrow. */
-.post-comments-cue {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 0.5em;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.9em;
-    font-weight: 600;
-}
-
-.post-comments-cue:hover {
-    color: var(--link);
-}
-
+/* Keep: shared by the post-page comments <h2> icon. */
 .post-comments-icon {
     width: 18px;
     height: 18px;
     flex: 0 0 auto;
 }
 
-.post-comments-arrow {
-    transition: transform 0.2s ease;
+/* ---------- Post icons (link / share / comments) ---------- */
+
+.post-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.post-comments-cue:hover .post-comments-arrow {
-    transform: translateX(3px);
+.post-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+.post-icon-glyph {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+}
+
+/* Bare row under the feed heading: borderless glance cue. */
+.post-icons--bare {
+    margin-top: 0.6rem;
+    gap: 4px;
+}
+
+.post-icons--bare .post-icon {
+    padding: 13px;            /* 18px glyph + 26px = ~44px touch target */
+    border-radius: 50%;
+    font-size: 0.9em;
+    font-weight: 600;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.post-icons--bare .post-icon:hover,
+.post-icons--bare .post-icon:focus-visible {
+    color: var(--link);
+    background: var(--bg-tertiary);
+}
+
+/* Pill bar at the end of an article: explicit labelled CTA. */
+.post-icons--pills {
+    margin-top: 2em;
+    gap: 10px;
+}
+
+.post-icons--pills .post-icon {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.post-icons--pills .post-icon:hover,
+.post-icons--pills .post-icon:focus-visible {
+    color: var(--link);
+    border-color: var(--link);
+    background: var(--bg-tertiary);
+}
+
+/* Copied confirmation (icon swap handled in site.js). */
+.post-icon.is-copied {
+    color: var(--link);
+}
+
+/* Share is revealed only where the Web Share API exists; the capability
+   class is set pre-paint in capabilities.js, so there is no flash. */
+.share-button {
+    display: none;
+}
+
+html.has-web-share .share-button {
+    display: inline-flex;
 }
 
 /* Comments section on the standalone post page (Comentario mounts inside). */
