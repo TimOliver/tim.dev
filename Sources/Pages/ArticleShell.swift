@@ -35,30 +35,42 @@ enum ArticleShell {
         #"<svg class="post-icon-glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/ui-icons.svg#\#(id)"/></svg>"#
     }
 
-    /// Copy-link button. `labelled` adds visible text (pill variant); omit for
-    /// the bare icon-only variant. `path` is already HTML-escaped.
+    /// Copy-link button. The labelled (pill) variant shows visible text, which
+    /// provides its accessible name; the icon-only (bare) variant carries an
+    /// aria-label instead. `path` is already HTML-escaped.
     private static func copyButton(path: String, labelled: Bool) -> String {
-        let label = labelled ? #"<span class="post-icon-label">Copy link</span>"# : ""
-        return #"<button type="button" class="post-icon" data-copy-path="\#(path)" aria-label="Copy link">\#(spriteIcon("link"))\#(label)</button>"#
+        if labelled {
+            return #"<button type="button" class="post-icon" data-copy-path="\#(path)">\#(spriteIcon("link"))<span class="post-icon-label">Copy link</span></button>"#
+        }
+        return #"<button type="button" class="post-icon" data-copy-path="\#(path)" aria-label="Copy link">\#(spriteIcon("link"))</button>"#
     }
 
-    /// Native-share button. Hidden until capabilities.js confirms support.
-    /// `title` is already HTML-escaped.
+    /// Native-share button. Hidden until capabilities.js confirms support. The
+    /// labelled (pill) variant shows visible text for its accessible name; the
+    /// icon-only (bare) variant carries an aria-label. `path` and `title` are
+    /// already HTML-escaped.
     private static func shareButton(path: String, title: String, labelled: Bool) -> String {
-        let label = labelled ? #"<span class="post-icon-label">Share</span>"# : ""
-        return #"<button type="button" class="post-icon share-button" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))\#(label)</button>"#
+        if labelled {
+            return #"<button type="button" class="post-icon share-button" data-share-path="\#(path)" data-share-title="\#(title)">\#(spriteIcon("share"))<span class="post-icon-label">Share</span></button>"#
+        }
+        return #"<button type="button" class="post-icon share-button" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))</button>"#
     }
 
-    /// Comments link with live Comentario count. Bare: number only. Pill:
-    /// "N comments". `path` is already HTML-escaped.
+    /// Comments link with live Comentario count. The labelled (pill) variant
+    /// shows "N comments" as visible text, which is its accessible name; the
+    /// bare variant is count-only, so it carries an aria-label for context.
+    /// `path` is already HTML-escaped.
     private static func commentsLink(path: String, labelled: Bool) -> String {
-        let count = labelled
-            ? #"<comentario-count path="\#(path)" suffix=" comments" placeholder="comments" zero-text="0 comments" error-text="comments"></comentario-count>"#
-            : #"<comentario-count path="\#(path)" suffix="" placeholder="" zero-text="0" error-text=""></comentario-count>"#
+        if labelled {
+            let count = #"<comentario-count path="\#(path)" suffix=" comments" placeholder="comments" zero-text="0 comments" error-text="comments"></comentario-count>"#
+            return #"<a class="post-icon" href="\#(path)#comments">\#(spriteIcon("comments"))\#(count)</a>"#
+        }
+        let count = #"<comentario-count path="\#(path)" suffix="" placeholder="" zero-text="0" error-text=""></comentario-count>"#
         return #"<a class="post-icon" href="\#(path)#comments" aria-label="Comments">\#(spriteIcon("comments"))\#(count)</a>"#
     }
 
     /// Borderless glance row under a feed heading: copy · share · comments.
+    /// `path` and `title` are already HTML-escaped.
     private static func bareRow(path: String, title: String) -> String {
         #"<div class="post-icons post-icons--bare">"#
             + copyButton(path: path, labelled: false)
@@ -69,7 +81,8 @@ enum ArticleShell {
 
     /// Explicit labelled pill bar at the end of an article. `includeComments`
     /// is true in the feed (links to the thread) and false on the post page
-    /// (the thread renders immediately below).
+    /// (the thread renders immediately below). `path` and `title` are already
+    /// HTML-escaped.
     private static func pillBar(path: String, title: String, includeComments: Bool) -> String {
         var inner = copyButton(path: path, labelled: true)
             + shareButton(path: path, title: title, labelled: true)
