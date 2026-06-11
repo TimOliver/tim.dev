@@ -646,3 +646,64 @@
     }
     input.addEventListener('input', apply);
 })();
+
+// Post icons: copy-link (with confirmation) + native share. Buttons are
+// emitted by ArticleShell in both the bare row (feed headings) and the pill
+// bar (end of article). Absolute URLs are built client-side from each
+// button's path, so the same markup works on the home page and post pages.
+(function() {
+    // Shared visually-hidden live region for "Link copied" announcements.
+    var live = document.createElement('div');
+    live.setAttribute('aria-live', 'polite');
+    live.setAttribute('role', 'status');
+    live.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;'
+        + 'padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;';
+    document.body.appendChild(live);
+
+    function absoluteURL(path) {
+        return location.origin + path;
+    }
+
+    function confirmCopied(btn) {
+        var use = btn.querySelector('use');
+        var label = btn.querySelector('.post-icon-label');
+        var originalHref = use ? use.getAttribute('href') : null;
+        var originalText = label ? label.textContent : null;
+        if (use) use.setAttribute('href', '/img/ui-icons.svg#clipboard-check');
+        if (label) label.textContent = 'Copied!';
+        btn.classList.add('is-copied');
+        live.textContent = 'Link copied';
+        setTimeout(function() {
+            if (use && originalHref) use.setAttribute('href', originalHref);
+            if (label && originalText !== null) label.textContent = originalText;
+            btn.classList.remove('is-copied');
+        }, 1500);
+    }
+
+    document.addEventListener('click', function(e) {
+        var copyBtn = e.target.closest && e.target.closest('[data-copy-path]');
+        if (copyBtn) {
+            e.preventDefault();
+            var url = absoluteURL(copyBtn.getAttribute('data-copy-path'));
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(function() {
+                    confirmCopied(copyBtn);
+                }).catch(function() {});
+            }
+            return;
+        }
+        var shareBtn = e.target.closest && e.target.closest('[data-share-path]');
+        if (shareBtn) {
+            e.preventDefault();
+            if (!navigator.share) return;
+            navigator.share({
+                title: shareBtn.getAttribute('data-share-title') || document.title,
+                url: absoluteURL(shareBtn.getAttribute('data-share-path'))
+            }).catch(function() {
+                // AbortError (user cancelled) or genuine failure — no-op; the
+                // button stays available for another attempt.
+            });
+            return;
+        }
+    });
+})();
