@@ -1067,8 +1067,10 @@ body > header::before {
 
 /* Nudge blog content (home + posts) down a touch so the first date clears the
    sticky header's bottom fade on short viewports (e.g. iPad mini landscape).
-   padding (not margin) so it can't collapse into the container's top margin. */
-body:has(article) .container {
+   padding (not margin) so it can't collapse into the container's top margin.
+   Scoped to the main content container — the footer also uses .container, and
+   an unscoped rule pinned its content to the top (padding-top override). */
+body:has(article) main .container {
     padding-top: 8px;
 }
 
@@ -1173,7 +1175,7 @@ footer .container {
     justify-content: space-between;
     align-items: center;
     gap: 24px;
-    padding: 32px 20px;
+    padding: 20px;
     width: 100%;
     border-top: 1px solid var(--border);
 }
