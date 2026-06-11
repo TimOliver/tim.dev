@@ -1367,7 +1367,8 @@ footer .container {
     .back-to-top {
         transition: none;
     }
-    .post-icon {
+    .post-icons--bare .post-icon,
+    .post-icons--pills .post-icon {
         transition: none;
     }
 }
