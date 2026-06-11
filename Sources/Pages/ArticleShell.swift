@@ -123,12 +123,13 @@ enum ArticleShell {
         if let subtitle = article.subtitle, !subtitle.isEmpty {
             s += "<p class=\"subtitle\">\(escape(subtitle))</p>"
         }
-        // Feed only: borderless icon row under the heading (glance cue).
-        if context == .feed {
-            s += bareRow(path: href, title: escape(article.title))
-        }
         if let image = article.image, !image.isEmpty {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
+        }
+        // Feed only: borderless icon row, under the hero image (glance cue).
+        // For posts without a hero it follows the subtitle instead.
+        if context == .feed {
+            s += bareRow(path: href, title: escape(article.title))
         }
         s += "<section>\(fixBareImages(InstagramEmbed.transform(article.text)))</section>"
 
