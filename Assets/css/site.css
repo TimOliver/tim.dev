@@ -1452,21 +1452,6 @@ footer .container {
     background: var(--bg-tertiary);
 }
 
-/* Copied confirmation (icon swap handled in site.js). */
-.post-icon.is-copied {
-    color: var(--link);
-}
-
-/* Share is revealed only where the Web Share API exists; the capability
-   class is set pre-paint in capabilities.js, so there is no flash. */
-.share-button {
-    display: none;
-}
-
-html.has-web-share .share-button {
-    display: inline-flex;
-}
-
 /* Comments section on the standalone post page (Comentario mounts inside). */
 .post-comments {
     margin-top: 2.5em;

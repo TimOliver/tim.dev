@@ -17,10 +17,6 @@ struct MainLayout: Layout {
             // theme.js must run synchronously in <head> — it sets data-theme +
             // data-color-scheme on <html> before first paint, preventing FOUC.
             Script(file: "/js/theme.js")
-            // capabilities.js also runs pre-paint: sets `has-web-share` so the
-            // Share buttons are hidden flash-free where the Web Share API is
-            // unsupported (see ArticleShell post-icons).
-            Script(file: "/js/capabilities.js")
             // Preload sprites — works around Safari sometimes failing to render
             // external <use href> references on cold cache.
             MetaLink(href: "/img/brand-icons.svg", rel: "preload")
