@@ -1105,7 +1105,7 @@ article {
 }
 
 article section {
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 article ul,
@@ -1432,7 +1432,7 @@ footer .container {
 /* Bare row under the feed heading: borderless glance cue. */
 .post-icons--bare {
     margin-top: 0.6rem;
-    gap: 4px;
+    gap: 12px;
 }
 
 .post-icons--bare .post-icon-glyph {
