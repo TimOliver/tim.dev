@@ -667,15 +667,26 @@
     function confirmCopied(btn) {
         var use = btn.querySelector('use');
         var label = btn.querySelector('.post-icon-label');
-        var originalHref = use ? use.getAttribute('href') : null;
-        var originalText = label ? label.textContent : null;
+        // Capture originals once per button — only when not already in the
+        // copied state — so a repeat click before the revert doesn't capture
+        // the swapped values (which would leave the button stuck). State is
+        // stored on the element itself so each copy button reverts independently.
+        if (!btn.classList.contains('is-copied')) {
+            btn._iconHref = use ? use.getAttribute('href') : null;
+            btn._iconText = label ? label.textContent : null;
+        }
+        if (btn._revertTimer) clearTimeout(btn._revertTimer);
         if (use) use.setAttribute('href', '/img/ui-icons.svg#clipboard-check');
         if (label) label.textContent = 'Copied!';
         btn.classList.add('is-copied');
+        // Clear first so a repeat copy re-announces (some screen readers skip
+        // a live-region update when the text is unchanged).
+        live.textContent = '';
         live.textContent = 'Link copied';
-        setTimeout(function() {
-            if (use && originalHref) use.setAttribute('href', originalHref);
-            if (label && originalText !== null) label.textContent = originalText;
+        btn._revertTimer = setTimeout(function() {
+            btn._revertTimer = null;
+            if (use && btn._iconHref) use.setAttribute('href', btn._iconHref);
+            if (label && typeof btn._iconText === 'string') label.textContent = btn._iconText;
             btn.classList.remove('is-copied');
         }, 1500);
     }
