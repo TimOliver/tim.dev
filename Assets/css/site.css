@@ -1369,7 +1369,6 @@ footer .container {
     .back-to-top {
         transition: none;
     }
-    .post-icons--bare .post-icon,
     .post-icons--pills .post-icon {
         transition: none;
     }
@@ -1429,33 +1428,6 @@ footer .container {
     flex: 0 0 auto;
 }
 
-/* Bare row under the feed heading: borderless glance cue. */
-.post-icons--bare {
-    margin-top: 0.6rem;
-    gap: 100px;
-}
-
-.post-icons--bare .post-icon-glyph {
-    width: 24px;
-    height: 24px;
-}
-
-.post-icons--bare .post-icon {
-    padding: 10px;            /* 24px glyph + 20px = ~44px touch target */
-    border-radius: 50%;
-    font-size: 0.9em;
-    font-weight: 600;
-    transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-/* Hover/focus lifts to the strongest foreground (pure black in light, the
-   palette's near-white in dark) rather than the link red. */
-.post-icons--bare .post-icon:hover,
-.post-icons--bare .post-icon:focus-visible {
-    color: var(--heading);
-    background: var(--bg-tertiary);
-}
-
 /* Pill bar at the end of an article: explicit labelled CTA. */
 .post-icons--pills {
     margin-top: 2em;
@@ -1471,10 +1443,12 @@ footer .container {
     transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
 }
 
+/* Hover/focus lifts to the strongest foreground (pure black in light, the
+   palette's near-white in dark) rather than the link red. */
 .post-icons--pills .post-icon:hover,
 .post-icons--pills .post-icon:focus-visible {
-    color: var(--link);
-    border-color: var(--link);
+    color: var(--heading);
+    border-color: var(--heading);
     background: var(--bg-tertiary);
 }
 

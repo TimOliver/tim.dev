@@ -69,16 +69,6 @@ enum ArticleShell {
         return #"<a class="post-icon" href="\#(path)#comments" aria-label="Comments">\#(spriteIcon("comments"))\#(count)</a>"#
     }
 
-    /// Borderless glance row under a feed heading: copy · share · comments.
-    /// `path` and `title` are already HTML-escaped.
-    private static func bareRow(path: String, title: String) -> String {
-        #"<div class="post-icons post-icons--bare">"#
-            + copyButton(path: path, labelled: false)
-            + shareButton(path: path, title: title, labelled: false)
-            + commentsLink(path: path, labelled: false)
-            + "</div>"
-    }
-
     /// Explicit labelled pill bar at the end of an article. `includeComments`
     /// is true in the feed (links to the thread) and false on the post page
     /// (the thread renders immediately below). `path` and `title` are already
@@ -125,11 +115,6 @@ enum ArticleShell {
         }
         if let image = article.image, !image.isEmpty {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
-        }
-        // Feed only: borderless icon row, under the hero image (glance cue).
-        // For posts without a hero it follows the subtitle instead.
-        if context == .feed {
-            s += bareRow(path: href, title: escape(article.title))
         }
         s += "<section>\(fixBareImages(InstagramEmbed.transform(article.text)))</section>"
 
