@@ -65,10 +65,19 @@ enum ArticleShell {
         // to the post page, so hovering either highlights both.
         switch context {
         case .feed:
-            s += #"<a class="post-head-link" href="\#(href)">"#
+            // Date line: the date is no longer clickable. A comment indicator
+            // (bullet + bubble + count, linking to the thread) is appended and
+            // revealed by site.js once Comentario populates the count.
+            s += #"<p class="post-meta">"#
             s += #"<time class="date" datetime="\#(isoDate(article.date))">\#(displayDate(article.date))</time>"#
-            s += #"<h1 class="title">\#(escape(article.title))</h1>"#
-            s += "</a>"
+            s += #"<span class="post-meta-comments">"#
+            s += #"<span class="post-meta-sep" aria-hidden="true">&bull;</span>"#
+            s += #"<a class="post-meta-comment-link" href="\#(href)#comments" aria-label="Comments">"#
+            s += spriteIcon("comments")
+            s += #"<comentario-count path="\#(href)" suffix="" placeholder="" zero-text="0" error-text=""></comentario-count>"#
+            s += "</a></span></p>"
+            // Title links to the post and zooms on hover (like the header links).
+            s += #"<a class="post-title-link" href="\#(href)"><h1 class="title">\#(escape(article.title))</h1></a>"#
         case .page:
             s += #"<time class="date" datetime="\#(isoDate(article.date))">\#(displayDate(article.date))</time>"#
             s += #"<h1 class="title">\#(escape(article.title))</h1>"#

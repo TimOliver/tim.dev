@@ -646,3 +646,25 @@
     }
     input.addEventListener('input', apply);
 })();
+
+// Feed date line: reveal each item's comment indicator (bullet + bubble +
+// count) only once Comentario has populated the count. The count starts empty
+// (placeholder=""); when it gets text, show the surrounding .post-meta-comments.
+// Bottom-pill counts have no .post-meta-comments ancestor, so they're ignored.
+(function() {
+    var counts = document.querySelectorAll('.post-meta-comments comentario-count');
+    if (!counts.length) return;
+
+    function reveal(countEl) {
+        if ((countEl.textContent || '').trim() === '') return;
+        var wrap = countEl.closest('.post-meta-comments');
+        if (wrap) wrap.classList.add('is-loaded');
+    }
+
+    Array.prototype.forEach.call(counts, function(countEl) {
+        reveal(countEl);  // in case the count resolved before this script ran
+        new MutationObserver(function() {
+            reveal(countEl);
+        }).observe(countEl, { childList: true, characterData: true, subtree: true });
+    });
+})();
