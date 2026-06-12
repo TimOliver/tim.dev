@@ -1372,9 +1372,6 @@ footer .container {
     .post-icons--pills .post-icon {
         transition: none;
     }
-    .post-title-link .title {
-        transition: none;
-    }
 }
 
 /* ---------- Feed post header (date line + title) ---------- */
@@ -1460,9 +1457,10 @@ html.has-web-share .post-meta-badge.share-button {
     height: 0.9em;
 }
 
-/* Feed title links to the post. On hover a custom underline fades in — thinner
-   and a lighter grey than the browser default — and it wraps multi-line titles
-   cleanly (unlike an end-of-title marker). */
+/* Feed title links to the post. On hover the (possibly wrapped) title is
+   enclosed in a rounded surface that fades in — the same effect as the
+   Apps/Code cards. Constant padding + rounding are always present so the
+   surface fades in with no layout shift. */
 .post-title-link {
     display: block;
     text-align: center;
@@ -1470,7 +1468,7 @@ html.has-web-share .post-meta-badge.share-button {
     text-decoration: none;
 }
 
-/* Beat the global a:hover underline so only our custom underline shows. */
+/* Beat the global a:hover underline so the title never gets the link underline. */
 .post-title-link:hover,
 .post-title-link:focus-visible {
     text-decoration: none;
@@ -1478,16 +1476,19 @@ html.has-web-share .post-meta-badge.share-button {
 
 .post-title-link .title {
     display: inline-block;
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.15em;
-    transition: text-decoration-color 0.15s ease;
+    padding: 0.1em 0.4em;
+    border-radius: 0.3em;
+    corner-shape: squircle;
+    background: transparent;
+    transition: background 0.2s ease;
 }
 
-.post-title-link:hover .title,
-.post-title-link:focus-visible .title {
-    text-decoration-color: var(--text-tertiary);
+/* hover:hover so the surface doesn't stick after a tap on touch devices. */
+@media (hover: hover) {
+    .post-title-link:hover .title,
+    .post-title-link:focus-visible .title {
+        background: var(--bg-secondary);
+    }
 }
 
 /* Keep: shared by the post-page comments <h2> icon. */
