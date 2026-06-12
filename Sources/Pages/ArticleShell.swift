@@ -39,7 +39,7 @@ enum ArticleShell {
     /// thread with a live Comentario count ("N comments"). The visible text is
     /// the link's accessible name. `path` is already HTML-escaped.
     private static func commentsBar(path: String) -> String {
-        let count = #"<comentario-count path="\#(path)" suffix=" comments" placeholder="comments" zero-text="0 comments" error-text="comments"></comentario-count>"#
+        let count = #"<comentario-count path="\#(path)" suffix=" comments" placeholder="Comments" zero-text="Comments" error-text="Comments"></comentario-count>"#
         let pill = #"<a class="post-icon" href="\#(path)#comments">\#(spriteIcon("comments"))\#(count)</a>"#
         return #"<div class="post-icons post-icons--pills">\#(pill)</div>"#
     }
@@ -74,7 +74,7 @@ enum ArticleShell {
             s += #"<span class="post-meta-sep" aria-hidden="true">&bull;</span>"#
             s += #"<a class="post-meta-comment-link" href="\#(href)#comments" aria-label="Comments">"#
             s += spriteIcon("comments")
-            s += #"<comentario-count path="\#(href)" suffix="" placeholder="" zero-text="0" error-text=""></comentario-count>"#
+            s += #"<comentario-count path="\#(href)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count>"#
             s += "</a></span></p>"
             // Title links to the post and zooms on hover (like the header links).
             s += #"<a class="post-title-link" href="\#(href)"><h1 class="title">\#(escape(article.title))</h1></a>"#

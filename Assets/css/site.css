@@ -1413,7 +1413,7 @@ footer .container {
 .post-meta-comment-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.25em;
+    gap: 0.15em;
     color: var(--text-secondary);
     text-decoration: none;
     transition: color 0.15s ease;
