@@ -1382,49 +1382,39 @@ footer .container {
     }
 }
 
-/* ---------- Feed post header (date line + title) ---------- */
+/* ---------- Feed badge row (below the hero) ---------- */
 
-/* Feed date line: non-clickable date, with a comment indicator that site.js
-   reveals once Comentario loads the count. */
-.post-meta {
+/* Row of dim capsule badges below the hero image: link · share · comment count. */
+.post-badges {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.4em;
-    margin-bottom: 0.6rem;
-}
-
-.post-meta .date {
-    margin-bottom: 0;
-}
-
-/* Badges container next to the date. Sized to sit at the date text's height so
-   it doesn't overpower it; the icons track this via em. */
-.post-meta-badges {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35em;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    margin-top: 1rem;
     font-size: 0.95em;
     font-weight: 500;
 }
 
 /* The comment badge is hidden until the count loads (site.js adds .is-loaded);
-   the copy and share badges are always shown. */
-.post-meta-comments {
+   the link and share badges are always shown. */
+.post-badge-comments {
     display: none;
 }
 
-.post-meta-comments.is-loaded {
+.post-badge-comments.is-loaded {
     display: inline-flex;
     align-items: center;
 }
 
-/* Dim capsule badge — reads as a clickable control without overpowering. */
-.post-meta-badge {
+/* Dim capsule badge, 30px tall — reads as a clickable control. */
+.post-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.15em;
-    padding: 0.1em 0.5em;
+    justify-content: center;
+    gap: 0.3em;
+    height: 30px;
+    padding: 0 0.7em;
     border-radius: 999px;
     background: var(--bg-tertiary);
     color: var(--text-secondary);
@@ -1436,33 +1426,26 @@ footer .container {
 }
 
 /* Hover lifts text to the strongest foreground and deepens the capsule. */
-.post-meta-badge:hover,
-.post-meta-badge:focus-visible {
+.post-badge:hover,
+.post-badge:focus-visible {
     color: var(--heading);
     background: var(--control-hover);
     text-decoration: none;
 }
 
-/* Copy confirmation (icon swaps to a check in site.js). */
-.post-meta-badge.is-copied {
-    color: var(--heading);
-}
-
 /* Share badge is revealed only where the Web Share API exists; the capability
    class is set pre-paint in capabilities.js, so there is no flash. */
-.post-meta-badge.share-button {
+.post-badge.share-button {
     display: none;
 }
 
-html.has-web-share .post-meta-badge.share-button {
+html.has-web-share .post-badge.share-button {
     display: inline-flex;
 }
 
-/* em-based so the icons track the badge text (tune via .post-meta-badges
-   font-size). */
-.post-meta-badge .post-icon-glyph {
-    width: 0.9em;
-    height: 0.9em;
+.post-badge .post-icon-glyph {
+    width: 1.1em;
+    height: 1.1em;
 }
 
 /* Feed title links to the post. On hover the (possibly wrapped) title is

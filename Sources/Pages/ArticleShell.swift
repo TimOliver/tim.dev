@@ -35,17 +35,28 @@ enum ArticleShell {
         #"<svg class="post-icon-glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/ui-icons.svg#\#(id)"/></svg>"#
     }
 
-    /// Copy-link badge (icon-only dim capsule). Click is handled in site.js,
-    /// which copies location.origin + path and swaps to a check. `path` is
-    /// already HTML-escaped.
-    private static func copyBadge(path: String) -> String {
-        #"<button type="button" class="post-meta-badge" data-copy-path="\#(path)" aria-label="Copy link">\#(spriteIcon("link"))</button>"#
+    /// Link badge — navigates to the post page, a visible cue that the feed
+    /// item and its article are linked. `path` is already HTML-escaped.
+    private static func linkBadge(path: String) -> String {
+        #"<a class="post-badge" href="\#(path)" aria-label="Open article">\#(spriteIcon("link"))</a>"#
     }
 
     /// Native-share badge. Hidden until capabilities.js confirms Web Share
     /// support. `path` and `title` are already HTML-escaped.
     private static func shareBadge(path: String, title: String) -> String {
-        #"<button type="button" class="post-meta-badge share-button" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))</button>"#
+        #"<button type="button" class="post-badge share-button" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))</button>"#
+    }
+
+    /// Badge row below the hero (feed): link · share · comment count. The
+    /// comment badge is revealed by site.js once Comentario loads a non-zero
+    /// count. `path` and `title` are already HTML-escaped.
+    private static func badgeRow(path: String, title: String) -> String {
+        var inner = linkBadge(path: path) + shareBadge(path: path, title: title)
+        inner += #"<span class="post-badge-comments"><a class="post-badge" href="\#(path)#comments" aria-label="Comments">"#
+        inner += spriteIcon("comments")
+        inner += #"<comentario-count path="\#(path)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count>"#
+        inner += "</a></span>"
+        return #"<div class="post-badges">\#(inner)</div>"#
     }
 
     /// Comments pill shown at the end of a feed item: links to the post's
@@ -74,27 +85,11 @@ enum ArticleShell {
         let href = escape(article.path)
         var s = "<article>"
 
-        // Header — date + title. In the feed both are wrapped in a single link
-        // to the post page, so hovering either highlights both.
+        // Header — plain date, then the title (a link to the post in the feed).
+        // The badge row sits below the hero (see below), not here.
         switch context {
         case .feed:
-            // Date line: the date is no longer clickable. Alongside it sit dim
-            // capsule badges — copy link, share, and a comment count. The copy
-            // and share badges are always shown (share only where supported);
-            // the comment badge is revealed by site.js once Comentario loads a
-            // non-zero count.
-            s += #"<p class="post-meta">"#
             s += #"<time class="date" datetime="\#(isoDate(article.date))">\#(displayDate(article.date))</time>"#
-            s += #"<span class="post-meta-badges">"#
-            s += copyBadge(path: href)
-            s += shareBadge(path: href, title: escape(article.title))
-            s += #"<span class="post-meta-comments">"#
-            s += #"<a class="post-meta-badge" href="\#(href)#comments" aria-label="Comments">"#
-            s += spriteIcon("comments")
-            s += #"<comentario-count path="\#(href)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count>"#
-            s += "</a></span>"
-            s += "</span></p>"
-            // Title links to the post and zooms on hover (like the header links).
             s += #"<a class="post-title-link" href="\#(href)"><h1 class="title">\#(escape(article.title))</h1></a>"#
         case .page:
             s += #"<time class="date" datetime="\#(isoDate(article.date))">\#(displayDate(article.date))</time>"#
@@ -106,6 +101,11 @@ enum ArticleShell {
         }
         if let image = article.image, !image.isEmpty {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
+        }
+        // Feed only: badge row (link · share · comment count) below the hero.
+        // For posts without a hero it follows the subtitle instead.
+        if context == .feed {
+            s += badgeRow(path: href, title: escape(article.title))
         }
         s += "<section>\(fixBareImages(InstagramEmbed.transform(article.text)))</section>"
 

@@ -647,17 +647,17 @@
     input.addEventListener('input', apply);
 })();
 
-// Feed date line: reveal each item's comment indicator (bullet + bubble +
-// count) only once Comentario has populated the count. The count starts empty
-// (placeholder=""); when it gets text, show the surrounding .post-meta-comments.
-// Bottom-pill counts have no .post-meta-comments ancestor, so they're ignored.
+// Feed badge row: reveal each item's comment badge only once Comentario has
+// populated the count. The count starts empty (placeholder=""); when it gets
+// text, show the surrounding .post-badge-comments. Bottom-pill counts have no
+// .post-badge-comments ancestor, so they're ignored.
 (function() {
-    var counts = document.querySelectorAll('.post-meta-comments comentario-count');
+    var counts = document.querySelectorAll('.post-badge-comments comentario-count');
     if (!counts.length) return;
 
     function reveal(countEl) {
         if ((countEl.textContent || '').trim() === '') return;
-        var wrap = countEl.closest('.post-meta-comments');
+        var wrap = countEl.closest('.post-badge-comments');
         if (wrap) wrap.classList.add('is-loaded');
     }
 
@@ -669,65 +669,20 @@
     });
 })();
 
-// Post-meta badges: copy-link (with a brief check confirmation) + native
-// share, shown as dim capsules in each feed item's date line. Absolute URLs
-// are built client-side from each badge's path. Share is feature-detected in
-// capabilities.js (CSS hides it where unsupported).
+// Feed badge row: native share. The link badge is a plain anchor to the post,
+// so only share needs JS. Share is feature-detected in capabilities.js (CSS
+// hides it where unsupported); the URL is built client-side from the path.
 (function() {
-    // Shared visually-hidden live region for "Link copied" announcements.
-    var live = document.createElement('div');
-    live.setAttribute('aria-live', 'polite');
-    live.setAttribute('role', 'status');
-    live.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;'
-        + 'padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;';
-    document.body.appendChild(live);
-
-    function absoluteURL(path) {
-        return location.origin + path;
-    }
-
-    function confirmCopied(btn) {
-        var use = btn.querySelector('use');
-        // Capture the original icon once per badge (state stored on the element)
-        // so a repeat click before the revert doesn't leave it stuck.
-        if (!btn.classList.contains('is-copied')) {
-            btn._iconHref = use ? use.getAttribute('href') : null;
-        }
-        if (btn._revertTimer) clearTimeout(btn._revertTimer);
-        if (use) use.setAttribute('href', '/img/ui-icons.svg#clipboard-check');
-        btn.classList.add('is-copied');
-        live.textContent = '';
-        live.textContent = 'Link copied';
-        btn._revertTimer = setTimeout(function() {
-            btn._revertTimer = null;
-            if (use && btn._iconHref) use.setAttribute('href', btn._iconHref);
-            btn.classList.remove('is-copied');
-        }, 1500);
-    }
-
     document.addEventListener('click', function(e) {
-        var copyBtn = e.target.closest && e.target.closest('[data-copy-path]');
-        if (copyBtn) {
-            e.preventDefault();
-            var url = absoluteURL(copyBtn.getAttribute('data-copy-path'));
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(url).then(function() {
-                    confirmCopied(copyBtn);
-                }).catch(function() {});
-            }
-            return;
-        }
         var shareBtn = e.target.closest && e.target.closest('[data-share-path]');
-        if (shareBtn) {
-            e.preventDefault();
-            if (!navigator.share) return;
-            navigator.share({
-                title: shareBtn.getAttribute('data-share-title') || document.title,
-                url: absoluteURL(shareBtn.getAttribute('data-share-path'))
-            }).catch(function() {
-                // AbortError (user cancelled) or genuine failure — no-op.
-            });
-            return;
-        }
+        if (!shareBtn) return;
+        e.preventDefault();
+        if (!navigator.share) return;
+        navigator.share({
+            title: shareBtn.getAttribute('data-share-title') || document.title,
+            url: location.origin + shareBtn.getAttribute('data-share-path')
+        }).catch(function() {
+            // AbortError (user cancelled) or genuine failure — no-op.
+        });
     });
 })();
