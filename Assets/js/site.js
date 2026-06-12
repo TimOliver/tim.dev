@@ -664,3 +664,22 @@
         });
     });
 })();
+
+// Feed comment badge: show the count (and its spacing) only when a number is
+// actually present. Comentario keeps the <comentario-count> element in place
+// even at zero, so we read the rendered text and toggle .has-count.
+(function() {
+    var counts = document.querySelectorAll('.post-badge comentario-count');
+    if (!counts.length) return;
+
+    function sync(el) {
+        el.classList.toggle('has-count', (el.textContent || '').trim() !== '');
+    }
+
+    Array.prototype.forEach.call(counts, function(el) {
+        sync(el);  // in case the count resolved before this script ran
+        new MutationObserver(function() {
+            sync(el);
+        }).observe(el, { childList: true, characterData: true, subtree: true });
+    });
+})();

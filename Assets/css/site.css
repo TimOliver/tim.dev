@@ -1443,10 +1443,15 @@ html.has-web-share .post-badge.share-button {
     height: 1.1em;
 }
 
-/* Space the count from its bubble only when there is a count, so the comment
-   badge stays a centred icon when a post has no comments. Slightly bolder than
-   the rest of the badge text. */
-.post-badge comentario-count:not(:empty) {
+/* Comentario keeps the count element present even at zero, so :empty can't tell
+   whether a number is shown — site.js adds .has-count when one actually is.
+   Hidden otherwise, so the bubble stays centred on posts with no comments. */
+.post-badge comentario-count {
+    display: none;
+}
+
+.post-badge comentario-count.has-count {
+    display: inline;
     margin-left: 0.175em;
     font-weight: 600;
 }
