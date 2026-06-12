@@ -71,7 +71,6 @@ enum ArticleShell {
             s += #"<p class="post-meta">"#
             s += #"<time class="date" datetime="\#(isoDate(article.date))">\#(displayDate(article.date))</time>"#
             s += #"<span class="post-meta-comments">"#
-            s += #"<span class="post-meta-sep" aria-hidden="true">&bull;</span>"#
             s += #"<a class="post-meta-comment-link" href="\#(href)#comments" aria-label="Comments">"#
             s += spriteIcon("comments")
             s += #"<comentario-count path="\#(href)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count>"#

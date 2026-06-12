@@ -1406,23 +1406,24 @@ footer .container {
     display: inline-flex;
 }
 
-.post-meta-sep {
-    color: var(--text-secondary);
-}
-
+/* Comment capsule: a very dim pill so it reads as a clickable control. */
 .post-meta-comment-link {
     display: inline-flex;
     align-items: center;
     gap: 0.15em;
+    padding: 0.1em 0.55em;
+    border-radius: 999px;
+    background: var(--bg-tertiary);
     color: var(--text-secondary);
     text-decoration: none;
-    transition: color 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease;
 }
 
-/* Hover lifts to the strongest foreground (black in light, near-white in dark). */
+/* Hover lifts text to the strongest foreground and deepens the capsule. */
 .post-meta-comment-link:hover,
 .post-meta-comment-link:focus-visible {
     color: var(--heading);
+    background: var(--control-hover);
     text-decoration: none;
 }
 
