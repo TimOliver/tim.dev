@@ -1423,6 +1423,7 @@ footer .container {
 .post-meta-comment-link:hover,
 .post-meta-comment-link:focus-visible {
     color: var(--heading);
+    text-decoration: none;
 }
 
 .post-meta-comment-link .post-icon-glyph {
