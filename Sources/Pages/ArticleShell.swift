@@ -35,6 +35,19 @@ enum ArticleShell {
         #"<svg class="post-icon-glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/ui-icons.svg#\#(id)"/></svg>"#
     }
 
+    /// Copy-link badge (icon-only dim capsule). Click is handled in site.js,
+    /// which copies location.origin + path and swaps to a check. `path` is
+    /// already HTML-escaped.
+    private static func copyBadge(path: String) -> String {
+        #"<button type="button" class="post-meta-badge" data-copy-path="\#(path)" aria-label="Copy link">\#(spriteIcon("link"))</button>"#
+    }
+
+    /// Native-share badge. Hidden until capabilities.js confirms Web Share
+    /// support. `path` and `title` are already HTML-escaped.
+    private static func shareBadge(path: String, title: String) -> String {
+        #"<button type="button" class="post-meta-badge share-button" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))</button>"#
+    }
+
     /// Comments pill shown at the end of a feed item: links to the post's
     /// thread with a live Comentario count ("N comments"). The visible text is
     /// the link's accessible name. `path` is already HTML-escaped.
@@ -65,16 +78,22 @@ enum ArticleShell {
         // to the post page, so hovering either highlights both.
         switch context {
         case .feed:
-            // Date line: the date is no longer clickable. A comment indicator
-            // (bullet + bubble + count, linking to the thread) is appended and
-            // revealed by site.js once Comentario populates the count.
+            // Date line: the date is no longer clickable. Alongside it sit dim
+            // capsule badges — copy link, share, and a comment count. The copy
+            // and share badges are always shown (share only where supported);
+            // the comment badge is revealed by site.js once Comentario loads a
+            // non-zero count.
             s += #"<p class="post-meta">"#
             s += #"<time class="date" datetime="\#(isoDate(article.date))">\#(displayDate(article.date))</time>"#
+            s += #"<span class="post-meta-badges">"#
+            s += copyBadge(path: href)
+            s += shareBadge(path: href, title: escape(article.title))
             s += #"<span class="post-meta-comments">"#
-            s += #"<a class="post-meta-comment-link" href="\#(href)#comments" aria-label="Comments">"#
+            s += #"<a class="post-meta-badge" href="\#(href)#comments" aria-label="Comments">"#
             s += spriteIcon("comments")
             s += #"<comentario-count path="\#(href)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count>"#
-            s += "</a></span></p>"
+            s += "</a></span>"
+            s += "</span></p>"
             // Title links to the post and zooms on hover (like the header links).
             s += #"<a class="post-title-link" href="\#(href)"><h1 class="title">\#(escape(article.title))</h1></a>"#
         case .page:
