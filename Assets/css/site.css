@@ -1444,9 +1444,11 @@ html.has-web-share .post-badge.share-button {
 }
 
 /* Space the count from its bubble only when there is a count, so the comment
-   badge stays a centred icon when a post has no comments. */
+   badge stays a centred icon when a post has no comments. Slightly bolder than
+   the rest of the badge text. */
 .post-badge comentario-count:not(:empty) {
-    margin-left: 0.3em;
+    margin-left: 0.175em;
+    font-weight: 600;
 }
 
 /* Feed title links to the post. On hover the (possibly wrapped) title is
