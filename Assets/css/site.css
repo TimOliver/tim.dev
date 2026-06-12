@@ -1398,7 +1398,8 @@ footer .container {
     display: none;
     align-items: center;
     gap: 0.4em;
-    font-size: 1.1em;
+    /* Sized to sit at the date text's height so it doesn't overpower it. */
+    font-size: 0.95em;
     font-weight: 500;
 }
 
@@ -1427,9 +1428,11 @@ footer .container {
     text-decoration: none;
 }
 
+/* em-based so the icon tracks the count text (tune both via the
+   .post-meta-comments font-size). */
 .post-meta-comment-link .post-icon-glyph {
-    width: 16px;
-    height: 16px;
+    width: 0.9em;
+    height: 0.9em;
 }
 
 /* Feed title links to the post and zooms on hover, matching the header links
