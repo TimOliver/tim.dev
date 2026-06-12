@@ -647,21 +647,81 @@
     input.addEventListener('input', apply);
 })();
 
-// Feed badge row: native share. The link badge is a plain anchor to the post,
-// so only share needs JS. Share is feature-detected in capabilities.js (CSS
-// hides it where unsupported); the URL is built client-side from the path.
+// Feed badge row: the share badge opens the native share sheet where the Web
+// Share API exists, and otherwise falls back to copying the post link (with a
+// brief check confirmation). Copy uses the async Clipboard API where available
+// and a legacy execCommand textarea otherwise, so it works even in non-secure
+// contexts (e.g. local LAN preview). The URL is built client-side.
 (function() {
+    var live = document.createElement('div');
+    live.setAttribute('aria-live', 'polite');
+    live.setAttribute('role', 'status');
+    live.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;'
+        + 'padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;';
+    document.body.appendChild(live);
+
+    function confirmCopied(btn) {
+        var use = btn.querySelector('use');
+        // Capture the original icon once per badge (state stored on the element)
+        // so a repeat click before the revert doesn't leave it stuck.
+        if (!btn.classList.contains('is-copied')) {
+            btn._iconHref = use ? use.getAttribute('href') : null;
+        }
+        if (btn._revertTimer) clearTimeout(btn._revertTimer);
+        if (use) use.setAttribute('href', '/img/ui-icons.svg#clipboard-check');
+        btn.classList.add('is-copied');
+        live.textContent = '';
+        live.textContent = 'Link copied';
+        btn._revertTimer = setTimeout(function() {
+            btn._revertTimer = null;
+            if (use && btn._iconHref) use.setAttribute('href', btn._iconHref);
+            btn.classList.remove('is-copied');
+        }, 1500);
+    }
+
+    function legacyCopy(text) {
+        try {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.setAttribute('readonly', '');
+            ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+            document.body.appendChild(ta);
+            ta.select();
+            var ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            return ok;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    function copyLink(url, btn) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(function() {
+                confirmCopied(btn);
+            }).catch(function() {
+                if (legacyCopy(url)) confirmCopied(btn);
+            });
+        } else if (legacyCopy(url)) {
+            confirmCopied(btn);
+        }
+    }
+
     document.addEventListener('click', function(e) {
-        var shareBtn = e.target.closest && e.target.closest('[data-share-path]');
-        if (!shareBtn) return;
+        var btn = e.target.closest && e.target.closest('[data-share-path]');
+        if (!btn) return;
         e.preventDefault();
-        if (!navigator.share) return;
-        navigator.share({
-            title: shareBtn.getAttribute('data-share-title') || document.title,
-            url: location.origin + shareBtn.getAttribute('data-share-path')
-        }).catch(function() {
-            // AbortError (user cancelled) or genuine failure — no-op.
-        });
+        var url = location.origin + btn.getAttribute('data-share-path');
+        if (navigator.share) {
+            navigator.share({
+                title: btn.getAttribute('data-share-title') || document.title,
+                url: url
+            }).catch(function() {
+                // AbortError (user cancelled) or genuine failure — no-op.
+            });
+            return;
+        }
+        copyLink(url, btn);
     });
 })();
 

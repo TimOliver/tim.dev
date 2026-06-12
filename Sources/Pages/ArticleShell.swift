@@ -41,10 +41,11 @@ enum ArticleShell {
         #"<a class="post-badge" href="\#(path)" aria-label="Open article">\#(spriteIcon("link"))</a>"#
     }
 
-    /// Native-share badge. Hidden until capabilities.js confirms Web Share
-    /// support. `path` and `title` are already HTML-escaped.
+    /// Share badge (always shown). Uses the native share sheet where the Web
+    /// Share API exists, and otherwise falls back to copying the post link —
+    /// both handled in site.js. `path` and `title` are already HTML-escaped.
     private static func shareBadge(path: String, title: String) -> String {
-        #"<button type="button" class="post-badge share-button" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))</button>"#
+        #"<button type="button" class="post-badge" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))</button>"#
     }
 
     /// Badge row above the hero (feed): link · comments · share. The comment

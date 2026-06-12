@@ -1428,14 +1428,10 @@ footer .container {
     text-decoration: none;
 }
 
-/* Share badge is revealed only where the Web Share API exists; the capability
-   class is set pre-paint in capabilities.js, so there is no flash. */
-.post-badge.share-button {
-    display: none;
-}
-
-html.has-web-share .post-badge.share-button {
-    display: inline-flex;
+/* Copy confirmation: the share badge's icon swaps to a check in site.js when it
+   falls back to copying the link. */
+.post-badge.is-copied {
+    color: var(--heading);
 }
 
 .post-badge .post-icon-glyph {
