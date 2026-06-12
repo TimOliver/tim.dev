@@ -1384,30 +1384,24 @@ footer .container {
 
 /* ---------- Feed badge row (below the hero) ---------- */
 
-/* Row of dim capsule badges below the hero image: link · share · comment count. */
+/* Row of dim capsule badges above the hero image: link · share · comment count. */
 .post-badges {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 1em;
-    /* Symmetric, so the row sits centred between the hero and the body — see
-       the neighbour overrides below. */
+    /* Symmetric, so the row sits centred between the subtitle and the hero —
+       see the neighbour override below. */
     margin: 1.25em 0;
     font-size: 0.95em;
     font-weight: 500;
 }
 
-/* Centre the badge row vertically: the hero's 2em bottom margin and the
-   section's 1rem top margin would otherwise pin it to one side (and sibling
-   margins collapse to the larger value). When the row sits between them, zero
-   those so the row's own symmetric margin defines both gaps equally. */
-article img.hero:has(+ .post-badges) {
-    margin-top: 1.25em;
-    margin-bottom: 0;
-}
-
-.post-badges + section {
+/* Centre the badge row between the subtitle and the hero: zero the hero's top
+   margin (which is larger, and sibling margins collapse to the larger value)
+   so the row's own symmetric margin defines the gap on both sides. */
+.post-badges + img.hero {
     margin-top: 0;
 }
 

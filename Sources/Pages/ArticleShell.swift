@@ -99,13 +99,12 @@ enum ArticleShell {
         if let subtitle = article.subtitle, !subtitle.isEmpty {
             s += "<p class=\"subtitle\">\(escape(subtitle))</p>"
         }
-        if let image = article.image, !image.isEmpty {
-            s += #"<img class="hero" src="\#(escape(image))" alt="">"#
-        }
-        // Feed only: badge row (link · share · comment count) below the hero.
-        // For posts without a hero it follows the subtitle instead.
+        // Feed only: badge row (link · share · comment count) above the hero.
         if context == .feed {
             s += badgeRow(path: href, title: escape(article.title))
+        }
+        if let image = article.image, !image.isEmpty {
+            s += #"<img class="hero" src="\#(escape(image))" alt="">"#
         }
         s += "<section>\(fixBareImages(InstagramEmbed.transform(article.text)))</section>"
 
