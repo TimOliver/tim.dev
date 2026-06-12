@@ -1398,10 +1398,9 @@ footer .container {
     font-weight: 500;
 }
 
-/* Feed hero (preceded by the badge row): consistent top and bottom margin so
-   the image sits evenly between the badges and the body. */
+/* Feed hero (preceded by the badge row). */
 .post-badges + img.hero {
-    margin: 1.5em 0;
+    margin: 2em 0 1.8em;
 }
 
 /* Dim capsule badge, 30px tall — reads as a clickable control. */
