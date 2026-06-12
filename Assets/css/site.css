@@ -1390,8 +1390,8 @@ footer .container {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.5em;
-    margin-top: 1rem;
+    gap: 1em;
+    margin-top: 0.5rem;
     font-size: 0.95em;
     font-weight: 500;
 }
