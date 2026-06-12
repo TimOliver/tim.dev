@@ -1391,9 +1391,23 @@ footer .container {
     align-items: center;
     flex-wrap: wrap;
     gap: 1em;
-    margin-top: 0.25rem;
+    /* Symmetric, so the row sits centred between the hero and the body — see
+       the neighbour overrides below. */
+    margin: 1.25em 0;
     font-size: 0.95em;
     font-weight: 500;
+}
+
+/* Centre the badge row vertically: the hero's 2em bottom margin and the
+   section's 1rem top margin would otherwise pin it to one side (and sibling
+   margins collapse to the larger value). When the row sits between them, zero
+   those so the row's own symmetric margin defines both gaps equally. */
+article img.hero:has(+ .post-badges) {
+    margin-bottom: 0;
+}
+
+.post-badges + section {
+    margin-top: 0;
 }
 
 /* The comment badge is hidden until the count loads (site.js adds .is-loaded);
