@@ -1403,6 +1403,7 @@ footer .container {
    margins collapse to the larger value). When the row sits between them, zero
    those so the row's own symmetric margin defines both gaps equally. */
 article img.hero:has(+ .post-badges) {
+    margin-top: 1.25em;
     margin-bottom: 0;
 }
 
