@@ -647,28 +647,6 @@
     input.addEventListener('input', apply);
 })();
 
-// Feed badge row: reveal each item's comment badge only once Comentario has
-// populated the count. The count starts empty (placeholder=""); when it gets
-// text, show the surrounding .post-badge-comments. Bottom-pill counts have no
-// .post-badge-comments ancestor, so they're ignored.
-(function() {
-    var counts = document.querySelectorAll('.post-badge-comments comentario-count');
-    if (!counts.length) return;
-
-    function reveal(countEl) {
-        if ((countEl.textContent || '').trim() === '') return;
-        var wrap = countEl.closest('.post-badge-comments');
-        if (wrap) wrap.classList.add('is-loaded');
-    }
-
-    Array.prototype.forEach.call(counts, function(countEl) {
-        reveal(countEl);  // in case the count resolved before this script ran
-        new MutationObserver(function() {
-            reveal(countEl);
-        }).observe(countEl, { childList: true, characterData: true, subtree: true });
-    });
-})();
-
 // Feed badge row: native share. The link badge is a plain anchor to the post,
 // so only share needs JS. Share is feature-detected in capabilities.js (CSS
 // hides it where unsupported); the URL is built client-side from the path.

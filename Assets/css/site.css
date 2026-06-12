@@ -1384,36 +1384,24 @@ footer .container {
 
 /* ---------- Feed badge row (below the hero) ---------- */
 
-/* Row of dim capsule badges above the hero image: link · share · comment count. */
+/* Row of dim capsule badges above the hero image: comments · link · share. */
 .post-badges {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 1em;
-    /* Symmetric, so the row sits centred between the subtitle and the hero —
-       see the neighbour override below. */
-    margin: 1.25em 0;
+    /* Hug the header above; the hero's symmetric margin (below) sets the gap to
+       the image. */
+    margin: 0.4em 0 0;
     font-size: 0.95em;
     font-weight: 500;
 }
 
-/* Centre the badge row between the subtitle and the hero: zero the hero's top
-   margin (which is larger, and sibling margins collapse to the larger value)
-   so the row's own symmetric margin defines the gap on both sides. */
+/* Feed hero (preceded by the badge row): consistent top and bottom margin so
+   the image sits evenly between the badges and the body. */
 .post-badges + img.hero {
-    margin-top: 0;
-}
-
-/* The comment badge is hidden until the count loads (site.js adds .is-loaded);
-   the link and share badges are always shown. */
-.post-badge-comments {
-    display: none;
-}
-
-.post-badge-comments.is-loaded {
-    display: inline-flex;
-    align-items: center;
+    margin: 1.5em 0;
 }
 
 /* Dim capsule badge, 30px tall — reads as a clickable control. */
@@ -1421,7 +1409,6 @@ footer .container {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.3em;
     height: 30px;
     padding: 0 0.7em;
     border-radius: 999px;
@@ -1455,6 +1442,12 @@ html.has-web-share .post-badge.share-button {
 .post-badge .post-icon-glyph {
     width: 1.1em;
     height: 1.1em;
+}
+
+/* Space the count from its bubble only when there is a count, so the comment
+   badge stays a centred icon when a post has no comments. */
+.post-badge comentario-count:not(:empty) {
+    margin-left: 0.3em;
 }
 
 /* Feed title links to the post. On hover the (possibly wrapped) title is

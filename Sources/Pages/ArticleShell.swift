@@ -47,15 +47,16 @@ enum ArticleShell {
         #"<button type="button" class="post-badge share-button" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))</button>"#
     }
 
-    /// Badge row below the hero (feed): link · share · comment count. The
-    /// comment badge is revealed by site.js once Comentario loads a non-zero
-    /// count. `path` and `title` are already HTML-escaped.
+    /// Badge row above the hero (feed): comments · link · share. The comment
+    /// badge is always shown — its bubble first, with a live Comentario count
+    /// appended only when the post has comments. `path` and `title` are already
+    /// HTML-escaped.
     private static func badgeRow(path: String, title: String) -> String {
-        var inner = linkBadge(path: path) + shareBadge(path: path, title: title)
-        inner += #"<span class="post-badge-comments"><a class="post-badge" href="\#(path)#comments" aria-label="Comments">"#
+        var inner = #"<a class="post-badge" href="\#(path)#comments" aria-label="Comments">"#
         inner += spriteIcon("comments")
         inner += #"<comentario-count path="\#(path)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count>"#
-        inner += "</a></span>"
+        inner += "</a>"
+        inner += linkBadge(path: path) + shareBadge(path: path, title: title)
         return #"<div class="post-badges">\#(inner)</div>"#
     }
 
