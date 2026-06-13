@@ -106,16 +106,11 @@ hr {
     border-top: 1px solid var(--border);
 }
 
-/* Home feed: a soft, edge-fading grey rule between stacked posts (the gradient
-   technique from hypercritical.co, recoloured to our grey + page bg). Spans the
-   reading column so it aligns with the footer. Only matches the multi-post home
-   page — single-post pages have one <article>, so it never fires there. */
-article + article::before {
-    content: "";
-    display: block;
-    height: 1px;
-    margin: 4rem auto;
-    background: linear-gradient(to right, var(--bg) 0%, var(--border) 25%, var(--border) 50%, var(--border) 75%, var(--bg) 100%);
+/* Home feed: stacked posts are separated by whitespace alone — each post's
+   end-of-article links give it enough of a "tail" that a rule isn't needed.
+   Only matches the multi-post home page (single-post pages have one <article>). */
+article + article {
+    margin-top: 6rem;
 }
 
 article img {
