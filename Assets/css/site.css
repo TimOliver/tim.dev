@@ -131,7 +131,7 @@ article + article {
    (<=389px) keeps its own smaller title, so this stops above it. */
 @media (min-width: 389.02px) and (max-width: 1000px) {
     .date {
-        font-size: 1.32em;
+        font-size: 1.45em;
     }
     .title {
         font-size: 3.24em;
