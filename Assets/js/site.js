@@ -713,30 +713,20 @@
     }
 
     document.addEventListener('click', function(e) {
-        if (!e.target.closest) return;
-
-        var copyBtn = e.target.closest('[data-copy-path]');
-        if (copyBtn) {
-            e.preventDefault();
-            copyLink(location.origin + copyBtn.getAttribute('data-copy-path'), copyBtn);
+        var shareBtn = e.target.closest && e.target.closest('[data-share-path]');
+        if (!shareBtn) return;
+        e.preventDefault();
+        var url = location.origin + shareBtn.getAttribute('data-share-path');
+        if (navigator.share) {
+            navigator.share({
+                title: shareBtn.getAttribute('data-share-title') || document.title,
+                url: url
+            }).catch(function() {
+                // AbortError (user cancelled) or genuine failure — no-op.
+            });
             return;
         }
-
-        var shareBtn = e.target.closest('[data-share-path]');
-        if (shareBtn) {
-            e.preventDefault();
-            var url = location.origin + shareBtn.getAttribute('data-share-path');
-            if (navigator.share) {
-                navigator.share({
-                    title: shareBtn.getAttribute('data-share-title') || document.title,
-                    url: url
-                }).catch(function() {
-                    // AbortError (user cancelled) or genuine failure — no-op.
-                });
-                return;
-            }
-            copyLink(url, shareBtn);
-        }
+        copyLink(url, shareBtn);
     });
 })();
 

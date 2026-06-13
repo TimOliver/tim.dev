@@ -62,14 +62,14 @@ enum ArticleShell {
         return #"<div class="post-badges">\#(inner)</div>"#
     }
 
-    /// End-of-article links (feed): permalink (copies the URL), share, and a
-    /// comment count — small secondary text links sharing the badge icons.
-    /// `path` and `title` are already HTML-escaped.
+    /// End-of-article links: permalink (links to the post), share, and a comment
+    /// count — small secondary text links sharing the badge icons. `path` and
+    /// `title` are already HTML-escaped.
     private static func endLinks(path: String, title: String) -> String {
         var s = #"<div class="post-links">"#
-        s += #"<button type="button" class="post-link" data-copy-path="\#(path)" aria-label="Permalink">"#
+        s += #"<a class="post-link" href="\#(path)" aria-label="Permalink">"#
         s += spriteIcon("link")
-        s += #"<span class="post-link-label">Permalink</span></button>"#
+        s += #"<span class="post-link-label">Permalink</span></a>"#
         s += #"<button type="button" class="post-link" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">"#
         s += spriteIcon("share")
         s += #"<span class="post-link-label">Share</span></button>"#
@@ -121,12 +121,11 @@ enum ArticleShell {
         }
         s += "<section>\(fixBareImages(InstagramEmbed.transform(article.text)))</section>"
 
-        // Footer — feed items get an end-of-article links row; the post page
-        // renders the comment thread itself below.
-        switch context {
-        case .feed:
-            s += endLinks(path: href, title: escape(article.title))
-        case .page:
+        // Footer — every article ends with the same links row (feed and post
+        // page match). The post page additionally renders the comment thread
+        // below; its "comments" link then just scrolls to it.
+        s += endLinks(path: href, title: escape(article.title))
+        if context == .page {
             s += #"<section class="post-comments" id="comments">"#
             s += #"<h2 class="post-comments-title">"#
             s += commentIcon("post-comments-icon")
