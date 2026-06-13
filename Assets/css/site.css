@@ -1506,7 +1506,8 @@ footer .container {
     display: flex;
     flex-wrap: wrap;
     gap: 1.75em;
-    margin-top: 2.5em;
+    /* Matches the inter-paragraph gap (p margin-bottom). */
+    margin-top: 1.5em;
     font-size: 0.85em;
     font-weight: 600;
 }
