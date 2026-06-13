@@ -113,6 +113,19 @@ article + article {
     margin-top: 6rem;
 }
 
+/* Tighten the inter-post gap on smaller screens. */
+@media (max-width: 1000px) {
+    article + article {
+        margin-top: 4.5rem;
+    }
+}
+
+@media (max-width: 720px) {
+    article + article {
+        margin-top: 3.5rem;
+    }
+}
+
 article img {
     display: block;
     max-width: 100%;
