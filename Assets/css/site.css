@@ -1120,7 +1120,7 @@ body:has(article) main .container {
     font-size: 1.25em;
     font-weight: 500;
     text-align: center;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.2rem;
     line-height: 100%;
 }
 
