@@ -1112,6 +1112,9 @@ body:has(article) main .container {
     text-align: center;
     text-wrap: balance;
     margin: 0;
+    /* Matches the feed title-link's hover-surface inset so the header looks
+       identical on the home page and the post page. */
+    padding: 0.1em 0.4em;
 }
 
 .date {
@@ -1500,7 +1503,6 @@ footer .container {
 
 .post-title-link .title {
     display: inline-block;
-    padding: 0.1em 0.4em;
     border-radius: 0.3em;
     corner-shape: squircle;
     background: transparent;
@@ -1522,7 +1524,7 @@ footer .container {
    (not hover-based) so it also holds in responsive previews. (After the rules
    above so it wins on source order.) */
 @media (max-width: 720px) {
-    .post-title-link .title {
+    .title {
         padding: 0;
     }
     .post-title-link:hover .title,
