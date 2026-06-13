@@ -1517,10 +1517,11 @@ footer .container {
     }
 }
 
-/* Ultra-slim: drop the title's hover surface entirely — its padding wastes the
-   little width there is, and a mouseover affordance makes no sense on these
-   (touch) screens. (After the rules above so it wins on source order.) */
-@media (max-width: 374.98px) {
+/* Phones: drop the title's hover surface entirely — a mouseover affordance
+   makes no sense on touch screens, and its padding wastes width. Width-based
+   (not hover-based) so it also holds in responsive previews. (After the rules
+   above so it wins on source order.) */
+@media (max-width: 720px) {
     .post-title-link .title {
         padding: 0;
     }
