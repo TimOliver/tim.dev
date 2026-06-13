@@ -126,6 +126,18 @@ article + article {
     }
 }
 
+/* On mid/small screens the date + title shrink with the body font while the
+   fixed-height badges don't — bump them ~20% to keep the balance. Extra-small
+   (<=389px) keeps its own smaller title, so this stops above it. */
+@media (min-width: 389.02px) and (max-width: 1000px) {
+    .date {
+        font-size: 1.32em;
+    }
+    .title {
+        font-size: 3.24em;
+    }
+}
+
 article img {
     display: block;
     max-width: 100%;
