@@ -1517,6 +1517,20 @@ footer .container {
     }
 }
 
+/* Ultra-slim: drop the title's hover surface entirely — its padding wastes the
+   little width there is, and a mouseover affordance makes no sense on these
+   (touch) screens. (After the rules above so it wins on source order.) */
+@media (max-width: 374.98px) {
+    .post-title-link .title {
+        padding: 0;
+    }
+    .post-title-link:hover .title,
+    .post-title-link:focus-visible .title {
+        background: transparent;
+        transform: none;
+    }
+}
+
 /* Keep: shared by the post-page comments <h2> icon. */
 .post-comments-icon {
     width: 18px;
