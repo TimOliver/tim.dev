@@ -1313,6 +1313,11 @@ footer .container {
     main .container {
         padding: 0 8px;
     }
+
+    /* Larger em to offset the 15.5px body so the date isn't tiny here. */
+    article .date {
+        font-size: 1.6em;
+    }
 }
 
 /* ---------- Page header (shared by sub-pages: archive, about, etc.) ---------- */
