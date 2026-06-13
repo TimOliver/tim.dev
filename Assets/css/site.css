@@ -1075,6 +1075,20 @@ body > header::before {
     .menu-closed-bar {
         display: none;
     }
+
+    /* Smallest phones: 16px content inset, a larger date and a slightly smaller
+       title for balance against the badges. */
+    main .container {
+        padding: 0 16px;
+    }
+
+    .title {
+        font-size: 1.9em;
+    }
+
+    article .date {
+        font-size: 1.5em;
+    }
 }
 
 .container {
