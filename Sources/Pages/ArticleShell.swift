@@ -48,7 +48,8 @@ enum ArticleShell {
         #"<button type="button" class="post-badge" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))</button>"#
     }
 
-    /// Badge row above the hero (feed): link · comments · share. The comment
+    /// Badge row above the hero (feed and post page): link · comments · share.
+    /// The comment
     /// badge is always shown — its bubble, with a live Comentario count appended
     /// only when the post has comments. `path` and `title` are already
     /// HTML-escaped.
@@ -112,10 +113,8 @@ enum ArticleShell {
         if let subtitle = article.subtitle, !subtitle.isEmpty {
             s += "<p class=\"subtitle\">\(escape(subtitle))</p>"
         }
-        // Feed only: badge row (link · share · comment count) above the hero.
-        if context == .feed {
-            s += badgeRow(path: href, title: escape(article.title))
-        }
+        // Badge row (link · comments · share) above the hero — feed and page.
+        s += badgeRow(path: href, title: escape(article.title))
         if let image = article.image, !image.isEmpty {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
         }
