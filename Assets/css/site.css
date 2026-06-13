@@ -1092,10 +1092,7 @@ body > header::before {
 }
 
 .container {
-    /* Top margin floors at 70px so the first date always clears the sticky
-       header's fade — on short viewports (e.g. iPhone landscape) 4dvh would
-       otherwise collapse it under the header. Grows modestly on tall screens. */
-    margin: clamp(70px, 4dvh, 80px) auto 30px;
+    margin: clamp(10px, 4dvh, 56px) auto 30px;
     max-width: 850px;  /* reading-column width; balanced text-wrap keeps lines readable */
     padding: 0 35px;
     position: relative;
