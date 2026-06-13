@@ -1143,13 +1143,6 @@ blockquote::before {
     corner-shape: squircle;
 }
 
-.article-separator {
-    height: 2px;
-    clear: both;
-    background: linear-gradient(to right, var(--bg) 0%, var(--border) 25%, var(--border) 50%, var(--border) 75%, var(--bg) 100%);
-    border: none;
-}
-
 footer {
     display: flex;
     justify-content: center;
