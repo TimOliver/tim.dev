@@ -1067,7 +1067,7 @@ body > header::before {
     }
 
     article .date {
-        font-size: 1em;
+        font-size: 1.25em;
     }
 }
 
