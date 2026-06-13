@@ -1369,9 +1369,6 @@ footer .container {
     .back-to-top {
         transition: none;
     }
-    .post-icons--pills .post-icon {
-        transition: none;
-    }
     /* Title: keep the surface fade, drop the zoom (mirrors the cards). */
     .post-title-link .title {
         transition: background 0.2s ease;
@@ -1495,55 +1492,47 @@ footer .container {
     flex: 0 0 auto;
 }
 
-/* ---------- Post icons (link / share / comments) ---------- */
-
-.post-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.post-icon {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--text-secondary);
-    text-decoration: none;
-    background: none;
-    border: none;
-    font: inherit;
-    cursor: pointer;
-}
-
+/* Shared sprite glyph sizing (badges and end-of-article links override the em). */
 .post-icon-glyph {
     width: 18px;
     height: 18px;
     flex: 0 0 auto;
 }
 
-/* Pill bar at the end of an article: explicit labelled CTA. */
-.post-icons--pills {
-    margin-top: 2em;
-    gap: 10px;
-}
+/* ---------- End-of-article links (feed): permalink · share · comments ---------- */
 
-.post-icons--pills .post-icon {
-    padding: 8px 16px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: 0.95em;
+/* Small, secondary text+icon links, left-aligned with the body. */
+.post-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.75em;
+    margin-top: 2.5em;
+    font-size: 0.85em;
     font-weight: 600;
-    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
 }
 
-/* Hover/focus lifts to the strongest foreground (pure black in light, the
-   palette's near-white in dark) rather than the link red. */
-.post-icons--pills .post-icon:hover,
-.post-icons--pills .post-icon:focus-visible {
+.post-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--text-secondary);
+    text-decoration: none;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.post-link:hover,
+.post-link:focus-visible {
     color: var(--heading);
-    border-color: var(--heading);
-    background: var(--bg-tertiary);
+    text-decoration: none;
+}
+
+.post-link .post-icon-glyph {
+    width: 1.15em;
+    height: 1.15em;
 }
 
 /* Comments section on the standalone post page (Comentario mounts inside). */

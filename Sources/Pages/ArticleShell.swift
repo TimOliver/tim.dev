@@ -62,13 +62,23 @@ enum ArticleShell {
         return #"<div class="post-badges">\#(inner)</div>"#
     }
 
-    /// Comments pill shown at the end of a feed item: links to the post's
-    /// thread with a live Comentario count ("N comments"). The visible text is
-    /// the link's accessible name. `path` is already HTML-escaped.
-    private static func commentsBar(path: String) -> String {
-        let count = #"<comentario-count path="\#(path)" suffix=" comments" placeholder="Comments" zero-text="Comments" error-text="Comments"></comentario-count>"#
-        let pill = #"<a class="post-icon" href="\#(path)#comments">\#(spriteIcon("comments"))\#(count)</a>"#
-        return #"<div class="post-icons post-icons--pills">\#(pill)</div>"#
+    /// End-of-article links (feed): permalink (copies the URL), share, and a
+    /// comment count — small secondary text links sharing the badge icons.
+    /// `path` and `title` are already HTML-escaped.
+    private static func endLinks(path: String, title: String) -> String {
+        var s = #"<div class="post-links">"#
+        s += #"<button type="button" class="post-link" data-copy-path="\#(path)" aria-label="Permalink">"#
+        s += spriteIcon("link")
+        s += #"<span class="post-link-label">Permalink</span></button>"#
+        s += #"<button type="button" class="post-link" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">"#
+        s += spriteIcon("share")
+        s += #"<span class="post-link-label">Share</span></button>"#
+        s += #"<a class="post-link" href="\#(path)#comments" aria-label="Comments">"#
+        s += spriteIcon("comments")
+        s += #"<comentario-count path="\#(path)" suffix=" comments" placeholder="comments" zero-text="comments" error-text="comments"></comentario-count>"#
+        s += "</a>"
+        s += "</div>"
+        return s
     }
 
     static func include(for article: Article, context: Context) -> Include {
@@ -111,11 +121,11 @@ enum ArticleShell {
         }
         s += "<section>\(fixBareImages(InstagramEmbed.transform(article.text)))</section>"
 
-        // Footer — feed items get a Comments pill linking to the thread; the
-        // post page renders the thread itself below.
+        // Footer — feed items get an end-of-article links row; the post page
+        // renders the comment thread itself below.
         switch context {
         case .feed:
-            s += commentsBar(path: href)
+            s += endLinks(path: href, title: escape(article.title))
         case .page:
             s += #"<section class="post-comments" id="comments">"#
             s += #"<h2 class="post-comments-title">"#
