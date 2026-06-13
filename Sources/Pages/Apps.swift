@@ -21,7 +21,7 @@ extension AppRenderer {
     static func gridHTML(for apps: [AppInfo]) -> String {
         var s = #"<div class="collection">"#
         s += #"<h1 class="page-title">Apps</h1>"#
-        s += #"<p class="page-subtitle">I've been crafting software for over two decades.<br>Here are some of the apps I've helped bring to life.</p>"#
+        s += #"<p class="page-subtitle">I've been crafting software for over two decades. Here are some of the apps I've helped bring to life.</p>"#
         s += #"<div class="collection-grid">"#
         for app in apps {
             s += #"<a class="collection-card" href="\#(escape(app.path))">"#

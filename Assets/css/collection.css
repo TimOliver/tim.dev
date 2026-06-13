@@ -42,10 +42,12 @@ body:has(.collection-detail) footer .container {
     font-size: 1.15em;
     color: var(--text-secondary);
     /* Clamp the page tagline to a comfortable measure, centered, on every
-       collection subpage (Apps / Code / Art). */
+       collection subpage (Apps / Code / Art). balance evens the wrapped lines
+       so it reads well on both wide and narrow screens (no manual <br>). */
     max-width: 850px;
     margin: 0 auto 3em;
     line-height: 1.5;
+    text-wrap: balance;
 }
 
 /* When jump-nav chips follow the tagline (Art page), pull them up close to it
