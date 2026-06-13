@@ -1092,7 +1092,7 @@ body > header::before {
 }
 
 .container {
-    margin: clamp(25px, 4dvh, 56px) auto 30px;
+    margin: clamp(30px, 4dvh, 56px) auto 30px;
     max-width: 850px;  /* reading-column width; balanced text-wrap keeps lines readable */
     padding: 0 35px;
     position: relative;
