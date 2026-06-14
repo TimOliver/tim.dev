@@ -273,7 +273,7 @@
 
 /* Thin, rounded nesting line. */
 .comentario-root .comentario-card .comentario-card-expand-spacer {
-    flex: 0 0 4px;
+    flex: 0 0 3px;
     border-radius: 2px;
 }
 
