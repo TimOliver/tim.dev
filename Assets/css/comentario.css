@@ -62,6 +62,14 @@
     transition: border-color 0.15s ease;
 }
 
+/* Collapsed editor: placeholder top-left in a shorter box — the default centres
+   it in a 130px-tall flex box. */
+.comentario-root .comentario-add-comment-host {
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 72px;
+}
+
 .comentario-root .comentario-add-comment-host:focus-within {
     border-color: var(--text-tertiary);
 }
