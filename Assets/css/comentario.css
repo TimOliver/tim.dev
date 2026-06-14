@@ -271,6 +271,12 @@
     background-color: var(--border) !important;
 }
 
+/* Thin, rounded nesting line. */
+.comentario-root .comentario-card .comentario-card-expand-spacer {
+    flex: 0 0 4px;
+    border-radius: 2px;
+}
+
 /* Top-level comments: drop the left bar/indent column entirely (it only makes
    sense as a nesting guide on replies), so the avatar sits flush-left. */
 .comentario-root .comentario-card:not(.comentario-card-children *) > .comentario-card-expand-spacer,
