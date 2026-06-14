@@ -277,6 +277,11 @@
     border-radius: 2px;
 }
 
+/* Inset nested comments by 50px so they line up with the parent's body text. */
+.comentario-root .comentario-card-children > .comentario-card {
+    padding-left: 50px;
+}
+
 /* Top-level comments: drop the left bar/indent column entirely (it only makes
    sense as a nesting guide on replies), so the avatar sits flush-left. */
 .comentario-root .comentario-card:not(.comentario-card-children *) > .comentario-card-expand-spacer,
