@@ -227,9 +227,28 @@
     font-size: inherit;
 }
 
+/* Name + timestamp on one line. */
+.comentario-root .comentario-name-container {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+/* Timestamp — secondary colour, same size as the name, not a link colour. */
 .comentario-root .comentario-subtitle {
-    color: var(--text-tertiary);
-    font-size: 0.85em;
+    color: var(--text-secondary);
+    font-size: inherit;
+}
+
+.comentario-root .comentario-subtitle a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.comentario-root .comentario-subtitle a:hover {
+    color: var(--heading);
+    text-decoration: none;
 }
 
 /* AUTHOR / role chip — subtle outlined uppercase pill. */
