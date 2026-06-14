@@ -242,12 +242,12 @@
     font-size: inherit;
 }
 
-.comentario-root .comentario-subtitle a {
+.comentario-root .comentario-card .comentario-subtitle a {
     color: inherit;
     text-decoration: none;
 }
 
-.comentario-root .comentario-subtitle a:hover {
+.comentario-root .comentario-card .comentario-subtitle a:hover {
     color: var(--heading);
     text-decoration: none;
 }
