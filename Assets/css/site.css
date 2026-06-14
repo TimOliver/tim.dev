@@ -1587,6 +1587,15 @@ footer .container {
     position: relative;
 }
 
+/* Vertical breathing room around the Comentario widget. Styled here in the
+   page CSS (not the css-override file, which only reaches the widget internals)
+   and display:block so the vertical padding applies — the custom element is
+   inline by default. */
+comentario-comments {
+    display: block;
+    padding: 3em 0;
+}
+
 .post-comments-title {
     display: flex;
     align-items: baseline;
