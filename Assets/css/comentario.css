@@ -227,8 +227,8 @@
     font-size: inherit;
 }
 
-/* Name + timestamp on one line. */
-.comentario-root .comentario-name-container {
+/* Name + timestamp on one line (card-scoped to match Comentario's specificity). */
+.comentario-root .comentario-card .comentario-name-container {
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
