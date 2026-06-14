@@ -235,8 +235,9 @@
     gap: 0.5em;
 }
 
-/* Timestamp — secondary colour, same size as the name, not a link colour. */
-.comentario-root .comentario-subtitle {
+/* Timestamp — secondary colour, same size as the name, not a link colour.
+   Matches Comentario's .comentario-card .comentario-subtitle specificity. */
+.comentario-root .comentario-card .comentario-subtitle {
     color: var(--text-secondary);
     font-size: inherit;
 }
