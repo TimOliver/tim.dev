@@ -136,7 +136,7 @@
 .comentario-root .comentario-btn-tool[title="Upvote"],
 .comentario-root .comentario-btn-tool[title="Downvote"],
 .comentario-root .comentario-score {
-    display: none;
+    display: none !important;
 }
 
 /* ---- Comment cards ---- */
