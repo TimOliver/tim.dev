@@ -198,10 +198,10 @@
     /* Single-column cards span the full width here; in landscape that blows the
        phone frames up huge (each ~290px wide → ~515px tall via the 9/16 ratio).
        Cap the frame pair's width — which caps height via the aspect ratio — and
-       let it sit left-aligned rather than stretching across the card. */
+       centre it within the card. */
     .app-frames {
-        max-width: 360px;
-        justify-content: flex-start;
+        max-width: 480px;
+        margin-inline: auto;
     }
 }
 
