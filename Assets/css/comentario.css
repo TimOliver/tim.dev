@@ -241,7 +241,7 @@
    Matches Comentario's .comentario-card .comentario-subtitle specificity. */
 .comentario-root .comentario-card .comentario-subtitle {
     color: var(--text-secondary);
-    font-size: inherit;
+    font-size: 0.9em;
 }
 
 .comentario-root .comentario-card .comentario-subtitle a {
