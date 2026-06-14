@@ -147,6 +147,16 @@
     display: none !important;
 }
 
+/* Reply — show as a "Reply" text link instead of an icon-only button. */
+.comentario-root .comentario-btn-tool[title="Reply"] .comentario-icon {
+    display: none;
+}
+
+.comentario-root .comentario-btn-tool[title="Reply"]::after {
+    content: "Reply";
+    font-weight: 500;
+}
+
 /* ---- Comment cards ---- */
 .comentario-root .comentario-card {
     background: none;
@@ -213,4 +223,11 @@
 .comentario-root .comentario-card-expand-spacer {
     border-color: var(--border) !important;
     background-color: var(--border) !important;
+}
+
+/* Top-level comments: drop the left bar/indent column entirely (it only makes
+   sense as a nesting guide on replies), so the avatar sits flush-left. */
+.comentario-root .comentario-card:not(.comentario-card-children *) > .comentario-card-expand-spacer,
+.comentario-root .comentario-card:not(.comentario-card-children *) > .comentario-card-expand-toggler {
+    display: none;
 }
