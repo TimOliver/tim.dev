@@ -131,7 +131,9 @@ enum ArticleShell {
             s += "<span>Comments</span></h2>"
             // Comentario widget (self-hosted). comentario.js is loaded site-wide
             // in MainLayout; the thread is keyed to this post's URL path.
-            s += "<comentario-comments></comentario-comments>"
+            // css-override loads /css/comentario.css after Comentario's default
+            // stylesheet (so our rules win); no-fonts lets it inherit SF.
+            s += #"<comentario-comments css-override="/css/comentario.css" no-fonts="true"></comentario-comments>"#
             s += "</section>"
         }
 

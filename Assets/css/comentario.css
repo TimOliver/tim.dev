@@ -1,0 +1,142 @@
+/* ----------------------------------------------------------------------------
+   Comentario theme override.
+
+   Loaded via the <comentario-comments css-override="…"> attribute, i.e. AFTER
+   Comentario's default stylesheet — so equal-specificity rules win by source
+   order (no specificity wars). Selectors are prefixed with `.comentario-root`
+   to match the defaults' specificity where needed.
+
+   It loads into the page (light DOM), so it can use the site's CSS custom
+   properties — meaning the comments follow the site's light/dark theme for free.
+   Paired with no-fonts="true" so the widget inherits the site's SF font.
+
+   Goal: the clean, rounded, neutral look from the design spec.
+   ---------------------------------------------------------------------------- */
+
+/* Base: site font + colour. */
+.comentario-root {
+    font-family: var(--font-text);
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.comentario-root * {
+    font-family: inherit;
+}
+
+/* Sort / RSS toolbar — hidden; the count lives in our own "Comments" heading. */
+.comentario-root .comentario-thread-toolbar {
+    display: none;
+}
+
+/* ---- Comment editor ("Add to the discussion…") ---- */
+.comentario-root .comentario-add-comment-host,
+.comentario-root .comentario-comment-editor {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    corner-shape: squircle;
+    padding: 14px 16px;
+    transition: border-color 0.15s ease;
+}
+
+.comentario-root .comentario-add-comment-host:focus-within {
+    border-color: var(--text-tertiary);
+}
+
+.comentario-root .comentario-add-comment-placeholder {
+    color: var(--text-tertiary);
+}
+
+/* ---- Buttons (kill the default blue) ---- */
+.comentario-root .comentario-btn {
+    border-radius: 999px;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+/* Primary (Sign in / Post): a neutral pill, not blue. */
+.comentario-root .comentario-btn-primary {
+    background: var(--bg-tertiary);
+    color: var(--heading);
+    border-color: var(--border);
+}
+
+.comentario-root .comentario-btn-primary:hover {
+    background: var(--control-hover);
+    color: var(--heading);
+}
+
+/* Text-link buttons (Reply, etc.): muted, lift to heading on hover. */
+.comentario-root .comentario-btn-link {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.comentario-root .comentario-btn-link:hover {
+    color: var(--heading);
+}
+
+/* ---- Comment cards ---- */
+.comentario-root .comentario-card {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 1.5em 0;
+}
+
+.comentario-root .comentario-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comentario-root .comentario-avatar,
+.comentario-root .comentario-avatar-img {
+    border-radius: 50%;
+}
+
+.comentario-root .comentario-name {
+    color: var(--heading);
+    font-weight: 600;
+}
+
+.comentario-root .comentario-subtitle {
+    color: var(--text-tertiary);
+    font-size: 0.85em;
+}
+
+/* AUTHOR / role chip — subtle uppercase pill. */
+.comentario-root .comentario-badge {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border-radius: 6px;
+    corner-shape: squircle;
+    padding: 1px 6px;
+    font-size: 0.65em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.comentario-root .comentario-card-body {
+    color: var(--text);
+    line-height: 1.6;
+}
+
+/* Links inside comments — site red, underline on hover (not the default blue). */
+.comentario-root .comentario-card-body a {
+    color: var(--link);
+    text-decoration: none;
+}
+
+.comentario-root .comentario-card-body a:hover {
+    text-decoration: underline;
+}
+
+/* ---- Nested replies: gentle indent + hairline guide ---- */
+.comentario-root .comentario-card-children {
+    margin-left: 16px;
+    padding-left: 16px;
+    border-left: 1px solid var(--border);
+}
