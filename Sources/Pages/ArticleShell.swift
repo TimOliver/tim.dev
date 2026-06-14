@@ -24,12 +24,6 @@ enum ArticleShell {
         case page   // standalone post page: plain date/title; comments mount point at the end
     }
 
-    /// Inline speech-bubble icon (stroke = currentColor), matching the project's
-    /// inline-SVG convention. `cssClass` tags it per use.
-    private static func commentIcon(_ cssClass: String) -> String {
-        #"<svg class="\#(cssClass)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.6-.8L3 21l1.8-5.4A8.5 8.5 0 1 1 21 11.5Z"></path></svg>"#
-    }
-
     /// Sprite icon from /img/ui-icons.svg (Tabler outline, currentColor stroke).
     private static func spriteIcon(_ id: String) -> String {
         #"<svg class="post-icon-glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/ui-icons.svg#\#(id)"/></svg>"#
@@ -126,9 +120,10 @@ enum ArticleShell {
         s += endLinks(path: href, title: escape(article.title))
         if context == .page {
             s += #"<section class="post-comments" id="comments">"#
-            s += #"<h2 class="post-comments-title">"#
-            s += commentIcon("post-comments-icon")
-            s += "<span>Comments</span></h2>"
+            // Heading shows "Comments · N"; the count is revealed by site.js
+            // once Comentario loads it (see the has-count toggler).
+            s += #"<h2 class="post-comments-title"><span>Comments</span>"#
+            s += #"<comentario-count class="post-comments-count" path="\#(href)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count></h2>"#
             // Comentario widget (self-hosted). comentario.js is loaded site-wide
             // in MainLayout; the thread is keyed to this post's URL path.
             // css-override loads /css/comentario.css after Comentario's default

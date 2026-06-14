@@ -3,12 +3,11 @@
 
    Loaded via the <comentario-comments css-override="…"> attribute, i.e. AFTER
    Comentario's default stylesheet — so equal-specificity rules win by source
-   order (no specificity wars). Selectors are prefixed with `.comentario-root`
-   to match the defaults' specificity where needed.
+   order. Selectors are prefixed with `.comentario-root` to match the defaults.
 
    It loads into the page (light DOM), so it can use the site's CSS custom
-   properties — meaning the comments follow the site's light/dark theme for free.
-   Paired with no-fonts="true" so the widget inherits the site's SF font.
+   properties — the comments follow the site's light/dark theme for free. Paired
+   with no-fonts="true" so the widget inherits the site's SF font.
 
    Goal: the clean, rounded, neutral look from the design spec.
    ---------------------------------------------------------------------------- */
@@ -24,17 +23,26 @@
     font-family: inherit;
 }
 
-/* Sort / RSS toolbar — hidden; the count lives in our own "Comments" heading. */
+/* ---- Top toolbar: sort + RSS kept but minimal. The comment count lives in our
+   own "Comments · N" heading, so hide the widget's duplicate. ---- */
 .comentario-root .comentario-thread-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 1.6em;
+    font-size: 0.85em;
+}
+
+.comentario-root .comentario-comment-count {
     display: none;
 }
 
-/* ---- Comment editor ("Add to the discussion…") ---- */
+/* ---- Comment editor ("Add a comment") ---- */
 .comentario-root .comentario-add-comment-host,
 .comentario-root .comentario-comment-editor {
     background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     corner-shape: squircle;
     padding: 14px 16px;
     transition: border-color 0.15s ease;
@@ -46,6 +54,10 @@
 
 .comentario-root .comentario-add-comment-placeholder {
     color: var(--text-tertiary);
+}
+
+.comentario-root .comentario-comment-editor-footer {
+    margin-top: 10px;
 }
 
 /* ---- Buttons (kill the default blue) ---- */
@@ -67,7 +79,7 @@
     color: var(--heading);
 }
 
-/* Text-link buttons (Reply, etc.): muted, lift to heading on hover. */
+/* Text-link buttons (Reply, sort, RSS): muted, lift to heading on hover. */
 .comentario-root .comentario-btn-link {
     color: var(--text-secondary);
     font-weight: 500;
@@ -75,6 +87,16 @@
 
 .comentario-root .comentario-btn-link:hover {
     color: var(--heading);
+}
+
+/* ---- Per-comment footer: hide votes (the spec omits them); keep Reply. The
+   up/down buttons + score live in the toolbar section that holds the score. ---- */
+.comentario-root .comentario-score {
+    display: none;
+}
+
+.comentario-root .comentario-toolbar-section:has(.comentario-score) {
+    display: none;
 }
 
 /* ---- Comment cards ---- */
@@ -134,9 +156,14 @@
     text-decoration: underline;
 }
 
-/* ---- Nested replies: gentle indent + hairline guide ---- */
+/* ---- Nested replies: gentle indent + a neutral grey hairline. Comentario
+   tints the collapse line per-user; force it to the site border grey. ---- */
 .comentario-root .comentario-card-children {
     margin-left: 16px;
     padding-left: 16px;
     border-left: 1px solid var(--border);
+}
+
+.comentario-root .comentario-card-expand-toggler {
+    background: var(--border);
 }

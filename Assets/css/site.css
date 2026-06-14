@@ -1534,13 +1534,6 @@ footer .container {
     }
 }
 
-/* Keep: shared by the post-page comments <h2> icon. */
-.post-comments-icon {
-    width: 18px;
-    height: 18px;
-    flex: 0 0 auto;
-}
-
 /* Shared sprite glyph sizing (badges and end-of-article links override the em). */
 .post-icon-glyph {
     width: 18px;
@@ -1594,9 +1587,25 @@ footer .container {
 
 .post-comments-title {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: baseline;
+    gap: 0.35em;
     margin: 0;
     font-size: 1.4em;
     font-weight: 700;
+}
+
+/* "· N" comment count in the heading — revealed by site.js once Comentario
+   loads it (the element stays empty until then). */
+.post-comments-count {
+    display: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.post-comments-count.has-count {
+    display: inline;
+}
+
+.post-comments-count.has-count::before {
+    content: "· ";
 }

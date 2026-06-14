@@ -734,7 +734,7 @@
 // actually present. Comentario keeps the <comentario-count> element in place
 // even at zero, so we read the rendered text and toggle .has-count.
 (function() {
-    var counts = document.querySelectorAll('.post-badge comentario-count');
+    var counts = document.querySelectorAll('.post-badge comentario-count, .post-comments-count');
     if (!counts.length) return;
 
     function sync(el) {
