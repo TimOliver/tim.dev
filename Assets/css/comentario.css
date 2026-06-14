@@ -12,15 +12,29 @@
    Goal: the clean, rounded, neutral look from the design spec.
    ---------------------------------------------------------------------------- */
 
-/* Base: site font + colour. */
+/* Base: site font + colour. position:static so the absolutely-positioned login
+   bar below anchors to our .post-comments section (which is position:relative),
+   not to comentario-root. */
 .comentario-root {
     font-family: var(--font-text);
     color: var(--text);
     font-size: 1rem;
+    position: static;
 }
 
 .comentario-root * {
     font-family: inherit;
+}
+
+/* Lift the login / profile bar (with "Sign in") up onto our "Comments · N"
+   heading row — anchored to the top-right of the .post-comments section. */
+.comentario-root .comentario-profile-bar {
+    position: absolute;
+    top: 1.4em;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    min-height: 0;
 }
 
 /* ---- Top toolbar: sort + RSS kept but minimal. The comment count lives in our
@@ -116,13 +130,12 @@
     color: var(--heading);
 }
 
-/* ---- Per-comment footer: hide votes (the spec omits them); keep Reply. The
-   up/down buttons + score live in the toolbar section that holds the score. ---- */
+/* ---- Per-comment footer: hide the up/down votes + score (the spec omits them),
+   but KEEP Reply — they share one toolbar section, so target the vote buttons by
+   their title rather than hiding the whole section. ---- */
+.comentario-root .comentario-btn-tool[title="Upvote"],
+.comentario-root .comentario-btn-tool[title="Downvote"],
 .comentario-root .comentario-score {
-    display: none;
-}
-
-.comentario-root .comentario-toolbar-section:has(.comentario-score) {
     display: none;
 }
 
@@ -185,15 +198,11 @@
 
 /* ---- Nested replies: gentle indent + a neutral grey hairline. Comentario
    tints the collapse line per-user; force it to the site border grey. ---- */
-.comentario-root .comentario-card-children {
-    margin-left: 16px;
-    padding-left: 16px;
-    border-left: 1px solid var(--border) !important;
-}
-
-/* Comentario tints the collapse/thread line per-user via an inline gradient —
-   force it to the flat neutral grey (!important to beat the inline style). */
-.comentario-root .comentario-card-expand-toggler {
-    background: var(--border) !important;
-    background-image: none !important;
+/* The per-comment left bar (the collapse toggler / indent spacer) is tinted
+   per-user via a comentario-border-NN class that sets its BORDER colour — force
+   it to the flat neutral grey. */
+.comentario-root .comentario-card-expand-toggler,
+.comentario-root .comentario-card-expand-spacer {
+    border-color: var(--border) !important;
+    background-color: var(--border) !important;
 }
