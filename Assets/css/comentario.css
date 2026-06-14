@@ -30,7 +30,7 @@
    heading row — anchored to the top-right of the .post-comments section. */
 .comentario-root .comentario-profile-bar {
     position: absolute;
-    top: 1.4em;
+    top: 0.9em;
     right: 0;
     margin: 0;
     padding: 0;
