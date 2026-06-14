@@ -1578,11 +1578,13 @@ footer .container {
     height: 1.15em;
 }
 
-/* Comments section on the standalone post page (Comentario mounts inside). */
+/* Comments section on the standalone post page (Comentario mounts inside).
+   position:relative so Comentario's login bar can anchor to the heading row. */
 .post-comments {
     margin-top: 2.5em;
     padding-top: 1.5em;
     border-top: 1px solid var(--border);
+    position: relative;
 }
 
 .post-comments-title {
