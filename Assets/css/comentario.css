@@ -275,8 +275,10 @@
     background-color: var(--border) !important;
 }
 
-/* Thin, rounded nesting line. */
-.comentario-root .comentario-card .comentario-card-expand-spacer {
+/* Thin, rounded nesting line (spacer for leaf comments, toggler for ones with
+   children). */
+.comentario-root .comentario-card .comentario-card-expand-spacer,
+.comentario-root .comentario-card .comentario-card-expand-toggler {
     flex: 0 0 3px;
     border-radius: 2px;
 }
