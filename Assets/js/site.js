@@ -748,3 +748,20 @@
         }).observe(el, { childList: true, characterData: true, subtree: true });
     });
 })();
+
+// Comentario's "Add a comment" host expands on focus. Its Cancel button
+// collapses the editor but leaves the host focused, so clicking it again fires
+// no fresh focus event and won't re-open (clicking away then back does). After
+// a Cancel, blur whatever is focused inside the widget so the next click re-opens it.
+(function() {
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest && e.target.closest('.comentario-root button');
+        if (!btn || (btn.textContent || '').trim() !== 'Cancel') return;
+        setTimeout(function() {
+            var active = document.activeElement;
+            if (active && active.closest && active.closest('.comentario-root') && active.blur) {
+                active.blur();
+            }
+        }, 0);
+    });
+})();
