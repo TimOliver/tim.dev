@@ -18,7 +18,9 @@
 .comentario-root {
     font-family: var(--font-text);
     color: var(--text);
-    font-size: 1rem;
+    /* Match the article text (1em inherits the body's 18px, and scales with it
+       on smaller screens) rather than 1rem, which is the smaller root size. */
+    font-size: 1em;
     position: static;
 }
 
