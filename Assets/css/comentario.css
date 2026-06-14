@@ -60,6 +60,33 @@
     margin-top: 10px;
 }
 
+/* Textarea / contenteditable — neutral, no blue focus ring. */
+.comentario-root .comentario-comment-editor textarea,
+.comentario-root textarea {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    corner-shape: squircle;
+    box-shadow: none;
+}
+
+.comentario-root .comentario-comment-editor textarea:focus,
+.comentario-root textarea:focus {
+    outline: none;
+    border-color: var(--text-tertiary);
+    box-shadow: none;
+}
+
+/* Markdown toolbar icons in the editor (and any remaining tool buttons) — muted. */
+.comentario-root .comentario-btn-tool {
+    color: var(--text-secondary);
+}
+
+.comentario-root .comentario-btn-tool:hover {
+    color: var(--heading);
+}
+
 /* ---- Buttons (kill the default blue) ---- */
 .comentario-root .comentario-btn {
     border-radius: 999px;
@@ -161,9 +188,12 @@
 .comentario-root .comentario-card-children {
     margin-left: 16px;
     padding-left: 16px;
-    border-left: 1px solid var(--border);
+    border-left: 1px solid var(--border) !important;
 }
 
+/* Comentario tints the collapse/thread line per-user via an inline gradient —
+   force it to the flat neutral grey (!important to beat the inline style). */
 .comentario-root .comentario-card-expand-toggler {
-    background: var(--border);
+    background: var(--border) !important;
+    background-image: none !important;
 }
