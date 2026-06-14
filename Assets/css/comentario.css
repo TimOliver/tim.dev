@@ -244,6 +244,12 @@
     padding-left: 50px;
 }
 
+/* Same indent for the comment footer (Reply). Scoped to the card so it doesn't
+   shift the profile bar, which shares the .comentario-toolbar class. */
+.comentario-root .comentario-card-self > .comentario-toolbar {
+    padding-left: 50px;
+}
+
 /* Links inside comments — site red, underline on hover (not the default blue). */
 .comentario-root .comentario-card-body a {
     color: var(--link);
