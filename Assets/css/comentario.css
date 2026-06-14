@@ -12,6 +12,13 @@
    Goal: the clean, rounded, neutral look from the design spec.
    ---------------------------------------------------------------------------- */
 
+/* Breathing room around the whole widget (display:block so the vertical padding
+   applies — custom elements are inline by default). */
+comentario-comments {
+    display: block;
+    padding: 2em 0;
+}
+
 /* Base: site font + colour. position:static so the absolutely-positioned login
    bar below anchors to our .post-comments section (which is position:relative),
    not to comentario-root. */
