@@ -37,11 +37,12 @@
     min-height: 0;
 }
 
-/* ---- Top toolbar: sort + RSS kept but minimal. The comment count lives in our
-   own "Comments · N" heading, so hide the widget's duplicate. ---- */
+/* ---- Top toolbar: sort buttons on the left, "RSS feed" on the right. The
+   comment count lives in our own "Comments · N" heading, so hide the duplicate. ---- */
 .comentario-root .comentario-thread-toolbar {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 14px;
     margin-bottom: 1.6em;
     font-size: 0.85em;
@@ -49,6 +50,42 @@
 
 .comentario-root .comentario-comment-count {
     display: none;
+}
+
+.comentario-root .comentario-sort-buttons {
+    order: 0;
+}
+
+.comentario-root .comentario-thread-buttons {
+    order: 1;
+}
+
+/* Drop the sort dropdown caret — it reads as a plain toggle. */
+.comentario-root .comentario-sort-buttons .comentario-icon {
+    display: none;
+}
+
+/* Active sort gets the strong foreground; the others stay muted. */
+.comentario-root .comentario-sort-buttons .comentario-btn-active {
+    color: var(--heading);
+    font-weight: 700;
+}
+
+/* RSS → "RSS feed" with a leading feed icon (rss.svg masked to currentColor). */
+.comentario-root .comentario-thread-buttons .comentario-btn::before {
+    content: "";
+    display: inline-block;
+    width: 0.95em;
+    height: 0.95em;
+    margin-right: 0.4em;
+    vertical-align: -0.12em;
+    background-color: currentColor;
+    -webkit-mask: url(/img/rss.svg) center / contain no-repeat;
+    mask: url(/img/rss.svg) center / contain no-repeat;
+}
+
+.comentario-root .comentario-thread-buttons .comentario-btn::after {
+    content: " feed";
 }
 
 /* ---- Comment editor ("Add a comment") ---- */
@@ -186,16 +223,17 @@
     font-size: 0.85em;
 }
 
-/* AUTHOR / role chip — subtle uppercase pill. */
+/* AUTHOR / role chip — subtle outlined uppercase pill. */
 .comentario-root .comentario-badge {
-    background: var(--bg-tertiary);
-    color: var(--text-secondary);
+    background: none;
+    color: var(--text-tertiary);
+    border: 1px solid var(--border);
     border-radius: 6px;
     corner-shape: squircle;
-    padding: 1px 6px;
-    font-size: 0.65em;
+    padding: 0 5px;
+    font-size: 0.62em;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
 }
 
