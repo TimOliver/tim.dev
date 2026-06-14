@@ -23,16 +23,6 @@
     font-family: inherit;
 }
 
-/* Lift the login / profile bar (with "Sign in") up onto our "Comments · N"
-   heading row — anchored to the top-right of the .post-comments section. The
-   top offset matches the section's padding-top so it lines up with the heading. */
-.comentario-root .comentario-profile-bar {
-    position: absolute;
-    top: 1.5em;
-    right: 0;
-    margin: 0;
-}
-
 /* ---- Top toolbar: sort + RSS kept but minimal. The comment count lives in our
    own "Comments · N" heading, so hide the widget's duplicate. ---- */
 .comentario-root .comentario-thread-toolbar {
