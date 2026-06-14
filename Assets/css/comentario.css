@@ -227,9 +227,11 @@
     font-size: inherit;
 }
 
-/* Name + timestamp on one line (card-scoped to match Comentario's specificity). */
+/* Name + timestamp on one line. Comentario's name-container is a flex COLUMN
+   (stacking them), so the row direction is the actual fix. */
 .comentario-root .comentario-card .comentario-name-container {
     display: flex;
+    flex-direction: row;
     align-items: baseline;
     flex-wrap: wrap;
     gap: 0.5em;
