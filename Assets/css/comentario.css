@@ -222,6 +222,11 @@
     font-weight: 600;
 }
 
+/* Drop Comentario's name font-size so it matches the base text size. */
+.comentario-root .comentario-card .comentario-name {
+    font-size: inherit;
+}
+
 .comentario-root .comentario-subtitle {
     color: var(--text-tertiary);
     font-size: 0.85em;
