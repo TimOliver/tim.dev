@@ -240,6 +240,8 @@
 .comentario-root .comentario-card-body {
     color: var(--text);
     line-height: 1.6;
+    /* Indent the body to line up with the name (past the avatar). */
+    padding-left: 50px;
 }
 
 /* Links inside comments — site red, underline on hover (not the default blue). */
