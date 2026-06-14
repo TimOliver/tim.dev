@@ -202,6 +202,10 @@
     margin: 1.5em 0;
 }
 
+.comentario-root .comentario-card .comentario-card-self {
+    padding-top: 0;
+}
+
 .comentario-root .comentario-card-header {
     display: flex;
     align-items: center;
