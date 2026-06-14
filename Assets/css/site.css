@@ -1593,7 +1593,8 @@ footer .container {
    inline by default. */
 comentario-comments {
     display: block;
-    padding: 3em 0;
+    /* Top only — the article's 60px bottom margin already spaces the end. */
+    padding: 1.2em 0 0;
 }
 
 .post-comments-title {
