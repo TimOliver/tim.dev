@@ -198,8 +198,8 @@
 .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon,
 .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon svg,
 .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) svg {
-    width: 1.5em;
-    height: 1.5em;
+    width: 3em;
+    height: 3em;
 }
 
 .comentario-root .comentario-comment-editor .comentario-btn-tool[title="Editor help"] .comentario-icon {
