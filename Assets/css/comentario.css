@@ -122,6 +122,17 @@
     border-color: var(--text-tertiary);
 }
 
+/* Expanded editor: Comentario nests host > editor > textarea, each bordered, so
+   clicking in gives three stacked borders. Make the host a transparent wrapper
+   (drop the outermost border) — the editor below keeps the single visible box,
+   and the textarea border is removed too. */
+.comentario-root .comentario-add-comment-host.comentario-editor-inserted {
+    background: none;
+    border: none;
+    padding: 0;
+    min-height: 0;
+}
+
 /* Collapsed placeholder ("Add a comment"): a borderless secondary-fill rectangle
    at the site's main card radius. The expanded editor keeps its bordered look. */
 .comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted) {
@@ -141,21 +152,19 @@
     margin-top: 10px;
 }
 
-/* Textarea / contenteditable — neutral, no blue focus ring. */
+/* Textarea / contenteditable — borderless typing area inside the editor box
+   (the editor carries the single border), no blue focus ring. */
 .comentario-root .comentario-comment-editor textarea,
 .comentario-root textarea {
-    background: var(--bg);
+    background: none;
     color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    corner-shape: squircle;
+    border: none;
     box-shadow: none;
 }
 
 .comentario-root .comentario-comment-editor textarea:focus,
 .comentario-root textarea:focus {
     outline: none;
-    border-color: var(--text-tertiary);
     box-shadow: none;
 }
 
