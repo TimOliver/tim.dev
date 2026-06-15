@@ -580,14 +580,16 @@
     content: "Sign in";
 }
 
-/* "Forgot your password?" — centred muted link, no trailing external-link icon. */
+/* "Forgot your password?" — small centred muted link, underlined on hover, no
+   trailing external-link icon. */
 .comentario-root .comentario-dialog-centered a {
     color: var(--text-secondary);
     text-decoration: none;
+    font-size: 0.8em;
 }
 
 .comentario-root .comentario-dialog-centered a:hover {
-    color: var(--heading);
+    text-decoration: underline;
 }
 
 .comentario-root .comentario-dialog-centered a .comentario-icon {
