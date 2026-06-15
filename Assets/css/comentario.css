@@ -207,6 +207,16 @@
     padding: 0 8px;
 }
 
+/* Preview paragraphs: same spacing as article body paragraphs (which use
+   margin-bottom 1.5em); drop the trailing one so the box bottom stays even. */
+.comentario-root .comentario-comment-editor .comentario-comment-editor-preview p {
+    margin: 0 0 1.5em;
+}
+
+.comentario-root .comentario-comment-editor .comentario-comment-editor-preview p:last-child {
+    margin-bottom: 0;
+}
+
 /* While previewing, the markdown toolbar is disabled — hide it entirely. */
 .comentario-root .comentario-toolbar.comentario-disabled {
     display: none;
