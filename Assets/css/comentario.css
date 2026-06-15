@@ -600,31 +600,20 @@
     margin: 16px 0;
 }
 
-/* Sign-up footer: hide the "Don't have an account?" lead-in (a bare text node),
-   so only the centred button remains. */
-.comentario-root .comentario-dialog-centered:has(.comentario-btn-secondary) {
-    font-size: 0;
-}
-
-/* The button: outlined neutral box matching the input radius, relabelled
-   "Create new account" (font-size:0 hides its own "Sign up here" text). */
+/* Sign-up footer: classic "Don't have an account?" lead-in followed by a plain
+   "Sign Up" link (the button's text is set to "Sign Up" in site.js). */
 .comentario-root .comentario-dialog .comentario-btn-secondary {
-    margin: 0;
-    background: var(--bg);
-    color: var(--heading);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    font-weight: 600;
-    padding: 8px 16px;
-    font-size: 0;
-}
-
-.comentario-root .comentario-dialog .comentario-btn-secondary::after {
-    content: "Create new account";
-    font-size: 1rem;
+    margin-left: 0.3em;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    font-weight: 500;
+    color: var(--link);
 }
 
 .comentario-root .comentario-dialog .comentario-btn-secondary:hover {
-    background: var(--control-hover);
-    color: var(--heading);
+    background: none;
+    color: var(--link);
+    text-decoration: underline;
 }

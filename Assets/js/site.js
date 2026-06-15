@@ -766,22 +766,28 @@
     });
 })();
 
-// Login dialog: relabel the email field's placeholder ("email@example.com" →
-// "Email"). The dialog is created on demand, so watch for it being inserted.
+// Login dialog (created on demand): relabel the email field's placeholder to
+// "Email" and the sign-up button's text to "Sign Up".
 (function() {
-    var SEL = '#comentario-login-form input[name="email"]';
+    function find(node, sel) {
+        return node.matches && node.matches(sel) ? node
+            : (node.querySelector && node.querySelector(sel));
+    }
 
-    function relabel(node) {
+    function apply(node) {
         if (node.nodeType !== 1) return;
-        var input = node.matches && node.matches(SEL) ? node
-            : (node.querySelector && node.querySelector(SEL));
-        if (input && input.placeholder !== 'Email') input.placeholder = 'Email';
+
+        var email = find(node, '#comentario-login-form input[name="email"]');
+        if (email && email.placeholder !== 'Email') email.placeholder = 'Email';
+
+        var signup = find(node, '.comentario-dialog .comentario-btn-secondary');
+        if (signup && signup.textContent.trim() !== 'Sign Up') signup.textContent = 'Sign Up';
     }
 
     new MutationObserver(function(mutations) {
         for (var i = 0; i < mutations.length; i++) {
             var added = mutations[i].addedNodes;
-            for (var j = 0; j < added.length; j++) relabel(added[j]);
+            for (var j = 0; j < added.length; j++) apply(added[j]);
         }
     }).observe(document.documentElement, { childList: true, subtree: true });
 })();
