@@ -319,6 +319,11 @@
     margin: 1.5em 0;
 }
 
+/* No trailing gap under the last card in the list. */
+.comentario-root .comentario-card:last-child {
+    margin-bottom: 0;
+}
+
 .comentario-root .comentario-card .comentario-card-self {
     padding-top: 0;
 }
