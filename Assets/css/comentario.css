@@ -204,7 +204,7 @@
     border: none;
     outline: none;
     box-shadow: none;
-    padding: 0 8px;
+    padding: 10px 20px;
 }
 
 /* Preview paragraphs: same spacing as article body paragraphs (which use
