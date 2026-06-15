@@ -191,12 +191,18 @@
     color: var(--heading);
 }
 
-/* Bigger markdown-toolbar glyphs (editor only, so Reply/sort/RSS are untouched). */
-.comentario-root .comentario-comment-editor .comentario-btn-tool .comentario-icon,
-.comentario-root .comentario-comment-editor .comentario-btn-tool .comentario-icon svg,
-.comentario-root .comentario-comment-editor .comentario-btn-tool svg {
-    width: 1.3em;
-    height: 1.3em;
+/* Bigger markdown-toolbar glyphs (editor only, so Reply/sort/RSS are untouched).
+   The "Editor help" button shares this class, so exclude it and keep it small. */
+.comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon,
+.comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon svg,
+.comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) svg {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.comentario-root .comentario-comment-editor .comentario-btn-tool[title="Editor help"] .comentario-icon {
+    width: 1em;
+    height: 1em;
 }
 
 /* ---- Buttons (kill the default blue) ---- */
