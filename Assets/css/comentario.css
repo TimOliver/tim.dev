@@ -73,6 +73,16 @@
     order: 0;
 }
 
+/* Flush the sort group to its edges: first button no left padding, last no
+   right padding. */
+.comentario-root .comentario-sort-buttons .comentario-btn:first-child {
+    padding-left: 0;
+}
+
+.comentario-root .comentario-sort-buttons .comentario-btn:last-child {
+    padding-right: 0;
+}
+
 .comentario-root .comentario-thread-buttons {
     order: 1;
 }
