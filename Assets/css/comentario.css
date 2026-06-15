@@ -481,10 +481,32 @@
     padding: 20px;
 }
 
-/* No title bar — match the clean mockup. The dialog still closes via Esc, an
-   outside click, or toggling the Sign-in button. */
+/* Hide the header bar + "Log in" title but KEEP the close (×) button, floated to
+   the dialog's top-right. The title is a bare text node, so collapse it with
+   font-size:0 and give the close icon an explicit size. */
 .comentario-root .comentario-dialog-header {
-    display: none;
+    background: none !important;
+    padding: 0;
+    min-height: 0;
+    font-size: 0;
+    line-height: 0;
+}
+
+.comentario-root .comentario-dialog-btn-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 102;
+    color: var(--text-secondary);
+}
+
+.comentario-root .comentario-dialog-btn-close:hover {
+    color: var(--heading);
+}
+
+.comentario-root .comentario-dialog-btn-close .comentario-icon {
+    width: 14px;
+    height: 14px;
 }
 
 /* Pointer triangle matches the popover surface + border. */
@@ -527,11 +549,18 @@
     box-shadow: none;
 }
 
+/* Don't flag empty required fields red on open — keep the neutral border. */
+.comentario-root .comentario-dialog .comentario-input:invalid,
+.comentario-root .comentario-dialog .comentario-input.comentario-touched:invalid {
+    border-color: var(--border);
+    box-shadow: none;
+}
+
 /* Submit "Sign in": full-width solid black pill; swap the arrow icon for text. */
 .comentario-root .comentario-dialog .comentario-btn-primary {
     width: 100%;
     padding: 12px;
-    border-radius: 999px;
+    border-radius: 12px;
     background: var(--heading);
     color: var(--bg);
     border-color: var(--heading);
@@ -571,14 +600,28 @@
     margin: 16px 0;
 }
 
-/* "Sign up here": outlined neutral pill. */
+/* Sign-up footer: hide the "Don't have an account?" lead-in (a bare text node),
+   so only the centred button remains. */
+.comentario-root .comentario-dialog-centered:has(.comentario-btn-secondary) {
+    font-size: 0;
+}
+
+/* The button: outlined neutral box matching the input radius, relabelled
+   "Create new account" (font-size:0 hides its own "Sign up here" text). */
 .comentario-root .comentario-dialog .comentario-btn-secondary {
+    margin: 0;
     background: var(--bg);
     color: var(--heading);
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: 12px;
     font-weight: 600;
-    padding: 6px 14px;
+    padding: 8px 16px;
+    font-size: 0;
+}
+
+.comentario-root .comentario-dialog .comentario-btn-secondary::after {
+    content: "Create new account";
+    font-size: 1rem;
 }
 
 .comentario-root .comentario-dialog .comentario-btn-secondary:hover {
