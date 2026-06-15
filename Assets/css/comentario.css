@@ -160,6 +160,8 @@
     color: var(--text);
     border: none;
     box-shadow: none;
+    /* Match the site/body text size rather than Comentario's textarea default. */
+    font-size: inherit;
     /* No drag handle — auto-size to the content instead (field-sizing grows the
        box as the user types, starting compact and capping before it scrolls). */
     resize: none;
