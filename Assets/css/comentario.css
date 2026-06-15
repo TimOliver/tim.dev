@@ -478,7 +478,7 @@
 }
 
 .comentario-root .comentario-dialog .comentario-dialog-body {
-    padding: 7px 16px 16px;
+    padding: 16px;
 }
 
 /* Hide the header bar + "Log in" title but KEEP the close (×) button, floated to
