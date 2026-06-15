@@ -484,7 +484,7 @@
 /* Hide the header bar + "Log in" title but KEEP the close (×) button, floated to
    the dialog's top-right. The title is a bare text node, so collapse it with
    font-size:0 and give the close icon an explicit size. */
-.comentario-root .comentario-dialog-header {
+.comentario-root .comentario-dialog .comentario-dialog-header {
     background: none !important;
     padding: 0;
     min-height: 0;
