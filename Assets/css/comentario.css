@@ -199,6 +199,7 @@
     border: none;
     outline: none;
     box-shadow: none;
+    padding: 0 8px;
 }
 
 /* While previewing, the markdown toolbar is disabled — hide it entirely. */
