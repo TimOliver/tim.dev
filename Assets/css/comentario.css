@@ -462,3 +462,126 @@
 .comentario-root .comentario-card:not(.comentario-card-children *) > .comentario-card-expand-toggler {
     display: none;
 }
+
+/* ---------------------------------------------------------------------------
+   Login / sign-in popover (.comentario-dialog)
+   --------------------------------------------------------------------------- */
+
+/* Popover surface: rounded, neutral secondary fill, soft shadow. */
+.comentario-root .comentario-dialog {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    corner-shape: squircle;
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.14);
+    max-width: 340px;
+}
+
+.comentario-root .comentario-dialog-body {
+    padding: 20px;
+}
+
+/* No title bar — match the clean mockup. The dialog still closes via Esc, an
+   outside click, or toggling the Sign-in button. */
+.comentario-root .comentario-dialog-header {
+    display: none;
+}
+
+/* Pointer triangle matches the popover surface + border. */
+.comentario-root .comentario-dialog-arrow,
+.comentario-root .comentario-dialog-arrow::before {
+    background: var(--bg-secondary);
+    border-color: var(--border);
+}
+
+/* Drop the "Log in with your email and password" subtitle (first centred line
+   in the form). */
+.comentario-root #comentario-login-form > .comentario-dialog-centered:first-child {
+    display: none;
+}
+
+/* Comentario groups the password field and its submit button on one row; stack
+   them so the button becomes a full-width pill beneath the inputs. */
+.comentario-root .comentario-dialog .comentario-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* Email / password inputs: white field, rounded, neutral border. */
+.comentario-root .comentario-dialog .comentario-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    corner-shape: squircle;
+    color: var(--text);
+    padding: 12px 14px;
+    font-size: inherit;
+    width: 100%;
+}
+
+.comentario-root .comentario-dialog .comentario-input:focus {
+    outline: none;
+    border-color: var(--text-tertiary);
+    box-shadow: none;
+}
+
+/* Submit "Sign in": full-width solid black pill; swap the arrow icon for text. */
+.comentario-root .comentario-dialog .comentario-btn-primary {
+    width: 100%;
+    padding: 12px;
+    border-radius: 999px;
+    background: var(--heading);
+    color: var(--bg);
+    border-color: var(--heading);
+}
+
+.comentario-root .comentario-dialog .comentario-btn-primary:hover {
+    background: var(--text);
+    color: var(--bg);
+}
+
+.comentario-root .comentario-dialog .comentario-btn-primary .comentario-submit-icon {
+    display: none;
+}
+
+.comentario-root .comentario-dialog .comentario-btn-primary::after {
+    content: "Sign in";
+}
+
+/* "Forgot your password?" — centred muted link, no trailing external-link icon. */
+.comentario-root .comentario-dialog-centered a {
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.comentario-root .comentario-dialog-centered a:hover {
+    color: var(--heading);
+}
+
+.comentario-root .comentario-dialog-centered a .comentario-icon {
+    display: none;
+}
+
+/* Divider above the sign-up footer. */
+.comentario-root .comentario-dialog-body hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 16px 0;
+}
+
+/* "Sign up here": outlined neutral pill. */
+.comentario-root .comentario-dialog .comentario-btn-secondary {
+    background: var(--bg);
+    color: var(--heading);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-weight: 600;
+    padding: 6px 14px;
+}
+
+.comentario-root .comentario-dialog .comentario-btn-secondary:hover {
+    background: var(--control-hover);
+    color: var(--heading);
+}
