@@ -31,6 +31,15 @@
     font-family: inherit;
 }
 
+/* Spinner: Comentario bakes its orange (#ec8100) into the SVG background-image,
+   so re-tint by swapping that image for a mask and filling with our secondary
+   colour. Size/position/animation stay from Comentario's own ::after rule. */
+.comentario-root .comentario-spinner::after {
+    background: var(--bg-secondary);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M21 12a9 9 0 1 1-6.219-8.56'/%3E%3C/svg%3E") center / 100% no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M21 12a9 9 0 1 1-6.219-8.56'/%3E%3C/svg%3E") center / 100% no-repeat;
+}
+
 /* Lift the login / profile bar (with "Sign in") up onto our "Comments · N"
    heading row — anchored to the top-right of the .post-comments section. */
 .comentario-root .comentario-profile-bar {
