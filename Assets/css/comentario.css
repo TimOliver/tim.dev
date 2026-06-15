@@ -51,7 +51,7 @@
        reads as the comments-section divider, anchored to the comments — not as
        trailing space on the text field. */
     padding-top: 2.5em;
-    padding-bottom: 1em;
+    padding-bottom: 0;
     border-bottom: 1px solid var(--border);
     margin-bottom: 1.6em;
     font-size: 0.85em;
