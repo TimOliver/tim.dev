@@ -222,7 +222,7 @@
 .comentario-root .comentario-comment-editor .comentario-toolbar-section:not(:has([title="Editor help"])) {
     display: flex;
     align-items: center;
-    gap: 0.9em;
+    gap: 0.5em;
 }
 
 /* ---- Buttons (kill the default blue) ---- */
