@@ -765,3 +765,23 @@
         }
     });
 })();
+
+// Login dialog: relabel the email field's placeholder ("email@example.com" →
+// "Email"). The dialog is created on demand, so watch for it being inserted.
+(function() {
+    var SEL = '#comentario-login-form input[name="email"]';
+
+    function relabel(node) {
+        if (node.nodeType !== 1) return;
+        var input = node.matches && node.matches(SEL) ? node
+            : (node.querySelector && node.querySelector(SEL));
+        if (input && input.placeholder !== 'Email') input.placeholder = 'Email';
+    }
+
+    new MutationObserver(function(mutations) {
+        for (var i = 0; i < mutations.length; i++) {
+            var added = mutations[i].addedNodes;
+            for (var j = 0; j < added.length; j++) relabel(added[j]);
+        }
+    }).observe(document.documentElement, { childList: true, subtree: true });
+})();
