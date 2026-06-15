@@ -128,10 +128,10 @@
     border-radius: 18px;
 }
 
-/* Placeholder text — dim it to the secondary colour (host-scoped so it beats
-   Comentario's default, which otherwise renders it at the bright body colour). */
+/* Placeholder text — dim it to the secondary colour. Comentario colours the
+   "Add a comment" text at high specificity, so force it. */
 .comentario-root .comentario-add-comment-host .comentario-add-comment-placeholder {
-    color: var(--text-secondary);
+    color: var(--text-secondary) !important;
 }
 
 .comentario-root .comentario-comment-editor-footer {
