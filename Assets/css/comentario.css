@@ -529,6 +529,13 @@
     background: var(--bg-secondary);
 }
 
+/* Bottom placement (dialog below the trigger): the ::before is the visible
+   pointing face — give it the surface fill and border. */
+.comentario-root .comentario-dialog[data-popper-placement^=bottom] > .comentario-dialog-arrow::before {
+    background: var(--bg-secondary);
+    border-color: var(--border);
+}
+
 /* Drop the "Log in with your email and password" subtitle (first centred line
    in the form). */
 .comentario-root #comentario-login-form > .comentario-dialog-centered:first-child {
