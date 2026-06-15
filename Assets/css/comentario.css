@@ -160,6 +160,13 @@
     color: var(--text);
     border: none;
     box-shadow: none;
+    /* No drag handle — auto-size to the content instead (field-sizing grows the
+       box as the user types, starting compact and capping before it scrolls). */
+    resize: none;
+    field-sizing: content;
+    height: auto;
+    min-height: 4.5em;
+    max-height: 50vh;
 }
 
 .comentario-root .comentario-comment-editor textarea:focus,
