@@ -31,6 +31,12 @@
     font-family: inherit;
 }
 
+/* General links (not buttons): lift to the primary text colour on hover/focus. */
+.comentario-root a:not(.comentario-btn):focus,
+.comentario-root a:not(.comentario-btn):hover {
+    color: var(--text);
+}
+
 /* Spinner: Comentario bakes its orange (#ec8100) into the SVG background-image,
    so re-tint by swapping that image for a mask and filling with our secondary
    colour. Size/position/animation stay from Comentario's own ::after rule. */
