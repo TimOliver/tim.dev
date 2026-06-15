@@ -201,6 +201,11 @@
     box-shadow: none;
 }
 
+/* While previewing, the markdown toolbar is disabled — hide it entirely. */
+.comentario-root .comentario-toolbar.comentario-disabled {
+    display: none;
+}
+
 /* Markdown toolbar icons in the editor (and any remaining tool buttons) — muted. */
 .comentario-root .comentario-btn-tool {
     color: var(--text-secondary);
