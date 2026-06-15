@@ -522,12 +522,11 @@
     height: 14px;
 }
 
-/* Pointer triangle matches the popover surface + border (scoped to .comentario-dialog
-   so it wins over Comentario's defaults). */
+/* Pointer triangle matches the popover surface (scoped to .comentario-dialog so
+   it wins over Comentario's defaults). */
 .comentario-root .comentario-dialog .comentario-dialog-arrow,
 .comentario-root .comentario-dialog .comentario-dialog-arrow::before {
     background: var(--bg-secondary);
-    border-color: var(--border);
 }
 
 /* Drop the "Log in with your email and password" subtitle (first centred line
