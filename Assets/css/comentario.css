@@ -467,6 +467,13 @@
    Login / sign-in popover (.comentario-dialog)
    --------------------------------------------------------------------------- */
 
+/* Blur backdrop: Comentario pins it to left:0/right:0, so the blur clips at the
+   comment-column edges. Pull both sides out 10px. */
+.comentario-root .comentario-backdrop {
+    left: -10px;
+    right: -10px;
+}
+
 /* Popover surface: rounded, neutral secondary fill, soft shadow. */
 .comentario-root .comentario-dialog {
     background: var(--bg-secondary);
