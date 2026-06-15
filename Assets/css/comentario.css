@@ -19,8 +19,11 @@
     font-family: var(--font-text);
     color: var(--text);
     /* Match the article text (1em inherits the body's 18px, and scales with it
-       on smaller screens) rather than 1rem, which is the smaller root size. */
+       on smaller screens) rather than 1rem, which is the smaller root size.
+       line-height inherits the body's 1.6 so comments read at the same size and
+       spacing as the article — neither elevated over the other. */
     font-size: 1em;
+    line-height: inherit;
     position: static;
 }
 
@@ -170,8 +173,10 @@
     color: var(--text);
     border: none;
     box-shadow: none;
-    /* Match the site/body text size rather than Comentario's textarea default. */
+    /* Match the site/body text size and spacing rather than Comentario's
+       textarea defaults. */
     font-size: inherit;
+    line-height: inherit;
     /* No drag handle — auto-size to the content instead (field-sizing grows the
        box as the user types, starting compact and capping before it scrolls). */
     resize: none;
