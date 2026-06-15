@@ -64,6 +64,11 @@
     display: none;
 }
 
+/* Hide the "Powered by Comentario" footer — credited on the about page instead. */
+.comentario-root .comentario-footer {
+    display: none;
+}
+
 .comentario-root .comentario-sort-buttons {
     order: 0;
 }
