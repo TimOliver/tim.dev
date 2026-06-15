@@ -162,6 +162,10 @@
     border: 1px solid transparent;
 }
 
+.comentario-root .comentario-btn-sm {
+    font-size: 0.9em;
+}
+
 /* Primary (Sign in / Post): a neutral pill, not blue. */
 .comentario-root .comentario-btn-primary {
     background: var(--bg-tertiary);
