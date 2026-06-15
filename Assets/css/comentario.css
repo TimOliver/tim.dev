@@ -292,15 +292,6 @@
     color: var(--heading);
 }
 
-/* ---- Per-comment footer: hide the up/down votes + score (the spec omits them),
-   but KEEP Reply — they share one toolbar section, so target the vote buttons by
-   their title rather than hiding the whole section. ---- */
-.comentario-root .comentario-btn-tool[title="Upvote"],
-.comentario-root .comentario-btn-tool[title="Downvote"],
-.comentario-root .comentario-score {
-    display: none !important;
-}
-
 /* Reply — show as a "Reply" text link instead of an icon-only button. */
 .comentario-root .comentario-btn-tool[title="Reply"] .comentario-icon {
     display: none;
