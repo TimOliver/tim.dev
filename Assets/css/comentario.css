@@ -120,6 +120,14 @@
     border-color: var(--text-tertiary);
 }
 
+/* Collapsed placeholder ("Add a comment"): a borderless secondary-fill rectangle
+   at the site's main card radius. The expanded editor keeps its bordered look. */
+.comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted) {
+    background: var(--bg-secondary);
+    border: none;
+    border-radius: 18px;
+}
+
 .comentario-root .comentario-add-comment-placeholder {
     color: var(--text-tertiary);
 }
