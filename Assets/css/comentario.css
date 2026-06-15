@@ -191,6 +191,14 @@
     color: var(--heading);
 }
 
+/* Bigger markdown-toolbar glyphs (editor only, so Reply/sort/RSS are untouched). */
+.comentario-root .comentario-comment-editor .comentario-btn-tool .comentario-icon,
+.comentario-root .comentario-comment-editor .comentario-btn-tool .comentario-icon svg,
+.comentario-root .comentario-comment-editor .comentario-btn-tool svg {
+    width: 1.3em;
+    height: 1.3em;
+}
+
 /* ---- Buttons (kill the default blue) ---- */
 .comentario-root .comentario-btn {
     border-radius: 999px;
