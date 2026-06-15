@@ -1588,7 +1588,7 @@ footer .container {
    position:relative so Comentario's login bar can anchor to the heading row. */
 .post-comments {
     margin-top: 2.5em;
-    padding-top: 1.5em;
+    padding-top: 2em;
     border-top: 1px solid var(--border);
     position: relative;
 }
