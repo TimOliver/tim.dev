@@ -194,6 +194,13 @@
     box-shadow: none;
 }
 
+/* Preview pane: borderless, matching the textarea (the editor box is the frame). */
+.comentario-root .comentario-comment-editor .comentario-comment-editor-preview {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
 /* Markdown toolbar icons in the editor (and any remaining tool buttons) — muted. */
 .comentario-root .comentario-btn-tool {
     color: var(--text-secondary);
