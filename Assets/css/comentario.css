@@ -128,8 +128,10 @@
     border-radius: 18px;
 }
 
-.comentario-root .comentario-add-comment-placeholder {
-    color: var(--text-tertiary);
+/* Placeholder text — dim it to the secondary colour (host-scoped so it beats
+   Comentario's default, which otherwise renders it at the bright body colour). */
+.comentario-root .comentario-add-comment-host .comentario-add-comment-placeholder {
+    color: var(--text-secondary);
 }
 
 .comentario-root .comentario-comment-editor-footer {
