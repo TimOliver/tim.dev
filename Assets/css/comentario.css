@@ -175,6 +175,13 @@
     box-shadow: none;
 }
 
+/* Comentario flags an empty/invalid textarea with a red border once touched —
+   suppress it; the box stays borderless. */
+.comentario-root textarea.comentario-touched:invalid {
+    border: none;
+    box-shadow: none;
+}
+
 /* Markdown toolbar icons in the editor (and any remaining tool buttons) — muted. */
 .comentario-root .comentario-btn-tool {
     color: var(--text-secondary);
