@@ -114,6 +114,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     min-height: 72px;
+    /* Disable Comentario's text-size override so it matches the body text. */
+    font-size: inherit;
 }
 
 .comentario-root .comentario-add-comment-host:focus-within {
