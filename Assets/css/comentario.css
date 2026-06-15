@@ -477,8 +477,8 @@
     max-width: 340px;
 }
 
-.comentario-root .comentario-dialog-body {
-    padding: 20px;
+.comentario-root .comentario-dialog .comentario-dialog-body {
+    padding: 7px 16px 16px;
 }
 
 /* Hide the header bar + "Log in" title but KEEP the close (×) button, floated to
