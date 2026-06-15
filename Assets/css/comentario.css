@@ -529,11 +529,20 @@
     background: var(--bg-secondary);
 }
 
-/* Bottom placement (dialog below the trigger): the ::before is the visible
-   pointing face — give it the surface fill and border. */
+/* The ::before is the bordered pointing face. Only the two OUTER edges of the
+   rotated square should be coloured (all four reads as a full diamond). Bottom
+   placement points up (^) → top+left; top placement points down (V) →
+   bottom+right. */
 .comentario-root .comentario-dialog[data-popper-placement^=bottom] > .comentario-dialog-arrow::before {
     background: var(--bg-secondary);
-    border-color: var(--border);
+    border-top-color: var(--border);
+    border-left-color: var(--border);
+}
+
+.comentario-root .comentario-dialog[data-popper-placement^=top] > .comentario-dialog-arrow::before {
+    background: var(--bg-secondary);
+    border-bottom-color: var(--border);
+    border-right-color: var(--border);
 }
 
 /* Drop the "Log in with your email and password" subtitle (first centred line
