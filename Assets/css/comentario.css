@@ -329,6 +329,10 @@
     border-radius: 50%;
 }
 
+.comentario-root .comentario-avatar {
+    font-weight: 700;
+}
+
 .comentario-root .comentario-name {
     color: var(--heading);
     font-weight: 600;
