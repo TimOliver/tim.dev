@@ -140,6 +140,8 @@
     border: none;
     border-radius: 18px;
     min-height: 150px;
+    /* Roomier than the live editor (which is 10px 12px from the shared rule). */
+    padding: 15px 20px;
 }
 
 /* Expanded editor matches the collapsed placeholder — same secondary fill, no
