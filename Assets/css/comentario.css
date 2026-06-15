@@ -509,9 +509,10 @@
     height: 14px;
 }
 
-/* Pointer triangle matches the popover surface + border. */
-.comentario-root .comentario-dialog-arrow,
-.comentario-root .comentario-dialog-arrow::before {
+/* Pointer triangle matches the popover surface + border (scoped to .comentario-dialog
+   so it wins over Comentario's defaults). */
+.comentario-root .comentario-dialog .comentario-dialog-arrow,
+.comentario-root .comentario-dialog .comentario-dialog-arrow::before {
     background: var(--bg-secondary);
     border-color: var(--border);
 }
