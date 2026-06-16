@@ -46,6 +46,13 @@
     --capsule-border: rgba(255, 255, 255, 0.08);
 }
 
+/* Dark mode: grayscale (not subpixel) smoothing — renders SF lighter/thinner;
+   light text on the dark surface looks too heavy with the default smoothing. */
+[data-color-scheme="dark"] body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 /* Wide-gamut (P3) displays get a richer red than sRGB can express; the hex
    values above are the sRGB fallback. Same components, but P3's wider primaries
    render them more saturated — so the link "pops" on iPad/modern screens without
@@ -73,10 +80,11 @@ body {
     font-family: var(--font-text);
     font-size: 18px;
     line-height: 1.6;
-    /* Grayscale (not subpixel) smoothing — renders SF lighter/thinner rather
-       than the heavier default. macOS/WebKit only; a no-op elsewhere. */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* Light mode keeps the default (auto/subpixel) smoothing; dark mode switches
+       to grayscale antialiasing below, where light-on-dark subpixel rendering
+       otherwise reads too heavy. macOS/WebKit only; a no-op elsewhere. */
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
     margin: 0;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     color: var(--text);
