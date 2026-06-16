@@ -483,7 +483,9 @@
 /* Popover surface: rounded, neutral secondary fill, soft shadow. */
 .comentario-root .comentario-dialog {
     background: var(--bg-secondary);
-    border: 1px solid var(--border);
+    /* Match the theme selector's stroke (capsule-border), not the lighter
+       --border, so the popover edge reads the same in light mode. */
+    border: 1px solid var(--capsule-border);
     border-radius: 18px;
     corner-shape: squircle;
     box-shadow: 0 10px 34px rgba(0, 0, 0, 0.14);
@@ -549,14 +551,14 @@
    bottom+right. */
 .comentario-root .comentario-dialog[data-popper-placement^=bottom] > .comentario-dialog-arrow::before {
     background: var(--bg-secondary);
-    border-top-color: var(--border);
-    border-left-color: var(--border);
+    border-top-color: var(--capsule-border);
+    border-left-color: var(--capsule-border);
 }
 
 .comentario-root .comentario-dialog[data-popper-placement^=top] > .comentario-dialog-arrow::before {
     background: var(--bg-secondary);
-    border-bottom-color: var(--border);
-    border-right-color: var(--border);
+    border-bottom-color: var(--capsule-border);
+    border-right-color: var(--capsule-border);
 }
 
 /* Drop the "Log in with your email and password" subtitle (first centred line
