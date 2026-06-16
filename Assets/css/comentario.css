@@ -506,8 +506,9 @@
 }
 
 /* Close (×): a larger circular button perched over the dialog's top-right
-   corner, with a stroked, blurred backdrop. */
-.comentario-root .comentario-dialog .comentario-dialog-btn-close {
+   corner, with a stroked, blurred backdrop. Scoped through .comentario-dialog-header
+   to match Comentario's own header-scoped specificity (else its border wins). */
+.comentario-root .comentario-dialog .comentario-dialog-header .comentario-dialog-btn-close {
     position: absolute;
     top: -14px;
     right: -14px;
@@ -526,11 +527,11 @@
     backdrop-filter: blur(12px);
 }
 
-.comentario-root .comentario-dialog .comentario-dialog-btn-close:hover {
+.comentario-root .comentario-dialog .comentario-dialog-header .comentario-dialog-btn-close:hover {
     color: var(--text);
 }
 
-.comentario-root .comentario-dialog .comentario-dialog-btn-close .comentario-icon {
+.comentario-root .comentario-dialog .comentario-dialog-header .comentario-dialog-btn-close .comentario-icon {
     width: 18px;
     height: 18px;
 }
