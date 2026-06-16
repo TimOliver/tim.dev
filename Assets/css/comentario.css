@@ -505,21 +505,34 @@
     line-height: 0;
 }
 
-.comentario-root .comentario-dialog-btn-close {
+/* Close (×): a larger circular button perched over the dialog's top-right
+   corner, with a stroked, blurred backdrop. */
+.comentario-root .comentario-dialog .comentario-dialog-btn-close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: -14px;
+    right: -14px;
     z-index: 102;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
     color: var(--text-secondary);
+    background: var(--capsule-bg);
+    border: 1px solid var(--capsule-border);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
 }
 
-.comentario-root .comentario-dialog-btn-close:hover {
-    color: var(--heading);
+.comentario-root .comentario-dialog .comentario-dialog-btn-close:hover {
+    color: #fff;
 }
 
-.comentario-root .comentario-dialog-btn-close .comentario-icon {
-    width: 14px;
-    height: 14px;
+.comentario-root .comentario-dialog .comentario-dialog-btn-close .comentario-icon {
+    width: 18px;
+    height: 18px;
 }
 
 /* Pointer triangle matches the popover surface (scoped to .comentario-dialog so
