@@ -521,7 +521,7 @@
     padding: 0;
     border-radius: 50%;
     color: var(--text-secondary);
-    background: var(--capsule-bg);
+    background: var(--bg-secondary);
     border: 1px solid var(--border);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
