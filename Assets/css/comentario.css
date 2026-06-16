@@ -572,6 +572,7 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 10px;
+    background: transparent;
 }
 
 /* Email / password inputs: white field, rounded, neutral border. */
