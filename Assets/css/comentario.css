@@ -288,7 +288,7 @@
 .comentario-root .comentario-btn {
     border-radius: 999px;
     font-weight: 600;
-    border: 1px solid transparent;
+    border: none;
 }
 
 .comentario-root .comentario-btn-sm {
