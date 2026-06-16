@@ -301,16 +301,16 @@
     font-size: 0.85em;
 }
 
-/* Primary (Sign in / Post): a neutral pill, not blue. */
+/* Primary (Sign in / Post): a neutral pill, not blue. Hover darkens the fill one
+   step (secondary → tertiary) and lifts the label to the primary text colour. */
 .comentario-root .comentario-btn-primary {
-    background: var(--bg-tertiary);
+    background: var(--bg-secondary);
     color: var(--heading);
-    border-color: var(--border);
 }
 
 .comentario-root .comentario-btn-primary:hover {
-    background: var(--control-hover);
-    color: var(--heading);
+    background: var(--bg-tertiary);
+    color: var(--text);
 }
 
 /* Text-link buttons (Reply, sort, RSS): muted, lift to heading on hover. */
