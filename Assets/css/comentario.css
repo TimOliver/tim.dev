@@ -603,6 +603,11 @@
     box-shadow: none;
 }
 
+/* Darker placeholder — reuse the comment editor's secondary placeholder colour. */
+.comentario-root .comentario-dialog .comentario-input::placeholder {
+    color: var(--text-secondary);
+}
+
 /* Submit "Sign in": full-width solid black pill; swap the arrow icon for text. */
 .comentario-root .comentario-dialog .comentario-btn-primary {
     width: 100%;
