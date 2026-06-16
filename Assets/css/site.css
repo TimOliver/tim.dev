@@ -9,6 +9,9 @@
     --link: #FA233B;
     --link-hover: #FA233B;
     --border: #eee;
+    /* Border for strokes drawn ON a --bg-secondary surface: --border is tuned for
+       the white --bg and nearly disappears against #F2F2F2, so step it darker. */
+    --border-secondary: rgba(0, 0, 0, 0.12);
     --icon-filter: none;
     --capsule-bg: rgba(245, 245, 247, 0.7);
     --capsule-border: rgba(0, 0, 0, 0.06);
@@ -37,6 +40,7 @@
     --link: #FF566A;
     --link-hover: #FF566A;
     --border: #38383C;
+    --border-secondary: rgba(255, 255, 255, 0.14);
     --icon-filter: invert(1);
     --capsule-bg: rgba(32, 32, 32, 0.7);
     --capsule-border: rgba(255, 255, 255, 0.08);
