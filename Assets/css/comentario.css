@@ -527,7 +527,7 @@
 }
 
 .comentario-root .comentario-dialog .comentario-dialog-btn-close:hover {
-    color: #fff;
+    color: var(--text);
 }
 
 .comentario-root .comentario-dialog .comentario-dialog-btn-close .comentario-icon {
