@@ -596,10 +596,12 @@
     box-shadow: none;
 }
 
-/* Don't flag empty required fields red on open — keep the neutral border. */
+/* Don't flag empty required fields red on open — keep the neutral, theme-aware
+   border. Comentario's default is a hardcoded red (#f03e3e) with no dark variant,
+   so use the full shorthand to pin a 1px var(--border) stroke in both modes. */
 .comentario-root .comentario-dialog .comentario-input:invalid,
 .comentario-root .comentario-dialog .comentario-input.comentario-touched:invalid {
-    border-color: var(--border);
+    border: 1px solid var(--border);
     box-shadow: none;
 }
 
