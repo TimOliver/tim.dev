@@ -46,11 +46,35 @@
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M21 12a9 9 0 1 1-6.219-8.56'/%3E%3C/svg%3E") center / 100% no-repeat;
 }
 
+/* Skeleton placeholder card (shown while comments load): drop Comentario's
+   top/left card rules — the shimmer blocks read as the card on their own. */
+.comentario-root .comentario-ph-comment-card {
+    border: none;
+}
+
+/* More breathing room below the placeholder editor than Comentario's 30px. */
+.comentario-root .comentario-ph-add-comment-host {
+    margin-bottom: 45px;
+}
+
+/* Hide the placeholder profile bar — simpler loading state without it. */
+.comentario-root .comentario-ph-profile-bar {
+    display: none;
+}
+
+/* Round the shimmer blocks a touch more than Comentario's defaults
+   (header 3px / text 1.5px). */
+.comentario-root .comentario-ph-bg,
+.comentario-root .comentario-ph-comment-card .comentario-ph-card-header,
+.comentario-root .comentario-ph-comment-card .comentario-ph-card-text {
+    border-radius: 8px;
+}
+
 /* Lift the login / profile bar (with "Sign in") up onto our "Comments · N"
    heading row — anchored to the top-right of the .post-comments section. */
 .comentario-root .comentario-profile-bar {
     position: absolute;
-    top: 28px;
+    top: 22px;
     right: 0;
     margin: 0;
     padding: 0;
@@ -137,7 +161,7 @@
     border: 1px solid var(--border);
     border-radius: 16px;
     corner-shape: squircle;
-    padding: 10px 12px;
+    padding: 16px 19px;
     transition: border-color 0.15s ease;
 }
 
@@ -182,7 +206,7 @@
 .comentario-root .comentario-comment-editor {
     background: var(--bg-secondary);
     border: none;
-    border-radius: 18px;
+    border-radius: 30px;
 }
 
 /* Placeholder text — dim it to the secondary colour. Comentario colours the
@@ -284,11 +308,30 @@
     gap: 0.5em;
 }
 
-/* ---- Buttons (kill the default blue) ---- */
+/* ---- Buttons & accents ----
+   Comentario themes every control through its own --cmntr-* custom properties,
+   so we retint by overriding those variables rather than fighting each
+   background/colour by hand. Shape (pill radius, padding) stays as plain
+   overrides below. */
+
+/* Kill Comentario's indigo/blue accent: comment-body links and the permalink-
+   flash highlight follow the site palette. The text buttons (sort, RSS, Cancel)
+   are all .comentario-btn-link and recoloured directly elsewhere, so retinting
+   the link variable here only touches real links in comment text. */
+.comentario-root {
+    --cmntr-link-color: var(--link);
+    --cmntr-link-hover-color: var(--link-hover);
+    --cmntr-bg-highlight: var(--bg-tertiary);
+    /* Skeleton shimmer fill: match the loaded "Add a comment" placeholder box. */
+    --cmntr-placeholder-bg: var(--bg-secondary);
+}
+
 .comentario-root .comentario-btn {
     border-radius: 999px;
     font-weight: 600;
     border: none;
+    padding: 10px 25px;
+    transition: color 0.1s, background-color 0.1s;
 }
 
 .comentario-root .comentario-btn-sm {
@@ -301,16 +344,42 @@
     font-size: 0.85em;
 }
 
-/* Primary (Sign in / Post): a neutral pill, not blue. Hover darkens the fill one
-   step (secondary → tertiary) and lifts the label to the primary text colour. */
-.comentario-root .comentario-btn-primary {
-    background: var(--bg-secondary);
-    color: var(--heading);
+/* Secondary ("Preview"): match the post-badges — a slightly-grey pill that
+   deepens to the control-hover tint and turns black on hover/active. Driven
+   through Comentario's own btn variables, so every state re-tints in one place
+   (the lavender secondary fill is gone). */
+.comentario-root .comentario-btn-secondary {
+    --cmntr-btn-color: var(--text);
+    --cmntr-btn-bg: var(--bg-tertiary);
+    --cmntr-btn-hover-color: var(--heading);
+    --cmntr-btn-hover-bg: var(--control-hover);
+    --cmntr-btn-active-color: var(--heading);
+    --cmntr-btn-active-bg: var(--control-hover);
 }
 
-.comentario-root .comentario-btn-primary:hover {
-    background: var(--bg-tertiary);
-    color: var(--text);
+/* Primary ("Add Comment"): inverted to read as the main CTA — the primary label
+   colour as the fill, the opposite (background) colour as the label. Deepens to
+   pure black on hover/active. The login-dialog primary sets its own colours at
+   higher specificity, so it's unaffected. */
+.comentario-root .comentario-btn-primary {
+    --cmntr-btn-color: var(--bg);
+    --cmntr-btn-bg: var(--text);
+    --cmntr-btn-hover-color: var(--bg);
+    --cmntr-btn-hover-bg: var(--heading);
+    --cmntr-btn-active-color: var(--bg);
+    --cmntr-btn-active-bg: var(--heading);
+}
+
+/* The profile-bar "Sign in" is a btn-primary too, but it's a utility action —
+   a solid black pill there is too heavy and competes with the "Add Comment"
+   CTA, so give it the lighter grey secondary pill instead. */
+.comentario-root .comentario-profile-bar .comentario-btn-primary {
+    --cmntr-btn-color: var(--text);
+    --cmntr-btn-bg: var(--bg-tertiary);
+    --cmntr-btn-hover-color: var(--heading);
+    --cmntr-btn-hover-bg: var(--control-hover);
+    --cmntr-btn-active-color: var(--heading);
+    --cmntr-btn-active-bg: var(--control-hover);
 }
 
 /* Text-link buttons (Reply, sort, RSS): muted, lift to heading on hover. */
@@ -496,10 +565,15 @@
     corner-shape: squircle;
     box-shadow: 0 10px 34px rgba(0, 0, 0, 0.14);
     max-width: 340px;
+    /* Dial back from the article body size — 1em reads a touch large in the
+       dialog's fields and copy. */
+    font-size: 0.9em;
+    line-height: 1.0;
 }
 
 .comentario-root .comentario-dialog .comentario-dialog-body {
-    padding: 16px;
+    padding: 20px;
+    text-wrap: pretty;
 }
 
 /* Hide the header bar + "Log in" title but KEEP the close (×) button, floated to
@@ -573,6 +647,11 @@
     display: none;
 }
 
+/* Drop Comentario's default 8px margin around input groups. */
+.comentario-root .comentario-input-group {
+    margin: 0;
+}
+
 /* Comentario groups the password field and its submit button on one row; stack
    them so the button becomes a full-width pill beneath the inputs. */
 .comentario-root .comentario-dialog .comentario-input-group {
@@ -626,6 +705,13 @@
     border-color: var(--heading);
 }
 
+/* The sign-up "Sign up" submit sits in its own centred row, so drop the base
+   button margin. (It's the only dialog primary inside a .comentario-dialog-centered;
+   the login submit lives in an input group.) */
+.comentario-root .comentario-dialog .comentario-dialog-centered .comentario-btn-primary {
+    margin: 0;
+}
+
 .comentario-root .comentario-dialog .comentario-btn-primary:hover {
     background: var(--text);
     color: var(--bg);
@@ -635,20 +721,69 @@
     display: none;
 }
 
-.comentario-root .comentario-dialog .comentario-btn-primary::after {
+/* The login form's submit button has only the (now hidden) arrow icon, so supply
+   the visible label via ::after. Scoped to #comentario-login-form — the sign-up
+   dialog's button carries its own "Sign up" text and must not get this appended. */
+.comentario-root #comentario-login-form .comentario-btn-primary::after {
     content: "Sign in";
 }
 
-/* "Forgot your password?" — small centred muted link, underlined on hover, no
-   trailing external-link icon. */
-.comentario-root .comentario-dialog-centered a {
+/* Centred dialog copy (e.g. "Don't have an account?") — muted to secondary. */
+.comentario-root .comentario-dialog .comentario-dialog-centered {
     color: var(--text-secondary);
+    margin: 0px 0px 10px;
+    line-height: 1.6;
+}
+
+/* The final centred row needs no trailing margin (the forgot-password row keeps
+   its own spacing via the higher-specificity #comentario-login-form rule). */
+.comentario-root .comentario-dialog .comentario-dialog-centered:last-child {
+    margin: 0;
+}
+
+/* Sign-up "By signing up… Terms / Privacy" block — its own vertical spacing
+   (identified by the legal links it contains). */
+.comentario-root .comentario-dialog .comentario-dialog-centered:has(a[href*="/legal/"]) {
+    margin: 15px 0 18px;
+}
+
+/* Form helper text (e.g. the password requirements) — restore a comfortable
+   line-height since the dialog's tight 1.0 makes wrapped copy cramped. */
+.comentario-root .comentario-form-text {
+    margin: 0px 15px 15px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* "Forgot your password?" — centred link in the primary label colour, underlined
+   on hover, no trailing external-link icon. */
+.comentario-root .comentario-dialog-centered a {
+    color: var(--text);
     text-decoration: none;
-    font-size: 0.8em;
 }
 
 .comentario-root .comentario-dialog-centered a:hover {
     text-decoration: underline;
+}
+
+/* Inside the login form specifically, that centred link keeps its quieter
+   treatment: slightly smaller, semibold, secondary colour that lifts to the
+   primary label on hover. */
+.comentario-root #comentario-login-form .comentario-dialog-centered a {
+    color: var(--text-secondary);
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.comentario-root #comentario-login-form .comentario-dialog-centered a:hover {
+    color: var(--text);
+}
+
+/* Extra breathing room above and below the "Forgot your password?" row (the
+   first centred row in the form — the "Log in with…" line — is hidden). */
+.comentario-root #comentario-login-form > .comentario-dialog-centered:last-child {
+    margin: 16px 0;
 }
 
 .comentario-root .comentario-dialog-centered a .comentario-icon {
@@ -658,7 +793,8 @@
 /* Divider above the sign-up footer. */
 .comentario-root .comentario-dialog-body hr {
     border: 0;
-    border-top: 1px solid var(--border);
+    height: 1px;
+    background: var(--border-secondary);
     margin: 16px 0;
 }
 
@@ -671,11 +807,18 @@
     border: none;
     border-radius: 0;
     font-weight: 500;
-    color: var(--link);
+    color: var(--text);
+}
+
+/* Solid buttons in the dialog (Sign in submit, "Sign Up") read at full size to
+   offset the dialog's 0.9em downscale, instead of the global solid-button
+   0.85em. Scoped to .comentario-dialog so the editor buttons keep their size. */
+.comentario-root .comentario-dialog .comentario-btn:not(.comentario-btn-link):not(.comentario-btn-tool):not(.comentario-btn-active) {
+    font-size: 1em;
 }
 
 .comentario-root .comentario-dialog .comentario-btn-secondary:hover {
     background: none;
-    color: var(--link);
+    color: var(--text);
     text-decoration: underline;
 }
