@@ -298,6 +298,7 @@
 /* Drop the default drop-shadow on solid buttons (not the text/tool/active ones). */
 .comentario-root .comentario-btn:not(.comentario-btn-link):not(.comentario-btn-tool):not(.comentario-btn-active) {
     box-shadow: none;
+    font-size: 0.85em;
 }
 
 /* Primary (Sign in / Post): a neutral pill, not blue. */
