@@ -50,7 +50,7 @@
    heading row — anchored to the top-right of the .post-comments section. */
 .comentario-root .comentario-profile-bar {
     position: absolute;
-    top: 3px;
+    top: 28px;
     right: 0;
     margin: 0;
     padding: 0;
@@ -293,6 +293,11 @@
 
 .comentario-root .comentario-btn-sm {
     font-size: 0.9em;
+}
+
+/* Drop the default drop-shadow on solid buttons (not the text/tool/active ones). */
+.comentario-root .comentario-btn:not(.comentario-btn-link):not(.comentario-btn-tool):not(.comentario-btn-active) {
+    box-shadow: none;
 }
 
 /* Primary (Sign in / Post): a neutral pill, not blue. */
