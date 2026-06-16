@@ -533,6 +533,9 @@
 .comentario-root .comentario-dialog .comentario-dialog-btn-close .comentario-icon {
     width: 18px;
     height: 18px;
+    /* Add weight to the thin × glyph (fill-based path) with a matching stroke. */
+    stroke: currentColor;
+    stroke-width: 0.75;
 }
 
 /* Pointer triangle matches the popover surface (scoped to .comentario-dialog so
