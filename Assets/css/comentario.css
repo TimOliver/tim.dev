@@ -581,7 +581,7 @@
 /* Email / password inputs: white field, rounded, neutral border. */
 .comentario-root .comentario-dialog .comentario-input {
     background: var(--bg);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-secondary);
     border-radius: 12px;
     corner-shape: squircle;
     color: var(--text);
@@ -601,7 +601,7 @@
    so use the full shorthand to pin a 1px var(--border) stroke in both modes. */
 .comentario-root .comentario-dialog .comentario-input:invalid,
 .comentario-root .comentario-dialog .comentario-input.comentario-touched:invalid {
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-secondary);
     box-shadow: none;
 }
 
