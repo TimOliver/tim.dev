@@ -103,6 +103,13 @@
     display: none;
 }
 
+/* Hide the whole toolbar (incl. the lone RSS button) when there are no comments.
+   Comentario adds .comentario-hidden to the sort buttons exactly when the count
+   is 0 (sortBar.setClasses(!count, "hidden")), so use that as the empty signal. */
+.comentario-root .comentario-thread-toolbar:has(.comentario-sort-buttons.comentario-hidden) {
+    display: none;
+}
+
 /* Hide the "Powered by Comentario" footer — credited on the about page instead. */
 .comentario-root .comentario-footer {
     display: none;
