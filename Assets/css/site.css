@@ -8,6 +8,10 @@
     --heading: #000;
     --link: #FA233B;
     --link-hover: #FA233B;
+    /* Filled-heart gradient for the comments "like" indicator — a dedicated
+       catalog entry so the icon isn't hardwired to the flat --link red. Lighter
+       red (top) -> darker red (bottom). */
+    --heart-gradient: linear-gradient(to bottom, #FF4C5F, #DE0E2B);
     --border: #eee;
     /* Border for strokes drawn ON a --bg-secondary surface: --border is tuned for
        the white --bg and nearly disappears against #F2F2F2, so step it darker. */
@@ -44,6 +48,7 @@
     --heading: #F5F5F7;
     --link: #FF566A;
     --link-hover: #FF566A;
+    --heart-gradient: linear-gradient(to bottom, #FF6E7F, #F22F49);
     --border: #38383C;
     --border-secondary: rgba(255, 255, 255, 0.14);
     --icon-filter: invert(1);
@@ -66,6 +71,7 @@
     [data-color-scheme="dark"] {
         --link: color(display-p3 1 0.34 0.42);
         --link-hover: color(display-p3 1 0.34 0.42);
+        --heart-gradient: linear-gradient(to bottom, color(display-p3 1 0.45 0.52), color(display-p3 0.92 0.2 0.3));
     }
 }
 

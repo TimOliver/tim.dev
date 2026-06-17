@@ -50,6 +50,7 @@
    top/left card rules — the shimmer blocks read as the card on their own. */
 .comentario-root .comentario-ph-comment-card {
     border: none;
+    padding-left: 85px;
 }
 
 /* More breathing room below the placeholder editor than Comentario's 30px. */
@@ -89,12 +90,10 @@
     justify-content: space-between;
     gap: 14px;
     /* Lots of space above pulls the toolbar away from the editor and groups it
-       with the comment list below; the bottom border (site separator style) then
-       reads as the comments-section divider, anchored to the comments — not as
-       trailing space on the text field. */
+       with the comment list below. No bottom border — the sort row reads cleaner
+       without a divider line under it. */
     padding-top: 2.5em;
     padding-bottom: 0;
-    border-bottom: 1px solid var(--border);
     margin-bottom: 1.6em;
     font-size: 0.85em;
     /* Full-bleed the divider to the container box edge (matching the footer and
@@ -836,14 +835,17 @@
 }
 
 /* ----------------------------------------------------------------------------
-   Likes: Comentario voting, one-directional.
+   Likes: Comentario voting, one-directional (Facebook-style).
 
-   Voting stays enabled server-side, but we drop the downvote button so score
-   can only go up — i.e. it reads as a like count. The upvote becomes a heart
-   (see below). Relies on Comentario's runtime classes: the score gains
-   `comentario-upvoted` when total score > 0; the upvote button gains it when
-   the current user has liked. Score/buttons are adjacent siblings:
-   [upvote .btn-tool] [.score] [downvote .btn-tool].
+   Voting stays enabled server-side. We:
+     - remove the downvote button;
+     - turn the upvote button into a plain "Like" text link (always clickable);
+     - turn the score into a NON-interactive "<heart> N" indicator, shown only
+       at >= 1 like.
+   Comentario marks the score with `comentario-upvoted` when score > 0, and the
+   upvote button with `comentario-upvoted` when the current user has liked. DOM
+   siblings are [upvote .btn-tool] [.score] [downvote .btn-tool]; flex `order`
+   then lays the row out as: [Reply] [Like] [<heart> N].
    ---------------------------------------------------------------------------- */
 
 /* 1. Remove the downvote — the tool button immediately after the score.
@@ -852,55 +854,88 @@
     display: none;
 }
 
-/* 2. Hide the count until the first like. The score always contains a number
-   (incl. "0"); it only gains `comentario-upvoted` at score > 0. With downvotes
-   gone, score is never negative, so this shows the number only at >= 1 like. */
-.comentario-root .comentario-score {
-    display: none;
-}
-
-.comentario-root .comentario-score.comentario-upvoted {
-    display: inline;
-    margin-inline-start: 0.2em;
-    color: var(--text-secondary);
-    vertical-align: middle;
-}
-
-/* 3. Upvote -> heart. Hide Comentario's up-arrow glyph (the svg.comentario-icon
-   inside the button that immediately precedes the score)... */
+/* 2. Upvote button -> "Like" text link (mirrors the Reply treatment): hide the
+   up-arrow glyph and label via ::after; the shared row styling below sizes it. */
 .comentario-root .comentario-btn-tool:has(+ .comentario-score) .comentario-icon {
     display: none;
 }
 
-/* ...and draw the heart on a pseudo-element (same mask technique as the spinner).
-   Sprite is two 24x24 cells side by side (outline | filled); `mask-size: auto
-   100%` scales it to the box height so each square box shows exactly one cell. */
-.comentario-root .comentario-btn-tool:has(+ .comentario-score)::before {
+.comentario-root .comentario-btn-tool:has(+ .comentario-score)::after {
+    content: "Like";
+}
+
+/* 3. Order + gaps: [Reply] [Like] [count]. Reply and Like hug their labels
+   (padding:0), so the row spacing lives on their trailing margins. width:auto
+   stops the 32px icon-button default from clipping/overlapping the text now that
+   Reply sits ahead of Like. */
+.comentario-root .comentario-btn-tool[title="Reply"] {
+    order: -1;
+}
+
+.comentario-root .comentario-btn-tool[title="Reply"],
+.comentario-root .comentario-btn-tool:has(+ .comentario-score) {
+    width: auto;
+    margin-inline-end: 0.85em;
+}
+
+/* 4. Shared row styling — Reply, Like and the count: small (0.8em), bold,
+   secondary label colour by default, primary label colour on hover (buttons
+   only). opacity:1 overrides Comentario's .5 tool-button muffling. */
+.comentario-root .comentario-btn-tool[title="Reply"],
+.comentario-root .comentario-btn-tool:has(+ .comentario-score),
+.comentario-root .comentario-score.comentario-upvoted {
+    font-size: 0.8em;
+    font-weight: 700;
+    color: var(--text-secondary);
+    opacity: 1;
+}
+
+/* The label text lives in ::after, which carries its own weight (Reply's sets
+   500) — restate it so both read bold. */
+.comentario-root .comentario-btn-tool[title="Reply"]::after,
+.comentario-root .comentario-btn-tool:has(+ .comentario-score)::after {
+    font-weight: 700;
+}
+
+.comentario-root .comentario-btn-tool[title="Reply"]:hover,
+.comentario-root .comentario-btn-tool:has(+ .comentario-score):hover {
+    color: var(--text);
+}
+
+/* No liked-state on the button — the red heart in the count is the sole "you
+   liked it" cue. The shared muted colour above also matches the upvoted button
+   and, loading after Comentario's default, beats its `.comentario-card
+   .comentario-upvoted` colour, so a like never recolours "Like". */
+
+/* 5. Score -> non-interactive "<heart> N", shown only at >= 1 like. Hidden at 0
+   — no lonely "0"; the "Like" button carries the affordance instead.
+   NB: Comentario's own rule is `.comentario-root .comentario-card .comentario-score`
+   (0,3,0). These MUST carry `.comentario-card` to match+win on load order —
+   `.comentario-root .comentario-score` (0,2,0) loses and the "0" stays visible. */
+.comentario-root .comentario-card .comentario-score {
+    display: none;
+}
+
+.comentario-root .comentario-card .comentario-score.comentario-upvoted {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+}
+
+/* Filled heart count icon (right cell of the sprite); purely an indicator — this
+   red heart is the only "liked" cue. Filled with the --heart-gradient catalog
+   entry (lighter red -> darker red) rather than a flat colour; the mask clips the
+   gradient to the heart shape. */
+.comentario-root .comentario-card .comentario-score.comentario-upvoted::before {
     content: "";
     display: inline-block;
-    /* Visual-tuning knob: nudge if the heart reads heavier/lighter than the
-       neighbouring reply/edit glyphs. */
-    width: 1.25em;
-    height: 1.25em;
-    vertical-align: middle;
-    background-color: var(--text-secondary);
+    width: 1.1em;
+    height: 1.1em;
+    background: var(--heart-gradient);
     -webkit-mask: url(/img/heart-sprite.svg) no-repeat;
             mask: url(/img/heart-sprite.svg) no-repeat;
     -webkit-mask-size: auto 100%;
             mask-size: auto 100%;
-    -webkit-mask-position: 0% 50%;   /* left cell: outline heart */
-            mask-position: 0% 50%;
-}
-
-/* Hover: tint toward the like colour to signal it's clickable. */
-.comentario-root .comentario-btn-tool:has(+ .comentario-score):hover::before {
-    background-color: var(--accent);
-}
-
-/* 4. You liked it: filled heart in the site's like colour. Only the upvote
-   button gains `comentario-upvoted` (the user's own vote). */
-.comentario-root .comentario-btn-tool.comentario-upvoted:has(+ .comentario-score)::before {
-    background-color: var(--accent);
-    -webkit-mask-position: 100% 50%;  /* right cell: filled heart */
+    -webkit-mask-position: 100% 50%;
             mask-position: 100% 50%;
 }
