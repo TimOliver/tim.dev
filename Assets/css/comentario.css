@@ -97,6 +97,11 @@
     border-bottom: 1px solid var(--border);
     margin-bottom: 1.6em;
     font-size: 0.85em;
+    /* Full-bleed the divider to the container box edge (matching the footer and
+       the .post-comments divider); padding-inline keeps the buttons at reading
+       width. --container-pad is inherited from main .container. */
+    margin-inline: calc(-1 * var(--container-pad));
+    padding-inline: var(--container-pad);
 }
 
 .comentario-root .comentario-comment-count {

@@ -19,6 +19,11 @@
     --menu-ease: cubic-bezier(0.32, 0.72, 0, 1);
     --control-hover: rgba(120, 120, 128, 0.18);
     --control-active: rgba(120, 120, 128, 0.10);
+    /* Shared page gutter (overridden per breakpoint below) so the article
+       container, comment dividers and footer separator all sit at one content
+       width; plus the readable measure article body copy centres within. */
+    --container-pad: 35px;
+    --text-measure: 680px;
     --font-text: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -1071,8 +1076,8 @@ body > header::before {
         background: var(--bg-tertiary);
     }
 
-    main .container {
-        padding: 0 20px;
+    :root {
+        --container-pad: 20px;
     }
 
     h1 {
@@ -1096,8 +1101,8 @@ body > header::before {
 
     /* Smallest phones: 16px content inset, a larger date and a slightly smaller
        title for balance against the badges. */
-    main .container {
-        padding: 0 16px;
+    :root {
+        --container-pad: 16px;
     }
 
     .title {
@@ -1111,8 +1116,10 @@ body > header::before {
 
 .container {
     margin: clamp(30px, 4dvh, 56px) auto 30px;
-    max-width: 850px;  /* reading-column width; balanced text-wrap keeps lines readable */
-    padding: 0 35px;
+    max-width: 950px;  /* content-column width; article body text caps narrower via --text-measure */
+    /* Gutter driven by --container-pad (set on :root, overridden per breakpoint)
+       so the footer separator and comment dividers line up with the content. */
+    padding: 0 var(--container-pad);
     position: relative;
     display: block;
 }
@@ -1124,6 +1131,26 @@ body > header::before {
    an unscoped rule pinned its content to the top (padding-top override). */
 body:has(article) main .container {
     padding-top: 8px;
+}
+
+/* The body section (and permalink row) caps at the readable measure and centres.
+   Narrowing the whole SECTION — not individual elements — is deliberate: markdown
+   leaves text unwrapped (bare text nodes) after block-level embeds like YouTube,
+   and only a section-level cap reins those in too. The hero breaks out wider
+   below. Applies to every article — single posts and the home feed (same
+   structure); other pages don't use <article>. */
+article > section:not(.post-comments),
+article > .post-links {
+    max-width: var(--text-measure);
+    margin-inline: auto;
+}
+
+/* The hero sits a touch wider than the text column but is capped so it isn't
+   oversized on the wide content box; centred (width:100% from the base rule,
+   capped here). On narrow screens it stays full content width. */
+article > img.hero {
+    max-width: 750px;
+    margin-inline: auto;
 }
 
 .title {
@@ -1217,7 +1244,7 @@ footer .container {
     /* Matches the default reading-column width; pages that widen their content
        (About, Apps) widen the footer in step via body:has() rules in their own
        stylesheets, so the footer always aligns with the content above it. */
-    max-width: 850px;
+    max-width: 950px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -1331,8 +1358,8 @@ footer .container {
         right: 8px;
     }
 
-    main .container {
-        padding: 0 8px;
+    :root {
+        --container-pad: 8px;
     }
 
     /* Larger em to offset the 15.5px body so the date isn't tiny here. */
@@ -1450,7 +1477,8 @@ footer .container {
 
 /* Feed hero (preceded by the badge row). */
 .post-badges + img.hero {
-    margin: 2em 0 1.8em;
+    /* auto inline margins keep the capped (max-width:750px) hero centred. */
+    margin: 2em auto 1.8em;
 }
 
 /* Dim capsule badge, 30px tall — reads as a clickable control. */
@@ -1601,8 +1629,19 @@ footer .container {
 .post-comments {
     margin-top: 2.5em;
     padding-top: 2em;
-    border-top: 1px solid var(--border);
     position: relative;
+}
+
+/* Section divider drawn full-bleed (out to the container box edge, matching the
+   footer separator and the wide media) via ::before, so it stays off the box and
+   the absolutely positioned profile bar / "Sign in" anchor is unaffected. */
+.post-comments::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: calc(-1 * var(--container-pad));
+    right: calc(-1 * var(--container-pad));
+    border-top: 1px solid var(--border);
 }
 
 /* Vertical breathing room around the Comentario widget. Styled here in the
