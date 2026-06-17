@@ -865,3 +865,42 @@
     color: var(--text-secondary);
     vertical-align: middle;
 }
+
+/* 3. Upvote -> heart. Hide Comentario's up-arrow glyph (the svg.comentario-icon
+   inside the button that immediately precedes the score)... */
+.comentario-root .comentario-btn-tool:has(+ .comentario-score) .comentario-icon {
+    display: none;
+}
+
+/* ...and draw the heart on a pseudo-element (same mask technique as the spinner).
+   Sprite is two 24x24 cells side by side (outline | filled); `mask-size: auto
+   100%` scales it to the box height so each square box shows exactly one cell. */
+.comentario-root .comentario-btn-tool:has(+ .comentario-score)::before {
+    content: "";
+    display: inline-block;
+    /* Visual-tuning knob: nudge if the heart reads heavier/lighter than the
+       neighbouring reply/edit glyphs. */
+    width: 1.25em;
+    height: 1.25em;
+    vertical-align: middle;
+    background-color: var(--text-secondary);
+    -webkit-mask: url(/img/heart-sprite.svg) no-repeat;
+            mask: url(/img/heart-sprite.svg) no-repeat;
+    -webkit-mask-size: auto 100%;
+            mask-size: auto 100%;
+    -webkit-mask-position: 0% 50%;   /* left cell: outline heart */
+            mask-position: 0% 50%;
+}
+
+/* Hover: tint toward the like colour to signal it's clickable. */
+.comentario-root .comentario-btn-tool:has(+ .comentario-score):hover::before {
+    background-color: var(--accent);
+}
+
+/* 4. You liked it: filled heart in the site's like colour. Only the upvote
+   button gains `comentario-upvoted` (the user's own vote). */
+.comentario-root .comentario-btn-tool.comentario-upvoted:has(+ .comentario-score)::before {
+    background-color: var(--accent);
+    -webkit-mask-position: 100% 50%;  /* right cell: filled heart */
+            mask-position: 100% 50%;
+}
