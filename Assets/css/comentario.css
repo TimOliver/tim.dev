@@ -834,3 +834,34 @@
     color: var(--text);
     text-decoration: underline;
 }
+
+/* ----------------------------------------------------------------------------
+   Likes: Comentario voting, one-directional.
+
+   Voting stays enabled server-side, but we drop the downvote button so score
+   can only go up — i.e. it reads as a like count. The upvote becomes a heart
+   (see below). Relies on Comentario's runtime classes: the score gains
+   `comentario-upvoted` when total score > 0; the upvote button gains it when
+   the current user has liked. Score/buttons are adjacent siblings:
+   [upvote .btn-tool] [.score] [downvote .btn-tool].
+   ---------------------------------------------------------------------------- */
+
+/* 1. Remove the downvote — the tool button immediately after the score.
+   (Already tabindex=-1; display:none also drops it from the a11y tree.) */
+.comentario-root .comentario-score + .comentario-btn-tool {
+    display: none;
+}
+
+/* 2. Hide the count until the first like. The score always contains a number
+   (incl. "0"); it only gains `comentario-upvoted` at score > 0. With downvotes
+   gone, score is never negative, so this shows the number only at >= 1 like. */
+.comentario-root .comentario-score {
+    display: none;
+}
+
+.comentario-root .comentario-score.comentario-upvoted {
+    display: inline;
+    margin-inline-start: 0.2em;
+    color: var(--text-secondary);
+    vertical-align: middle;
+}
