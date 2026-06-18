@@ -991,22 +991,24 @@
 .comentario-root .comentario-btn-tool[title="Reject"]::after   { content: "Reject"; }
 
 /* ----------------------------------------------------------------------------
-   Pinned (sticky) comments. Comentario flags the state with `is-sticky` on the
-   star button; there's no card-level class, so detect with :has(). Replace the
-   default bottom-right gold star (the non-moderator indicator) with a "Pinned"
-   label above the username.
+   Pinned (sticky) comments. Comentario flags the state with `comentario-is-sticky`
+   on the star button (its class helper prepends `comentario-` to every class —
+   like `comentario-upvoted`); there's no card-level class, so detect with :has().
+   Replace the default bottom-right gold star (the non-moderator indicator) with a
+   "Pinned" label above the username.
    ---------------------------------------------------------------------------- */
 
-/* Hide the bottom-right star INDICATOR (non-moderator: the disabled is-sticky
-   star). The moderator's Pin/Unpin control is NOT disabled, so it stays. */
-.comentario-root .comentario-card-self .comentario-btn-tool.is-sticky[disabled] {
+/* Hide the bottom-right star INDICATOR (non-moderator: the disabled
+   comentario-is-sticky star). The moderator's Pin/Unpin control is NOT disabled
+   (btnSticky.disabled(!isModerator)), so it stays. */
+.comentario-root .comentario-card-self .comentario-btn-tool.comentario-is-sticky[disabled] {
     display: none;
 }
 
 /* "★ Pinned" above the username: a full-width pseudo-element ordered first inside
    the name container (a flex row of name + timestamp), so it sits on its own line
    above the name. */
-.comentario-root .comentario-card-self:has(.comentario-btn-tool.is-sticky) .comentario-name-container::before {
+.comentario-root .comentario-card-self:has(.comentario-btn-tool.comentario-is-sticky) .comentario-name-container::before {
     content: "★ Pinned";
     flex-basis: 100%;
     order: -1;
