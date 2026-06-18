@@ -852,8 +852,20 @@
    Comentario marks the score with `comentario-upvoted` when score > 0, and the
    upvote button with `comentario-upvoted` when the current user has liked. DOM
    siblings are [upvote .btn-tool] [.score] [downvote .btn-tool]; flex `order`
-   then lays the row out as: [Reply] [Like] [<heart> N].
+   then lays the row out as: [Reply] [Like] [admin…] [<heart> N].
    ---------------------------------------------------------------------------- */
+
+/* Admin actions share the Reply/Like tray: flatten both toolbar sections so all
+   buttons become direct flex children of the one toolbar (lets us order across
+   the old section boundary), left-aligned with a single gap. */
+.comentario-root .comentario-card-self > .comentario-toolbar {
+    justify-content: flex-start;
+    gap: 0.85em;
+}
+
+.comentario-root .comentario-card-self > .comentario-toolbar > .comentario-toolbar-section {
+    display: contents;
+}
 
 /* 1. Remove the downvote — the tool button immediately after the score.
    (Already tabindex=-1; display:none also drops it from the a11y tree.) */
@@ -871,18 +883,21 @@
     content: "Like";
 }
 
-/* 3. Order + gaps: [Reply] [Like] [count]. Reply and Like hug their labels
-   (padding:0), so the row spacing lives on their trailing margins. width:auto
-   stops the 32px icon-button default from clipping/overlapping the text now that
-   Reply sits ahead of Like. */
+/* 3. Order + gaps: [Reply] [Like] [admin…] [count]. Both toolbar sections are
+   flattened (display:contents above), so flex order positions across the old
+   section boundary. width:auto stops the 32px icon-button default from
+   clipping/overlapping the text. Gap on the toolbar handles row spacing. */
 .comentario-root .comentario-btn-tool[title="Reply"] {
-    order: -1;
+    order: 1;
 }
 
 .comentario-root .comentario-btn-tool[title="Reply"],
 .comentario-root .comentario-btn-tool:has(+ .comentario-score) {
     width: auto;
-    margin-inline-end: 0.85em;
+}
+
+.comentario-root .comentario-btn-tool:has(+ .comentario-score) {
+    order: 2;
 }
 
 /* 4. Shared row styling — Reply, Like and the count: small (0.8em), bold,
@@ -927,6 +942,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.3em;
+    order: 4;
 }
 
 /* Filled heart count icon (right cell of the sprite); purely an indicator — this
@@ -945,4 +961,36 @@
             mask-size: auto 100%;
     -webkit-mask-position: 100% 50%;
             mask-position: 100% 50%;
+}
+
+/* Moderator buttons (2nd toolbar section) -> text links matching Reply/Like:
+   hide icons, label via [title]::after, share the row styling, order after Like. */
+.comentario-root .comentario-card-self .comentario-toolbar-section:last-child .comentario-btn-tool {
+    order: 3;
+    width: auto;
+    font-size: 0.8em;
+    font-weight: 700;
+    color: var(--text-secondary);
+    opacity: 1;
+}
+
+.comentario-root .comentario-card-self .comentario-toolbar-section:last-child .comentario-btn-tool .comentario-icon {
+    display: none;
+}
+
+.comentario-root .comentario-card-self .comentario-toolbar-section:last-child .comentario-btn-tool:hover {
+    color: var(--text);
+}
+
+/* Labels (resolved Comentario titles -> our text). */
+.comentario-root .comentario-btn-tool[title="Sticky"]::after   { content: "Pin"; }
+.comentario-root .comentario-btn-tool[title="Unsticky"]::after { content: "Unpin"; }
+.comentario-root .comentario-btn-tool[title="Edit"]::after     { content: "Edit"; }
+.comentario-root .comentario-btn-tool[title="Delete"]::after   { content: "Delete"; }
+.comentario-root .comentario-btn-tool[title="Approve"]::after  { content: "Approve"; }
+.comentario-root .comentario-btn-tool[title="Reject"]::after   { content: "Reject"; }
+
+/* Delete is destructive -> link red on hover. */
+.comentario-root .comentario-card-self .comentario-toolbar-section:last-child .comentario-btn-tool[title="Delete"]:hover {
+    color: var(--link);
 }
