@@ -82,7 +82,7 @@
     min-height: 0;
 }
 
-/* ---- Top toolbar: sort buttons on the left, "RSS feed" on the right. The
+/* ---- Top toolbar: sort buttons on the left, RSS button on the right. The
    comment count lives in our own "Comments · N" heading, so hide the duplicate. ---- */
 .comentario-root .comentario-thread-toolbar {
     display: flex;
@@ -96,9 +96,11 @@
     padding-bottom: 0;
     margin-bottom: 1.6em;
     font-size: 0.85em;
-    /* Full-bleed the divider to the container box edge (matching the footer and
-       the .post-comments divider); padding-inline keeps the buttons at reading
-       width. --container-pad is inherited from main .container. */
+    /* Full-bleed to the container box edge (matching the footer and the
+       .post-comments divider); padding-inline brings the buttons back to reading
+       width so the row tracks the comment content edges. --container-pad from
+       main .container. (RSS sits flush to the right edge via the button rule
+       below, not by removing this padding — that would push it into the gutter.) */
     margin-inline: calc(-1 * var(--container-pad));
     padding-inline: var(--container-pad);
 }
@@ -137,6 +139,14 @@
     order: 1;
 }
 
+/* RSS flush to the comment region's right edge: drop Comentario's own btn right
+   padding (6px) + margin (2.5px) so the label sits at the toolbar's content edge,
+   which padding-inline keeps aligned with the comments. */
+.comentario-root .comentario-thread-buttons .comentario-btn {
+    margin-right: 0;
+    padding-right: 0;
+}
+
 /* Drop the sort dropdown caret — it reads as a plain toggle. */
 .comentario-root .comentario-sort-buttons .comentario-icon {
     display: none;
@@ -148,7 +158,8 @@
     font-weight: 700;
 }
 
-/* RSS → "RSS feed" with a leading feed icon (rss.svg masked to currentColor). */
+/* RSS button: leading feed icon (rss.svg masked to currentColor); label is just
+   "RSS". */
 .comentario-root .comentario-thread-buttons .comentario-btn::before {
     content: "";
     display: inline-block;
@@ -159,10 +170,6 @@
     background-color: currentColor;
     -webkit-mask: url(/img/rss.svg) center / contain no-repeat;
     mask: url(/img/rss.svg) center / contain no-repeat;
-}
-
-.comentario-root .comentario-thread-buttons .comentario-btn::after {
-    content: " feed";
 }
 
 /* ---- Comment editor ("Add a comment") ---- */
