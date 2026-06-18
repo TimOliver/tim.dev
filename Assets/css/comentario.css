@@ -990,11 +990,6 @@
 .comentario-root .comentario-btn-tool[title="Approve"]::after  { content: "Approve"; }
 .comentario-root .comentario-btn-tool[title="Reject"]::after   { content: "Reject"; }
 
-/* Delete is destructive -> link red on hover. */
-.comentario-root .comentario-card-self .comentario-toolbar-section:last-child .comentario-btn-tool[title="Delete"]:hover {
-    color: var(--link);
-}
-
 /* ----------------------------------------------------------------------------
    Pinned (sticky) comments. Comentario flags the state with `is-sticky` on the
    star button; there's no card-level class, so detect with :has(). Replace the
