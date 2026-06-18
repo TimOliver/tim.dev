@@ -12,6 +12,8 @@
        catalog entry so the icon isn't hardwired to the flat --link red. Lighter
        red (top) -> darker red (bottom). */
     --heart-gradient: linear-gradient(to bottom, #FF4C5F, #DE0E2B);
+    /* Gold for the comments "Pinned" label/star. */
+    --pinned-gold: #B8860B;
     --border: #eee;
     /* Border for strokes drawn ON a --bg-secondary surface: --border is tuned for
        the white --bg and nearly disappears against #F2F2F2, so step it darker. */
@@ -49,6 +51,7 @@
     --link: #FF566A;
     --link-hover: #FF566A;
     --heart-gradient: linear-gradient(to bottom, #FF6E7F, #F22F49);
+    --pinned-gold: #E8B931;
     --border: #38383C;
     --border-secondary: rgba(255, 255, 255, 0.14);
     --icon-filter: invert(1);

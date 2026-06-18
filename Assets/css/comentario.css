@@ -994,3 +994,29 @@
 .comentario-root .comentario-card-self .comentario-toolbar-section:last-child .comentario-btn-tool[title="Delete"]:hover {
     color: var(--link);
 }
+
+/* ----------------------------------------------------------------------------
+   Pinned (sticky) comments. Comentario flags the state with `is-sticky` on the
+   star button; there's no card-level class, so detect with :has(). Replace the
+   default bottom-right gold star (the non-moderator indicator) with a "Pinned"
+   label above the username.
+   ---------------------------------------------------------------------------- */
+
+/* Hide the bottom-right star INDICATOR (non-moderator: the disabled is-sticky
+   star). The moderator's Pin/Unpin control is NOT disabled, so it stays. */
+.comentario-root .comentario-card-self .comentario-btn-tool.is-sticky[disabled] {
+    display: none;
+}
+
+/* "★ Pinned" above the username: a full-width pseudo-element ordered first inside
+   the name container (a flex row of name + timestamp), so it sits on its own line
+   above the name. */
+.comentario-root .comentario-card-self:has(.comentario-btn-tool.is-sticky) .comentario-name-container::before {
+    content: "★ Pinned";
+    flex-basis: 100%;
+    order: -1;
+    color: var(--pinned-gold);
+    font-size: 0.8em;
+    font-weight: 700;
+    line-height: 1.2;
+}
