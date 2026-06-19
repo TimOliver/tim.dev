@@ -964,13 +964,17 @@
 }
 
 /* Moderator buttons (2nd toolbar section) -> text links matching Reply/Like:
-   hide icons, label via [title]::after, share the row styling, order after Like. */
+   hide icons, label via [title]::after, share the row styling, order after Like.
+   `color` is !important to defeat Comentario's per-button colour: Delete carries
+   `comentario-text-danger` (red) and the active sticky/Unpin carries
+   `comentario-is-sticky` (gold), both set with !important — we want all actions
+   to read uniformly neutral. */
 .comentario-root .comentario-card-self .comentario-toolbar-section:last-child .comentario-btn-tool {
     order: 3;
     width: auto;
     font-size: 0.8em;
     font-weight: 700;
-    color: var(--text-secondary);
+    color: var(--text-secondary) !important;
     opacity: 1;
 }
 
@@ -979,7 +983,7 @@
 }
 
 .comentario-root .comentario-card-self .comentario-toolbar-section:last-child .comentario-btn-tool:hover {
-    color: var(--text);
+    color: var(--text) !important;
 }
 
 /* Labels (resolved Comentario titles -> our text). */

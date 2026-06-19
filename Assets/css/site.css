@@ -12,8 +12,11 @@
        catalog entry so the icon isn't hardwired to the flat --link red. Lighter
        red (top) -> darker red (bottom). */
     --heart-gradient: linear-gradient(to bottom, #FF4C5F, #DE0E2B);
-    /* Gold for the comments "Pinned" label/star. */
-    --pinned-gold: #B8860B;
+    /* Gold for the comments "Pinned" label/star. A bright yellow-gold fails
+       contrast on the white bg, so this is a deeper, clean yellow-gold (no muddy
+       blue channel) — ~3.3:1, clears the WCAG large-text bar for the 0.8em-bold
+       label without reading as brown. */
+    --pinned-gold: #AD8A00;
     --border: #eee;
     /* Border for strokes drawn ON a --bg-secondary surface: --border is tuned for
        the white --bg and nearly disappears against #F2F2F2, so step it darker. */
