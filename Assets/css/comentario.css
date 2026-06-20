@@ -92,7 +92,7 @@
     /* Lots of space above pulls the toolbar away from the editor and groups it
        with the comment list below. No bottom border — the sort row reads cleaner
        without a divider line under it. */
-    padding-top: 2.5em;
+    padding-top: 2.0em;
     padding-bottom: 0;
     margin-bottom: 1.6em;
     font-size: 0.85em;
@@ -123,16 +123,21 @@
 
 .comentario-root .comentario-sort-buttons {
     order: 0;
+    display: flex;
+    gap: 1.5em;
 }
 
-/* Flush the sort group to its edges: first button no left padding, last no
-   right padding. */
-.comentario-root .comentario-sort-buttons .comentario-btn:first-child {
+/* Sort buttons hug their labels (drop Comentario's btn padding/margin); the
+   container gap sets the spacing, and the row stays flush-left. Uniform weight
+   (700) and size across all three — the selected one is shown by colour only. */
+.comentario-root .comentario-sort-buttons .comentario-btn {
+    margin: 0;
     padding-left: 0;
-}
-
-.comentario-root .comentario-sort-buttons .comentario-btn:last-child {
     padding-right: 0;
+    font-weight: 700;
+    /* rem (not em) so the relabeled "Popular" ::before matches exactly — its host
+       button is font-size:0, where em resolves to 0. Same rem on both = identical. */
+    font-size: 0.9rem;
 }
 
 .comentario-root .comentario-thread-buttons {
@@ -152,11 +157,32 @@
     display: none;
 }
 
-/* Active sort gets the strong foreground; the others stay muted. */
+/* Selected sort: primary label colour; the others stay muted (secondary, from
+   .comentario-btn-link). Colour alone marks the selection — weight is uniform. */
 .comentario-root .comentario-sort-buttons .comentario-btn-active {
-    color: var(--heading);
+    color: var(--text);
+}
+
+/* Hover: primary label colour + underline (grey link → not red; underline marks
+   it as interactive without implying selection). */
+.comentario-root .comentario-sort-buttons .comentario-btn:hover {
+    color: var(--text);
+    text-decoration: underline;
+}
+
+/* Rename the score sort "Votes" -> "Popular" (it sorts by like count). Hide the
+   literal text (font-size:0) and supply our label via ::before; the caret is
+   already hidden above. Same rem size/weight as the siblings so it matches. */
+.comentario-root .comentario-sort-buttons .comentario-btn:first-child {
+    font-size: 0;
+}
+
+.comentario-root .comentario-sort-buttons .comentario-btn:first-child::before {
+    content: "Popular";
+    font-size: 0.9rem;
     font-weight: 700;
 }
+
 
 /* RSS button: leading feed icon (rss.svg masked to currentColor); label is just
    "RSS". */
@@ -209,7 +235,8 @@
 }
 
 /* Collapsed placeholder ("Add a comment"): a borderless secondary-fill rectangle
-   at the site's main card radius. */
+   at the site's main card radius. No stroke — iOS-style, relies on the fill
+   contrast against the page. */
 .comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted) {
     background: var(--bg-secondary);
     border: none;
@@ -225,6 +252,12 @@
     background: var(--bg-secondary);
     border: none;
     border-radius: 30px;
+}
+
+/* Inline reply editor (inserted as a card-children under the comment): extra top
+   margin so it's clearly separated from the comment it's replying to. */
+.comentario-root .comentario-card-children.comentario-editor-inserted {
+    margin-top: 1.25em;
 }
 
 /* Placeholder text — dim it to the secondary colour. Comentario colours the
@@ -304,13 +337,33 @@
     color: var(--heading);
 }
 
+/* Formatting icons (markdown toolbar) use the primary label colour, not the muted
+   secondary; the "Editor help" ? stays quiet. opacity:1 defeats Comentario's .5
+   tool-button muffling (without it, --text still renders washed-out grey). The
+   rounded corners + transition set up the hover chip below. */
+.comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) {
+    color: var(--text);
+    opacity: 1;
+    border-radius: 8px;
+    transition: background-color 0.12s ease;
+}
+
+/* Hover: a tertiary-fill rounded rectangle behind the icon to signal it's
+   clickable (the button is 32×32, so the chip frames the glyph). */
+.comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]):hover {
+    color: var(--heading);
+    background-color: var(--bg-tertiary);
+}
+
 /* Bigger markdown-toolbar glyphs (editor only, so Reply/sort/RSS are untouched).
    The "Editor help" button shares this class, so exclude it and keep it small. */
 .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon,
 .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon svg,
 .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) svg {
-    width: 1.8em;
-    height: 1.8em;
+    /* 1.7em lands the glyphs on whole pixels — avoids the table grid distorting
+       (1.8em pushed its thin lines onto fractional pixels). */
+    width: 1.7em;
+    height: 1.7em;
 }
 
 .comentario-root .comentario-comment-editor .comentario-btn-tool[title="Editor help"] .comentario-icon {
@@ -324,6 +377,15 @@
     display: flex;
     align-items: center;
     gap: 0.5em;
+}
+
+/* Subtle separator between the formatting toolbar and the textarea. Scoped to the
+   editor toolbar (not the card action tray). --border-secondary reads on the
+   editor's --bg-secondary fill — plain --border would vanish. */
+.comentario-root .comentario-comment-editor .comentario-toolbar {
+    border-bottom: 1px solid var(--border-secondary);
+    padding-bottom: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 /* ---- Buttons & accents ----
@@ -425,7 +487,8 @@
     background: none;
     border: none;
     padding: 0;
-    margin: 1.5em 0;
+    /* Wider bottom margin to separate discrete comments. */
+    margin: 1.5em 0 2.5em;
 }
 
 /* No trailing gap under the last card in the list. */
@@ -435,12 +498,27 @@
 
 .comentario-root .comentario-card .comentario-card-self {
     padding-top: 0;
+    /* Positioning context for the absolutely-positioned avatar (below). Safe:
+       Comentario's only absolute elements are the modal dialog/backdrop, which
+       mount at the root, not inside a card. */
+    position: relative;
 }
 
 .comentario-root .comentario-card-header {
     display: flex;
     align-items: center;
     gap: 10px;
+    /* Avatar is absolutely positioned (out of flow), so pad the header left to
+       clear it — matching the body/toolbar indent. Without this the header
+       collapsed to one line but sat under the avatar. 62px top-level / 54px
+       replies (override). */
+    padding-left: 62px;
+    /* Tighter than Comentario's 6px — pull the body up under the name. */
+    margin-bottom: 2px;
+}
+
+.comentario-root .comentario-card-children .comentario-card-header {
+    padding-left: 54px;
 }
 
 .comentario-root .comentario-avatar,
@@ -452,24 +530,63 @@
     font-weight: 700;
 }
 
+/* Avatar sizing: 44px on top-level comments, 36px on replies (any nesting depth).
+   The base rule sets every card avatar (top-level default); the .card-children
+   rule (equal specificity, later) brings replies down. Initials use a fixed
+   1.25em at both levels (relative to the comment's 1em) rather than scaling with
+   the circle. */
+.comentario-root .comentario-card .comentario-avatar,
+.comentario-root .comentario-card .comentario-avatar-img {
+    /* Out of flow (top-left of the card) so it doesn't drive the header height —
+       lets the name + inline date sit on one line with no empty gap below it. The
+       header/body/toolbar left padding clears it. */
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    width: 44px;
+    height: 44px;
+}
+
+.comentario-root .comentario-card .comentario-avatar {
+    font-size: 1.25em;
+}
+
+.comentario-root .comentario-card-children .comentario-avatar,
+.comentario-root .comentario-card-children .comentario-avatar-img {
+    width: 36px;
+    height: 36px;
+}
+
+.comentario-root .comentario-card-children .comentario-avatar {
+    font-size: 1.25em;
+}
+
 .comentario-root .comentario-name {
     color: var(--heading);
     font-weight: 600;
 }
 
-/* Drop Comentario's name font-size so it matches the base text size. */
+/* Drop Comentario's name font-size so it matches the base text size, and let the
+   name use the site body colour. Comentario forces its own --cmntr-color with
+   !important, so override with !important too ((0,3,0) beats the default (0,2,0)). */
 .comentario-root .comentario-card .comentario-name {
     font-size: inherit;
+    color: var(--text) !important;
 }
 
 /* Name + timestamp on one line. Comentario's name-container is a flex COLUMN
    (stacking them), so the row direction is the actual fix. */
+/* Name + timestamp inline on one row. Works without a gap because the avatar is
+   out of flow (above), so the header is just this single line. Tight line-height
+   trims the leading below the name before the body. */
 .comentario-root .comentario-card .comentario-name-container {
     display: flex;
     flex-direction: row;
     align-items: baseline;
     flex-wrap: wrap;
     gap: 0.5em;
+    line-height: 1.2;
 }
 
 /* Timestamp — secondary colour, same size as the name, not a link colour.
@@ -506,14 +623,31 @@
 .comentario-root .comentario-card-body {
     color: var(--text);
     line-height: 1.6;
-    /* Indent the body to line up with the name (past the avatar). */
-    padding-left: 50px;
+    /* Indent the body to line up with the name: avatar width + 10px avatar
+       margin + 10px header gap. Top-level avatar 44px -> 62px; replies 36px ->
+       54px (override below). */
+    padding-left: 62px;
 }
 
-/* Same indent for the comment footer (Reply). Scoped to the card so it doesn't
-   shift the profile bar, which shares the .comentario-toolbar class. */
+.comentario-root .comentario-card-children .comentario-card-body {
+    padding-left: 54px;
+}
+
+/* The body's first paragraph hugs the header — drop Comentario's 6px top margin
+   on it so the text sits snug under the name (other paragraphs keep their gap). */
+.comentario-root .comentario-card-body > p:first-child {
+    margin-top: 0;
+}
+
+/* Same indent for the comment action tray. Scoped to the card so it doesn't
+   shift the profile bar, which shares the .comentario-toolbar class. Matches the
+   body: 62px top-level, 54px replies (override). */
 .comentario-root .comentario-card-self > .comentario-toolbar {
-    padding-left: 50px;
+    padding-left: 62px;
+}
+
+.comentario-root .comentario-card-children .comentario-card-self > .comentario-toolbar {
+    padding-left: 54px;
 }
 
 /* Links inside comments — site red, underline on hover (not the default blue). */
@@ -545,14 +679,25 @@
     border-radius: 2px;
 }
 
-/* Inset nested comments by 50px so they line up with the parent's body text. */
+/* Inset nested comments so the nesting line lines up with the parent's body text.
+   Depth-1 replies hang off a top-level parent whose body is at 62px (44px avatar
+   + 18px), so inset 62px. */
 .comentario-root .comentario-card-children > .comentario-card {
-    padding-left: 50px;
+    padding-left: 62px;
 }
 
-/* Gap between the nesting line and the nested comment's content. */
+/* Depth-2+ replies hang off a reply parent whose body is at 54px (36px avatar +
+   18px), so inset 54px to stay aligned at every depth. (card-children nested
+   inside card-children = the parent is itself a reply.) */
+.comentario-root .comentario-card-children .comentario-card-children > .comentario-card {
+    padding-left: 54px;
+}
+
+/* Gap between the nesting line and the reply avatar. Matches the avatar→text gap
+   (18px = body indent 54 − avatar 36) so the avatar is evenly framed: the space
+   on the line side equals the space on the text side. */
 .comentario-root .comentario-card-children .comentario-card-expand-body {
-    padding-left: 25px;
+    padding-left: 18px;
 }
 
 /* Top-level comments: drop the left bar/indent column entirely (it only makes
