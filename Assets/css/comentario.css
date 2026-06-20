@@ -80,7 +80,73 @@
     margin: 0;
     padding: 0;
     min-height: 0;
+    /* Centre the two sections vertically so the (taller) avatar isn't pinned to the
+       top of the row. */
+    align-items: center;
 }
+
+/* Centre each section's own contents too — the avatar against the name, and the
+   lock/settings/logout buttons on the same axis. */
+.comentario-root .comentario-profile-bar .comentario-toolbar-section {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+/* Profile-bar avatar a touch smaller than Comentario's default 32px. */
+.comentario-root .comentario-profile-bar .comentario-avatar-img,
+.comentario-root .comentario-profile-bar .comentario-avatar {
+    width: 28px;
+    height: 28px;
+}
+
+/* ---- Profile-bar action icons (lock / unlock / settings / logout) ----
+   Replace Comentario's inline glyphs with our Tabler SVGs, masked so they tint
+   like the sort labels (--text-secondary) and brighten to the primary label
+   colour on hover. The icon source is set per-button via --cmntr-profile-icon. */
+
+/* opacity:1 defeats Comentario's .5 tool-button muffling so the masked icon reads
+   at the full sort-label tint; flex-centre the replacement glyph. */
+.comentario-root .comentario-profile-bar .comentario-btn-tool {
+    opacity: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hide the built-in inline glyph. */
+.comentario-root .comentario-profile-bar .comentario-btn-tool .comentario-icon {
+    display: none;
+}
+
+/* Masked replacement glyph, tinted like the sort row. One 4-cell sprite
+   (lock | lock-open | settings | logout); --cmntr-icon-pos selects the cell.
+   mask-size auto 100% scales the strip to the glyph height so each cell lands at
+   the box width. */
+.comentario-root .comentario-profile-bar .comentario-btn-tool::before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: var(--text-secondary);
+    -webkit-mask: url(/img/comments-actions.svg) no-repeat;
+            mask: url(/img/comments-actions.svg) no-repeat;
+    -webkit-mask-size: auto 100%;
+            mask-size: auto 100%;
+    -webkit-mask-position: var(--cmntr-icon-pos) 50%;
+            mask-position: var(--cmntr-icon-pos) 50%;
+    transition: background-color 0.12s ease;
+}
+
+/* Hover: brighten to the primary label colour (matches the sort-label hover). */
+.comentario-root .comentario-profile-bar .comentario-btn-tool:hover::before {
+    background-color: var(--text);
+}
+
+.comentario-root .comentario-profile-bar .comentario-btn-tool[title="Lock"]     { --cmntr-icon-pos: 0%; }
+.comentario-root .comentario-profile-bar .comentario-btn-tool[title="Unlock"]   { --cmntr-icon-pos: 33.333%; }
+.comentario-root .comentario-profile-bar .comentario-btn-tool[title="Settings"] { --cmntr-icon-pos: 66.667%; }
+.comentario-root .comentario-profile-bar .comentario-btn-tool[title="Logout"]   { --cmntr-icon-pos: 100%; }
 
 /* ---- Top toolbar: sort buttons on the left, RSS button on the right. The
    comment count lives in our own "Comments · N" heading, so hide the duplicate. ---- */
@@ -234,16 +300,46 @@
     min-height: 0;
 }
 
-/* Collapsed placeholder ("Add a comment"): a borderless secondary-fill rectangle
-   at the site's main card radius. No stroke — iOS-style, relies on the fill
-   contrast against the page. */
+/* Collapsed "Add a comment": a compact, borderless capsule — single line, the
+   placeholder vertically centred behind a leading speech-bubble glyph (our Tabler
+   "comments" icon) to hint it's a writeable field. No stroke — iOS-style, relies
+   on the fill against the page. Hover lifts the fill (and darkens the glyph) so it
+   reads as clickable before you click. */
 .comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted) {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6em;
     background: var(--bg-secondary);
     border: none;
-    border-radius: 18px;
-    min-height: 150px;
-    /* Roomier than the live editor (which is 10px 12px from the shared rule). */
-    padding: 15px 20px;
+    border-radius: 999px;
+    min-height: 0;
+    padding: 14px 22px;
+    cursor: text;
+    transition: background-color 0.15s ease;
+}
+
+/* Leading comments glyph — same path as /img/ui-icons.svg#comments (Tabler), inlined
+   as a mask (a CSS mask can't reference a <symbol>) so it tints with the placeholder
+   colour. Matches the spinner's inline-mask pattern above. */
+.comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted)::before {
+    content: "";
+    flex: none;
+    width: 1.2em;
+    height: 1.2em;
+    background: var(--text-secondary);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Hover: deepen the fill a touch and darken the glyph — a clickable cue before
+   focus. color-mix keeps the shift relative to the resting fill in both modes
+   (darkens in light, lightens in dark), so it survives --bg-secondary changes. */
+.comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted):hover {
+    background: color-mix(in srgb, var(--bg-secondary), var(--text) 5%);
+}
+
+.comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted):hover::before {
+    background: var(--text);
 }
 
 /* Expanded editor matches the collapsed placeholder — same secondary fill, no
@@ -252,6 +348,10 @@
     background: var(--bg-secondary);
     border: none;
     border-radius: 30px;
+    /* Roomier horizontal inset than the shared 19px so content isn't tight to the
+       edge; content (toolbar/textarea/footer) all reference this box, so the
+       separator-flush alignment is preserved as everything shifts in together. */
+    padding: 16px 25px;
 }
 
 /* Inline reply editor (inserted as a card-children under the comment): extra top
@@ -266,6 +366,12 @@
     color: var(--text-secondary) !important;
 }
 
+/* Comentario's i18n placeholder is just "Add a comment" (no trailing dots); append
+   a typographic ellipsis for the familiar "tap to write…" affordance. */
+.comentario-root .comentario-add-comment-host .comentario-add-comment-placeholder::after {
+    content: "…";
+}
+
 .comentario-root .comentario-comment-editor-footer {
     margin-top: 10px;
 }
@@ -278,6 +384,10 @@
     color: var(--text);
     border: none;
     box-shadow: none;
+    /* Zero the default 8px horizontal padding so the typed text sits flush with the
+       toolbar separator's left/right ends (vertical padding kept for breathing room
+       below the separator). */
+    padding: 8px 0;
     /* Match the site/body text size and spacing rather than Comentario's
        textarea defaults. */
     font-size: inherit;
@@ -309,7 +419,7 @@
     border: none;
     outline: none;
     box-shadow: none;
-    padding: 10px 20px;
+    padding: 10px 12px;
     margin-bottom: 0.5em;
 }
 
@@ -377,6 +487,11 @@
     display: flex;
     align-items: center;
     gap: 0.5em;
+    /* The glyphs are optically centred in their 32px tap targets, so the row reads
+       ~0.45em inset from the separator. Pull the whole section left to land the first
+       glyph on the content edge (flush with the separator + textarea). The freed
+       space falls into the editor's left padding, so nothing clips. */
+    margin-left: -0.45em;
 }
 
 /* Subtle separator between the formatting toolbar and the textarea. Scoped to the
@@ -524,6 +639,15 @@
 .comentario-root .comentario-avatar,
 .comentario-root .comentario-avatar-img {
     border-radius: 50%;
+    /* The comments embed lives inside <article>, so the site's `article img` rule
+       leaks onto avatar images: a 1px border, a 650px cap, and `margin: 0 auto
+       1.75em`. That bottom margin is what pushed the profile-bar avatar to the top
+       of the row. Strip the leak — Comentario's own size (32px) and margin-right
+       (the gap to the name) are untouched. */
+    border: none;
+    max-height: none;
+    margin-bottom: 0;
+    margin-left: 0;
 }
 
 .comentario-root .comentario-avatar {
