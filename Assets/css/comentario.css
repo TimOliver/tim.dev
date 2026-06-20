@@ -160,7 +160,8 @@
        without a divider line under it. */
     padding-top: 2.0em;
     padding-bottom: 0;
-    margin-bottom: 1.6em;
+    /* Low, because each comment card now carries 25px top padding of its own. */
+    margin-bottom: 0.3em;
     font-size: 0.85em;
     /* Full-bleed to the container box edge (matching the footer and the
        .post-comments divider); padding-inline brings the buttons back to reading
@@ -601,14 +602,23 @@
 .comentario-root .comentario-card {
     background: none;
     border: none;
-    padding: 0;
-    /* Wider bottom margin to separate discrete comments. */
-    margin: 1.5em 0 2.5em;
+    /* width:auto overrides Comentario's width:100%. With box-sizing:border-box, an
+       explicit 100% width pins the border box to the container, which over-constrains
+       the negative margins — the browser drops margin-right, so the card shifts left
+       and ends 25px short on the right. auto lets both negative margins widen the box
+       symmetrically (25px bleed each side; content stays at the reading width). */
+    width: auto;
+    padding: 25px;
+    /* -25px horizontally cancels the side padding (content stays at the reading
+       width, the box bleeds into the gutter). The 25px top/bottom padding now
+       supplies the inter-comment spacing, so the vertical margins drop to ~0 (small
+       negative bottom margin tightens the gap to taste). */
+    margin: 0 -25px -0.2em;
 }
 
-/* No trailing gap under the last card in the list. */
+/* No trailing gap under the last card — also absorb its 25px bottom padding. */
 .comentario-root .comentario-card:last-child {
-    margin-bottom: 0;
+    margin-bottom: -25px;
 }
 
 .comentario-root .comentario-card .comentario-card-self {
@@ -617,6 +627,25 @@
        Comentario's only absolute elements are the modal dialog/backdrop, which
        mount at the root, not inside a card. */
     position: relative;
+}
+
+/* ----------------------------------------------------------------------------
+   Deep-link highlight. Comentario flashes a comment (the .comentario-bg-highlight
+   class + 5s animation on .comentario-card-self) when you open its permalink. We
+   move the flash onto the padded card so it rounds and gets breathing room — but
+   card-self ALSO flashes by default, and --cmntr-bg-highlight (--bg-tertiary) is
+   semi-transparent, so the two layers double the alpha and read as an inner box.
+   Fix: flash the card via :has(), and on card-self set --cmntr-bg-highlight to
+   transparent so its (still-running) animation paints nothing — that keeps the
+   animationend Comentario listens for to clear the class, so it stays
+   re-triggerable. Single, uniform background. ------------------------------- */
+.comentario-root .comentario-card:has(.comentario-card-self.comentario-bg-highlight) {
+    border-radius: 22px;
+    animation: comentario-bg-highlight-animation 5s ease forwards 1;
+}
+
+.comentario-root .comentario-card-self.comentario-bg-highlight {
+    --cmntr-bg-highlight: transparent;
 }
 
 .comentario-root .comentario-card-header {
@@ -805,16 +834,17 @@
 
 /* Inset nested comments so the nesting line lines up with the parent's body text.
    Depth-1 replies hang off a top-level parent whose body is at 62px (44px avatar
-   + 18px), so inset 62px. */
+   + 18px); +24px for the card's own left padding (now 25px, bled out by the -25px
+   margin) keeps the reply content aligned, = 86px. */
 .comentario-root .comentario-card-children > .comentario-card {
-    padding-left: 62px;
+    padding-left: 86px;
 }
 
 /* Depth-2+ replies hang off a reply parent whose body is at 54px (36px avatar +
-   18px), so inset 54px to stay aligned at every depth. (card-children nested
-   inside card-children = the parent is itself a reply.) */
+   18px); +24px for the card's own left padding keeps them aligned at every depth,
+   = 78px. (card-children nested inside card-children = the parent is itself a reply.) */
 .comentario-root .comentario-card-children .comentario-card-children > .comentario-card {
-    padding-left: 54px;
+    padding-left: 78px;
 }
 
 /* Gap between the nesting line and the reply avatar. Matches the avatar→text gap
