@@ -862,6 +862,117 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Error / message box (e.g. linking to a deleted comment, or "domain not
+   registered"). Comentario fills it with a saturated --cmntr-danger-bg at full
+   intensity — very loud. Calmer treatment (no stroke — fill contrast only): a soft
+   warm-red tint, a warning glyph vertically centred on the message, graded red copy,
+   and a neutral mono code block for the technical-details JSON.
+   --------------------------------------------------------------------------- */
+.comentario-root .comentario-message-box {
+    border-radius: 22px;
+}
+
+.comentario-root .comentario-message-box.comentario-error {
+    /* The site red (#FA233B) is a cool crimson — at a low-opacity dark tint it drifts
+       purple, so warm it toward red-orange first and derive everything from that.
+       Graded toward --text so the copy stays readable in both themes (deeper in
+       light, lighter in dark). */
+    --err-warm: color-mix(in srgb, var(--link) 78%, #ff8c00);
+    --err-strong: color-mix(in srgb, var(--err-warm) 72%, var(--text));
+    --err-muted: color-mix(in srgb, var(--err-warm) 45%, var(--text));
+    /* Soft tint, mixed from --bg-secondary so it stays visible on the dark page. 13%
+       is the knob. */
+    background-color: color-mix(in srgb, var(--err-warm) 13%, var(--bg-secondary));
+    color: var(--err-strong);
+    /* Drop Comentario's default 1rem top margin so the box sits closer to the
+       "Comments" heading. */
+    margin-top: 0;
+    padding: 1.2rem 1.35rem;
+}
+
+/* Message line: warning glyph + text, vertically centred. */
+.comentario-root .comentario-message-box.comentario-error .comentario-message-box-body {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0;
+    text-align: left;
+    font-weight: 700;
+}
+
+/* Leading warning glyph (Tabler alert-circle), in the strong red, centred with the
+   message via the flex row above. */
+.comentario-root .comentario-message-box.comentario-error .comentario-message-box-body::before {
+    content: "";
+    flex: none;
+    width: 1.2em;
+    height: 1.2em;
+    background: var(--err-strong);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0' /%3E%3Cpath d='M12 8v4' /%3E%3Cpath d='M12 16h.01' /%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0' /%3E%3Cpath d='M12 8v4' /%3E%3Cpath d='M12 16h.01' /%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Indent the details toggle + code to align with the message text (past the glyph:
+   1.2em icon + 0.6em gap). Set on the wrapper/code, which inherit the box font-size,
+   so the indent matches the icon rather than the smaller button/code text. */
+.comentario-root .comentario-message-box.comentario-error > div:not(.comentario-message-box-body),
+.comentario-root .comentario-message-box.comentario-error > code {
+    margin-left: 1.8em;
+}
+
+/* "Technical details" toggle: a quieter red link with a chevron that flips when the
+   block is expanded (.comentario-btn-active). */
+.comentario-root .comentario-message-box.comentario-error .comentario-btn-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    margin-top: 0.7em;
+    padding-left: 0;
+    font-weight: 700;
+    color: var(--err-muted);
+}
+
+.comentario-root .comentario-message-box.comentario-error .comentario-btn-link:hover {
+    color: var(--err-strong);
+}
+
+.comentario-root .comentario-message-box.comentario-error .comentario-btn-link::before {
+    content: "";
+    width: 1em;
+    height: 1em;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6l6 -6' /%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6l6 -6' /%3E%3C/svg%3E") center / contain no-repeat;
+    transition: transform 0.15s ease;
+}
+
+.comentario-root .comentario-message-box.comentario-error .comentario-btn-link.comentario-btn-active::before {
+    transform: rotate(180deg);
+}
+
+/* Technical-details JSON: neutral mono code block (the .comentario-root * font:inherit
+   rule otherwise forces SF sans). --bg surface contrasts with the tint; no stroke,
+   overflow-x scrolls long lines. */
+.comentario-root .comentario-message-box.comentario-error code {
+    display: block;
+    margin-top: 0.7em;
+    padding: 0.85em 1em;
+    border-radius: 14px;
+    background: var(--bg);
+    color: var(--err-muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    overflow-x: auto;
+}
+
+/* Font-size on the inner pre (not code) so code keeps the box em — its margin-left
+   indent above then matches the icon width instead of shrinking with the text. */
+.comentario-root .comentario-message-box.comentario-error code pre {
+    margin: 0;
+    font-size: 0.8em;
+    line-height: 1.55;
+}
+
+/* ---------------------------------------------------------------------------
    Login / sign-in popover (.comentario-dialog)
    --------------------------------------------------------------------------- */
 
