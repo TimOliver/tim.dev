@@ -60,6 +60,9 @@ struct MainLayout: Layout {
             // post pages and <comentario-count> in the home feed; harmless on
             // pages with neither. Loaded site-wide like the other third-party JS.
             Script(file: "https://comments.tim.dev/comentario.js")
+            // Clears the persisted editor draft after a successful post (Comentario
+            // otherwise saves the just-submitted text back as a draft). See the file.
+            Script(file: "/js/comentario-draft-fix.js")
         }
         .ignorePageGutters()
     }
