@@ -1668,24 +1668,29 @@ comentario-comments {
 
 .post-comments-title {
     display: flex;
-    align-items: baseline;
-    gap: 0.35em;
+    align-items: center;
+    gap: 0.25em;
     margin: 0;
     font-weight: 700;
 }
 
-/* "· N" comment count in the heading — revealed by site.js once Comentario
-   loads it (the element stays empty until then). */
+/* Comment count in the heading — revealed by site.js once Comentario loads it (the
+   element stays empty until then). */
 .post-comments-count {
     display: none;
     color: var(--text-secondary);
-    font-weight: 600;
+    font-weight: 700;
 }
 
+/* Shown as a small capsule badge beside "Comments" instead of the old "· N". Uses the
+   same --bg-tertiary fill as the post-badges under the article title and the inline
+   Sign-in button. */
 .post-comments-count.has-count {
-    display: inline;
-}
-
-.post-comments-count.has-count::before {
-    content: "· ";
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15em 0.65em;
+    border-radius: 999px;
+    background: var(--bg-tertiary);
+    font-size: 0.6em;
+    line-height: 1.4;
 }

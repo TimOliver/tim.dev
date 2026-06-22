@@ -613,6 +613,9 @@
     --cmntr-btn-hover-bg: var(--control-hover);
     --cmntr-btn-active-color: var(--heading);
     --cmntr-btn-active-bg: var(--control-hover);
+    /* Drop Comentario's default 5px button margin so the pill's right edge lines up
+       with the comment bar's right edge below. */
+    margin: 0;
 }
 
 /* Text-link buttons (Reply, sort, RSS): muted, lift to heading on hover. */
@@ -1088,7 +1091,7 @@
     border-radius: 18px;
     corner-shape: squircle;
     box-shadow: 0 10px 34px rgba(0, 0, 0, 0.14);
-    max-width: 340px;
+    max-width: 350px;
     /* Dial back from the article body size — 1em reads a touch large in the
        dialog's fields and copy. */
     font-size: 0.9em;
@@ -1320,6 +1323,100 @@
     font-size: 13px;
     color: var(--text-secondary);
     line-height: 1.4;
+}
+
+/* ---- User settings dialog ----
+   Comentario renders 13px labels, tight 2px rows, and indigo checkboxes that ignore
+   the theme. Bring labels up to the dialog's body size, roomier rows, and restyle the
+   checkboxes with the site palette + theme tokens so they read in light and dark. */
+
+/* Checkbox rows: flex so the box centres against the label, with a clean gap and more
+   breathing room than Comentario's 2px. */
+.comentario-root .comentario-dialog .comentario-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.65em;
+    min-height: 0;
+    padding-left: 0;
+    margin-bottom: 0.55em;
+}
+
+/* Labels up from the fixed 13px to the dialog's body size, in the primary text colour. */
+.comentario-root .comentario-dialog .comentario-checkbox-container label {
+    font-size: inherit;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+/* Theme-aware checkbox: --bg box + --border-secondary outline (both adapt to light /
+   dark). Checked is monochrome — filled with --heading (black in light, white in dark). */
+.comentario-root .comentario-dialog .comentario-checkbox-container input[type=checkbox] {
+    float: none;
+    flex: none;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    background-color: var(--bg);
+    border: 1px solid var(--border-secondary);
+    border-radius: 6px;
+    corner-shape: squircle;
+}
+
+.comentario-root .comentario-dialog .comentario-checkbox-container input[type=checkbox]:checked {
+    background-color: var(--heading);
+    border-color: var(--heading);
+}
+
+/* Comentario's checkmark is hardcoded white — fine on the black box in light, but it
+   vanishes on the white box in dark, so swap to a black checkmark there. */
+[data-color-scheme="dark"] .comentario-root .comentario-dialog .comentario-checkbox-container input[type=checkbox]:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+}
+
+/* A little more space above each section heading ("This page" / "Website"). */
+.comentario-root .comentario-dialog form .comentario-py-2.comentario-fw-bold {
+    padding-top: 0.85rem !important;
+}
+
+/* More breathing room between the Website group and the Save button. (Scoped to the
+   settings form — the one with checkboxes — so the login dialog is untouched.) */
+.comentario-root .comentario-dialog form:has(.comentario-checkbox-group) .comentario-dialog-centered:has(.comentario-btn-primary) {
+    margin-top: 0.9em;
+}
+
+/* "Edit Comentario profile" row: space above (below the divider), but no bottom margin
+   so the dialog's own bottom padding is the only space below the button — keeping the
+   padding around it even. */
+.comentario-root .comentario-dialog form:has(.comentario-checkbox-group) .comentario-dialog-centered:has(.comentario-btn-link) {
+    margin: 0.7em 0 0;
+}
+
+/* Style the link itself as a secondary pill (like the composer's Preview button): grey
+   fill, primary text, deepening on hover. Full-width capsule with the same 12px padding
+   as the Save button so the two read as a matching pair. */
+.comentario-root .comentario-dialog form:has(.comentario-checkbox-group) .comentario-dialog-centered .comentario-btn-link {
+    width: 100%;
+    /* margin:0 to match the Save button — the base .comentario-btn doesn't set a margin
+       so this otherwise inherits Comentario's default 5px, which (with width:100%)
+       leaves it a different width/position than Save. */
+    margin: 0;
+    padding: 12px;
+    border-radius: 999px;
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--bg-tertiary);
+}
+
+/* Match the Save button to it: same full-width 12px-padding pill, but capsule-shaped
+   (the general dialog primary is only 12px-radius). */
+.comentario-root .comentario-dialog form:has(.comentario-checkbox-group) .comentario-btn-primary {
+    border-radius: 999px;
+}
+
+.comentario-root .comentario-dialog form:has(.comentario-checkbox-group) .comentario-dialog-centered .comentario-btn-link:hover {
+    color: var(--heading);
+    background: var(--control-hover);
 }
 
 /* "Forgot your password?" — centred link in the primary label colour, underlined
