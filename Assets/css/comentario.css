@@ -148,6 +148,43 @@
 .comentario-root .comentario-profile-bar .comentario-btn-tool[title="Settings"] { --cmntr-icon-pos: 66.667%; }
 .comentario-root .comentario-profile-bar .comentario-btn-tool[title="Logout"]   { --cmntr-icon-pos: 100%; }
 
+/* ---- Anonymous-commenting status (injected by comentario-tweaks.js) ----
+   When in unregistered-commenting mode the profile bar gets .cmntr-anon-mode and a
+   .cmntr-anon-status node (name + Sign out); hide Comentario's "Sign in" button and
+   show the status in its place. */
+.comentario-root .comentario-profile-bar.cmntr-anon-mode .comentario-btn-primary {
+    display: none;
+}
+
+.comentario-root .comentario-profile-bar .cmntr-anon-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.comentario-root .comentario-profile-bar .cmntr-anon-name {
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+/* "Sign out": a quiet ghost pill matching the Cancel button treatment. */
+.comentario-root .comentario-profile-bar .cmntr-anon-signout {
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border-secondary);
+    cursor: pointer;
+    transition: color 0.1s, background-color 0.1s;
+}
+
+.comentario-root .comentario-profile-bar .cmntr-anon-signout:hover {
+    color: var(--text);
+    background: var(--bg-tertiary);
+}
+
 /* ---- Top toolbar: sort buttons on the left, RSS button on the right. The
    comment count lives in our own "Comments · N" heading, so hide the duplicate. ---- */
 .comentario-root .comentario-thread-toolbar {
@@ -158,7 +195,7 @@
     /* Lots of space above pulls the toolbar away from the editor and groups it
        with the comment list below. No bottom border — the sort row reads cleaner
        without a divider line under it. */
-    padding-top: 2.0em;
+    padding-top: 1.25em;
     padding-bottom: 0;
     /* Low, because each comment card now carries 25px top padding of its own. */
     margin-bottom: 0.3em;
@@ -588,6 +625,32 @@
     color: var(--heading);
 }
 
+/* Cancel as a quiet ghost pill — matched size + pill padding so it reads as a proper
+   tertiary button (transparent at rest, faint outline + faint fill on hover) rather
+   than weak bare text next to the filled action buttons. Two places: the editor footer
+   (next to Preview / Add Comment) and the confirm dialog (next to the danger "OK",
+   matched via :has so login-dialog text links keep their link styling). */
+.comentario-root .comentario-comment-editor-footer .comentario-btn-link,
+.comentario-root .comentario-dialog-centered:has(.comentario-btn-danger) .comentario-btn-link {
+    padding: 10px 25px;
+    border-radius: 999px;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: transparent;
+    /* Faint outline so it reads as a button at rest. --border-secondary is tuned to
+       show on the --bg-secondary editor/dialog surface; box-sizing:border-box keeps
+       the pill the same outer size as the filled buttons. */
+    border: 1px solid var(--border-secondary);
+    transition: color 0.1s, background-color 0.1s;
+}
+
+.comentario-root .comentario-comment-editor-footer .comentario-btn-link:hover,
+.comentario-root .comentario-dialog-centered:has(.comentario-btn-danger) .comentario-btn-link:hover {
+    color: var(--text);
+    background: var(--bg-tertiary);
+}
+
 /* Reply — show as a "Reply" text link instead of an icon-only button. */
 .comentario-root .comentario-btn-tool[title="Reply"] .comentario-icon {
     display: none;
@@ -608,17 +671,16 @@
        and ends 25px short on the right. auto lets both negative margins widen the box
        symmetrically (25px bleed each side; content stays at the reading width). */
     width: auto;
-    padding: 25px;
-    /* -25px horizontally cancels the side padding (content stays at the reading
-       width, the box bleeds into the gutter). The 25px top/bottom padding now
-       supplies the inter-comment spacing, so the vertical margins drop to ~0 (small
-       negative bottom margin tightens the gap to taste). */
-    margin: 0 -25px -0.2em;
+    padding: 15px 25px;
+    /* -25px horizontally cancels the side padding (content stays at the reading width,
+       the box bleeds into the gutter). The 15px top/bottom padding plus a 0.5em bottom
+       margin set the inter-comment spacing. */
+    margin: 0 -25px 0.5em;
 }
 
-/* No trailing gap under the last card — also absorb its 25px bottom padding. */
+/* No trailing gap under the last card — also absorb its 15px bottom padding. */
 .comentario-root .comentario-card:last-child {
-    margin-bottom: -25px;
+    margin-bottom: -15px;
 }
 
 .comentario-root .comentario-card .comentario-card-self {
@@ -973,6 +1035,40 @@
 }
 
 /* ---------------------------------------------------------------------------
+   "Thread locked" notice. Comentario shows a centred yellow warning where the
+   compose box would be. Give it the calm panel treatment (like the error box) but
+   neutral and quiet — a subtle grey rounded box with the lock glyph, left-aligned
+   and muted, so it informs without drawing the eye.
+   --------------------------------------------------------------------------- */
+.comentario-root .comentario-page-moderation-notice {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.95rem 1.4rem;
+    border-radius: 999px;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    text-align: left;
+    font-size: 0.95em;
+}
+
+/* Lock glyph — reuse cell 0 of the profile-bar action sprite (lock | lock-open |
+   settings | logout) via mask-position. */
+.comentario-root .comentario-page-moderation-notice::before {
+    content: "";
+    flex: none;
+    width: 1.2em;
+    height: 1.2em;
+    background: var(--text-secondary);
+    -webkit-mask: url(/img/comments-actions.svg) no-repeat;
+            mask: url(/img/comments-actions.svg) no-repeat;
+    -webkit-mask-size: auto 100%;
+            mask-size: auto 100%;
+    -webkit-mask-position: 0% 50%;
+            mask-position: 0% 50%;
+}
+
+/* ---------------------------------------------------------------------------
    Login / sign-in popover (.comentario-dialog)
    --------------------------------------------------------------------------- */
 
@@ -1156,6 +1252,13 @@
     content: "Sign in";
 }
 
+/* Same fix for the anonymous "comment without registration" form: its primary submit
+   is also arrow-icon-only (hidden above) and isn't the login form, so it rendered as
+   a blank white pill. Supply the label. */
+.comentario-root #comentario-unregistered-form .comentario-btn-primary::after {
+    content: "Comment anonymously";
+}
+
 /* Centred dialog copy (e.g. "Don't have an account?") — muted to secondary. */
 .comentario-root .comentario-dialog .comentario-dialog-centered {
     color: var(--text-secondary);
@@ -1173,6 +1276,41 @@
    (identified by the legal links it contains). */
 .comentario-root .comentario-dialog .comentario-dialog-centered:has(a[href*="/legal/"]) {
     margin: 15px 0 18px;
+}
+
+/* ---- Confirm dialog (e.g. "Are you sure you want to delete this comment?") ----
+   Identified by its danger "OK" button. Balance the question across its lines, and lay
+   the Cancel/OK row out as a centred flex pair with a gap (Cancel is now a wider ghost
+   pill — see the shared Cancel rule above). */
+.comentario-root .comentario-dialog:has(.comentario-btn-danger) .comentario-dialog-centered:not(:has(.comentario-btn)) {
+    text-wrap: balance;
+}
+
+.comentario-root .comentario-dialog-centered:has(.comentario-btn-danger) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+}
+
+/* Danger "OK": Comentario lightens the fill to a washed salmon on focus/hover, so the
+   dialog auto-focusing OK makes it look highlighted by default. Keep the resting red
+   (#e03131) when merely focused, and darken (not lighten) on hover/active — which
+   reads better for a destructive action. */
+.comentario-root .comentario-dialog .comentario-btn-danger {
+    --cmntr-btn-hover-bg: #c92a2a;
+    --cmntr-btn-active-bg: #c92a2a;
+}
+
+.comentario-root .comentario-dialog .comentario-btn-danger:focus:not(:hover):not(:disabled) {
+    background-color: var(--cmntr-btn-bg);
+}
+
+/* Match the confirm Cancel to the dialog's full-size OK. The shared Cancel rule sets
+   0.85em (sized for the editor footer), but dialog solid buttons are bumped to 1em to
+   offset the dialog's 0.9em downscale — so Cancel needs 1em here too. */
+.comentario-root .comentario-dialog-centered:has(.comentario-btn-danger) .comentario-btn-link {
+    font-size: 1em;
 }
 
 /* Form helper text (e.g. the password requirements) — restore a comfortable
