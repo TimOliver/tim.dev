@@ -167,9 +167,12 @@
     color: var(--text-secondary);
 }
 
-/* "Sign out": a quiet ghost pill matching the Cancel button treatment. */
+/* "Sign out": a quiet ghost pill matching the Cancel button treatment. Padding +
+   line-height match the Sign in button's 40px height (9 + 20 line-height + 9 + 2 border
+   = 40, vs Sign in's 10 + 20 + 10). */
 .comentario-root .comentario-profile-bar .cmntr-anon-signout {
-    padding: 6px 16px;
+    padding: 9px 16px;
+    line-height: 20px;
     border-radius: 999px;
     font-size: 0.85em;
     font-weight: 600;
@@ -1190,14 +1193,16 @@
     box-shadow: none;
 }
 
-/* Email / password inputs: white field, rounded, neutral border. */
+/* Email / password / name inputs: white field, rounded, neutral border. height:auto
+   overrides Comentario's fixed 40px so the taller padding drives the height. */
 .comentario-root .comentario-dialog .comentario-input {
     background: var(--bg);
     border: 1px solid var(--border-secondary);
-    border-radius: 12px;
+    border-radius: 15px;
     corner-shape: squircle;
     color: var(--text);
-    padding: 12px 14px;
+    height: auto;
+    padding: 15px 16px;
     font-size: inherit;
     width: 100%;
 }
@@ -1255,11 +1260,114 @@
     content: "Sign in";
 }
 
-/* Same fix for the anonymous "comment without registration" form: its primary submit
-   is also arrow-icon-only (hidden above) and isn't the login form, so it rendered as
-   a blank white pill. Supply the label. */
+/* ---- Streamlined anonymous ("post without registration") section ----
+   The verbose copy is replaced with an "OR POST ANONYMOUSLY" divider, and the name
+   field + Post button sit inline on one row. */
+
+/* Button label (its arrow icon is hidden above; not the login form, so no "Sign in"). */
 .comentario-root #comentario-unregistered-form .comentario-btn-primary::after {
-    content: "Comment anonymously";
+    content: "Post";
+}
+
+/* Hide Comentario's "Not willing to sign up?…" copy — the divider below says it. */
+.comentario-root #comentario-unregistered-form .comentario-dialog-centered {
+    display: none;
+}
+
+/* The <hr>s before the sign-up and anonymous sections become labelled dividers ("OR
+   SIGN UP" / "OR POST ANONYMOUSLY"): a centred label cutting a thin line (the label's
+   --bg-secondary bg masks the line behind the text). */
+.comentario-root .comentario-dialog hr:has(+ #comentario-unregistered-form),
+.comentario-root .comentario-dialog hr:has(+ .comentario-dialog-centered) {
+    border: none;
+    height: auto;
+    margin: 16px 0 14px;
+    text-align: center;
+    overflow: visible;
+    background: linear-gradient(var(--border-secondary), var(--border-secondary)) center / 100% 1px no-repeat;
+}
+
+.comentario-root .comentario-dialog hr:has(+ #comentario-unregistered-form)::before,
+.comentario-root .comentario-dialog hr:has(+ .comentario-dialog-centered)::before {
+    display: inline-block;
+    padding: 0 0.7em;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 0.7em;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.comentario-root .comentario-dialog hr:has(+ .comentario-dialog-centered)::before {
+    content: "OR SIGN UP";
+}
+
+.comentario-root .comentario-dialog hr:has(+ #comentario-unregistered-form)::before {
+    content: "OR POST ANONYMOUSLY";
+}
+
+/* Name field + Post button inline on one row (was stacked full-width). */
+.comentario-root #comentario-unregistered-form .comentario-input-group {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 0;
+}
+
+.comentario-root #comentario-unregistered-form .comentario-input {
+    flex: 1;
+    /* Comentario pins inputs to height:40px, which blocks the row's align-items:stretch.
+       auto lets the field stretch to match the Post button's height. */
+    height: auto;
+}
+
+/* Post: auto-width secondary (light) pill so it doesn't compete with the primary Sign
+   in button. (#id specificity beats the dialog's direct background, so override it.) */
+.comentario-root #comentario-unregistered-form .comentario-btn-primary {
+    width: auto;
+    flex: none;
+    /* Wider horizontal padding so it's less square next to the taller name field. */
+    padding: 12px 24px;
+    background: var(--bg-tertiary);
+    color: var(--text);
+    border-color: transparent;
+}
+
+.comentario-root #comentario-unregistered-form .comentario-btn-primary:hover {
+    background: var(--control-hover);
+    color: var(--heading);
+}
+
+/* ---- Sign-up section ----
+   Spun off under the "OR SIGN UP" divider: hide the "Don't have an account?" copy and
+   turn the "Sign up here" link into a full-width "Create an account" secondary button,
+   parallel to the Sign in / Post buttons. */
+.comentario-root .comentario-dialog .comentario-dialog-centered:has(.comentario-btn-secondary) {
+    font-size: 0; /* collapse the "Don't have an account?" text node */
+    margin: 0;
+}
+
+.comentario-root .comentario-dialog .comentario-dialog-centered:has(.comentario-btn-secondary) .comentario-btn-secondary {
+    width: 100%;
+    margin: 0;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 0; /* hide the "Sign up here" label; the ::after supplies the new one */
+    background: var(--bg-tertiary);
+    color: var(--text);
+    border-color: transparent;
+}
+
+.comentario-root .comentario-dialog .comentario-dialog-centered:has(.comentario-btn-secondary) .comentario-btn-secondary::after {
+    content: "Create an account";
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.comentario-root .comentario-dialog .comentario-dialog-centered:has(.comentario-btn-secondary) .comentario-btn-secondary:hover {
+    background: var(--control-hover);
+    color: var(--heading);
+    text-decoration: none;
 }
 
 /* Centred dialog copy (e.g. "Don't have an account?") — muted to secondary. */
