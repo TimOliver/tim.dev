@@ -417,6 +417,25 @@
     margin-top: 10px;
 }
 
+/* Relabel the submit from "Add Comment" to the punchier "Post" (matches the composer's
+   intent and the anonymous "Post" button) — at every width. Done in CSS rather than
+   Comentario's global i18n so it stays in-repo: font-size:0 hides the real text node —
+   the pill keeps its size because Comentario's button padding is px, not em — and
+   ::after supplies the label (an em size would resolve to 0 off the zeroed host font).
+   The :not()s lift specificity above Comentario's own 0.85em button-text rule. */
+.comentario-root .comentario-comment-editor-footer .comentario-btn-primary:not(.comentario-btn-link):not(.comentario-btn-tool):not(.comentario-btn-active) {
+    font-size: 0;
+}
+.comentario-root .comentario-comment-editor-footer .comentario-btn-primary .comentario-submit-icon {
+    display: none;
+}
+.comentario-root .comentario-comment-editor-footer .comentario-btn-primary::after {
+    content: "Post";
+    /* 0.85em off Comentario's fixed 15px .comentario-root base = 12.75px, matching the
+       Cancel / Preview labels. */
+    font-size: 12.75px;
+}
+
 /* Textarea / contenteditable — borderless typing area inside the editor box
    (the editor carries the single border), no blue focus ring. */
 .comentario-root .comentario-comment-editor textarea,
@@ -529,10 +548,10 @@
     align-items: center;
     gap: 0.5em;
     /* The glyphs are optically centred in their 32px tap targets, so the row reads
-       ~0.45em inset from the separator. Pull the whole section left to land the first
-       glyph on the content edge (flush with the separator + textarea). The freed
-       space falls into the editor's left padding, so nothing clips. */
-    margin-left: -0.45em;
+       ~0.45em inset from the separator. Pull the section left by that ~0.45em to reach
+       the content edge, then add back 5px so the icon row sits a deliberate 5px inset
+       from the separator + textarea. The slack falls into the editor's left padding. */
+    margin-left: calc(-0.45em + 5px);
 }
 
 /* Subtle separator between the formatting toolbar and the textarea. Scoped to the
@@ -677,11 +696,15 @@
        and ends 25px short on the right. auto lets both negative margins widen the box
        symmetrically (25px bleed each side; content stays at the reading width). */
     width: auto;
-    padding: 15px 25px;
-    /* -25px horizontally cancels the side padding (content stays at the reading width,
-       the box bleeds into the gutter). The 15px top/bottom padding plus a 0.5em bottom
-       margin set the inter-comment spacing. */
-    margin: 0 -25px 0.5em;
+    /* Horizontal padding == bleed, both clamped to the page gutter: 25px where there's
+       room (desktop gutter is 35px), but shrinking to --container-pad on phones (16px /
+       8px) so the box never bleeds past the viewport edge and triggers sideways scroll.
+       Keeping padding == bleed means content stays at the reading width regardless. */
+    padding: 15px min(25px, var(--container-pad));
+    /* min(...) cancels the side padding (content stays at the reading width, the box
+       bleeds into the gutter). The 15px top/bottom padding plus a 0.5em bottom margin
+       set the inter-comment spacing. */
+    margin: 0 calc(-1 * min(25px, var(--container-pad))) 0.5em;
 }
 
 /* No trailing gap under the last card — also absorb its 15px bottom padding. */
@@ -841,6 +864,12 @@
     text-transform: uppercase;
 }
 
+/* Hide the "Moderator" role chip — the owner doesn't need it flagged on their own
+   comments. (Any other badge keeps the chip styling above.) */
+.comentario-root .comentario-badge-moderator {
+    display: none;
+}
+
 .comentario-root .comentario-card-body {
     color: var(--text);
     line-height: 1.6;
@@ -913,6 +942,25 @@
    = 78px. (card-children nested inside card-children = the parent is itself a reply.) */
 .comentario-root .comentario-card-children .comentario-card-children > .comentario-card {
     padding-left: 78px;
+}
+
+/* Mobile: the desktop indent aligns each reply's nesting bar with the PARENT'S BODY
+   TEXT (avatar + 18px gap + 25px bleed) — wide, and it compounds with depth. On a phone
+   that wastes width, but simply shrinking it drops the bar under the parent avatar (it
+   reads as orphaned). The bar is the reply card's first flex child sitting at its
+   padding-left, and the card bleeds left by the gutter, so the bar renders at
+   (padding-left − bleed). Setting padding-left = parent-avatar + bleed lands the bar
+   exactly on the parent avatar's right edge — a clean gutter — while still reclaiming the
+   ~18px text gap. Both terms track the breakpoint via min(25px, --container-pad). */
+@media (max-width: 720px) {
+    /* depth-1 hangs off a top-level parent (44px avatar) */
+    .comentario-root .comentario-card-children > .comentario-card {
+        padding-left: calc(44px + min(25px, var(--container-pad)));
+    }
+    /* depth-2+ hangs off a reply parent (36px avatar) */
+    .comentario-root .comentario-card-children .comentario-card-children > .comentario-card {
+        padding-left: calc(36px + min(25px, var(--container-pad)));
+    }
 }
 
 /* Gap between the nesting line and the reply avatar. Matches the avatar→text gap
@@ -1773,4 +1821,64 @@
     font-size: 0.8em;
     font-weight: 700;
     line-height: 1.2;
+}
+
+/* ---- Mobile: editor toolbar ----
+   Comentario fixes every markdown tool button at 32px, so nine of them (plus the help
+   "?") overflow a phone's narrow editor — the last icon clips and the "?" wraps to its
+   own line. The buttons (not the glyphs) are the constraint, so we tighten the editor's
+   padding/gap first, then shrink the buttons themselves below the iPhone Air width. (The
+   card's gutter bleed is clamped breakpoint-free via min() on .comentario-card, above;
+   the "Post" submit relabel is a base rule near the footer styles.) */
+
+/* Phones down to ~440px: tighten the editor padding and toolbar gap so the nine 32px
+   buttons hold one row; the row still wraps cleanly if it can't (narrowest screens). */
+@media (max-width: 519.98px) {
+    .comentario-root .comentario-comment-editor {
+        padding: 14px 16px;
+    }
+    .comentario-root .comentario-comment-editor .comentario-toolbar-section:not(:has([title="Editor help"])) {
+        flex-wrap: wrap;
+        gap: 0.35em;
+    }
+}
+
+/* iPhone Air (420px) and smaller: shrink the fixed tap targets themselves — and the
+   glyphs to match — so all nine plus the help "?" stay on one row down to the mini
+   phones (~360px). */
+@media (max-width: 439.98px) {
+    .comentario-root .comentario-comment-editor {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    .comentario-root .comentario-comment-editor .comentario-btn-tool {
+        width: 26px;
+        height: 26px;
+    }
+    .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon,
+    .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon svg,
+    .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) svg {
+        width: 1.3em;
+        height: 1.3em;
+    }
+    .comentario-root .comentario-comment-editor .comentario-toolbar-section:not(:has([title="Editor help"])) {
+        gap: 0.3em;
+    }
+}
+
+/* iPhone Air (420px) and the other ≥390px phones in this range have room to spare that
+   the ≤389px minis don't, so give their tap targets + glyphs some size back (28px / 1.5em
+   vs the minis' 26px / 1.3em). The container gutter steps from 20px to 16px at ≤389px,
+   which is why that's the natural floor for the bigger size. */
+@media (min-width: 390px) and (max-width: 439.98px) {
+    .comentario-root .comentario-comment-editor .comentario-btn-tool {
+        width: 28px;
+        height: 28px;
+    }
+    .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon,
+    .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon svg,
+    .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) svg {
+        width: 1.6em;
+        height: 1.6em;
+    }
 }
