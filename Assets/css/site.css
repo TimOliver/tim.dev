@@ -244,6 +244,61 @@ article img.hero {
     corner-shape: squircle;
 }
 
+/* Thumbnail grid for runs of consecutive article images (grouped by
+   ArticleShell.groupImageGrids). Cropped 4:3 thumbs at the content width —
+   3-up normally, 2-up for short runs (--gallery-cols set inline). Clicking a
+   thumb opens the run as a lightbox3 gallery with captions. Same border +
+   squircle vocabulary as standalone article images. */
+.post-gallery {
+    display: grid;
+    grid-template-columns: repeat(var(--gallery-cols, 3), 1fr);
+    gap: 10px;
+    margin: 0 auto 1.75em;
+}
+
+.post-gallery a {
+    display: block;
+    line-height: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    corner-shape: squircle;
+    overflow: hidden;
+}
+
+[data-color-scheme="dark"] .post-gallery a {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Neutralise the standalone `article img` chrome — the anchor carries the
+   border/rounding, and the thumb crops to a uniform 4:3 cell. */
+.post-gallery img {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    transition: transform 0.6s var(--hover-spring);
+}
+
+/* Gentle zoom on hover — the site's standard interactive-surface cue. */
+@media (hover: hover) {
+    .post-gallery a:hover img {
+        transform: scale(1.04);
+        transition: transform 0.15s ease-out;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .post-gallery img,
+    .post-gallery a:hover img {
+        transition: none;
+        transform: none;
+    }
+}
+
 article img.lqip {
     transition: filter 0.4s ease-out;
 }

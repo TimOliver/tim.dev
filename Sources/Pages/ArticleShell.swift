@@ -110,7 +110,11 @@ enum ArticleShell {
         if let image = article.image, !image.isEmpty {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
         }
-        s += "<section>\(fixBareImages(InstagramEmbed.transform(article.text)))</section>"
+        let body = groupImageGrids(
+            fixBareImages(InstagramEmbed.transform(article.text)),
+            galleryPrefix: CollectionRenderer.key(for: article.path, dir: "posts")
+        )
+        s += "<section>\(body)</section>"
 
         // Footer — every article ends with the same links row (feed and post
         // page match). The post page additionally renders the comment thread
@@ -148,6 +152,55 @@ enum ArticleShell {
         f.timeZone = displayTimeZone
         f.dateFormat = "yyyy-MM-dd"
         return f.string(from: date)
+    }
+
+    /// Turns runs of 2+ consecutive standalone images into a lightbox-backed
+    /// thumbnail grid (.post-gallery, styled in site.css). Matches both fresh
+    /// markdown output (`<p><img></p>` paragraphs) and legacy WordPress blocks
+    /// (`<figure class="wp-block-image"><img>[<figcaption>]</figure>`). Each
+    /// image becomes an `<a data-lightbox="…">` thumb — lightbox3 (loaded on
+    /// home + post pages) groups anchors sharing a data-lightbox value into a
+    /// navigable gallery and shows data-caption under each. The caption comes
+    /// from the figcaption where present, else the image's alt text. Single
+    /// images are left exactly as they were.
+    private static func groupImageGrids(_ html: String, galleryPrefix: String) -> String {
+        let item = #"(?:<p><img\s[^>]+></p>|<figure class="wp-block-image[^"]*"><img\s[^>]+>(?:<figcaption>.*?</figcaption>)?</figure>)"#
+        let runPattern = "\(item)(?:\\s*\(item))+"
+        var runIndex = 0
+        return replaceRegex(html, runPattern) { m, ns in
+            runIndex += 1
+            let run = ns.substring(with: m.range)
+            let gallery = "\(galleryPrefix)-g\(runIndex)"
+
+            // Pull each image (+ optional figcaption) out of the run.
+            var items: [(src: String, alt: String, caption: String)] = []
+            let imgRe = #"<img\s[^>]*src="([^"]*)"[^>]*?(?:\salt="([^"]*)")?[^>]*>(?:</p>|(?:<figcaption>(.*?)</figcaption>)?</figure>)"#
+            _ = replaceRegex(run, imgRe) { im, ins in
+                let src = ins.substring(with: im.range(at: 1))
+                let alt = im.range(at: 2).location == NSNotFound ? "" : ins.substring(with: im.range(at: 2))
+                var caption = im.range(at: 3).location == NSNotFound ? "" : ins.substring(with: im.range(at: 3))
+                // Attribute-safe plain text: drop any inline tags; the text is
+                // already HTML-encoded, so only quotes need handling.
+                caption = replaceRegex(caption, #"<[^>]+>"#) { _, _ in "" }
+                    .replacingOccurrences(of: "\"", with: "&quot;")
+                if caption.isEmpty { caption = alt }
+                items.append((src, alt.isEmpty ? caption : alt, caption))
+                return ""
+            }
+            guard items.count >= 2 else { return run }
+
+            // 3-up by default; 2-up when a 2- or 4-image run would leave a
+            // lonely orphan (or can't fill a row at all).
+            let cols = (items.count == 2 || items.count == 4) ? 2 : 3
+            var out = #"<div class="post-gallery" style="--gallery-cols: \#(cols);">"#
+            for i in items {
+                out += #"<a href="\#(i.src)" data-lightbox="\#(gallery)" data-caption="\#(i.caption)">"#
+                out += #"<img src="\#(i.src)" alt="\#(i.alt)" loading="lazy">"#
+                out += "</a>"
+            }
+            out += "</div>"
+            return out
+        }
     }
 
     /// Converts Markdown image syntax that leaked into the compiled HTML as

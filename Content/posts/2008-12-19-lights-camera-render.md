@@ -21,11 +21,11 @@ So now, I’m a CG artist for an online television series… cool. From the look
 
 Thankfully, the majority of the 3D assets have already been created, so I don’t really have to stress over those. The two major elements are a ‘scout ship’ and a ‘patrol ship’. The production quality of these 2 assets is ridiculously high, as they have both been made by very high-end LightWave artists who have previously had work featured in such prominent shows as the new ‘Battlestar Galactica’.
 
-<div class="wp-caption aligncenter" id="attachment_194" style="width: 310px">![](/img/posts/2008/12/scout_ship_wireframe.jpg)Scout ship by Alain Rivard
+![Scout ship by Alain Rivard](/img/posts/2008/12/scout_ship_wireframe.jpg)
 
-</div><div class="wp-caption aligncenter" id="attachment_195" style="width: 310px">![](/img/posts/2008/12/patrol_ship_wireframe.jpg)Patrol ship by Fabio Passaro
+![Patrol ship by Fabio Passaro](/img/posts/2008/12/patrol_ship_wireframe.jpg)
 
-</div>So… starting from these holidays, I’ve been assigned the task to create several fully CG shots involving these ships. The shots will need to be in 1080p and will need to be able to stand under heavy scrutiny hehe. Sounds somewhat tricky, but I’m down for the challenge. 🙂
+So… starting from these holidays, I’ve been assigned the task to create several fully CG shots involving these ships. The shots will need to be in 1080p and will need to be able to stand under heavy scrutiny hehe. Sounds somewhat tricky, but I’m down for the challenge. 🙂
 
 I’ve already started work on the first shot, which I’ll post a little tidbit here. 🙂
 
