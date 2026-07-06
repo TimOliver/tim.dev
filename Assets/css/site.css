@@ -145,21 +145,58 @@ hr {
     border-top: 1px solid var(--border);
 }
 
-/* Home feed: stacked posts are separated by whitespace alone — each post's
-   end-of-article links give it enough of a "tail" that a rule isn't needed.
-   Only matches the multi-post home page (single-post pages have one <article>). */
-article + article {
-    margin-top: 6rem;
+/* In-article section break — the soft gradient rule from Template's
+   .article-separator: 2px, fading into the page background at both ends —
+   deliberately lighter than a solid hairline, so it reads as a breather
+   within a post rather than a post boundary (those are whitespace-only, see
+   the feed rules below). Scoped to the post-content <section> so the <hr>s
+   Comentario injects at runtime (login dialog dividers, etc.) keep their own
+   styling. */
+article section hr {
+    height: 2px;
+    clear: both;
+    border: 0;
+    margin: 2rem auto;
+    background: linear-gradient(to right, var(--bg) 0%, var(--border) 25%, var(--border) 50%, var(--border) 75%, var(--bg) 100%);
 }
 
-/* Tighten the inter-post gap on smaller screens. */
+/* Home feed: stacked posts are separated by a hairline centred in the gap
+   (margin above the line, padding below), reusing the site's --border
+   vocabulary (archive years, footer, comments). In-article <hr>s use the
+   gradient-fade rule above instead, so the two never read alike.
+   Only matches the multi-post home page (single-post pages have one <article>). */
+/* Gap between the post header's badge row and the hero image below it —
+   shared with .post-badges + img.hero so the header/hero rhythm stays in step
+   with the feed spacing breakpoints. */
+article {
+    --post-header-gap: 2.5rem;
+}
+
+/* Home feed: stacked posts are separated by whitespace alone — generous
+   enough that the gap does the separating by itself. A hairline separator was
+   tried here (2026-07) and removed: any rule above the centred date/title
+   block fought with its clean, floating look. In-article <hr>s remain the
+   soft gradient rule above. Only matches the multi-post home page
+   (single-post pages have one <article>). */
+article + article {
+    margin-top: 7.5rem;
+}
+
+/* Tighten the inter-post gap on smaller screens; phones drop to a compact gap
+   so the feed doesn't scroll like empty space. */
 @media (max-width: 1000px) {
+    article {
+        --post-header-gap: 2rem;
+    }
     article + article {
-        margin-top: 4.5rem;
+        margin-top: 5.5rem;
     }
 }
 
 @media (max-width: 720px) {
+    article {
+        --post-header-gap: 1.5rem;
+    }
     article + article {
         margin-top: 3.5rem;
     }
@@ -1316,10 +1353,11 @@ footer .container {
     font-weight: 500;
 }
 
-/* Feed hero (preceded by the badge row). */
+/* Feed hero (preceded by the badge row). Top gap is the shared header-frame
+   token — see --post-header-gap where the feed separator is defined. */
 .post-badges + img.hero {
     /* auto inline margins keep the capped (max-width:750px) hero centred. */
-    margin: 2em auto 1.8em;
+    margin: var(--post-header-gap) auto 1.8em;
 }
 
 /* Dim capsule badge, 30px tall — reads as a clickable control. */
