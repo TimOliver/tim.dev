@@ -28,6 +28,10 @@
     --menu-ease: cubic-bezier(0.32, 0.72, 0, 1);
     --control-hover: rgba(120, 120, 128, 0.18);
     --control-active: rgba(120, 120, 128, 0.10);
+    /* Diagonal hatch overlay for placeholder/photo surfaces (layered over a
+       tint or --bg-tertiary). Same in dark mode — the surface underneath is
+       what changes. art.css uses a one-off darker 0.06 variant. */
+    --hatch: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px);
     /* Shared page gutter (overridden per breakpoint below) so the article
        container, comment dividers and footer separator all sit at one content
        width; plus the readable measure article body copy centres within. */
@@ -161,13 +165,11 @@ article + article {
     }
 }
 
-/* On mid/small screens the date + title shrink with the body font while the
-   fixed-height badges don't — bump them ~20% to keep the balance. Extra-small
-   (<=389px) keeps its own smaller title, so this stops above it. */
+/* On mid/small screens the title shrinks with the body font while the
+   fixed-height badges don't — bump it ~20% to keep the balance. Extra-small
+   (<=389px) keeps its own smaller title, so this stops above it. (The date
+   needs no bump here — its base 1.25em rule already wins.) */
 @media (min-width: 389.02px) and (max-width: 1000px) {
-    .date {
-        font-size: 1.2em;
-    }
     .title {
         font-size: 2.55em;
     }
@@ -189,11 +191,6 @@ article img {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Hero / featured image rendered right after the title block. Bleeds wider
-   than the prose — up to 60px past the text on each side on a roomy viewport,
-   easing to 24px on narrow ones. 24px < the 35px padding, so it never reaches
-   the viewport edge on mobile; the clamp's middle term caps it at the gutter
-   beyond the ~70ch column so it can't force a horizontal scrollbar. */
 /* Hero image — fits within the content column (no overhang) and keeps its natural
    aspect ratio (no fixed height), so it scales down with the column instead of
    dominating medium screens like an iPad mini. The ≤720px rule still caps it as a
@@ -206,14 +203,6 @@ article img.hero {
     margin: 1.5em 0 2em;
     border-radius: 30px;
     corner-shape: squircle;
-}
-
-@media (max-width: 720px) {
-    article img.hero {
-        width: 100%;
-        height: auto;
-        margin: 1.5em 0 2em;
-    }
 }
 
 article img.lqip {
@@ -267,194 +256,6 @@ article iframe[src*="youtube"] {
     border-radius: 12px;
     corner-shape: squircle;
     background: var(--bg-secondary);
-}
-
-article .embed_social {
-    --accent: var(--link);
-    --embed-bg: var(--bg-secondary);
-    --embed-border: var(--border);
-    --embed-text: var(--text);
-    --embed-text-secondary: var(--text-secondary);
-    background: var(--embed-bg);
-    border-radius: 8px;
-    corner-shape: squircle;
-    border: 1px solid var(--embed-border);
-    min-width: 270px;
-    max-width: 508px;
-    padding: 16px;
-    margin: 0 auto 1.75em;
-}
-
-article .embed_social::before {
-    content: none;
-}
-
-article .embed_social[data-platform="mastodon"] {
-    --accent: #6364FF;
-    --embed-bg: #FFFFFF;
-    --embed-border: #C0CDD9;
-    --embed-text: #191B22;
-    --embed-text-secondary: #606984;
-}
-
-article .embed_social[data-platform="twitter"] {
-    --accent: #1DA1F2;
-    --embed-bg: #F5F8FA;
-    --embed-border: #E1E8ED;
-    --embed-text: #14171A;
-    --embed-text-secondary: #657786;
-}
-
-article .embed_social[data-platform="bluesky"] {
-    --accent: #0085FF;
-    --embed-bg: #FFFFFF;
-    --embed-border: #D4DBE2;
-    --embed-text: #0B0F19;
-    --embed-text-secondary: #42576C;
-}
-
-[data-color-scheme="dark"] article .embed_social[data-platform="mastodon"] {
-    --accent: #8C8DFF;
-    --embed-bg: #282C37;
-    --embed-border: #393F4F;
-    --embed-text: #FFFFFF;
-    --embed-text-secondary: #9BAEA0;
-}
-
-[data-color-scheme="dark"] article .embed_social[data-platform="twitter"] {
-    --embed-bg: #15202B;
-    --embed-border: #38444D;
-    --embed-text: #FFFFFF;
-    --embed-text-secondary: #8899A6;
-}
-
-[data-color-scheme="dark"] article .embed_social[data-platform="bluesky"] {
-    --accent: #208BFE;
-    --embed-bg: #161E27;
-    --embed-border: #2E3641;
-    --embed-text: #FFFFFF;
-    --embed-text-secondary: #8D9AAA;
-}
-
-.embed_social .header {
-    display: grid;
-    gap: 10px;
-    grid-template-columns: 1fr 40px;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
-.embed_social .avatar {
-    width: 46px;
-    height: 46px;
-    border-radius: 8px;
-    corner-shape: squircle;
-    margin: 0;
-    display: block;
-}
-
-.embed_social[data-platform="twitter"] .avatar,
-.embed_social[data-platform="bluesky"] .avatar {
-    border-radius: 50%;
-    /* These are circular; reset the squircle inherited from the base
-       .avatar rule so corner-shape doesn't turn them into rounded squares. */
-    corner-shape: round;
-}
-
-.embed_social a.name_header {
-    line-height: 22px;
-    display: grid;
-    gap: 10px;
-    grid-template-columns: 46px 1fr;
-    align-items: center;
-    text-decoration: none;
-}
-
-.embed_social a.name_header:hover .display_name {
-    text-decoration: underline;
-    text-decoration-color: var(--embed-text);
-}
-
-.embed_social .name {
-    min-width: 0;
-}
-
-.embed_social .name .display_name,
-.embed_social .name .account_name {
-    display: block;
-    font-size: 15px;
-}
-
-.embed_social .name .display_name {
-    font-weight: 600;
-    color: var(--embed-text);
-}
-
-.embed_social .name .account_name {
-    color: var(--embed-text-secondary);
-}
-
-.embed_social .embed_logo {
-    width: 40px;
-    height: auto;
-    color: var(--accent);
-}
-
-.embed_social .text {
-    color: var(--embed-text);
-    font-size: 19px;
-    line-height: 24px;
-    margin: 0;
-    white-space: pre-wrap;
-}
-
-.embed_social .text a,
-.embed_social .meta a {
-    text-decoration: none;
-}
-
-.embed_social .text a {
-    color: var(--accent);
-}
-
-.embed_social .text a:hover,
-.embed_social .meta a:hover {
-    text-decoration: underline;
-}
-
-.embed_social .meta {
-    margin: 16px 0 0;
-}
-
-.embed_social .meta a {
-    color: var(--embed-text-secondary);
-    font-size: 14px;
-}
-
-.embed_social .media {
-    margin-top: 12px;
-    display: grid;
-    gap: 4px;
-    grid-template-columns: 1fr 1fr;
-}
-
-.embed_social .media:has(> a:only-child) {
-    grid-template-columns: 1fr;
-}
-
-.embed_social .media a {
-    display: block;
-    line-height: 0;
-}
-
-.embed_social .media img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: none;
-    border-radius: 8px;
-    corner-shape: squircle;
-    margin: 0;
 }
 
 /* iPhone-class landscape: cap media so it doesn't overflow the viewport */
@@ -616,7 +417,8 @@ body > header::before {
     transition: transform 0.6s var(--hover-spring);
 }
 
-#menu a:hover {
+#menu a:hover,
+.menu-closed-bar a:hover {
     color: var(--heading);
     text-decoration-line: none;
     transform: scale(1.08);
@@ -632,13 +434,6 @@ body > header::before {
     transition: transform 0.6s var(--hover-spring);
 }
 
-.menu-closed-bar a:hover {
-    color: var(--heading);
-    text-decoration-line: none;
-    transform: scale(1.08);
-    transition: transform 0.15s ease-out;
-}
-
 @media (max-width: 720px) {
     #menu a:hover,
     .menu-closed-bar a:hover {
@@ -646,7 +441,9 @@ body > header::before {
     }
 }
 
-#menu > li > a > img {
+/* Shared with .theme-toggle-icon below — the two 25px header glyph kinds. */
+#menu > li > a > img,
+.theme-toggle-icon {
     height: 25px;
     display: block;
     filter: var(--icon-filter);
@@ -671,12 +468,7 @@ body > header::before {
     font: inherit;
 }
 
-.theme-toggle-icon {
-    display: block;
-    height: 25px;
-    filter: var(--icon-filter);
-}
-
+/* .theme-toggle-icon base sizing lives with the header glyph rule above. */
 .theme-icon-light {
     display: none;
 }
@@ -1397,27 +1189,64 @@ footer .container {
 
 /* Text-colored link: blends in with body text, underlines on hover. Use
    outside article prose where the default red link color would feel
-   intrusive (archive rows, lists, future sub-pages). */
-.text-link {
-    color: var(--text);
-    text-decoration: none;
-}
-
+   intrusive (archive rows, lists, future sub-pages). Only recolors — the
+   no-underline base and hover underline come from the `a` rules above. */
+.text-link,
 .text-link:hover {
     color: var(--text);
-    text-decoration: underline;
-    text-underline-offset: 3px;
 }
 
-/* Small-caps section label, shared across sub-pages (About, Apps, etc.).
-   Apple-style "eyebrow" heading — tracked, muted, all-caps. */
-.section-label {
-    font-size: 0.78em;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+/* Shared "no results" empty state for filterable listings (archive search,
+   talks filters — both toggled by site.js). */
+.archive-empty,
+.talks-empty {
+    text-align: center;
     color: var(--text-secondary);
-    margin: 0 0 1em;
+    padding: 2em 0;
+    margin: 0;
+}
+
+/* Tech-Specs-style hairline key/value list — used by the collection detail
+   sidebars (Apps/Code/Art/Talks) and the About colophon. The Contact card's
+   list is deliberately decoupled (larger type/looser rows — see contact.css). */
+.spec-list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    /* No column-gap: a real gap would break the row hairline between the two
+       cells. The label/value spacing is recreated as dt padding-right below,
+       which the border-top spans — so the line reads as one continuous rule. */
+    column-gap: 0;
+    row-gap: 0.45em;
+    margin: 0;
+    /* Label and value share a baseline per row, so a multi-line value lines up
+       with its label on the first line instead of centring against it. */
+    align-items: baseline;
+}
+
+/* Subtle hairline between spec rows (every row but the first), spanning both
+   columns so the eye can track a label across to its value. The row-gap sits
+   over the line and the padding-top below it, keeping the hairline centred in
+   the gap without growing the card much. */
+.spec-list dd + dt,
+.spec-list dd:not(:first-of-type) {
+    border-top: 1px solid var(--border);
+    padding-top: 0.45em;
+}
+
+.spec-list dt {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    /* Stands in for the removed column-gap, but sits inside the cell so the
+       hairline runs unbroken across to the value column. */
+    padding-right: 1.5em;
+}
+
+.spec-list dd {
+    margin: 0;
+    text-align: right;
+    font-size: 0.9em;
+    color: var(--text);
 }
 
 @media (max-width: 720px) {

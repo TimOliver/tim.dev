@@ -85,7 +85,7 @@
     border-radius: 6px;
     corner-shape: squircle;
     background:
-        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
+        var(--hatch),
         var(--bg-tertiary);
 }
 
@@ -108,16 +108,10 @@
     min-width: 0;
 }
 
-.app-detail-name {
-    font-size: 2.7em;
-    line-height: 1.0;
-    color: var(--heading);
-    margin: 0;
-}
-
-.app-detail-tagline {
-    font-size: 1.3em;
-    color: var(--text-secondary);
+/* Name + tagline are the shared .collection-detail-name/-tagline (collection.css).
+   Beside the icon the tagline hugs the name — the header block below provides
+   the vertical gap, so drop the shared rule's bottom margin. */
+.app-detail-headings .collection-detail-tagline {
     margin: 0.1em 0 0;
 }
 
@@ -161,10 +155,12 @@
         height: 80px;
         border-radius: 18px;
     }
-    .app-detail-name {
+    /* Slightly smaller than the shared 2.1em detail-name shrink — the name
+       shares its row with the 80px icon. */
+    .app-detail-headings .collection-detail-name {
         font-size: 1.9em;
     }
-    .app-detail-tagline {
+    .app-detail-headings .collection-detail-tagline {
         font-size: 1.05em;
     }
 

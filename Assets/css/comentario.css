@@ -305,29 +305,22 @@
     mask: url(/img/rss.svg) center / contain no-repeat;
 }
 
-/* ---- Comment editor ("Add a comment") ---- */
+/* ---- Comment editor ("Add a comment") ----
+   Squircle corners for both editor shapes; the actual surfaces are the
+   collapsed capsule (:not(.comentario-editor-inserted), below) and the
+   expanded 30px box (.comentario-comment-editor, further down). */
 .comentario-root .comentario-add-comment-host,
 .comentario-root .comentario-comment-editor {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
     corner-shape: squircle;
-    padding: 16px 19px;
-    transition: border-color 0.15s ease;
 }
 
-/* Collapsed editor: placeholder top-left in a shorter box — the default centres
-   it in a 130px-tall flex box. */
+/* Collapsed editor: placeholder top-left — the default centres it in a
+   130px-tall flex box. */
 .comentario-root .comentario-add-comment-host {
     justify-content: flex-start;
     align-items: flex-start;
-    min-height: 72px;
     /* Disable Comentario's text-size override so it matches the body text. */
     font-size: inherit;
-}
-
-.comentario-root .comentario-add-comment-host:focus-within {
-    border-color: var(--text-tertiary);
 }
 
 /* Expanded editor: Comentario nests host > editor > textarea, each bordered, so
@@ -683,7 +676,7 @@
 
 .comentario-root .comentario-btn-tool[title="Reply"]::after {
     content: "Reply";
-    font-weight: 500;
+    /* Weight comes from the shared row styling (bold) in the likes section. */
 }
 
 /* ---- Comment cards ---- */
@@ -800,10 +793,6 @@
 .comentario-root .comentario-card-children .comentario-avatar-img {
     width: 36px;
     height: 36px;
-}
-
-.comentario-root .comentario-card-children .comentario-avatar {
-    font-size: 1.25em;
 }
 
 .comentario-root .comentario-name {
@@ -1617,16 +1606,12 @@
     margin: 16px 0;
 }
 
-/* Sign-up footer: classic "Don't have an account?" lead-in followed by a plain
-   "Sign Up" link (the button's text is set to "Sign Up" in site.js). */
+/* Sign-up button: the "Create an account" pill treatment above supplies all
+   of its styling at higher specificity; only the border STYLE needs killing
+   here (the pill rule only sets border-color, so a Comentario default border
+   would otherwise still draw). */
 .comentario-root .comentario-dialog .comentario-btn-secondary {
-    margin-left: 0.3em;
-    padding: 0;
-    background: none;
     border: none;
-    border-radius: 0;
-    font-weight: 500;
-    color: var(--text);
 }
 
 /* Solid buttons in the dialog (Sign in submit, "Sign Up") read at full size to
@@ -1634,12 +1619,6 @@
    0.85em. Scoped to .comentario-dialog so the editor buttons keep their size. */
 .comentario-root .comentario-dialog .comentario-btn:not(.comentario-btn-link):not(.comentario-btn-tool):not(.comentario-btn-active) {
     font-size: 1em;
-}
-
-.comentario-root .comentario-dialog .comentario-btn-secondary:hover {
-    background: none;
-    color: var(--text);
-    text-decoration: underline;
 }
 
 /* ----------------------------------------------------------------------------
@@ -1711,13 +1690,6 @@
     font-weight: 700;
     color: var(--text-secondary);
     opacity: 1;
-}
-
-/* The label text lives in ::after, which carries its own weight (Reply's sets
-   500) — restate it so both read bold. */
-.comentario-root .comentario-btn-tool[title="Reply"]::after,
-.comentario-root .comentario-btn-tool:has(+ .comentario-score)::after {
-    font-weight: 700;
 }
 
 .comentario-root .comentario-btn-tool[title="Reply"]:hover,
@@ -1867,10 +1839,11 @@
 }
 
 /* iPhone Air (420px) and the other ≥390px phones in this range have room to spare that
-   the ≤389px minis don't, so give their tap targets + glyphs some size back (28px / 1.5em
+   the ≤389px minis don't, so give their tap targets + glyphs some size back (28px / 1.6em
    vs the minis' 26px / 1.3em). The container gutter steps from 20px to 16px at ≤389px,
-   which is why that's the natural floor for the bigger size. */
-@media (min-width: 390px) and (max-width: 439.98px) {
+   which is why that's the natural floor for the bigger size (389.02 matches the
+   site-wide 389px/389.02px breakpoint pair — see site.css). */
+@media (min-width: 389.02px) and (max-width: 439.98px) {
     .comentario-root .comentario-comment-editor .comentario-btn-tool {
         width: 28px;
         height: 28px;

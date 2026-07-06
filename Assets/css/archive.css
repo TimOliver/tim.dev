@@ -44,21 +44,15 @@ body:has(.archive) footer .container {
 
 .archive-search:focus {
     outline: none;
-    border-color: var(--accent);
+    border-color: var(--link);
     color: var(--text);
 }
 
-/* Filtered-out rows / empty year sections + the no-results message (toggled by site.js). */
+/* Filtered-out rows / empty year sections (toggled by site.js). The no-results
+   message styling is the shared .archive-empty/.talks-empty rule in site.css. */
 .archive-row.hidden,
 .archive-year.hidden {
     display: none;
-}
-
-.archive-empty {
-    text-align: center;
-    color: var(--text-secondary);
-    padding: 2em 0;
-    margin: 0;
 }
 
 /* Year row — big year + post count on the left, a flat post list on the right.
@@ -102,7 +96,7 @@ body:has(.archive) footer .container {
 }
 
 /* Archive post-title links sit a touch larger than the body to fill the wider
-   column (the global base stays 14.5pt). */
+   column. */
 .archive-row .text-link {
     font-size: 17pt;
 }

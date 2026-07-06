@@ -1,8 +1,8 @@
 /* ---------- Art page (art-specific) ----------
-   Shared structure (cardless shell, hover, detail layout, details table) lives
-   in collection.css; the detail page reuses Code's .code-detail-* + .code-links
-   classes. This file holds the section headers, per-section grid, and the
-   tinted thumbnail with tag/duration overlays. */
+   Shared structure (cardless shell, hover, detail layout + header, spec list,
+   sidebar links, .art-body padding) lives in collection.css / site.css. This
+   file holds the section headers, per-section grid, and the tinted thumbnail
+   with tag/duration overlays. */
 
 .art-section {
     margin: 0 0 3.5em;
@@ -33,7 +33,9 @@
     gap: 10px;
 }
 
-/* Tinted landscape thumbnail with overlays. The hatch matches other pages. */
+/* Tinted landscape thumbnail with overlays. A deliberately darker one-off
+   variant of the shared --hatch token (0.06 vs 0.04) — the art tints are
+   saturated enough to swallow the standard weave. */
 .art-shot {
     position: relative;
     aspect-ratio: 16 / 10;
@@ -59,10 +61,6 @@
     color: #fff;
 }
 
-.art-body {
-    padding: 14px 0 0;
-}
-
 .art-name {
     display: block;
     font-weight: 700;
@@ -76,7 +74,7 @@
 }
 
 /* Detail-page media placeholder fills the bordered surface. */
-.code-detail-shot .art-shot {
+.collection-detail-shot .art-shot {
     aspect-ratio: 16 / 9;
     border-radius: 0;
 }
@@ -85,6 +83,14 @@
 @media (max-width: 900px) {
     .art-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 720px) {
+    /* Match the About section headers' mobile shrink (about.css) — the desktop
+       2.2em title dominates a phone screen. */
+    .art-section-title {
+        font-size: 2.1em;
     }
 }
 

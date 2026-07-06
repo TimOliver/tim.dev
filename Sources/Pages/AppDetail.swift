@@ -23,8 +23,8 @@ extension AppRenderer {
         s += #"<div class="app-detail-head">"#
         s += iconTile(icon: app.icon, tint: app.tint)
         s += #"<div class="app-detail-headings">"#
-        s += #"<h1 class="app-detail-name">\#(escape(app.title))</h1>"#
-        s += #"<p class="app-detail-tagline">\#(escape(app.tagline))</p>"#
+        s += #"<h1 class="collection-detail-name">\#(escape(app.title))</h1>"#
+        s += #"<p class="collection-detail-tagline">\#(escape(app.tagline))</p>"#
         s += "</div>"  // app-detail-headings
         s += "</div>"  // app-detail-head
 

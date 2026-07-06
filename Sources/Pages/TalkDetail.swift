@@ -21,14 +21,14 @@ extension TalksRenderer {
 
         // Back link + header (title + venue/year line).
         s += #"<a class="collection-back" href="/talks/">&lsaquo; Back to Talks</a>"#
-        s += #"<h1 class="code-detail-name">\#(escape(talk.title))</h1>"#
+        s += #"<h1 class="collection-detail-name">\#(escape(talk.title))</h1>"#
         var venueYear: [String] = []
         if !talk.venue.isEmpty { venueYear.append(escape(talk.venue)) }
         venueYear.append(String(talk.year))
-        s += #"<p class="code-detail-tagline">\#(venueYear.joined(separator: " · "))</p>"#
+        s += #"<p class="collection-detail-tagline">\#(venueYear.joined(separator: " · "))</p>"#
 
         // Video: lite-youtube facade when a video id is set; tint placeholder otherwise.
-        s += #"<div class="talks-detail-video">"#
+        s += #"<div class="collection-detail-shot">"#
         if let id = talk.youtube {
             s += #"<lite-youtube videoid="\#(escape(id))" playlabel="Play: \#(escape(talk.title))"></lite-youtube>"#
         } else {
@@ -53,9 +53,9 @@ extension TalksRenderer {
         if let slides = talk.slides { links.append(("Slides", slides)) }
         if !links.isEmpty {
             s += #"<span class="collection-eyebrow">Links</span>"#
-            s += #"<ul class="code-links">"#
+            s += #"<ul class="collection-links">"#
             for (label, url) in links {
-                s += #"<li><a class="code-link" href="\#(escape(url))" target="_blank" rel="noopener">\#(escape(label))<span class="code-link-arrow" aria-hidden="true">&#8599;</span></a></li>"#
+                s += #"<li><a class="collection-link" href="\#(escape(url))" target="_blank" rel="noopener">\#(escape(label))<span class="collection-link-arrow" aria-hidden="true">&#8599;</span></a></li>"#
             }
             s += "</ul>"
         }

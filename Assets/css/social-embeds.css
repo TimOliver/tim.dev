@@ -1,0 +1,198 @@
+/* Social embed cards — authoring vocabulary for quoting Mastodon / Twitter /
+   Bluesky posts inside article content (see Template/CLAUDE.md, "social embed
+   facade"). No published post uses this markup yet; the styles are kept ready
+   so embeds Just Work when first authored. Loaded only on the home feed and
+   post pages (MainLayout.swift).
+
+   NOTE: when the first embed ships, restore the /img/social-logos.svg preload
+   in MainLayout's <head> — Safari can fail to render external <use href>
+   sprite references on a cold cache without it. The preload was removed while
+   nothing referenced the sprite. */
+
+article .embed_social {
+    --accent: var(--link);
+    --embed-bg: var(--bg-secondary);
+    --embed-border: var(--border);
+    --embed-text: var(--text);
+    --embed-text-secondary: var(--text-secondary);
+    background: var(--embed-bg);
+    border-radius: 8px;
+    corner-shape: squircle;
+    border: 1px solid var(--embed-border);
+    min-width: 270px;
+    max-width: 508px;
+    padding: 16px;
+    margin: 0 auto 1.75em;
+}
+
+article .embed_social::before {
+    content: none;
+}
+
+article .embed_social[data-platform="mastodon"] {
+    --accent: #6364FF;
+    --embed-bg: #FFFFFF;
+    --embed-border: #C0CDD9;
+    --embed-text: #191B22;
+    --embed-text-secondary: #606984;
+}
+
+article .embed_social[data-platform="twitter"] {
+    --accent: #1DA1F2;
+    --embed-bg: #F5F8FA;
+    --embed-border: #E1E8ED;
+    --embed-text: #14171A;
+    --embed-text-secondary: #657786;
+}
+
+article .embed_social[data-platform="bluesky"] {
+    --accent: #0085FF;
+    --embed-bg: #FFFFFF;
+    --embed-border: #D4DBE2;
+    --embed-text: #0B0F19;
+    --embed-text-secondary: #42576C;
+}
+
+[data-color-scheme="dark"] article .embed_social[data-platform="mastodon"] {
+    --accent: #8C8DFF;
+    --embed-bg: #282C37;
+    --embed-border: #393F4F;
+    --embed-text: #FFFFFF;
+    --embed-text-secondary: #9BAEA0;
+}
+
+[data-color-scheme="dark"] article .embed_social[data-platform="twitter"] {
+    --embed-bg: #15202B;
+    --embed-border: #38444D;
+    --embed-text: #FFFFFF;
+    --embed-text-secondary: #8899A6;
+}
+
+[data-color-scheme="dark"] article .embed_social[data-platform="bluesky"] {
+    --accent: #208BFE;
+    --embed-bg: #161E27;
+    --embed-border: #2E3641;
+    --embed-text: #FFFFFF;
+    --embed-text-secondary: #8D9AAA;
+}
+
+.embed_social .header {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 40px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.embed_social .avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 8px;
+    corner-shape: squircle;
+    margin: 0;
+    display: block;
+}
+
+.embed_social[data-platform="twitter"] .avatar,
+.embed_social[data-platform="bluesky"] .avatar {
+    border-radius: 50%;
+    /* These are circular; reset the squircle inherited from the base
+       .avatar rule so corner-shape doesn't turn them into rounded squares. */
+    corner-shape: round;
+}
+
+.embed_social a.name_header {
+    line-height: 22px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 46px 1fr;
+    align-items: center;
+    text-decoration: none;
+}
+
+.embed_social a.name_header:hover .display_name {
+    text-decoration: underline;
+    text-decoration-color: var(--embed-text);
+}
+
+.embed_social .name {
+    min-width: 0;
+}
+
+.embed_social .name .display_name,
+.embed_social .name .account_name {
+    display: block;
+    font-size: 15px;
+}
+
+.embed_social .name .display_name {
+    font-weight: 600;
+    color: var(--embed-text);
+}
+
+.embed_social .name .account_name {
+    color: var(--embed-text-secondary);
+}
+
+.embed_social .embed_logo {
+    width: 40px;
+    height: auto;
+    color: var(--accent);
+}
+
+.embed_social .text {
+    color: var(--embed-text);
+    font-size: 19px;
+    line-height: 24px;
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.embed_social .text a,
+.embed_social .meta a {
+    text-decoration: none;
+}
+
+.embed_social .text a {
+    color: var(--accent);
+}
+
+.embed_social .text a:hover,
+.embed_social .meta a:hover {
+    text-decoration: underline;
+}
+
+.embed_social .meta {
+    margin: 16px 0 0;
+}
+
+.embed_social .meta a {
+    color: var(--embed-text-secondary);
+    font-size: 14px;
+}
+
+.embed_social .media {
+    margin-top: 12px;
+    display: grid;
+    gap: 4px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.embed_social .media:has(> a:only-child) {
+    grid-template-columns: 1fr;
+}
+
+.embed_social .media a {
+    display: block;
+    line-height: 0;
+}
+
+.embed_social .media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    border-radius: 8px;
+    corner-shape: squircle;
+    margin: 0;
+}

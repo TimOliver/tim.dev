@@ -1,9 +1,10 @@
 /* ---------- Talks page ----------
    Built on the shared collection structure (collection.css gives the container
-   width, footer width, centered title/subtitle, grid columns, and card hover via
-   the .collection class). This file adds only the talk-specific pieces: the
-   featured hero, the tinted thumbnail, the search + filter bar, card internals,
-   topic badges, the empty state, and the detail video surface.
+   width, footer width, centered title/subtitle, grid columns, card + hero hover,
+   the filter-pill capsule recipe, and the detail header/media surface; the
+   empty state is shared in site.css). This file adds only the talk-specific
+   pieces: the featured hero, the tinted thumbnail, the search bar, filter
+   button behaviour, card internals, and topic badges.
    Tokens only; squircle; 720px collapse. */
 
 /* Tinted thumbnail surface — shared by the hero, the cards, and the detail
@@ -45,12 +46,8 @@
     margin: 1em 0 4em;
 }
 
-/* The hero is a whole-surface link too — suppress the content-link hover style. */
-.talks-featured:hover {
-    color: inherit;
-    text-decoration: none;
-}
-
+/* Whole-surface-link hover suppression is shared with .collection-card:hover
+   (collection.css). */
 .talks-featured .talks-thumb {
     flex: 0 1 700px;
     aspect-ratio: 7 / 4;
@@ -128,7 +125,7 @@
 
 .talks-search:focus {
     outline: none;
-    border-color: var(--accent);
+    border-color: var(--link);
 }
 
 /* ----- Filter groups (Topic / Year) ----- */
@@ -158,20 +155,16 @@
     color: var(--text-tertiary);
 }
 
+/* Capsule look + hover come from the shared .section-chip recipe
+   (collection.css); these are <button>s, so reset the UA chrome. font: inherit
+   wipes the shared rule's size/leading (this file loads later), so restate them. */
 .talks-filter {
-    padding: 4px 14px;
-    border-radius: 999px;
-    corner-shape: squircle;
-    border: 1px solid var(--border);
     background: transparent;
     font: inherit;
     font-size: 0.85em;
     line-height: 1.6;
-    color: var(--text);
     cursor: pointer;
 }
-
-.talks-filter:hover { background: var(--control-hover); }
 
 .talks-filter.is-active {
     background: var(--text);
@@ -220,32 +213,19 @@
     color: var(--text-secondary);
 }
 
-/* ----- Filtered-out cards + empty state (toggled by site.js) ----- */
+/* ----- Filtered-out cards + empty state (toggled by site.js; .talks-empty
+   styling is the shared rule in site.css) ----- */
 .talks-card.hidden,
 .talks-grid.hidden { display: none; }
 
-.talks-empty {
-    margin: 0;
-    padding: 2em 0;
-    text-align: center;
-    color: var(--text-secondary);
-}
-
-/* ----- Detail video surface ----- */
-.talks-detail-video {
-    margin-bottom: 2.5em;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    corner-shape: squircle;
-    overflow: hidden;
-}
-
-/* Inside the wrapper the thumb/embed shouldn't double the border or rounding. */
-.talks-detail-video .talks-thumb {
+/* ----- Detail video surface (the bordered wrapper is the shared
+   .collection-detail-shot) — inside it the thumb/embed shouldn't double the
+   border or rounding. ----- */
+.collection-detail-shot .talks-thumb {
     border-radius: 0;
 }
 
-.talks-detail-video lite-youtube {
+.collection-detail-shot lite-youtube {
     display: block;
     width: 100%;
     border-radius: 0;

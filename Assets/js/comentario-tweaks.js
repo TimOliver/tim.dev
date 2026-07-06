@@ -1,23 +1,60 @@
 /* comentario-tweaks.js
  *
- * Client-side behaviour fixes for the embedded Comentario widget. (All visual styling
- * lives in Assets/css/comentario.css; this file is only for things CSS can't do.)
+ * ALL client-side behaviour for the embedded Comentario widget lives here. (All
+ * visual styling lives in Assets/css/comentario.css; this file is only for things
+ * CSS can't do.) Loaded only on pages with Comentario elements: post pages
+ * (<comentario-comments>) and the home feed (<comentario-count> badges).
  *
- * 1. Clear the editor draft after a successful post. Comentario saves the editor text
+ * 1. Comment-count badges: toggle .has-count so the count (and its spacing) only
+ *    shows once a number is actually present.
+ *
+ * 2. Clear the editor draft after a successful post. Comentario saves the editor text
  *    as a per-page draft (localStorage "comentario_editor") and writes the
  *    just-submitted text back as a draft on a successful post, so it reappears the
  *    next time you open the box. We delete the page's draft once a submit succeeds.
  *
- * 2. Anonymous-commenting status + sign-out. After commenting anonymously, Comentario
+ * 3. Anonymous-commenting status + sign-out. After commenting anonymously, Comentario
  *    quietly enters "unregistered commenting" mode (comentario_settings) and posts
  *    further comments with the same name and no dialog — with no visual cue and no
  *    way out. When in that mode we replace the profile-bar "Sign in" button with the
  *    name + a "Sign out" control that clears the mode.
+ *
+ * 4. Collapsed-editor refocus: after Cancel the collapsed host keeps focus, so
+ *    clicking it again fires no focus event and it won't re-expand — blur+refocus
+ *    to re-fire it.
+ *
+ * 5. Login dialog (created on demand): relabel the email field's placeholder to
+ *    "Email". (The sign-up button needs no relabel — comentario.css hides its text
+ *    and supplies the "Create an account" pill label via ::after.)
  */
 (function () {
   'use strict';
 
-  /* ---- 1. Clear the editor draft after a successful post ---- */
+  /* ---- 1. Comment-count badges (home feed + article heading) ----
+     Comentario keeps the <comentario-count> element in place even at zero, so
+     read the rendered text and toggle .has-count as it changes. */
+  (function () {
+    var counts = document.querySelectorAll('.post-badge comentario-count, .post-comments-count');
+    if (!counts.length) return;
+
+    function sync(el) {
+      el.classList.toggle('has-count', (el.textContent || '').trim() !== '');
+    }
+
+    Array.prototype.forEach.call(counts, function (el) {
+      sync(el);  // in case the count resolved before this script ran
+      new MutationObserver(function () {
+        sync(el);
+      }).observe(el, { childList: true, characterData: true, subtree: true });
+    });
+  })();
+
+  // Everything below operates on the live comments widget — bail on pages that
+  // only have count badges (the home feed) so no listeners/observers/polls are
+  // left running against a widget that can never appear.
+  if (!document.querySelector('comentario-comments')) return;
+
+  /* ---- 2. Clear the editor draft after a successful post ---- */
 
   var DRAFT_KEY = 'comentario_editor';
 
@@ -70,7 +107,7 @@
     clearDraftOnSuccess(form, ta.value);
   }, true);
 
-  /* ---- 2. Anonymous-commenting status + sign-out in the profile bar ---- */
+  /* ---- 3. Anonymous-commenting status + sign-out in the profile bar ---- */
 
   var SETTINGS_KEY = 'comentario_settings';
 
@@ -135,10 +172,49 @@
     requestAnimationFrame(function () { applyScheduled = false; applyAnonStatus(); });
   }
 
+  // The widget element exists on this page (checked above), so this poll always
+  // terminates — comentario.js creates .comentario-root inside it on render.
   (function watchRoot() {
     var root = document.querySelector('.comentario-root');
     if (!root) { setTimeout(watchRoot, 150); return; }
     new MutationObserver(scheduleApply).observe(root, { childList: true, subtree: true });
     applyAnonStatus();
+  })();
+
+  /* ---- 4. Collapsed-editor refocus ----
+     Comentario's "Add a comment" host expands on focus, but after Cancel it stays
+     focused while collapsed — so clicking it again fires no focus event and won't
+     re-open (only clicking away then back does). If the collapsed host is clicked
+     while it's already the focused element, blur+refocus it to re-fire the focus
+     event so it re-opens. (Detected by the placeholder being present = collapsed.) */
+  document.addEventListener('click', function (e) {
+    var host = e.target.closest && e.target.closest('.comentario-add-comment-host');
+    if (!host) return;
+    if (document.activeElement === host &&
+        host.querySelector('.comentario-add-comment-placeholder')) {
+      host.blur();
+      host.focus();
+    }
+  });
+
+  /* ---- 5. Login dialog: relabel the email field's placeholder ---- */
+  (function () {
+    function find(node, sel) {
+      return node.matches && node.matches(sel) ? node
+        : (node.querySelector && node.querySelector(sel));
+    }
+
+    function apply(node) {
+      if (node.nodeType !== 1) return;
+      var email = find(node, '#comentario-login-form input[name="email"]');
+      if (email && email.placeholder !== 'Email') email.placeholder = 'Email';
+    }
+
+    new MutationObserver(function (mutations) {
+      for (var i = 0; i < mutations.length; i++) {
+        var added = mutations[i].addedNodes;
+        for (var j = 0; j < added.length; j++) apply(added[j]);
+      }
+    }).observe(document.documentElement, { childList: true, subtree: true });
   })();
 })();

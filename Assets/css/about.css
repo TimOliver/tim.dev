@@ -25,6 +25,7 @@ body:has(.about) footer .container {
 
 .about-job-co {
     color: var(--text);
+    font-weight: 700;
 }
 
 /* Body prose inside .about-cols (the "A brief history" right column AND
@@ -274,15 +275,14 @@ body:has(.about) footer .container {
     margin: 0 0 0.2em;
 }
 
-.about-job-head {
+/* Card header row — title left, meta right, sharing a baseline. Same recipe
+   for Work entries and the hobby cards below. */
+.about-job-head,
+.hobby-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 1em;
-}
-
-.about-job-co {
-    font-weight: 700;
 }
 
 .about-job-meta {
@@ -333,21 +333,33 @@ body:has(.about) footer .container {
     position: relative;
     flex: 1 1 auto;
     min-height: 210px;
+}
+
+/* Shared tinted-photo surface — hatch weave over the per-card tint. Used by
+   the hobby mosaic and the gallery scroller cards. */
+.hobby-photo,
+.gallery-card-photo {
     background:
-        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
+        var(--hatch),
         var(--photo-tint, var(--bg-tertiary));
     background-size: cover;
     background-position: center;
 }
 
+/* Photo overlay text — same treatment on hobby and gallery cards: small-caps
+   label top-left, caption bottom-left, inset 18px each side. */
 .hobby-photo-label,
-.hobby-photo-caption {
+.hobby-photo-caption,
+.gallery-card-label,
+.gallery-card-caption {
     position: absolute;
     left: 18px;
+    right: 18px;
     font-size: 0.72em;
 }
 
-.hobby-photo-label {
+.hobby-photo-label,
+.gallery-card-label {
     top: 16px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
@@ -355,9 +367,9 @@ body:has(.about) footer .container {
     color: rgba(0, 0, 0, 0.5);
 }
 
-.hobby-photo-caption {
+.hobby-photo-caption,
+.gallery-card-caption {
     bottom: 16px;
-    right: 18px;
     color: rgba(0, 0, 0, 0.62);
 }
 
@@ -366,13 +378,7 @@ body:has(.about) footer .container {
     padding: 18px 22px;
 }
 
-.hobby-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1em;
-}
-
+/* .hobby-head shares the .about-job-head header-row recipe (see Work above). */
 .hobby-card h3 {
     font-size: 1.5em;
     font-weight: 700;
@@ -533,38 +539,14 @@ body:has(.about) footer .container {
     flex: 0 0 max(0px, calc(var(--overhang) - 18px));
 }
 
+/* Tint/hatch background + the label/caption overlays are shared with
+   .hobby-photo — see the hobby card rules above. */
 .gallery-card-photo {
     position: relative;
     aspect-ratio: 4 / 3;
     border-radius: 14px;
     corner-shape: squircle;
     overflow: hidden;
-    background:
-        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
-        var(--photo-tint, var(--bg-tertiary));
-    background-size: cover;
-    background-position: center;
-}
-
-.gallery-card-label,
-.gallery-card-caption {
-    position: absolute;
-    left: 18px;
-    right: 18px;
-    font-size: 0.72em;
-}
-
-.gallery-card-label {
-    top: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.5);
-}
-
-.gallery-card-caption {
-    bottom: 16px;
-    color: rgba(0, 0, 0, 0.62);
 }
 
 .gallery-card-meta {
@@ -594,45 +576,10 @@ body:has(.about) footer .container {
     color: var(--heading);
 }
 
-.about-colophon dl {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    /* No column-gap: a real gap would break the row hairline between the two
-       cells. The label/value spacing is recreated as dt padding-right below,
-       which the border-top spans — so the line reads as one continuous rule. */
-    column-gap: 0;
-    row-gap: 0.45em;
-    margin: 1em 0 0;
-    /* Label and value share a baseline per row, so a multi-line value lines up
-       with its label on the first line instead of centring against it. */
-    align-items: baseline;
-}
-
-/* Subtle hairline between spec rows (every row but the first), spanning both
-   columns so the eye can track a label across to its value. Reuses the card's
-   own faint border token, so it stays barely-there and theme-aware. The
-   row-gap above sits over the line and the padding-top below it, keeping the
-   hairline centred in the gap without growing the card much. */
-.about-colophon dd + dt,
-.about-colophon dd:not(:first-of-type) {
-    border-top: 1px solid var(--border);
-    padding-top: 0.45em;
-}
-
-.about-colophon dt {
-    font-size: 0.9em;
-    font-weight: 600;
-    color: var(--text-secondary);
-    /* Stands in for the removed column-gap, but sits inside the cell so the
-       hairline runs unbroken across to the value column. */
-    padding-right: 1.5em;
-}
-
-.about-colophon dd {
-    margin: 0;
-    text-align: right;
-    font-size: 0.9em;
-    color: var(--text);
+/* The <dl> itself is the shared .spec-list component (site.css) — it only
+   needs breathing room under the "Tech Specs" title here. */
+.about-colophon .spec-list {
+    margin-top: 1em;
 }
 
 /* Mid widths (the "compressed" tablet band between the 720px single-column

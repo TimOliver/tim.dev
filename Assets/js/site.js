@@ -558,13 +558,6 @@
             if (show) visible++;
         });
 
-        var count = document.querySelector('.talks-count');
-        if (count) {
-            var pristine = topic === 'all' && year === 'all' && query === '';
-            count.textContent = pristine
-                ? 'Showing all ' + count.getAttribute('data-total') + ' talks'
-                : 'Showing ' + visible + (visible === 1 ? ' talk' : ' talks');
-        }
         var empty = document.querySelector('.talks-empty');
         if (empty) empty.hidden = visible !== 0;
         grid.classList.toggle('hidden', visible === 0);
@@ -647,12 +640,13 @@
     input.addEventListener('input', apply);
 })();
 
-// Share + copy for the share badge (top of feed item) and the end-of-article
-// links. Share opens the native sheet where the Web Share API exists, else it
-// copies the link. The Permalink link always copies. Copy shows a brief check +
-// "Copied!" confirmation, using the async Clipboard API where available and a
-// legacy execCommand textarea otherwise (so it works in non-secure contexts,
-// e.g. local LAN preview). URLs are built client-side.
+// Share + copy for any [data-share-path] control (the share badge at the top
+// of a feed item, the end-of-article Share link). Share opens the native sheet
+// where the Web Share API exists, else it copies the link. Copy shows a brief
+// check + "Copied!" confirmation, using the async Clipboard API where available
+// and a legacy execCommand textarea otherwise (so it works in non-secure
+// contexts, e.g. local LAN preview). URLs are built client-side. The Permalink
+// link carries no data-share-path — it's a plain navigation link.
 (function() {
     var live = document.createElement('div');
     live.setAttribute('aria-live', 'polite');
@@ -730,64 +724,6 @@
     });
 })();
 
-// Feed comment badge: show the count (and its spacing) only when a number is
-// actually present. Comentario keeps the <comentario-count> element in place
-// even at zero, so we read the rendered text and toggle .has-count.
-(function() {
-    var counts = document.querySelectorAll('.post-badge comentario-count, .post-comments-count');
-    if (!counts.length) return;
-
-    function sync(el) {
-        el.classList.toggle('has-count', (el.textContent || '').trim() !== '');
-    }
-
-    Array.prototype.forEach.call(counts, function(el) {
-        sync(el);  // in case the count resolved before this script ran
-        new MutationObserver(function() {
-            sync(el);
-        }).observe(el, { childList: true, characterData: true, subtree: true });
-    });
-})();
-
-// Comentario's "Add a comment" host expands on focus, but after Cancel it stays
-// focused while collapsed — so clicking it again fires no focus event and won't
-// re-open (only clicking away then back does). If the collapsed host is clicked
-// while it's already the focused element, blur+refocus it to re-fire the focus
-// event so it re-opens. (Detected by the placeholder being present = collapsed.)
-(function() {
-    document.addEventListener('click', function(e) {
-        var host = e.target.closest && e.target.closest('.comentario-add-comment-host');
-        if (!host) return;
-        if (document.activeElement === host &&
-            host.querySelector('.comentario-add-comment-placeholder')) {
-            host.blur();
-            host.focus();
-        }
-    });
-})();
-
-// Login dialog (created on demand): relabel the email field's placeholder to
-// "Email" and the sign-up button's text to "Sign Up".
-(function() {
-    function find(node, sel) {
-        return node.matches && node.matches(sel) ? node
-            : (node.querySelector && node.querySelector(sel));
-    }
-
-    function apply(node) {
-        if (node.nodeType !== 1) return;
-
-        var email = find(node, '#comentario-login-form input[name="email"]');
-        if (email && email.placeholder !== 'Email') email.placeholder = 'Email';
-
-        var signup = find(node, '.comentario-dialog .comentario-btn-secondary');
-        if (signup && signup.textContent.trim() !== 'Sign Up') signup.textContent = 'Sign Up';
-    }
-
-    new MutationObserver(function(mutations) {
-        for (var i = 0; i < mutations.length; i++) {
-            var added = mutations[i].addedNodes;
-            for (var j = 0; j < added.length; j++) apply(added[j]);
-        }
-    }).observe(document.documentElement, { childList: true, subtree: true });
-})();
+// (Comentario-specific behaviour — comment-count badges, editor refocus, the
+// login-dialog tweaks — lives in comentario-tweaks.js, loaded only on pages
+// with Comentario elements.)

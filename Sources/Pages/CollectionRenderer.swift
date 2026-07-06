@@ -53,7 +53,7 @@ enum CollectionRenderer {
     static func detailsBlock(_ rows: [(String, String)]) -> String {
         guard !rows.isEmpty else { return "" }
         var s = #"<span class="collection-eyebrow">Details</span>"#
-        s += #"<dl class="collection-details">"#
+        s += #"<dl class="spec-list">"#
         for (label, value) in rows {
             s += #"<dt>\#(escape(label))</dt><dd>\#(escape(value))</dd>"#
         }

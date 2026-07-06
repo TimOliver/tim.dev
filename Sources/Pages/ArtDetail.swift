@@ -20,13 +20,13 @@ extension ArtRenderer {
         var s = #"<div class="collection collection-detail">"#
 
         s += #"<a class="collection-back" href="/art/">&lsaquo; Back to Art</a>"#
-        s += #"<h1 class="code-detail-name">\#(escape(item.title))</h1>"#
+        s += #"<h1 class="collection-detail-name">\#(escape(item.title))</h1>"#
         if !item.meta.isEmpty {
-            s += #"<p class="code-detail-tagline">\#(escape(item.meta))</p>"#
+            s += #"<p class="collection-detail-tagline">\#(escape(item.meta))</p>"#
         }
 
         // Large tinted media placeholder in a bordered surface.
-        s += #"<div class="code-detail-shot">"#
+        s += #"<div class="collection-detail-shot">"#
         s += #"<div class="art-shot" style="background: \#(escape(item.tint));"></div>"#
         s += "</div>"
 
@@ -38,8 +38,8 @@ extension ArtRenderer {
 
         if let youtube = item.youtube {
             s += #"<span class="collection-eyebrow">Links</span>"#
-            s += #"<ul class="code-links">"#
-            s += #"<li><a class="code-link" href="\#(escape(youtube))" target="_blank" rel="noopener">Watch on YouTube<span class="code-link-arrow" aria-hidden="true">&#8599;</span></a></li>"#
+            s += #"<ul class="collection-links">"#
+            s += #"<li><a class="collection-link" href="\#(escape(youtube))" target="_blank" rel="noopener">Watch on YouTube<span class="collection-link-arrow" aria-hidden="true">&#8599;</span></a></li>"#
             s += "</ul>"
         }
 

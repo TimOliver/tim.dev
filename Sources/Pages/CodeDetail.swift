@@ -21,11 +21,11 @@ extension CodeRenderer {
 
         // Back link + header (title + tagline, no icon — repos have no app icon).
         s += #"<a class="collection-back" href="/code/">&lsaquo; Back to Code</a>"#
-        s += #"<h1 class="code-detail-name">\#(escape(repo.title))</h1>"#
-        s += #"<p class="code-detail-tagline">\#(escape(repo.tagline))</p>"#
+        s += #"<h1 class="collection-detail-name">\#(escape(repo.title))</h1>"#
+        s += #"<p class="collection-detail-tagline">\#(escape(repo.tagline))</p>"#
 
         // Large landscape screenshot placeholder in a bordered surface.
-        s += #"<div class="code-detail-shot">"#
+        s += #"<div class="collection-detail-shot">"#
         s += shot(repo.title)
         s += "</div>"
 
@@ -38,9 +38,9 @@ extension CodeRenderer {
 
         if !repo.links.isEmpty {
             s += #"<span class="collection-eyebrow">Links</span>"#
-            s += #"<ul class="code-links">"#
+            s += #"<ul class="collection-links">"#
             for (label, url) in repo.links {
-                s += #"<li><a class="code-link" href="\#(escape(url))" target="_blank" rel="noopener">\#(escape(label))<span class="code-link-arrow" aria-hidden="true">&#8599;</span></a></li>"#
+                s += #"<li><a class="collection-link" href="\#(escape(url))" target="_blank" rel="noopener">\#(escape(label))<span class="collection-link-arrow" aria-hidden="true">&#8599;</span></a></li>"#
             }
             s += "</ul>"
         }

@@ -1,12 +1,8 @@
 /* ---------- Code page (code-specific) ----------
-   Shared structure lives in collection.css. This holds repo-card internals,
-   the landscape screenshot placeholder, and the no-icon detail header. */
-
-/* Cardless: the screenshot is a standalone rounded element; the body text sits
-   flush-left beneath it (no card surface or side padding). */
-.code-body {
-    padding: 14px 0 0;
-}
+   Shared structure lives in collection.css — including the detail header
+   (.collection-detail-*), sidebar links (.collection-link*) and the cardless
+   .code-body padding. This holds repo-card internals and the landscape
+   screenshot placeholder. */
 
 /* Landscape screenshot placeholder — hatch fill + centered caption. The card's
    imagery; stays rounded even in the cardless resting state ("only images
@@ -17,7 +13,7 @@
     align-items: center;
     justify-content: center;
     background:
-        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px),
+        var(--hatch),
         var(--bg-tertiary);
     border: 1px solid var(--border);
     border-radius: 14px;
@@ -95,70 +91,13 @@
 
 /* ----- Detail page ----- */
 
-.code-detail-name {
-    font-size: 2.7em;
-    line-height: 1.0;
-    color: var(--heading);
-    margin: 0;
-}
-
-.code-detail-tagline {
-    font-size: 1.3em;
-    color: var(--text-secondary);
-    margin: 0.3em 0 1.5em;
-}
-
-/* Large landscape screenshot in a bordered surface. */
-.code-detail-shot {
-    border-radius: 18px;
-    corner-shape: squircle;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    margin-bottom: 2.5em;
-}
-
-/* Inside the detail wrapper the .code-shot's own border/radius/lift are
-   redundant — the wrapper provides them. Neutralise so there's no double border
-   and no stray hover transform on the (non-card) detail page. */
-.code-detail-shot .code-shot {
+/* Inside the detail wrapper (.collection-detail-shot) the .code-shot's own
+   border/radius/lift are redundant — the wrapper provides them. Neutralise so
+   there's no double border and no stray hover transform on the (non-card)
+   detail page. */
+.collection-detail-shot .code-shot {
     aspect-ratio: 16 / 9;
     border: none;
     border-radius: 0;
     transition: none;
-}
-
-/* Links list (text links with a trailing arrow). */
-.code-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.code-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-decoration: none;
-    color: var(--text);
-    font-size: 0.95em;
-    padding: 0.5em 0;
-    border-top: 1px solid var(--border);
-}
-
-.code-links li:first-child .code-link {
-    border-top: none;
-}
-
-.code-link:hover {
-    color: var(--link);
-}
-
-.code-link-arrow {
-    color: var(--text-tertiary);
-}
-
-@media (max-width: 720px) {
-    .code-detail-name {
-        font-size: 2.1em;
-    }
 }

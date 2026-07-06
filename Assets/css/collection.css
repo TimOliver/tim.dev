@@ -1,7 +1,9 @@
-/* ---------- Collection pages (shared by Apps + Code) ----------
+/* ---------- Collection pages (shared by Apps, Code, Art + Talks) ----------
    Page-agnostic structure: container width, responsive grid, card shell +
-   hover, detail two-column layout, the Tech-Specs-style details table, and the
-   JS swap fade. Page-specific card internals live in apps.css / code.css. */
+   hover, detail two-column layout, the detail header (name/tagline/media/links),
+   and the JS swap fade. Page-specific card internals live in apps.css /
+   code.css / art.css / talks.css. The Tech-Specs key/value list the detail
+   sidebars use is the shared .spec-list component in site.css. */
 
 /* Container: detail pages keep a reading width; grids widen at the 3-col tier
    (see the min-width rule at the bottom). Both Apps and Code mark their root
@@ -82,9 +84,11 @@ body:has(.collection-detail) footer .container {
     will-change: transform;
 }
 
-/* Cards are whole-surface links — never inherit the content-link red/underline
-   on hover (the global a:hover would otherwise out-specify text-decoration: none). */
-.collection-card:hover {
+/* Whole-surface links (cards + the Talks featured hero) — never inherit the
+   content-link red/underline on hover (the global a:hover would otherwise
+   out-specify text-decoration: none). */
+.collection-card:hover,
+.talks-featured:hover {
     color: inherit;
     text-decoration: none;
 }
@@ -149,34 +153,71 @@ body:has(.collection-detail) footer .container {
     margin-top: 2em;
 }
 
-/* Details key/value table — Tech-Specs hairline styling. */
-.collection-details {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    column-gap: 0;
-    row-gap: 0.45em;
+/* ----- Detail header — shared by App/Code/Art/Talk detail pages. -----
+   (The key/value details table beside it is .spec-list in site.css.) */
+.collection-detail-name {
+    font-size: 2.7em;
+    line-height: 1.0;
+    color: var(--heading);
     margin: 0;
-    align-items: baseline;
 }
 
-.collection-details dd + dt,
-.collection-details dd:not(:first-of-type) {
-    border-top: 1px solid var(--border);
-    padding-top: 0.45em;
-}
-
-.collection-details dt {
-    font-size: 0.9em;
-    font-weight: 600;
+.collection-detail-tagline {
+    font-size: 1.3em;
     color: var(--text-secondary);
-    padding-right: 1.5em;
+    margin: 0.3em 0 1.5em;
 }
 
-.collection-details dd {
+/* Large detail media (screenshot / video) in a bordered surface. */
+.collection-detail-shot {
+    border-radius: 18px;
+    corner-shape: squircle;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 2.5em;
+}
+
+/* Sidebar links list (text links with a trailing arrow). */
+.collection-links {
+    list-style: none;
     margin: 0;
-    text-align: right;
-    font-size: 0.9em;
+    padding: 0;
+}
+
+.collection-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
     color: var(--text);
+    font-size: 0.95em;
+    padding: 0.5em 0;
+    border-top: 1px solid var(--border);
+}
+
+.collection-links li:first-child .collection-link {
+    border-top: none;
+}
+
+.collection-link:hover {
+    color: var(--link);
+}
+
+.collection-link-arrow {
+    color: var(--text-tertiary);
+}
+
+/* Cardless card body — text sits flush-left beneath standalone imagery
+   (no card surface or side padding). Talks adds its own 2px-inset variant. */
+.code-body,
+.art-body {
+    padding: 14px 0 0;
+}
+
+@media (max-width: 720px) {
+    .collection-detail-name {
+        font-size: 2.1em;
+    }
 }
 
 /* Swap transition — applied by the JS content swap only (via .collection-swapped),
@@ -230,7 +271,9 @@ body:has(.collection-detail) footer .container {
 }
 
 /* Jump-nav chips (shared) — a row of pill links to in-page sections, reusing
-   the Archive chip look. Used by the Art page; available to any long page. */
+   the Archive chip look. Used by the Art page; available to any long page.
+   The Talks filter pills share the same capsule recipe (talks.css adds the
+   button resets and the .is-active state). */
 .section-chips {
     display: flex;
     flex-wrap: wrap;
@@ -239,7 +282,8 @@ body:has(.collection-detail) footer .container {
     margin: 0 0 3em;
 }
 
-.section-chip {
+.section-chip,
+.talks-filter {
     padding: 4px 14px;
     border-radius: 999px;
     corner-shape: squircle;
@@ -250,7 +294,8 @@ body:has(.collection-detail) footer .container {
     line-height: 1.6;
 }
 
-.section-chip:hover {
+.section-chip:hover,
+.talks-filter:hover {
     background: var(--control-hover);
     color: var(--text);
     text-decoration: none;
