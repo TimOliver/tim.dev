@@ -9,7 +9,11 @@ struct AppDetail: ArticlePage {
     var body: some HTML {
         let app = AppInfo(article)
         let html = AppRenderer.detailHTML(for: app)
-        return AppRenderer.include(key: AppRenderer.key(for: article.path), html: html)
+        return CollectionRenderer.include(
+            key: CollectionRenderer.key(for: article.path, dir: "apps"),
+            dir: "apps",
+            html: html
+        )
     }
 }
 

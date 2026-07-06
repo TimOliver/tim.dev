@@ -4,7 +4,7 @@ import Ignite
 /// Builds the `<article>` shell HTML for a post and emits it as an `Include`.
 ///
 /// Two places need to render a post inline (the post page itself and the home
-/// page's latest-month feed), so the markup-string + temp-file dance is shared
+/// page's recent-posts feed), so the markup-string + temp-file dance is shared
 /// here. The workaround exists because Ignite's `Markup.init` and
 /// `CoreAttributes.init` are both `internal`, so emitting raw HTML from outside
 /// the framework requires routing through `Include`. See
@@ -43,10 +43,10 @@ enum ArticleShell {
     }
 
     /// Badge row above the hero (feed and post page): link · comments · share.
-    /// The comment
-    /// badge is always shown — its bubble, with a live Comentario count appended
-    /// only when the post has comments. `path` and `title` are already
-    /// HTML-escaped.
+    /// The comment badge always shows its bubble icon; the live Comentario
+    /// count appears beside it only once the widget resolves a non-zero count
+    /// (the .has-count toggle in comentario-tweaks.js). `path` and `title` are
+    /// already HTML-escaped.
     private static func badgeRow(path: String, title: String) -> String {
         var inner = linkBadge(path: path)
         inner += #"<a class="post-badge" href="\#(path)#comments" aria-label="Comments">"#
@@ -77,16 +77,14 @@ enum ArticleShell {
     }
 
     static func include(for article: Article, context: Context) -> Include {
-        let key = pathKey(article.path)
         // Feed and page variants differ, so they must not share one file.
         let suffix = context == .feed ? ".feed" : ""
-        let dir = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-            .appendingPathComponent("Includes")
-            .appendingPathComponent("_posts")
-        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        let file = dir.appendingPathComponent("\(key)\(suffix).html")
-        try? htmlString(for: article, context: context).write(to: file, atomically: true, encoding: .utf8)
-        return Include("_posts/\(key)\(suffix).html")
+        let key = CollectionRenderer.key(for: article.path, dir: "posts") + suffix
+        return CollectionRenderer.include(
+            key: key,
+            dir: "posts",
+            html: htmlString(for: article, context: context)
+        )
     }
 
     static func htmlString(for article: Article, context: Context) -> String {
@@ -94,7 +92,7 @@ enum ArticleShell {
         var s = "<article>"
 
         // Header — plain date, then the title (a link to the post in the feed).
-        // The badge row sits below the hero (see below), not here.
+        // The badge row sits between the title and the hero (see below), not here.
         switch context {
         case .feed:
             s += #"<time class="date" datetime="\#(isoDate(article.date))">\#(displayDate(article.date))</time>"#
@@ -152,13 +150,6 @@ enum ArticleShell {
         return f.string(from: date)
     }
 
-    private static func pathKey(_ path: String) -> String {
-        var s = path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
-        s = s.replacingOccurrences(of: "/", with: "_")
-        if s.isEmpty { s = "untitled" }
-        return s
-    }
-
     /// Converts Markdown image syntax that leaked into the compiled HTML as
     /// literal text into real `<img>` tags. Old WordPress posts wrap images in
     /// raw HTML (`<figure class="wp-block-image">![](…)</figure>`); because the
@@ -198,12 +189,5 @@ enum ArticleShell {
         }
         result += ns.substring(with: NSRange(location: last, length: ns.length - last))
         return result
-    }
-
-    private static func escape(_ s: String) -> String {
-        s.replacingOccurrences(of: "&", with: "&amp;")
-            .replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
-            .replacingOccurrences(of: "\"", with: "&quot;")
     }
 }

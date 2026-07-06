@@ -13,7 +13,7 @@ struct Apps: StaticPage {
             .sorted { $0.date > $1.date }
             .map(AppInfo.init)
         let html = AppRenderer.gridHTML(for: apps)
-        return AppRenderer.include(key: "index", html: html)
+        return CollectionRenderer.include(key: "index", dir: "apps", html: html)
     }
 }
 

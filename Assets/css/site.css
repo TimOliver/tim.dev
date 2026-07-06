@@ -149,10 +149,10 @@ hr {
    .article-separator: 2px, fading into the page background at both ends —
    deliberately lighter than a solid hairline, so it reads as a breather
    within a post rather than a post boundary (those are whitespace-only, see
-   the feed rules below). Scoped to the post-content <section> so the <hr>s
-   Comentario injects at runtime (login dialog dividers, etc.) keep their own
-   styling. */
-article section hr {
+   the feed rules below). Scoped to the post-content <section> and excluding
+   .post-comments so the <hr>s Comentario injects at runtime (login dialog
+   dividers, etc.) keep their own styling rather than inheriting the gradient. */
+article > section:not(.post-comments) hr {
     height: 2px;
     clear: both;
     border: 0;
@@ -160,16 +160,17 @@ article section hr {
     background: linear-gradient(to right, var(--bg) 0%, var(--border) 25%, var(--border) 50%, var(--border) 75%, var(--bg) 100%);
 }
 
-/* Home feed: stacked posts are separated by a hairline centred in the gap
-   (margin above the line, padding below), reusing the site's --border
-   vocabulary (archive years, footer, comments). In-article <hr>s use the
-   gradient-fade rule above instead, so the two never read alike.
-   Only matches the multi-post home page (single-post pages have one <article>). */
 /* Gap between the post header's badge row and the hero image below it —
    shared with .post-badges + img.hero so the header/hero rhythm stays in step
    with the feed spacing breakpoints. */
 article {
     --post-header-gap: 2.5rem;
+    margin-top: 0;
+    /* Adjacent-collapses with the inter-post margin-top below (the larger
+       wins), so it must stay ≤ the smallest inter-post tier (3.5rem on
+       phones) or it silently becomes the real mobile gap. Also sets the
+       last-article→footer gap. */
+    margin-bottom: 3.5rem;
 }
 
 /* Home feed: stacked posts are separated by whitespace alone — generous
@@ -228,16 +229,17 @@ article img {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Hero image — fits within the content column (no overhang) and keeps its natural
-   aspect ratio (no fixed height), so it scales down with the column instead of
-   dominating medium screens like an iPad mini. The ≤720px rule still caps it as a
-   banner. object-fit (inert here without a height) is inherited by that mobile rule. */
+/* Hero image — fills the content column, with height capped by the base
+   `article img` max-height (650px). When the cap bites (tall/square source
+   images), the box is no longer the image's natural ratio, so object-fit is
+   REQUIRED to crop instead of stretch — it is not inert here. Margins come
+   from the .post-badges + img.hero rule (the badge row always precedes the
+   hero). */
 article img.hero {
     display: block;
     width: 100%;
     height: auto;
     object-fit: cover;
-    margin: 1.5em 0 2em;
     border-radius: 30px;
     corner-shape: squircle;
 }
@@ -248,10 +250,6 @@ article img.lqip {
 
 article img.lqip.loading {
     filter: blur(8px);
-}
-
-.no-js article img.lqip {
-    display: none;
 }
 
 article lite-youtube {
@@ -957,7 +955,11 @@ body > header::before {
 
 .container {
     margin: clamp(30px, 4dvh, 56px) auto 30px;
-    max-width: 950px;  /* content-column width; article body text caps narrower via --text-measure */
+    /* Content-column width; article body text caps narrower via --text-measure.
+       Pages that need a wider column set --page-width on <body> via a
+       body:has(.page-root) rule in their own stylesheet — the footer's
+       .container picks up the same value, so they stay edge-aligned for free. */
+    max-width: var(--page-width, 950px);
     /* Gutter driven by --container-pad (set on :root, overridden per breakpoint)
        so the footer separator and comment dividers line up with the content. */
     padding: 0 var(--container-pad);
@@ -1022,10 +1024,8 @@ article > img.hero {
     color: var(--text-secondary);
 }
 
-article {
-    margin-top: 0;
-    margin-bottom: 60px;
-}
+/* (article's own margins live with the feed rhythm rules near the top of the
+   file — they collapse with the inter-post gap, so they're tuned together.) */
 
 article section {
     margin-top: 1rem;
@@ -1082,10 +1082,8 @@ footer {
 }
 
 footer .container {
-    /* Matches the default reading-column width; pages that widen their content
-       (About, Apps) widen the footer in step via body:has() rules in their own
-       stylesheets, so the footer always aligns with the content above it. */
-    max-width: 950px;
+    /* Width comes from the base .container rule (and --page-width on pages
+       that widen), so the footer always aligns with the content above it. */
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -1327,17 +1325,9 @@ footer .container {
     .back-to-top {
         transition: none;
     }
-    /* Title: keep the surface fade, drop the zoom (mirrors the cards). */
-    .post-title-link .title {
-        transition: background 0.2s ease;
-    }
-    .post-title-link:hover .title,
-    .post-title-link:focus-visible .title {
-        transform: none;
-    }
 }
 
-/* ---------- Feed badge row (below the hero) ---------- */
+/* ---------- Feed badge row (above the hero) ---------- */
 
 /* Row of dim capsule badges above the hero image: comments · link · share. */
 .post-badges {
@@ -1354,7 +1344,7 @@ footer .container {
 }
 
 /* Feed hero (preceded by the badge row). Top gap is the shared header-frame
-   token — see --post-header-gap where the feed separator is defined. */
+   token — see --post-header-gap where the feed spacing is defined. */
 .post-badges + img.hero {
     /* auto inline margins keep the capped (max-width:750px) hero centred. */
     margin: var(--post-header-gap) auto 1.8em;
@@ -1441,6 +1431,19 @@ footer .container {
     .post-title-link:focus-visible .title {
         background: var(--bg-secondary);
         transform: scale(1.02);
+    }
+}
+
+/* Reduced motion: keep the surface fade, drop the zoom (mirrors the cards).
+   Must sit AFTER the transition + hover rules above — same specificity, so
+   source order is what lets these win. */
+@media (prefers-reduced-motion: reduce) {
+    .post-title-link .title {
+        transition: background 0.2s ease;
+    }
+    .post-title-link:hover .title,
+    .post-title-link:focus-visible .title {
+        transform: none;
     }
 }
 

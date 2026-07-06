@@ -94,6 +94,8 @@
     }
 }
 
+/* Off the site's canonical breakpoints deliberately: at the 720px tier two
+   art thumbs still fit comfortably; they only crowd below ~600px. */
 @media (max-width: 600px) {
     .art-grid {
         grid-template-columns: 1fr;

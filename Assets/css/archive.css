@@ -1,12 +1,9 @@
 /* ---------- Archive page ---------- */
 
-.container:has(> .archive) {
-    max-width: 1000px;
-}
-
-/* Footer tracks the widened content width so they stay edge-aligned. */
-body:has(.archive) footer .container {
-    max-width: 1000px;
+/* Widen the content column (and, via the shared --page-width mechanism in
+   site.css, the footer) past the default reading width. */
+body:has(.archive) {
+    --page-width: 1000px;
 }
 
 /* Bottom margin lives on the wrap so the gap to the first result survives even

@@ -48,11 +48,10 @@ struct ArtSection {
 
 @MainActor
 enum ArtRenderer {
-    static func escape(_ s: String) -> String { CollectionRenderer.escape(s) }
-
     /// Reads all Content/art/<slug>/_section.md files off disk and returns the
     /// parsed sections (without items), sorted by `order`. Items are attached by
-    /// the Art page from the published `art` collection.
+    /// the Art page from the published `art` collection. Fails loudly if the
+    /// art content root is unreadable — a silent empty Art page must not deploy.
     static func loadSections() -> [ArtSection] {
         let fm = FileManager.default
         let artRoot = URL(fileURLWithPath: fm.currentDirectoryPath)
@@ -60,7 +59,9 @@ enum ArtRenderer {
             .appendingPathComponent("art")
         guard let dirs = try? fm.contentsOfDirectory(
             at: artRoot, includingPropertiesForKeys: [.isDirectoryKey]
-        ) else { return [] }
+        ) else {
+            fatalError("Failed to read art sections from \(artRoot.path)")
+        }
 
         var sections: [ArtSection] = []
         for dir in dirs {

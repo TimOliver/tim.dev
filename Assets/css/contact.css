@@ -3,13 +3,10 @@
    .page-subtitle for the header, the About "Tech Specs" card + hairline table
    for the contact-details card, SF fonts, surface tokens. No eyebrows. */
 
-.container:has(> .contact) {
-    max-width: 1300px;
-}
-
-/* Footer tracks the widened content width so they stay edge-aligned. */
-body:has(.contact) footer .container {
-    max-width: 1300px;
+/* Widen the content column (and the footer, via the shared --page-width
+   mechanism in site.css). */
+body:has(.contact) {
+    --page-width: 1300px;
 }
 
 .contact {

@@ -17,15 +17,13 @@ struct TalkDetail: ArticlePage {
 
 extension TalksRenderer {
     static func detailHTML(for talk: TalkInfo) -> String {
-        var s = #"<div class="collection collection-detail talks-detail">"#
+        var s = #"<div class="collection collection-detail">"#
 
-        // Back link + header (title + venue/year line).
+        // Back link + header (title + venue/year line — the shared metaLine
+        // minus the duration, which the sidebar table carries instead).
         s += #"<a class="collection-back" href="/talks/">&lsaquo; Back to Talks</a>"#
         s += #"<h1 class="collection-detail-name">\#(escape(talk.title))</h1>"#
-        var venueYear: [String] = []
-        if !talk.venue.isEmpty { venueYear.append(escape(talk.venue)) }
-        venueYear.append(String(talk.year))
-        s += #"<p class="collection-detail-tagline">\#(venueYear.joined(separator: " · "))</p>"#
+        s += #"<p class="collection-detail-tagline">\#(metaLine(venue: talk.venue, year: talk.year, duration: ""))</p>"#
 
         // Video: lite-youtube facade when a video id is set; tint placeholder otherwise.
         s += #"<div class="collection-detail-shot">"#
@@ -62,7 +60,7 @@ extension TalksRenderer {
 
         s += "</aside>"
         s += "</div>"  // collection-detail-body
-        s += "</div>"  // collection collection-detail talks-detail
+        s += "</div>"  // collection collection-detail
         return s
     }
 }

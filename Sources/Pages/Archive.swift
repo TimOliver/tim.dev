@@ -7,14 +7,8 @@ struct Archive: StaticPage {
     @Environment(\.articles) private var articles
 
     var body: some HTML {
-        let html = ArchivePage.htmlString(for: articles.all.filter { !$0.path.hasPrefix("/apps/") && !$0.path.hasPrefix("/code/") && !$0.path.hasPrefix("/art/") && !$0.path.hasPrefix("/talks/") })
-        let dir = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-            .appendingPathComponent("Includes")
-            .appendingPathComponent("_posts")
-        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        let file = dir.appendingPathComponent("archive.html")
-        try? html.write(to: file, atomically: true, encoding: .utf8)
-        return Include("_posts/archive.html")
+        let html = ArchivePage.htmlString(for: articles.all.filter(CollectionRenderer.isBlogPost))
+        return CollectionRenderer.include(key: "archive", dir: "posts", html: html)
     }
 }
 
@@ -78,7 +72,7 @@ enum ArchivePage {
     }
 
     private static func group(_ posts: [Article]) -> [YearGroup] {
-        let cal = monthCalendar()
+        let cal = displayCalendar()
         var byYear: [Int: [Article]] = [:]
         for a in posts {
             let year = cal.component(.year, from: a.date)
@@ -93,20 +87,10 @@ enum ArchivePage {
         return "\(postCount) \(postWord) across \(yearCount) \(yearWord). Or close enough."
     }
 
-    private static func monthCalendar() -> Calendar {
+    private static func displayCalendar() -> Calendar {
         var cal = Calendar(identifier: .gregorian)
         cal.timeZone = ArticleShell.displayTimeZone
         return cal
-    }
-
-    private static let monthNames = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-    ]
-
-    private static func monthAbbrev(_ month: Int) -> String {
-        guard (1...12).contains(month) else { return "" }
-        return monthNames[month - 1]
     }
 
     private static func dayLabel(_ date: Date) -> String {
@@ -115,12 +99,5 @@ enum ArchivePage {
         f.timeZone = ArticleShell.displayTimeZone
         f.dateFormat = "MMM d"
         return f.string(from: date)
-    }
-
-    private static func escape(_ s: String) -> String {
-        s.replacingOccurrences(of: "&", with: "&amp;")
-            .replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
-            .replacingOccurrences(of: "\"", with: "&quot;")
     }
 }

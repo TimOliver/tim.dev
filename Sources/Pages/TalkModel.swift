@@ -40,8 +40,6 @@ struct TalkInfo {
 /// include with `CollectionRenderer`; holds only the talk-specific markup.
 @MainActor
 enum TalksRenderer {
-    static func escape(_ s: String) -> String { CollectionRenderer.escape(s) }
-
     /// Tinted thumbnail surface with an optional duration badge. Shared by the
     /// featured hero, the grid cards, and the detail placeholder.
     static func thumb(tint: String, duration: String) -> String {

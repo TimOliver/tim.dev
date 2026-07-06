@@ -43,8 +43,6 @@ struct RepoInfo {
 /// include with `CollectionRenderer`; holds only the repo-specific markup.
 @MainActor
 enum CodeRenderer {
-    static func escape(_ s: String) -> String { CollectionRenderer.escape(s) }
-
     /// The GitHub mark (black variant; dark mode swaps to white via CSS).
     static func githubMark() -> String {
         #"<img class="code-gh-mark" src="/img/github-black.svg" alt="">"#
@@ -52,7 +50,7 @@ enum CodeRenderer {
 
     /// A landscape screenshot placeholder with a centered caption.
     static func shot(_ repoName: String) -> String {
-        #"<div class="code-shot"><span class="code-shot-caption">screenshot ·\#(escape(repoName))</span></div>"#
+        #"<div class="code-shot"><span class="code-shot-caption">screenshot · \#(escape(repoName))</span></div>"#
     }
 
     /// The owner/name line with the GitHub mark.

@@ -11,7 +11,7 @@ struct Home: StaticPage {
 
     var body: some HTML {
         let recent = articles.all
-            .filter { !$0.path.hasPrefix("/apps/") && !$0.path.hasPrefix("/code/") && !$0.path.hasPrefix("/art/") && !$0.path.hasPrefix("/talks/") }
+            .filter(CollectionRenderer.isBlogPost)
             .sorted { $0.date > $1.date }
             .prefix(Home.recentPostCount)
         return ForEach(Array(recent)) { article in

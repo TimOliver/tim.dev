@@ -1,14 +1,10 @@
 /* ---------- About page ---------- */
 
-/* The About page is mostly sub-column layouts, so widen the host container
-   well past the default ~775px reading column. */
-.container:has(> .about) {
-    max-width: 1100px;
-}
-
-/* Keep the footer aligned with the widened About content. */
-body:has(.about) footer .container {
-    max-width: 1100px;
+/* The About page is mostly sub-column layouts, so widen the content column
+   (and the footer, via the shared --page-width mechanism in site.css) well
+   past the default reading width. */
+body:has(.about) {
+    --page-width: 1100px;
 }
 
 /* Body text on About sits at the secondary muted colour — Apple's pattern
@@ -208,9 +204,15 @@ body:has(.about) footer .container {
     transform: translateX(-50%);
 }
 
-.about-timeline h4 {
+/* Timeline entries were <h4> before the heading levels were fixed (h2 → h3
+   with no h3 in between). Keep the original h4 rendering: SF Pro Text (the
+   global h1-h3 rule switches to Display, which reads too wide at this size)
+   and the h4 line-height. */
+.about-timeline h3 {
+    font-family: var(--font-text);
     font-size: 1em;
     font-weight: 700;
+    line-height: 1.35;
     margin: 0;
 }
 
@@ -587,7 +589,7 @@ body:has(.about) footer .container {
    the viewport) so the gap between the greeting and the photo stays ~constant
    instead of ballooning. Height tracks width via aspect-ratio (portrait is
    350:424 ≈ 0.825), keeping proportion at every size. */
-@media (min-width: 721px) and (max-width: 1000px) {
+@media (min-width: 720.02px) and (max-width: 1000px) {
     .about-intro {
         grid-template-columns: 1fr clamp(260px, 28vw, 320px);
     }

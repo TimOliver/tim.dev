@@ -5,27 +5,19 @@
    code.css / art.css / talks.css. The Tech-Specs key/value list the detail
    sidebars use is the shared .spec-list component in site.css. */
 
-/* Container: detail pages keep a reading width; grids widen at the 3-col tier
-   (see the min-width rule at the bottom). Both Apps and Code mark their root
-   with .collection, so these drive both pages identically. */
-.container:has(> .collection) {
-    max-width: 1100px;
-}
-
-/* Footer tracks the widened content width so they stay edge-aligned. */
-body:has(.collection) footer .container {
-    max-width: 1100px;
+/* Container width: every collection page widens the content column (and the
+   footer, via the shared --page-width mechanism in site.css); grids widen
+   further at the 3-col tier (see the min-width rule at the bottom). */
+body:has(.collection) {
+    --page-width: 1100px;
 }
 
 /* Detail pages read a touch wider than the 1100px base (the prose + sidebar
    want a little more room). They're excluded from the grid's wide tier below,
-   so this is their fixed width at all sizes. */
-.container:has(> .collection-detail) {
-    max-width: 1250px;
-}
-
-body:has(.collection-detail) footer .container {
-    max-width: 1250px;
+   so this is their fixed width at all sizes. (Same specificity as the rule
+   above — being later in the file is what makes it win.) */
+body:has(.collection-detail) {
+    --page-width: 1250px;
 }
 
 .collection {
@@ -257,13 +249,10 @@ body:has(.collection-detail) footer .container {
    Below 1650px it's 2 columns shrinking fluidly down to the mobile 1-col break;
    the snap from 3→2 happens exactly as the cards would start to shrink. */
 @media (min-width: 1650px) {
-    /* Only the GRID widens — detail pages (.collection-detail) keep the 1100px
-       reading width from the base rule, so they don't go comically wide. */
-    .container:has(> .collection:not(.collection-detail)) {
-        max-width: 1650px;
-    }
-    body:has(.collection:not(.collection-detail)) footer .container {
-        max-width: 1650px;
+    /* Only the GRID pages widen — detail pages (.collection-detail) keep
+       their reading width, so they don't go comically wide. */
+    body:has(.collection:not(.collection-detail)) {
+        --page-width: 1650px;
     }
     .collection-grid {
         grid-template-columns: repeat(3, 1fr);

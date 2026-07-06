@@ -1,8 +1,10 @@
 import Foundation
 import Ignite
 
-/// Parsed view of an app article's front matter. Custom front-matter keys are
-/// stored lowercased by Ignite, so all reads here use lowercase keys.
+/// Parsed view of an app article's front matter. Custom keys are read with the
+/// exact case used in the markdown (Ignite stores keys verbatim — see
+/// CodeModel/TalkModel); the keys in Content/apps happen to be all-lowercase
+/// (`appstore:`, not `appStore:`), so reads here match that.
 struct AppInfo {
     let title: String
     let tagline: String
@@ -33,42 +35,20 @@ struct AppInfo {
         tint = (tintValue.flatMap { $0.isEmpty ? nil : $0 })
             ?? "linear-gradient(135deg, #c7c7cc, #8e8e93)"
         path = a.path
-        details = AppRenderer.parseDetails(a.metadata["details"] as? String ?? "")
+        details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")
         let storeValue = a.metadata["appstore"] as? String
         appStore = (storeValue.flatMap { $0.isEmpty ? nil : $0 })
         bodyHTML = a.text
     }
 }
 
-/// Shared parsing + HTML building for the Apps grid and detail pages. Mirrors
-/// the Include-string pattern in `ArticleShell`/`ArchivePage`: build an HTML
-/// string, write it under `Includes/_apps/`, and return an `Include`.
+/// HTML builders for the Apps grid + detail pages. Shares parsing/escaping/
+/// include with `CollectionRenderer` (called directly, like the other three
+/// collection stacks); holds only the app-specific markup.
 @MainActor
 enum AppRenderer {
-    /// Parses the `details` mini-syntax: `Key=Value; Key=Value` into ordered
-    /// pairs. Whitespace is trimmed; pairs without `=` or an empty key are
-    /// skipped. Only the first `=` splits, so values may contain `=`.
-    static func parseDetails(_ s: String) -> [(String, String)] {
-        CollectionRenderer.parseDetails(s)
-    }
-
-    /// Writes an HTML string to `Includes/_apps/<key>.html` and returns the
-    /// matching `Include`.
-    static func include(key: String, html: String) -> Include {
-        CollectionRenderer.include(key: key, dir: "apps", html: html)
-    }
-
-    /// Derives a filesystem-safe key from an app path, e.g.
-    /// `/apps/mercari-japan/` → `mercari-japan`.
-    static func key(for path: String) -> String {
-        CollectionRenderer.key(for: path, dir: "apps")
-    }
-
-    static func escape(_ s: String) -> String {
-        CollectionRenderer.escape(s)
-    }
-
-    /// Year + platform chip pair, shared by card and detail header.
+    /// Year + platform chip pair (grid card only — the detail header dropped
+    /// its badges).
     static func badges(year: String, platform: String) -> String {
         var s = ""
         if !year.isEmpty { s += #"<span class="app-badge">\#(escape(year))</span>"# }

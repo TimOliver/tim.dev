@@ -41,5 +41,4 @@
         attributes: true,
         attributeFilter: ['data-theme']
     });
-    root.classList.remove('no-js');
 })();
