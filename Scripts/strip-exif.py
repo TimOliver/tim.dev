@@ -37,8 +37,10 @@ def has_metadata(img: Image.Image) -> bool:
         return True
     if hasattr(img, "_getexif") and img._getexif():
         return True
-    # PNG text chunks
-    if img.format == "PNG" and ("parameters" in img.info or "comment" in img.info):
+    # PNG text/iTXt/zTXt chunks — Pillow collects them all in .text, including
+    # XMP (XML:com.adobe.xmp), which commonly carries GPS. The old
+    # parameters/comment check missed those entirely.
+    if img.format == "PNG" and getattr(img, "text", None):
         return True
     return False
 
@@ -53,8 +55,19 @@ def strip(path: Path) -> bool:
             img.load()
             img.info.pop("exif", None)
             # quality='keep' preserves the JPEG's existing quantization tables —
-            # no re-encoding artifacts.
-            img.save(path, format="JPEG", quality="keep", optimize=False)
+            # no re-encoding artifacts. The ICC profile and progressive encoding
+            # must be passed explicitly: Pillow's JPEG writer only reads them
+            # from save() kwargs, so omitting them silently drops the colour
+            # profile (desaturating Display-P3 iPhone photos) and re-encodes
+            # progressive files as baseline.
+            img.save(
+                path,
+                format="JPEG",
+                quality="keep",
+                optimize=False,
+                icc_profile=img.info.get("icc_profile"),
+                progressive=img.info.get("progressive", False),
+            )
         return True
     if suffix == ".png":
         with Image.open(path) as img:

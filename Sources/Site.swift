@@ -9,7 +9,11 @@ struct IgniteWebsite {
         do {
             try await site.publish()
         } catch {
-            print(error.localizedDescription)
+            // Fail loud: a zero exit here would let a deploy script ship a
+            // stale or partial Build/. Print the full error — Ignite errors
+            // often stringify to nothing useful via localizedDescription.
+            print("Publish failed: \(error)")
+            exit(1)
         }
     }
 }

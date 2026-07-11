@@ -2,7 +2,7 @@
 title: WWDC 2012 – The Keynote
 date: 2012-06-27 08:15:30
 author: Tim Oliver
-image: /img/posts/2012/06/WWDC2012_KeynoteStage_Featured.jpg
+image: /img/posts/2012/06/WWDC2012_KeynoteStage.jpg
 tags: tech
 path: /2012/06/27/wwdc-2012-the-keynote/
 ---

@@ -32,7 +32,7 @@ So finally, as a general service, for the convenience of other fellow developers
 To maximize its portability, I wrote the whole thing, the PHP, CSS, JavaScript and HTML code all encapsulated in one file. While it’s not the most elegant code solution, it should plug straight into any system that’s running PHP 5 and start working without any configuration at all.  
 The script is released under the[ GPL license](http://www.gnu.org/copyleft/gpl.html), so feel free to modify it and distribute it yourself. 🙂
 
-[Download TiM’s Regex Tester PHP script](/img/posts/2010/03/tims_regex_tester.zip)
+Download TiM’s Regex Tester PHP script *(the download was lost in a site migration — sorry!)*
 
 While this script is aimed primarily so you can have regex debugging capability in an offline environment, I may look at setting up an online version for people to use as well. 😉
 

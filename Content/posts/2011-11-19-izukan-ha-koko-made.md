@@ -2,7 +2,7 @@
 title: ま、iずかんはここまでだみたい。
 date: 2011-11-19 22:48:00
 author: Tim Oliver
-image: /img/posts/2013/08/ipokedex_rest.png
+image: /img/posts/2011/11/ipokedex_rest.png
 tags: development
 path: /2011/11/19/izukan-ha-koko-made/
 ---

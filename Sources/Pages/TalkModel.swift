@@ -32,7 +32,12 @@ struct TalkInfo {
         topics = raw.split(separator: ",")
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
-        year = Calendar.current.component(.year, from: a.date)
+        // Pin to the site's display timezone (Ignite parses front-matter dates
+        // as GMT) — Calendar.current would shift a midnight-GMT date back a
+        // year on any machine west of GMT.
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = ArticleShell.displayTimeZone
+        year = cal.component(.year, from: a.date)
     }
 }
 

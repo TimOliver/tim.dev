@@ -282,16 +282,21 @@ def strip_metadata(path: Path) -> None:
                 return
             img.load()
             img.info.pop("exif", None)
-            img.save(path, format="JPEG", quality="keep", optimize=False)
+            # ICC profile and progressive encoding must be re-passed explicitly:
+            # Pillow's JPEG writer only reads them from save() kwargs.
+            img.save(
+                path,
+                format="JPEG",
+                quality="keep",
+                optimize=False,
+                icc_profile=img.info.get("icc_profile"),
+                progressive=img.info.get("progressive", False),
+            )
     elif suffix == ".png":
         with Image.open(path) as img:
-            # PNGs can carry EXIF or text chunks (parameters/comment); strip
-            # whenever any of those are present.
-            if not (
-                "exif" in img.info
-                or "parameters" in img.info
-                or "comment" in img.info
-            ):
+            # PNGs can carry EXIF or any text/iTXt/zTXt chunk (all collected in
+            # .text, including XMP which can hold GPS); strip whenever present.
+            if not ("exif" in img.info or getattr(img, "text", None)):
                 return
             img.load()
             img.save(path, format="PNG")

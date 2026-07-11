@@ -24,6 +24,9 @@ fi
 count=$(printf '%s\n' "$staged" | wc -l | tr -d ' ')
 echo "pre-commit: stripping EXIF from $count staged image(s)..."
 
-# Pass paths to the strip script and re-stage on success.
-printf '%s\n' "$staged" | xargs python3 Scripts/strip-exif.py
-printf '%s\n' "$staged" | xargs git add
+# Pass paths to the strip script and re-stage on success. NUL-delimited
+# through xargs -0 — plain xargs splits on any whitespace, so a filename
+# containing a space would be silently skipped by the strip and then break
+# the re-stage. (BSD xargs has no -d, hence the tr round-trip.)
+printf '%s\n' "$staged" | tr '\n' '\0' | xargs -0 python3 Scripts/strip-exif.py
+printf '%s\n' "$staged" | tr '\n' '\0' | xargs -0 git add

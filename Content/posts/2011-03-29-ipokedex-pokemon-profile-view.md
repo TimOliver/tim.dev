@@ -2,7 +2,7 @@
 title: iPokédex – Pokémon Profile View
 date: 2011-03-29 22:36:29
 author: Tim Oliver
-image: /img/posts/2011/03/iPokedex1.jpg
+image: /img/posts/2011/03/iPokedex.jpg
 tags: development
 path: /2011/03/29/ipokedex-pokemon-profile-view/
 ---

@@ -2,7 +2,7 @@
 title: iずかんとiOS5
 date: 2011-10-17 13:41:56
 author: Tim Oliver
-image: /img/posts/2013/08/borked_ipokedex.png
+image: /img/posts/2011/10/borked_ipokedex.png
 tags: development, tech
 path: /2011/10/17/izukan-to-ios/
 ---
