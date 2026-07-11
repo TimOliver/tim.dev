@@ -1,7 +1,5 @@
 ---
 title: Commissions
-eyebrow: Category
-meta: 4 pieces · for clients
 columns: 2
 order: 2
 slug: commissions

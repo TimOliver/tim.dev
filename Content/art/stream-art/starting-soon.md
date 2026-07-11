@@ -2,7 +2,6 @@
 title: 'Starting soon' loop
 layout: ArtDetail
 date: 2024-03-01 00:00:00
-tag: Play
 duration: 20s loop
 meta: Stream · 20s loop · 2024
 tint: linear-gradient(135deg, #f48fb1, #f06292)

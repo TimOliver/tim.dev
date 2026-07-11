@@ -478,6 +478,12 @@
 // and use event delegation for the click, rather than capturing the node once.
 // No-op on pages that don't render the button.
 (function() {
+    // Only the archive/art/talks indexes render the button, but the collection
+    // swap can (re)introduce it — gate on either, so the ~200 other pages skip
+    // the per-scroll-tick DOM query entirely.
+    if (!document.querySelector('.back-to-top') &&
+        !/^\/(apps|code|art|talks)\//.test(location.pathname)) return;
+
     var reduce = window.matchMedia &&
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -525,6 +531,12 @@
 // delegation, so it survives the content-swap re-inserting the index. With JS
 // off the full grid simply shows.
 (function() {
+    // The grid only exists on /talks/, but the collection swap can carry the
+    // user there from any collection page — gate on both so the document-level
+    // listeners below aren't installed on the ~200 pages that can never show it.
+    if (!document.querySelector('.talks-grid') &&
+        !/^\/(apps|code|art|talks)\//.test(location.pathname)) return;
+
     var YEAR_BUCKETS = {
         '2023-26': [2023, 2026],
         '2019-22': [2019, 2022],
@@ -648,12 +660,20 @@
 // contexts, e.g. local LAN preview). URLs are built client-side. The Permalink
 // link carries no data-share-path — it's a plain navigation link.
 (function() {
-    var live = document.createElement('div');
-    live.setAttribute('aria-live', 'polite');
-    live.setAttribute('role', 'status');
-    live.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;'
-        + 'padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;';
-    document.body.appendChild(live);
+    // Screen-reader live region for the "Copied!" confirmation — created on
+    // first use rather than eagerly, so the ~200 pages where nobody copies a
+    // link never grow the extra node.
+    var live = null;
+    function getLive() {
+        if (live) return live;
+        live = document.createElement('div');
+        live.setAttribute('aria-live', 'polite');
+        live.setAttribute('role', 'status');
+        live.style.cssText = 'position:absolute;width:1px;height:1px;margin:-1px;'
+            + 'padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;';
+        document.body.appendChild(live);
+        return live;
+    }
 
     function confirmCopied(btn) {
         var use = btn.querySelector('use');
@@ -668,8 +688,9 @@
         if (use) use.setAttribute('href', '/img/ui-icons.svg#clipboard-check');
         if (label) label.textContent = 'Copied!';
         btn.classList.add('is-copied');
-        live.textContent = '';
-        live.textContent = 'Link copied';
+        var region = getLive();
+        region.textContent = '';
+        region.textContent = 'Link copied';
         btn._revertTimer = setTimeout(function() {
             btn._revertTimer = null;
             if (use && btn._iconHref) use.setAttribute('href', btn._iconHref);

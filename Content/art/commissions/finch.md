@@ -2,7 +2,6 @@
 title: Finch app launch teaser
 layout: ArtDetail
 date: 2023-09-01 00:00:00
-tag: Play
 duration: 12s
 meta: Commission · 12s · 2023
 tint: linear-gradient(135deg, #a5d6a7, #81c784)

@@ -36,14 +36,7 @@ extension CodeRenderer {
 
         s += CollectionRenderer.detailsBlock(repo.details)
 
-        if !repo.links.isEmpty {
-            s += #"<span class="collection-eyebrow">Links</span>"#
-            s += #"<ul class="collection-links">"#
-            for (label, url) in repo.links {
-                s += #"<li><a class="collection-link" href="\#(escape(url))" target="_blank" rel="noopener">\#(escape(label))<span class="collection-link-arrow" aria-hidden="true">&#8599;</span></a></li>"#
-            }
-            s += "</ul>"
-        }
+        s += CollectionRenderer.linksBlock(repo.links)
 
         s += "</aside>"
         s += "</div>"  // collection-detail-body

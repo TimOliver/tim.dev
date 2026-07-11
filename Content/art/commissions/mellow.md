@@ -2,7 +2,6 @@
 title: Mellow intro sequence
 layout: ArtDetail
 date: 2024-05-01 00:00:00
-tag: Play
 duration: 8s
 meta: Commission · 8s · 2024
 tint: linear-gradient(135deg, #ef9a9a, #e57373)

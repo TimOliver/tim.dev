@@ -2,7 +2,6 @@
 title: In-game overlay frame
 layout: ArtDetail
 date: 2024-08-01 00:00:00
-tag: Play
 duration: animated
 meta: Stream · animated · 2024
 tint: linear-gradient(135deg, #a5d6a7, #66bb6a)

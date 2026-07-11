@@ -4,7 +4,6 @@ import Ignite
 /// One art item, parsed from an Ignite article (Content/art/<section>/<slug>.md).
 struct ArtItem {
     let title: String
-    let tag: String          // overlay badge (may be empty)
     let duration: String     // overlay duration (may be empty)
     let meta: String         // caption meta line
     let tint: String         // placeholder thumbnail color/gradient
@@ -17,17 +16,14 @@ struct ArtItem {
     @MainActor
     init(_ a: Article) {
         title = a.title
-        tag = a.metadata["tag"] as? String ?? ""
         duration = a.metadata["duration"] as? String ?? ""
         meta = a.metadata["meta"] as? String ?? ""
-        let tintValue = a.metadata["tint"] as? String
-        tint = (tintValue.flatMap { $0.isEmpty ? nil : $0 })
-            ?? "linear-gradient(135deg, #c7c7cc, #8e8e93)"
+        tint = CollectionRenderer.nonEmpty(a.metadata["tint"] as? String)
+            ?? CollectionRenderer.defaultTint
         order = Int(a.metadata["order"] as? String ?? "") ?? 0
         path = a.path
         stats = CollectionRenderer.parseDetails(a.metadata["stats"] as? String ?? "")
-        let yt = a.metadata["youtube"] as? String
-        youtube = (yt.flatMap { $0.isEmpty ? nil : $0 })
+        youtube = CollectionRenderer.nonEmpty(a.metadata["youtube"] as? String)
         bodyHTML = a.text
     }
 }
@@ -37,8 +33,6 @@ struct ArtItem {
 /// collection — we read + parse them ourselves).
 struct ArtSection {
     let title: String
-    let eyebrow: String
-    let meta: String
     let columns: Int
     let order: Int
     let slug: String
@@ -102,8 +96,6 @@ enum ArtRenderer {
 
         return ArtSection(
             title: meta["title"] ?? folder,
-            eyebrow: meta["eyebrow"] ?? "",
-            meta: meta["meta"] ?? "",
             columns: Int(meta["columns"] ?? "") ?? 3,
             order: Int(meta["order"] ?? "") ?? 0,
             slug: meta["slug"] ?? folder,

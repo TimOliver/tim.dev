@@ -3,7 +3,8 @@ import Ignite
 
 /// The `/art/` index. Reads section manifests off disk (ArtRenderer.loadSections),
 /// groups the published `art` items under each section by path prefix, and renders
-/// a jump-nav + one section block per section.
+/// a jump-nav + one section block per section. Items no section claims fail the
+/// build rather than silently dropping off the index.
 struct Art: StaticPage {
     var title = "Art"
 
@@ -17,6 +18,18 @@ struct Art: StaticPage {
             sections[i].items = items
                 .filter { $0.path.hasPrefix(prefix) }
                 .sorted { $0.order < $1.order }
+        }
+        // Fail LOUDLY on published items no section claimed — a folder missing
+        // a parseable _section.md, or a slug: override that no longer matches
+        // its folder. A silent miss here would let the build finish with exit
+        // code 0 while the pieces vanish from this index (their detail pages
+        // still build, so nothing else would catch it).
+        let prefixes = sections.map { "/art/\($0.slug)/" }
+        let orphans = items.map(\.path)
+            .filter { path in !prefixes.contains { path.hasPrefix($0) } }
+            .sorted()
+        if !orphans.isEmpty {
+            fatalError("Art items not claimed by any section: \(orphans.joined(separator: ", "))")
         }
         let html = ArtRenderer.indexHTML(for: sections)
         return CollectionRenderer.include(key: "index", dir: "art", html: html)
@@ -57,7 +70,7 @@ extension ArtRenderer {
         return s
     }
 
-    /// One art card: tinted landscape thumb with tag + duration overlays, then a
+    /// One art card: tinted landscape thumb with a duration overlay, then a
     /// caption + meta line. Reuses the cardless .collection-card shell.
     static func card(_ item: ArtItem) -> String {
         var s = #"<a class="collection-card art-card" href="\#(escape(item.path))">"#

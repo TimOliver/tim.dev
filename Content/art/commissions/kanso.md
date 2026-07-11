@@ -2,7 +2,6 @@
 title: Kanso brand loop
 layout: ArtDetail
 date: 2025-02-01 00:00:00
-tag: Play
 duration: 6s
 meta: Commission · 6s · 2025
 tint: linear-gradient(135deg, #b39ddb, #9575cd)

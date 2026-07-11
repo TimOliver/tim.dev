@@ -2,7 +2,6 @@
 title: Scene stinger transition
 layout: ArtDetail
 date: 2023-07-01 00:00:00
-tag: Play
 duration: 0.8s
 meta: Stream · 0.8s · 2023
 tint: linear-gradient(135deg, #ce93d8, #ba68c8)

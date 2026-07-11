@@ -2,7 +2,6 @@
 title: Tokyo rooftop, rain
 layout: ArtDetail
 date: 2025-05-01 00:00:00
-tag: 3D
 meta: 3D · Blender · 2025
 tint: linear-gradient(135deg, #90caf9, #64b5f6)
 order: 4

@@ -2,7 +2,6 @@
 title: Karuizawa cabin
 layout: ArtDetail
 date: 2024-11-01 00:00:00
-tag: 3D
 meta: 3D · Blender · 2024
 tint: linear-gradient(135deg, #a5d6a7, #81c784)
 order: 2

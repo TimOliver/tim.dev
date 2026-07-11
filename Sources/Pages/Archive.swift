@@ -93,11 +93,17 @@ enum ArchivePage {
         return cal
     }
 
-    private static func dayLabel(_ date: Date) -> String {
+    /// Configured once — DateFormatter construction is expensive, and this
+    /// runs for every archive row.
+    private static let dayLabelFormatter: DateFormatter = {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_AU")
         f.timeZone = ArticleShell.displayTimeZone
         f.dateFormat = "MMM d"
-        return f.string(from: date)
+        return f
+    }()
+
+    private static func dayLabel(_ date: Date) -> String {
+        dayLabelFormatter.string(from: date)
     }
 }

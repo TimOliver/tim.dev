@@ -21,11 +21,10 @@ struct TalkInfo {
         title = a.title
         venue = a.metadata["venue"] as? String ?? ""
         duration = a.metadata["duration"] as? String ?? ""
-        let tintValue = a.metadata["tint"] as? String
-        tint = (tintValue.flatMap { $0.isEmpty ? nil : $0 })
-            ?? "linear-gradient(135deg, #c7c7cc, #8e8e93)"
-        youtube = (a.metadata["youtube"] as? String).flatMap { $0.isEmpty ? nil : $0 }
-        slides = (a.metadata["slides"] as? String).flatMap { $0.isEmpty ? nil : $0 }
+        tint = CollectionRenderer.nonEmpty(a.metadata["tint"] as? String)
+            ?? CollectionRenderer.defaultTint
+        youtube = CollectionRenderer.nonEmpty(a.metadata["youtube"] as? String)
+        slides = CollectionRenderer.nonEmpty(a.metadata["slides"] as? String)
         path = a.path
         bodyHTML = a.text
         let raw = a.metadata["topics"] as? String ?? ""

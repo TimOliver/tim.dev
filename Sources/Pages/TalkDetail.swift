@@ -46,17 +46,10 @@ extension TalksRenderer {
         if !talk.topics.isEmpty { rows.append(("Topic", talk.topics.joined(separator: ", "))) }
         s += CollectionRenderer.detailsBlock(rows)
 
-        var links: [(String, String)] = []
+        var links: [(label: String, url: String)] = []
         if let id = talk.youtube { links.append(("Watch on YouTube", "https://www.youtube.com/watch?v=\(id)")) }
         if let slides = talk.slides { links.append(("Slides", slides)) }
-        if !links.isEmpty {
-            s += #"<span class="collection-eyebrow">Links</span>"#
-            s += #"<ul class="collection-links">"#
-            for (label, url) in links {
-                s += #"<li><a class="collection-link" href="\#(escape(url))" target="_blank" rel="noopener">\#(escape(label))<span class="collection-link-arrow" aria-hidden="true">&#8599;</span></a></li>"#
-            }
-            s += "</ul>"
-        }
+        s += CollectionRenderer.linksBlock(links)
 
         s += "</aside>"
         s += "</div>"  // collection-detail-body

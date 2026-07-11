@@ -29,15 +29,12 @@ struct AppInfo {
         tagline = a.metadata["tagline"] as? String ?? ""
         year = a.metadata["year"] as? String ?? ""
         platform = a.metadata["platform"] as? String ?? ""
-        let iconValue = a.metadata["icon"] as? String
-        icon = (iconValue?.isEmpty == false) ? iconValue : nil
-        let tintValue = a.metadata["tint"] as? String
-        tint = (tintValue.flatMap { $0.isEmpty ? nil : $0 })
-            ?? "linear-gradient(135deg, #c7c7cc, #8e8e93)"
+        icon = CollectionRenderer.nonEmpty(a.metadata["icon"] as? String)
+        tint = CollectionRenderer.nonEmpty(a.metadata["tint"] as? String)
+            ?? CollectionRenderer.defaultTint
         path = a.path
         details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")
-        let storeValue = a.metadata["appstore"] as? String
-        appStore = (storeValue.flatMap { $0.isEmpty ? nil : $0 })
+        appStore = CollectionRenderer.nonEmpty(a.metadata["appstore"] as? String)
         bodyHTML = a.text
     }
 }

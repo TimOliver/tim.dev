@@ -2,7 +2,6 @@
 title: iOS app concept
 layout: ArtDetail
 date: 2024-06-01 00:00:00
-tag: iOS
 meta: Concept · iOS · 2024
 tint: linear-gradient(135deg, #4a90e2, #2a5db0)
 order: 1

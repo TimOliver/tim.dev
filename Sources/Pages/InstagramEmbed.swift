@@ -32,8 +32,12 @@ enum InstagramEmbed {
             shortcode(in: block).map(embed)
         }
         // Mangled blockquote embeds → clean iframe (non-Instagram quotes kept).
+        // Every legacy blockquote embed opens with the same padding placeholder
+        // div the align-center form anchors on, so require it here too — an
+        // ordinary markdown quote that merely links an Instagram post must
+        // stay a quote.
         out = replace(out, #"<blockquote\b[^>]*>.*?</blockquote>"#) { block in
-            shortcode(in: block).map(embed)
+            block.contains(#"<div style="padding:"#) ? shortcode(in: block).map(embed) : nil
         }
         // Pre-existing Instagram iframes → normalized clean iframe.
         out = replace(out, #"<iframe\b[^>]*>(?:\s*</iframe>)?"#) { frame in
@@ -53,12 +57,21 @@ enum InstagramEmbed {
 
     // MARK: - Regex helpers
 
+    /// Compiled patterns, keyed by pattern string — transform runs for every
+    /// article render, so compiling per call adds up. Only ever touched from
+    /// ArticleShell's @MainActor rendering, so plain static state is safe. A
+    /// failed compile caches as nil so a bad pattern isn't retried.
+    private static var regexCache: [String: NSRegularExpression?] = [:]
+
     /// Replaces each match of `pattern`; the closure returns the replacement, or
     /// nil to leave that match untouched. Dot matches newlines (embeds span lines).
     private static func replace(_ s: String, _ pattern: String, _ make: (String) -> String?) -> String {
-        guard let re = try? NSRegularExpression(
-            pattern: pattern, options: [.caseInsensitive, .dotMatchesLineSeparators]
-        ) else { return s }
+        if regexCache.index(forKey: pattern) == nil {
+            regexCache[pattern] = try? NSRegularExpression(
+                pattern: pattern, options: [.caseInsensitive, .dotMatchesLineSeparators]
+            )
+        }
+        guard let re = regexCache[pattern] ?? nil else { return s }
         let ns = s as NSString
         var result = ""
         var last = 0

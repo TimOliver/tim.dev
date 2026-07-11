@@ -2,7 +2,6 @@
 title: Orbit — logo sting
 layout: ArtDetail
 date: 2024-06-01 00:00:00
-tag: Play
 duration: 5s
 meta: Commission · 5s · 2024
 tint: linear-gradient(135deg, #4dd0e1, #00acc1)

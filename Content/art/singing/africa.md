@@ -2,7 +2,6 @@
 title: Africa
 layout: ArtDetail
 date: 2023-08-01 00:00:00
-tag: Karaoke
 duration: 4:55
 meta: Toto · 2023 · 24k views
 tint: linear-gradient(135deg, #bf360c, #e65100)

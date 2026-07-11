@@ -2,7 +2,6 @@
 title: BRB — campfire
 layout: ArtDetail
 date: 2024-04-01 00:00:00
-tag: Play
 duration: 30s loop
 meta: Stream · 30s loop · 2024
 tint: linear-gradient(135deg, #80cbc4, #4db6ac)

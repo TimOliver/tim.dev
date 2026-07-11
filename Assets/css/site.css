@@ -236,9 +236,8 @@ article img {
    from the .post-badges + img.hero rule (the badge row always precedes the
    hero). */
 article img.hero {
-    display: block;
+    /* display:block / height:auto come from the base `article img` rule. */
     width: 100%;
-    height: auto;
     object-fit: cover;
     border-radius: 30px;
     corner-shape: squircle;

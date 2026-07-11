@@ -2,7 +2,6 @@
 title: First Love
 layout: ArtDetail
 date: 2024-01-01 00:00:00
-tag: Professional
 duration: 4:38
 meta: Utada Hikaru · 2024 · 12k views
 tint: linear-gradient(135deg, #7b1fa2, #4a148c)

@@ -26,8 +26,7 @@ struct RepoInfo {
         tagline = a.metadata["tagline"] as? String ?? ""
         owner = a.metadata["owner"] as? String ?? ""
         language = a.metadata["language"] as? String ?? ""
-        let lc = a.metadata["langColor"] as? String
-        langColor = (lc.flatMap { $0.isEmpty ? nil : $0 }) ?? "#8e8e93"
+        langColor = CollectionRenderer.nonEmpty(a.metadata["langColor"] as? String) ?? "#8e8e93"
         stars = a.metadata["stars"] as? String ?? ""
         path = a.path
         details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")

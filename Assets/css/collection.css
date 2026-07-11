@@ -24,17 +24,15 @@ body:has(.collection-detail) {
     margin-top: 40px;
 }
 
-/* Centered page title + subtitle. Size/weight come from the global .page-title
-   so every page's H1 matches; this only adjusts alignment + spacing. */
+/* Centered page title + subtitle. Size/weight/alignment/colour come from the
+   global .page-title / .page-subtitle rules; this only adjusts spacing,
+   size and measure. */
 .collection .page-title {
-    text-align: center;
     margin: 0 0 0.3em;
 }
 
 .collection .page-subtitle {
-    text-align: center;
     font-size: 1.15em;
-    color: var(--text-secondary);
     /* Clamp the page tagline to a comfortable measure, centered, on every
        collection subpage (Apps / Code / Art). balance evens the wrapped lines
        so it reads well on both wide and narrow screens (no manual <br>). */

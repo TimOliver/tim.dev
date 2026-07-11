@@ -37,10 +37,7 @@ extension ArtRenderer {
         s += CollectionRenderer.detailsBlock(item.stats)
 
         if let youtube = item.youtube {
-            s += #"<span class="collection-eyebrow">Links</span>"#
-            s += #"<ul class="collection-links">"#
-            s += #"<li><a class="collection-link" href="\#(escape(youtube))" target="_blank" rel="noopener">Watch on YouTube<span class="collection-link-arrow" aria-hidden="true">&#8599;</span></a></li>"#
-            s += "</ul>"
+            s += CollectionRenderer.linksBlock([("Watch on YouTube", youtube)])
         }
 
         s += "</aside>"

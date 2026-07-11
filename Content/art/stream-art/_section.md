@@ -1,7 +1,5 @@
 ---
 title: Stream art
-eyebrow: Category
-meta: 6 pieces · for streams
 columns: 3
 order: 4
 slug: stream-art

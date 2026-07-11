@@ -222,11 +222,20 @@
       }
     }
 
-    new MutationObserver(function (mutations) {
-      for (var i = 0; i < mutations.length; i++) {
-        var added = mutations[i].addedNodes;
-        for (var j = 0; j < added.length; j++) apply(added[j]);
-      }
-    }).observe(document.documentElement, { childList: true, subtree: true });
+    // Observe the widget root, not the whole document — the dialog always
+    // mounts inside .comentario-root (every dialog override in comentario.css
+    // is scoped through it), and a document-wide subtree observer would fire
+    // for lightbox insertions, the share live-region, and every other page
+    // mutation for the life of the page.
+    (function watchDialog() {
+      var root = document.querySelector('.comentario-root');
+      if (!root) { setTimeout(watchDialog, 150); return; }
+      new MutationObserver(function (mutations) {
+        for (var i = 0; i < mutations.length; i++) {
+          var added = mutations[i].addedNodes;
+          for (var j = 0; j < added.length; j++) apply(added[j]);
+        }
+      }).observe(root, { childList: true, subtree: true });
+    })();
   })();
 })();

@@ -2,7 +2,6 @@
 title: リボン / Ribbon
 layout: ArtDetail
 date: 2023-11-01 00:00:00
-tag: Professional
 duration: 5:12
 meta: Bump of Chicken · 2023 · 6.2k views
 tint: linear-gradient(135deg, #006064, #00838f)

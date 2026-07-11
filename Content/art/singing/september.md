@@ -2,7 +2,6 @@
 title: September
 layout: ArtDetail
 date: 2022-09-01 00:00:00
-tag: Karaoke
 duration: 3:35
 meta: Earth, Wind & Fire · 2022 · 15k views
 tint: linear-gradient(135deg, #4e342e, #6d4c41)

@@ -2,7 +2,6 @@
 title: 'Thanks for watching' outro
 layout: ArtDetail
 date: 2025-04-01 00:00:00
-tag: Play
 duration: 12s
 meta: Stream · 12s · 2025
 tint: linear-gradient(135deg, #ffab91, #ff8a65)

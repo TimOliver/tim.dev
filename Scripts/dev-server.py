@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import sys
 from functools import partial
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 
@@ -36,7 +36,10 @@ def main() -> None:
     # request with FileNotFoundError on os.getcwd().
     handler = partial(NoCacheHandler, directory=str(root))
     print(f"serving {root} on http://localhost:{port}/ (no-cache)")
-    HTTPServer(("", port), handler).serve_forever()
+    # Threading: image-heavy pages fetch dozens of assets in parallel, and a
+    # single stalled connection (iOS Safari over LAN) would wedge a
+    # single-threaded server for everyone.
+    ThreadingHTTPServer(("", port), handler).serve_forever()
 
 
 if __name__ == "__main__":

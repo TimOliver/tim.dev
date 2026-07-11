@@ -140,20 +140,30 @@ enum ArticleShell {
         return s
     }
 
-    static func displayDate(_ date: Date) -> String {
+    /// Shared formatters, configured once — DateFormatter construction is
+    /// expensive, and these run for every article on every surface.
+    private static let displayDateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_AU")
         f.timeZone = displayTimeZone
         f.dateFormat = "d MMMM yyyy"
-        return f.string(from: date)
-    }
+        return f
+    }()
 
-    static func isoDate(_ date: Date) -> String {
+    private static let isoDateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
         f.timeZone = displayTimeZone
         f.dateFormat = "yyyy-MM-dd"
-        return f.string(from: date)
+        return f
+    }()
+
+    static func displayDate(_ date: Date) -> String {
+        displayDateFormatter.string(from: date)
+    }
+
+    static func isoDate(_ date: Date) -> String {
+        isoDateFormatter.string(from: date)
     }
 
     /// Turns runs of 2+ consecutive standalone images into a lightbox-backed
@@ -285,11 +295,20 @@ enum ArticleShell {
         return out
     }
 
+    /// Compiled patterns, keyed by pattern string. replaceRegex runs ~10× per
+    /// article across every article render, so compiling per call would
+    /// dominate the build; the type is @MainActor, so plain static state is
+    /// safe. A failed compile caches as nil so a bad pattern isn't retried.
+    private static var regexCache: [String: NSRegularExpression?] = [:]
+
     /// Splices each regex match's replacement into the string.
     private static func replaceRegex(
         _ s: String, _ pattern: String, _ make: (NSTextCheckingResult, NSString) -> String
     ) -> String {
-        guard let re = try? NSRegularExpression(pattern: pattern) else { return s }
+        if regexCache.index(forKey: pattern) == nil {
+            regexCache[pattern] = try? NSRegularExpression(pattern: pattern)
+        }
+        guard let re = regexCache[pattern] ?? nil else { return s }
         let ns = s as NSString
         var result = ""
         var last = 0
