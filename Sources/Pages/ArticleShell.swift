@@ -110,9 +110,11 @@ enum ArticleShell {
         if let image = article.image, !image.isEmpty {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
         }
-        let body = groupImageGrids(
-            fixBareImages(InstagramEmbed.transform(article.text)),
-            galleryPrefix: CollectionRenderer.key(for: article.path, dir: "posts")
+        let body = wrapStandaloneImages(
+            groupImageGrids(
+                fixBareImages(InstagramEmbed.transform(article.text)),
+                galleryPrefix: CollectionRenderer.key(for: article.path, dir: "posts")
+            )
         )
         s += "<section>\(body)</section>"
 
@@ -203,6 +205,57 @@ enum ArticleShell {
         }
     }
 
+    /// Wraps every remaining standalone article image in a lightbox anchor so
+    /// all images opt into full-screen viewing by default, and adds native
+    /// lazy-loading where the markdown compiler didn't (WP figures already
+    /// carry it). Runs AFTER groupImageGrids, so only singles remain: plain
+    /// markdown image paragraphs and single WP figures (whose visible
+    /// figcaption doubles as the lightbox caption). Bare `data-lightbox`
+    /// (no value) = standalone, per lightbox3. Heroes are emitted outside
+    /// <section> and stay unwrapped — the `.post-badges + img.hero` adjacency
+    /// selector depends on that.
+    private static func wrapStandaloneImages(_ html: String) -> String {
+        // Plain markdown image paragraphs.
+        var out = replaceRegex(html, #"<p>(<img\s[^>]+>)</p>"#) { m, ns in
+            "<p>\(lightboxAnchor(imgTag: ns.substring(with: m.range(at: 1)), caption: nil))</p>"
+        }
+        // Single WP figures — keep the figure + visible caption, wrap the img.
+        out = replaceRegex(out, #"(?s)(<figure class="wp-block-image[^"]*">)(<img\s[^>]+>)(?:<figcaption>(.*?)</figcaption>)?(</figure>)"#) { m, ns in
+            let open = ns.substring(with: m.range(at: 1))
+            let img = ns.substring(with: m.range(at: 2))
+            let cap = m.range(at: 3).location == NSNotFound ? nil : ns.substring(with: m.range(at: 3))
+            let close = ns.substring(with: m.range(at: 4))
+            let figcaption = cap.map { "<figcaption>\($0)</figcaption>" } ?? ""
+            return open + lightboxAnchor(imgTag: img, caption: cap) + figcaption + close
+        }
+        return out
+    }
+
+    /// Builds the standalone lightbox anchor for an existing `<img>` tag,
+    /// ensuring the image itself lazy-loads. Caption precedence: explicit
+    /// (figcaption) → the image's alt text.
+    private static func lightboxAnchor(imgTag: String, caption: String?) -> String {
+        guard imgTag.range(of: "data-lightbox") == nil else { return imgTag }
+        var src = ""
+        _ = replaceRegex(imgTag, #"src="([^"]*)""#) { m, ns in
+            src = ns.substring(with: m.range(at: 1)); return ""
+        }
+        guard !src.isEmpty else { return imgTag }
+        var cap = caption ?? ""
+        if cap.isEmpty {
+            _ = replaceRegex(imgTag, #"alt="([^"]*)""#) { m, ns in
+                cap = ns.substring(with: m.range(at: 1)); return ""
+            }
+        }
+        cap = replaceRegex(cap, #"<[^>]+>"#) { _, _ in "" }
+            .replacingOccurrences(of: "\"", with: "&quot;")
+        var img = imgTag
+        if img.range(of: "loading=") == nil {
+            img = replaceRegex(img, #"<img\s"#) { _, _ in #"<img loading="lazy" "# }
+        }
+        return #"<a href="\#(src)" data-lightbox data-caption="\#(cap)">\#(img)</a>"#
+    }
+
     /// Converts Markdown image syntax that leaked into the compiled HTML as
     /// literal text into real `<img>` tags. Old WordPress posts wrap images in
     /// raw HTML (`<figure class="wp-block-image">![](…)</figure>`); because the
@@ -212,11 +265,16 @@ enum ArticleShell {
     private static func fixBareImages(_ html: String) -> String {
         var out = html
         // Linked thumbnails first: [![alt](thumb "title")](full) → <a><img></a>.
+        // WordPress's classic thumbnail→full-size pairs: when the link target
+        // is itself an image, open it in the lightbox instead of navigating.
         out = replaceRegex(out, #"\[!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)\]\(([^)\s]+)(?:\s+"[^"]*")?\)"#) { m, ns in
             let alt = ns.substring(with: m.range(at: 1))
             let thumb = ns.substring(with: m.range(at: 2))
             let full = ns.substring(with: m.range(at: 3))
-            return #"<a href="\#(escape(full))"><img src="\#(escape(thumb))" alt="\#(escape(alt))" loading="lazy"></a>"#
+            let isImage = [".jpg", ".jpeg", ".png", ".gif", ".webp"]
+                .contains { full.lowercased().hasSuffix($0) }
+            let lightbox = isImage ? #" data-lightbox data-caption="\#(escape(alt))""# : ""
+            return #"<a href="\#(escape(full))"\#(lightbox)><img src="\#(escape(thumb))" alt="\#(escape(alt))" loading="lazy"></a>"#
         }
         // Then standalone images, with an optional Markdown title: ![alt](src "title").
         out = replaceRegex(out, #"!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)"#) { m, ns in
