@@ -3,7 +3,7 @@ title: Open Source! (Also GitHub)
 date: 2011-08-26 23:33:10
 author: Tim Oliver
 image: /img/posts/2011/08/open_sauce.jpg
-tags: development
+tags: development, oss
 path: /2011/08/26/open-source-also-github/
 ---
 <div class="wp-caption alignleft" id="attachment_636" style="width: 275px">![Open Sauce :D](/img/posts/2011/08/open_sauce.jpg "Open Source")Oh wait. Or was that the other 'open sauce'...

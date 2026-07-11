@@ -3,7 +3,7 @@ title: iComics 2018! (No, it’s not dead!)
 date: 2018-10-11 01:26:48
 author: Tim Oliver
 image: /img/posts/2018/10/iComics-Attack-on-Titan.jpg
-tags: development, tech
+tags: development, tech, icomics
 path: /2018/10/11/icomics-2018-no-its-not-dead/
 ---
 G’day! It’s been a while, but the reports of my death are greatly exaggerated. Mostly. 🤣

@@ -3,7 +3,7 @@ title: iComics v1.1 released!
 date: 2014-12-01 00:05:11
 author: Tim Oliver
 image: /img/posts/2014/11/iComics_v11_Released.jpg
-tags: development, events
+tags: development, events, icomics
 path: /2014/12/01/icomics-v1-1-released/
 ---
 Blimey. Sorry it took so long to write this! For the last two weeks, it’s been a flurry of updating the site, sending out press releases, and responding to a mountain of user feedback, so I finally got the time to write the release announcement. XD

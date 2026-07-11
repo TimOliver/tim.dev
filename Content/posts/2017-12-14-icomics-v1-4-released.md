@@ -3,7 +3,7 @@ title: iComics v1.4 Released
 date: 2017-12-14 16:45:59
 author: Tim Oliver
 image: /img/posts/2017/12/iComics-iPhoneX.jpg
-tags: development, tech
+tags: development, tech, icomics
 path: /2017/12/14/icomics-v1-4-released/
 ---
 ***tl;dr: iComics v1.4 with support for iPhone X and the new iPad Pro is out! I’m also planning to give streaming iComics dev another try. [Follow me here](http://twitch.tv/timxd).***

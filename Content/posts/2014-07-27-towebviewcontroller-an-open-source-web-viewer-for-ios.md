@@ -3,7 +3,7 @@ title: TOWebViewController – An open source web viewer for iOS
 date: 2014-07-27 22:58:09
 author: Tim Oliver
 image: /img/posts/2014/07/TOWebViewController.jpg
-tags: development, tech
+tags: development, tech, oss
 path: /2014/07/27/towebviewcontroller-an-open-source-web-viewer-for-ios/
 ---
 Here’s a neat little thing I’ve been working on lately. 🙂

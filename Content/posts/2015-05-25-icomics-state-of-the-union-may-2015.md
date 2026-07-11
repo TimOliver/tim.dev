@@ -3,7 +3,7 @@ title: iComics – State of the Union – May 2015
 date: 2015-05-25 23:26:17
 author: Tim Oliver
 image: /img/posts/2015/05/iComics_May_2015.jpg
-tags: development
+tags: development, icomics
 path: /2015/05/25/icomics-state-of-the-union-may-2015/
 ---
 Sorry about the last update being so long ago!

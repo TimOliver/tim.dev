@@ -87,6 +87,16 @@ struct MainLayout: Layout {
             MetaLink(href: "/img/favicon.svg", rel: "icon")
                 .customAttribute(name: "type", value: "image/svg+xml")
             MetaLink(href: "/img/apple-touch-icon.png", rel: "apple-touch-icon")
+            // Feed discovery: the main feed plus the per-category feeds
+            // (source of truth: IgniteWebsite.categoryFeeds).
+            MetaLink(href: "/feed.xml", rel: "alternate")
+                .customAttribute(name: "type", value: "application/rss+xml")
+                .customAttribute(name: "title", value: "[tim.dev] — Everything")
+            for feed in IgniteWebsite.categoryFeeds {
+                MetaLink(href: "/\(feed.file)", rel: "alternate")
+                    .customAttribute(name: "type", value: "application/rss+xml")
+                    .customAttribute(name: "title", value: "[tim.dev] — \(feed.title)")
+            }
             // theme.js must run synchronously in <head> — it sets data-theme +
             // data-color-scheme on <html> before first paint, preventing FOUC.
             Script(file: "/js/theme.js")

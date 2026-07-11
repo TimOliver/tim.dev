@@ -3,7 +3,7 @@ title: iComics v1.1 Sneak Peek
 date: 2014-06-15 00:14:02
 author: Tim Oliver
 image: /img/posts/2014/06/iComics_v1_1_Preview.jpg
-tags: development
+tags: development, icomics
 path: /2014/06/15/icomics-v1-1-sneak-peak/
 ---
 Blimey. It’s been a fair little while since [my last post on iComics’ development](/2014/01/29/the-icomics-roadmap-jan-2014/ "The State of iComics – Jan 2014"). Since starting the crazy task of re-designing the entire app to the iOS 7 design aesthetic in February this year, I’ve already started to tease a few pictures of my progress here and there along the way, mainly uploading them to [my Instagram account](http://instagram.com/timoliver). But after a few emails from people asking for some proper clarification, I figured an actual blog post of the current progress might be best.

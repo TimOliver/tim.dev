@@ -8,7 +8,7 @@ struct IgniteWebsite {
 
         do {
             try await site.publish()
-            try scopeFeedToBlog()
+            try buildFeeds()
             try stripIgniteCore()
         } catch {
             // Fail loud: a zero exit here would let a deploy script ship a
@@ -53,17 +53,29 @@ struct IgniteWebsite {
         print("Stripped the dead ignite-core.js tag from \(stripped) pages")
     }
 
+    /// The category feeds. Each filters the blog items by the `<category>`
+    /// elements Ignite emits from post tags; feed.xml itself carries every
+    /// blog post. Advertised via <link rel="alternate"> in MainLayout and the
+    /// header's RSS popover — keep all three lists in sync.
+    static let categoryFeeds: [(file: String, title: String, tags: [String])] = [
+        ("feed-dev.xml", "Development", ["development", "tech"]),
+        ("feed-icomics.xml", "iComics", ["icomics"]),
+        ("feed-oss.xml", "Open Source", ["oss"]),
+        ("feed-personal.xml", "Personal", ["personal", "travel"]),
+    ]
+
     /// Ignite builds the feed from the full content collection with no
     /// Site-level filter, so apps/code/art/talks items (dated newer than every
     /// blog post) would top the feed. Post-process /feed.xml down to dated
-    /// blog posts (paths starting /YYYY/) and cap the item count.
-    static func scopeFeedToBlog(maxItems: Int = 20) throws {
+    /// blog posts (paths starting /YYYY/), cap the item count, and derive the
+    /// per-category feeds from the same item pool.
+    static func buildFeeds(maxItems: Int = 20) throws {
         let feedURL = packageRoot.appending(path: "Build/feed.xml")
         let xml = try String(contentsOf: feedURL, encoding: .utf8)
 
         guard let firstItem = xml.range(of: "<item>"),
               let channelEnd = xml.range(of: "</channel>") else {
-            print("Feed scope: no items found — leaving feed untouched")
+            print("Feed build: no items found — leaving feed untouched")
             return
         }
         let header = String(xml[..<firstItem.lowerBound])
@@ -84,14 +96,36 @@ struct IgniteWebsite {
         // guid/link match the canonical page URL.
         let blogItems = items.filter {
             $0.range(of: #"<link>https://tim\.dev/\d{4}/"#, options: .regularExpression) != nil
-        }.prefix(maxItems).map {
+        }.map {
             $0.replacingOccurrences(of: "//</guid>", with: "/</guid>")
                 .replacingOccurrences(of: "//</link>", with: "/</link>")
         }
 
-        try (header + blogItems.joined() + tail)
-            .write(to: feedURL, atomically: true, encoding: .utf8)
-        print("Feed scoped to blog: \(blogItems.count) of \(items.count) items kept")
+        func write(_ file: String, title: String?, _ feedItems: [String]) throws {
+            var head = header
+            if let title {
+                // Retitle the channel and point its self-link at this feed.
+                head = head.replacingOccurrences(
+                    of: "<title>[tim.dev]</title>",
+                    with: "<title>[tim.dev] — \(title)</title>")
+                    .replacingOccurrences(of: "/feed.xml", with: "/\(file)")
+            }
+            try (head + feedItems.prefix(maxItems).joined() + tail)
+                .write(to: packageRoot.appending(path: "Build/\(file)"), atomically: true, encoding: .utf8)
+        }
+
+        try write("feed.xml", title: nil, blogItems)
+        for feed in categoryFeeds {
+            let matching = blogItems.filter { item in
+                feed.tags.contains { item.contains("<category><![CDATA[\($0)]]></category>") }
+            }
+            try write(feed.file, title: feed.title, matching)
+        }
+        let counts = categoryFeeds.map { feed in
+            "\(feed.file.replacingOccurrences(of: "feed-", with: "").replacingOccurrences(of: ".xml", with: "")) " +
+            String(blogItems.filter { item in feed.tags.contains { item.contains("<category><![CDATA[\($0)]]></category>") } }.count)
+        }.joined(separator: ", ")
+        print("Feeds built: \(min(blogItems.count, maxItems)) of \(blogItems.count) blog items (all), \(counts)")
     }
 }
 

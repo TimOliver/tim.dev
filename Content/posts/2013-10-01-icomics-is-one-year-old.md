@@ -3,7 +3,7 @@ title: iComics is one year old!
 date: 2013-10-01 00:03:20
 author: Tim Oliver
 image: /img/posts/2013/09/iComicsBirthday.jpg
-tags: development
+tags: development, icomics
 path: /2013/10/01/icomics-is-one-year-old/
 ---
 Blimey, I’d been so busy working on iComics these past few days that this completely slipped my mind!

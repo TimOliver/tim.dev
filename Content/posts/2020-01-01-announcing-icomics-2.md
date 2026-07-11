@@ -3,7 +3,7 @@ title: Announcing iComics 2.
 date: 2020-01-01 23:54:56
 author: Tim Oliver
 image: /img/posts/2020/01/iComics-2.jpg
-tags: development
+tags: development, icomics
 path: /2020/01/01/announcing-icomics-2/
 ---
 Hi everyone! Happy New Year! I hope you had a fantastic start to this decade. I’m extremely excited at all the potential in 2020, and I hope you are too.

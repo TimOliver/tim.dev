@@ -3,7 +3,7 @@ title: iComics Developer Update (August 2021)
 date: 2021-08-14 01:03:14
 author: Tim Oliver
 image: /img/posts/2021/08/Free-Comic-Book-Day-2021.jpg
-tags: events, tech
+tags: events, tech, icomics
 path: /2021/08/14/icomics-developer-update-august-2021/
 ---
 Hey everyone! I hope you’ve been well and staying safe!

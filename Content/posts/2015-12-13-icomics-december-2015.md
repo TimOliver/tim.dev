@@ -3,7 +3,7 @@ title: iComics – December 2015
 date: 2015-12-13 19:20:33
 author: Tim Oliver
 image: /img/posts/2015/12/iComics-December-2015.jpg
-tags: development
+tags: development, icomics
 path: /2015/12/13/icomics-december-2015/
 ---
 Hi everyone! I can’t believe 2015 is already nearly over! Jeez!

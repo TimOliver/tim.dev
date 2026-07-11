@@ -40,7 +40,18 @@
                             </button>
                         </div>
                     </div>
-                    <a href="/feed.xml" aria-label="RSS feed"><img src="/img/rss.svg" alt=""></a>
+                    <div class="rss-toggle">
+                        <!-- The trigger stays a real link: without JS (or hover) it still
+                             reaches the main feed; site.js upgrades it to open the menu. -->
+                        <a href="/feed.xml" class="rss-toggle-link" aria-label="RSS feeds" aria-haspopup="true" aria-expanded="false"><img src="/img/rss.svg" alt=""></a>
+                        <div class="theme-popover rss-popover" role="group" aria-label="RSS feeds">
+                            <a class="theme-option" href="/feed.xml">Everything</a>
+                            <a class="theme-option" href="/feed-dev.xml">Development</a>
+                            <a class="theme-option" href="/feed-icomics.xml">iComics</a>
+                            <a class="theme-option" href="/feed-oss.xml">Open Source</a>
+                            <a class="theme-option" href="/feed-personal.xml">Personal</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="menu-hamburger">
                     <input type="checkbox" id="menu-toggle" class="menu-toggle-input">

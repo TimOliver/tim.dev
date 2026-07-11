@@ -3,7 +3,7 @@ title: iComics v1.4.5 is live on the App Store!
 date: 2018-12-09 13:05:41
 author: Tim Oliver
 image: /img/posts/2018/12/iComics-v145.jpg
-tags: development, tech
+tags: development, tech, icomics
 path: /2018/12/09/icomics-v1-4-5-is-live-on-the-app-store/
 ---
 Hi everyone!

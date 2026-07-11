@@ -3,7 +3,7 @@ title: Introducing iComics!
 date: 2012-01-13 14:07:11
 author: Tim Oliver
 image: /img/posts/2012/01/iComics_Logo.png
-tags: development
+tags: development, icomics
 path: /2012/01/13/introducing-icomics/
 ---
 ![](/img/posts/2012/01/iComics_Logo.png) It’s the final day of my holidays today, and I’ve been silently beavering away on a little project of mine. As with all of my projects, I usually keep them absolutely off the internet until I’ve proven that they actually are viable, and I’m not just blowing smoke. XD

@@ -3,7 +3,7 @@ title: comiXology’s goals vs iComics’ goals
 date: 2014-05-12 00:31:45
 author: Tim Oliver
 image: /img/posts/2014/05/iComics_and_comiXology.jpg
-tags: events, reviews
+tags: events, reviews, icomics
 path: /2014/05/12/icomics-and-comixology/
 ---
 This is a post I’d been planning to write for a couple weeks now, and given recent events, there’s probably not going to be a better time than now.

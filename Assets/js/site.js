@@ -52,10 +52,12 @@
     var root = document.documentElement;
     var toggle = document.querySelector('.theme-toggle');
     var trigger = document.querySelector('.theme-toggle-button');
-    var popover = document.querySelector('.theme-popover');
-    var options = document.querySelectorAll('.theme-option');
+    if (!toggle || !trigger) return;
+    // Scoped to the wrapper — the RSS menu below reuses the popover classes.
+    var popover = toggle.querySelector('.theme-popover');
+    var options = toggle.querySelectorAll('.theme-option');
     var allowedThemes = /^(auto|light|dark)$/;
-    if (!toggle || !trigger || !popover || !options.length) return;
+    if (!popover || !options.length) return;
 
     function setPopoverOpen(open) {
         popover.classList.toggle('open', open);
@@ -98,6 +100,38 @@
     document.addEventListener('keydown', function(e) {
         if (e.key !== 'Escape') return;
         setPopoverOpen(false);
+        trigger.blur();
+    });
+})();
+
+// RSS feed menu: the same popover pattern as the theme toggle (shared
+// .theme-popover/.theme-option styling), but the entries are plain links and
+// the trigger is a real <a> to /feed.xml — so without JS the icon still
+// reaches the main feed (and CSS hover-open covers pointer devices).
+(function() {
+    var wrap = document.querySelector('.rss-toggle');
+    var trigger = document.querySelector('.rss-toggle-link');
+    var popover = wrap ? wrap.querySelector('.theme-popover') : null;
+    if (!wrap || !trigger || !popover) return;
+
+    function setOpen(open) {
+        popover.classList.toggle('open', open);
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    trigger.addEventListener('click', function(e) {
+        e.preventDefault(); // the href is the no-JS fallback
+        e.stopPropagation();
+        setOpen(!popover.classList.contains('open'));
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!wrap.contains(e.target)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Escape') return;
+        setOpen(false);
         trigger.blur();
     });
 })();

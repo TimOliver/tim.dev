@@ -3,7 +3,7 @@ title: TOCropViewController – An open source image cropper for iOS
 date: 2015-06-21 13:31:14
 author: Tim Oliver
 image: /img/posts/2015/06/TOCropViewController-on-Gold-MacBook.jpg
-tags: development
+tags: development, oss
 path: /2015/06/21/tocropviewcontroller-an-open-source-image-cropper-for-ios/
 ---
 Over the years, I’ve built up a pretty crazy [list of features that I want to add to iComics](https://github.com/iComics/iComics-Issues/issues). One feature on that list that’s been kicking around since pretty much day 1 has been the ability to crop page images.  

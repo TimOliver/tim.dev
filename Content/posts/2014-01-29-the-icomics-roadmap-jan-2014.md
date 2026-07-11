@@ -3,7 +3,7 @@ title: The State of iComics – Jan 2014
 date: 2014-01-29 21:55:26
 author: Tim Oliver
 image: /img/posts/2014/01/iComics_Green_iPhone_5c.jpg
-tags: development
+tags: development, icomics
 path: /2014/01/29/the-icomics-roadmap-jan-2014/
 ---
 Since it’s been a fair few months since I’ve put out a new update for my [little comic reader app project](http://icomics.co), I thought I’d quickly do an update on what stage it’s at.

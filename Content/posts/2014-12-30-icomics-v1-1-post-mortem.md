@@ -3,7 +3,7 @@ title: iComics v1.1 Post-mortem
 date: 2014-12-30 23:30:20
 author: Tim Oliver
 image: /img/posts/2014/12/iComics_v11_Postmortem.jpg
-tags: development
+tags: development, icomics
 path: /2014/12/30/icomics-v1-1-post-mortem/
 ---
 So it’s been about a month and a half since iComics v1.1 shipped, and v1.2 is in review with Apple right now. I was so busy getting it ready to ship that I clean forgot about 2 important milestones for the app: On September 25th, the app has been on the App Store for TWO years now, and on November 1st, its codebase has been around for three years. Blimey! XD

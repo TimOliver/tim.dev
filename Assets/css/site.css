@@ -538,8 +538,11 @@ body > header::before {
     filter: var(--icon-filter);
 }
 
-/* Theme toggle */
-.theme-toggle {
+/* Theme toggle (the RSS feed menu shares the whole popover system — same
+   wrapper behaviour, panel and row styling; see the .rss-toggle markup in
+   Includes/header.html). */
+.theme-toggle,
+.rss-toggle {
     position: relative;
     padding: 0 15px;
     margin: 0 -15px;
@@ -607,7 +610,8 @@ body > header::before {
 }
 
 @media (hover: hover) {
-    .theme-toggle:hover .theme-popover {
+    .theme-toggle:hover .theme-popover,
+    .rss-toggle:hover .theme-popover {
         display: flex;
         opacity: 1;
         transform: translateX(-50%) scale(1);
@@ -624,7 +628,8 @@ body > header::before {
 
 @starting-style {
     @media (hover: hover) {
-        .theme-toggle:hover .theme-popover {
+        .theme-toggle:hover .theme-popover,
+        .rss-toggle:hover .theme-popover {
             opacity: 0;
             transform: translateX(-50%) scale(0.9);
             filter: blur(8px);
@@ -653,7 +658,8 @@ body > header::before {
     }
 
     @media (hover: hover) {
-        .theme-toggle:hover .theme-popover {
+        .theme-toggle:hover .theme-popover,
+        .rss-toggle:hover .theme-popover {
             transform: scale(1);
         }
     }
@@ -664,7 +670,8 @@ body > header::before {
 
     @starting-style {
         @media (hover: hover) {
-            .theme-toggle:hover .theme-popover {
+            .theme-toggle:hover .theme-popover,
+            .rss-toggle:hover .theme-popover {
                 transform: scale(0.9);
             }
         }
@@ -695,6 +702,12 @@ body > header::before {
 .theme-option:hover,
 .theme-option.active:hover {
     background: var(--control-hover);
+}
+
+/* The RSS menu's rows are <a>s reusing .theme-option — keep them label-like
+   (no underline; the row hover fill is the affordance). */
+.rss-popover .theme-option {
+    text-decoration: none;
 }
 
 .theme-option.active {
