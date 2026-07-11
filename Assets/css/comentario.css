@@ -46,6 +46,40 @@
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M21 12a9 9 0 1 1-6.219-8.56'/%3E%3C/svg%3E") center / 100% no-repeat;
 }
 
+/* Spinning BUTTONS (Comentario adds .comentario-spinner to e.g. the "Sign in"
+   pill while an OAuth popup is open, or a submit while in flight): the base
+   --bg-secondary tint above is for the page-loading spinner on the page bg —
+   on a filled pill it's fill-on-fill, drawn over the still-visible label. Hide
+   the label (transparent keeps the pill's size) and tint the spinner the
+   colour the label would be. */
+.comentario-root .comentario-btn.comentario-spinner {
+    color: transparent;
+}
+
+/* Comentario dims disabled buttons to 30% (!important) — right for genuinely
+   disabled controls, but a spinning button is *busy*, not unavailable, and at
+   30% the spinner all but vanishes on the pill fill. Restore full strength
+   while the spinner runs. */
+.comentario-root .comentario-btn.comentario-spinner:disabled {
+    opacity: 1 !important;
+}
+
+.comentario-root .comentario-btn.comentario-spinner::after {
+    background: var(--text);
+}
+
+/* The dialog's solid-black primaries (Sign in / Sign up / Save) carry inverted
+   labels, so their spinner inverts too… */
+.comentario-root .comentario-dialog .comentario-btn-primary.comentario-spinner::after {
+    background: var(--bg);
+}
+
+/* …except the anonymous "Post" primary, restyled as a grey pill (see its #id
+   rules below), which keeps the label-coloured spinner. */
+.comentario-root #comentario-unregistered-form .comentario-btn-primary.comentario-spinner::after {
+    background: var(--text);
+}
+
 /* Skeleton placeholder card (shown while comments load): drop Comentario's
    top/left card rules — the shimmer blocks read as the card on their own. */
 .comentario-root .comentario-ph-comment-card {
