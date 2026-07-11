@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Brand mark: the [t] from the [tim.dev] wordmark, in the site's mono
+       stack. Theme-aware: near-black glyph normally, near-white in dark tabs
+       (matching the site's --text tokens). -->
+  <style>
+    text { font: 700 30px ui-monospace, "SF Mono", Menlo, monospace; fill: #1d1d1f; }
+    @media (prefers-color-scheme: dark) { text { fill: #e4e4ea; } }
+  </style>
+  <text x="32" y="42" text-anchor="middle">[t]</text>
+</svg>

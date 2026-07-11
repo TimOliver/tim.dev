@@ -9,6 +9,7 @@ struct IgniteWebsite {
         do {
             try await site.publish()
             try scopeFeedToBlog()
+            try stripIgniteCore()
         } catch {
             // Fail loud: a zero exit here would let a deploy script ship a
             // stale or partial Build/. Print the full error — Ignite errors
@@ -18,15 +19,46 @@ struct IgniteWebsite {
         }
     }
 
+    /// The package root, derived from this file's location (cwd isn't reliable
+    /// under `swift run`). Used by the post-publish steps below.
+    static var packageRoot: URL {
+        URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()  // Sources/
+            .deletingLastPathComponent()  // repo root
+    }
+
+    /// Ignite emits js/ignite-core.js (plus a <script> tag on every page) and
+    /// css/ignite-core.min.css, but nothing on this site uses their hooks —
+    /// theme switching is theme.js's job, and no page uses protected links,
+    /// click animations, Bootstrap data attributes or table filters. Until an
+    /// upstream override-guard lands (see project memory), strip both files
+    /// and the dead script tag post-build: one wasted request saved sitewide.
+    static func stripIgniteCore() throws {
+        let fm = FileManager.default
+        let build = packageRoot.appending(path: "Build")
+        try? fm.removeItem(at: build.appending(path: "js/ignite-core.js"))
+        try? fm.removeItem(at: build.appending(path: "css/ignite-core.min.css"))
+
+        let tag = "<script src=\"/js/ignite-core.js\"></script>"
+        var stripped = 0
+        let enumerator = fm.enumerator(at: build, includingPropertiesForKeys: nil)
+        while let url = enumerator?.nextObject() as? URL {
+            guard url.pathExtension == "html" else { continue }
+            let html = try String(contentsOf: url, encoding: .utf8)
+            guard html.contains(tag) else { continue }
+            try html.replacingOccurrences(of: tag, with: "")
+                .write(to: url, atomically: true, encoding: .utf8)
+            stripped += 1
+        }
+        print("Stripped the dead ignite-core.js tag from \(stripped) pages")
+    }
+
     /// Ignite builds the feed from the full content collection with no
     /// Site-level filter, so apps/code/art/talks items (dated newer than every
     /// blog post) would top the feed. Post-process /feed.xml down to dated
     /// blog posts (paths starting /YYYY/) and cap the item count.
     static func scopeFeedToBlog(maxItems: Int = 20) throws {
-        let root = URL(fileURLWithPath: #filePath)
-            .deletingLastPathComponent()  // Sources/
-            .deletingLastPathComponent()  // repo root
-        let feedURL = root.appending(path: "Build/feed.xml")
+        let feedURL = packageRoot.appending(path: "Build/feed.xml")
         let xml = try String(contentsOf: feedURL, encoding: .utf8)
 
         guard let firstItem = xml.range(of: "<item>"),
@@ -86,6 +118,7 @@ struct TimDevSite: Site {
     var feedConfiguration: FeedConfiguration? = FeedConfiguration(mode: .full, contentCount: 500, path: "/feed.xml")
 
     var homePage = Home()
+    var errorPage = NotFound()
     var layout = MainLayout()
     var articlePages: [any ArticlePage] = [PostPage(), AppDetail(), CodeDetail(), ArtDetail(), TalkDetail()]
     var staticPages: [any StaticPage] = [About(), Archive(), Apps(), Code(), Art(), Contact(), Talks()]

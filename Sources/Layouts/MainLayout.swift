@@ -3,10 +3,25 @@ import Ignite
 
 struct MainLayout: Layout {
     @Environment(\.page) var page
+    @Environment(\.site) var site
 
     var pageTitle: String {
         if page.title == "Home" { return "[tim.dev]" }
         return "\(page.title) — [tim.dev]"
+    }
+
+    /// Meta/OG description: the page's own (articles can set `description:`
+    /// front matter) or the site-wide one.
+    private var metaDescription: String {
+        page.description.isEmpty ? (site.description ?? "") : page.description
+    }
+
+    /// Absolute URL for the page's social image, if it has one (post heroes
+    /// are site-relative paths like /img/posts/…).
+    private var socialImageURL: String? {
+        guard let image = page.image else { return nil }
+        if image.scheme != nil { return image.absoluteString }
+        return site.url.appending(path: image.path).absoluteString
     }
 
     /// First path component of the page URL — "about", "talks", "2021"… or ""
@@ -54,6 +69,24 @@ struct MainLayout: Layout {
             MetaTag(characterSet: "UTF-8")
             MetaTag(name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover")
             Title(pageTitle)
+            // Search + link-preview metadata. Every page gets a description
+            // and canonical; posts add their hero as the social image.
+            MetaTag(name: "description", content: metaDescription)
+            MetaLink(href: page.url.absoluteString, rel: "canonical")
+            MetaTag(property: "og:site_name", content: "tim.dev")
+            MetaTag(property: "og:type", content: isPost ? "article" : "website")
+            MetaTag(property: "og:title", content: pageTitle)
+            MetaTag(property: "og:description", content: metaDescription)
+            MetaTag(property: "og:url", content: page.url.absoluteString)
+            if let socialImageURL {
+                MetaTag(property: "og:image", content: socialImageURL)
+            }
+            MetaTag(name: "twitter:card", content: socialImageURL != nil ? "summary_large_image" : "summary")
+            // SVG favicon (theme-aware via its own media query) + a PNG for
+            // home-screen/touch contexts.
+            MetaLink(href: "/img/favicon.svg", rel: "icon")
+                .customAttribute(name: "type", value: "image/svg+xml")
+            MetaLink(href: "/img/apple-touch-icon.png", rel: "apple-touch-icon")
             // theme.js must run synchronously in <head> — it sets data-theme +
             // data-color-scheme on <html> before first paint, preventing FOUC.
             Script(file: "/js/theme.js")
@@ -71,11 +104,15 @@ struct MainLayout: Layout {
             for stylesheet in pageStylesheets {
                 MetaLink(href: stylesheet, rel: .stylesheet)
             }
+            // lightbox3 (1.1.0) + lite-youtube-embed (0.3.4) are vendored into
+            // Assets/ (like embla) — a render-blocking cross-origin stylesheet
+            // in <head> put jsdelivr's DNS+TLS on the critical path of every
+            // article page. Bump versions by re-downloading, not by hand-editing.
             if hasArticleContent {
-                MetaLink(href: "https://cdn.jsdelivr.net/npm/lightbox3@1.1.0/dist/lightbox3.css", rel: .stylesheet)
+                MetaLink(href: "/css/lightbox3.css", rel: .stylesheet)
             }
             if wantsLiteYouTube {
-                MetaLink(href: "https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.4/src/lite-yt-embed.css", rel: .stylesheet)
+                MetaLink(href: "/css/lite-yt-embed.css", rel: .stylesheet)
             }
         }
         .standardHeadersDisabled()
@@ -92,10 +129,10 @@ struct MainLayout: Layout {
             Include("footer.html")
             if hasArticleContent {
                 // Full-screen viewer for article images (binds [data-lightbox]).
-                Script(file: "https://cdn.jsdelivr.net/npm/lightbox3@1.1.0/dist/lightbox3.umd.js")
+                Script(file: "/js/lightbox3.umd.js")
             }
             if wantsLiteYouTube {
-                Script(file: "https://cdn.jsdelivr.net/npm/lite-youtube-embed@0.3.4/src/lite-yt-embed.js")
+                Script(file: "/js/lite-yt-embed.js")
             }
             if section == "about" {
                 // Gallery scroller carousel — the About page is its only user;
