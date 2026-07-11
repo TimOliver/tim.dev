@@ -25,7 +25,11 @@
  *
  * 5. Login dialog (created on demand): relabel the email field's placeholder to
  *    "Email". (The sign-up button needs no relabel — comentario.css hides its text
- *    and supplies the "Create an account" pill label via ::after.)
+ *    and supplies the "Create an account" pill label via ::after.) Also slug-tag
+ *    each OAuth provider button with cmntr-idp-<name> (from its label): built-in
+ *    providers carry a brand class (.comentario-btn-google) but generic-OIDC ones
+ *    all share .comentario-btn-dark, so without the slug CSS can't tell Microsoft
+ *    from a future LinkedIn to swap in the right brand glyph.
  */
 (function () {
   'use strict';
@@ -208,6 +212,14 @@
       if (node.nodeType !== 1) return;
       var email = find(node, '#comentario-login-form input[name="email"]');
       if (email && email.placeholder !== 'Email') email.placeholder = 'Email';
+
+      var row = find(node, '.comentario-oauth-buttons');
+      if (row) {
+        Array.prototype.forEach.call(row.querySelectorAll('.comentario-btn'), function (btn) {
+          var slug = (btn.textContent || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          if (slug) btn.classList.add('cmntr-idp-' + slug);
+        });
+      }
     }
 
     new MutationObserver(function (mutations) {

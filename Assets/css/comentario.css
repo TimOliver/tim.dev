@@ -1712,13 +1712,29 @@
     background: var(--bg-tertiary);
 }
 
+/* Generic-OIDC providers (Microsoft, LinkedIn) share .comentario-btn-dark with
+   no brand class of their own — comentario-tweaks.js derives .cmntr-idp-<name>
+   slugs from their labels so they can join the brand map below. */
+
 /* Mapped brands: hide the text label — the masked glyph below IS the button. */
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-apple,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-google,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-github,
-.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook {
+.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook,
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-microsoft,
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin {
     font-size: 0;
 }
+
+/* Display order: Apple leads (the house speciality), then the priority order
+   from docs/comentario-auth-providers.md. Comentario emits the buttons
+   alphabetically; flex order makes it deliberate. */
+.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-apple    { order: 1; }
+.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-google   { order: 2; }
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-microsoft     { order: 3; }
+.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-github   { order: 4; }
+.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook { order: 5; }
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin      { order: 6; }
 
 /* Brand glyph: a Simple Icons path inlined as a mask (per-brand via
    --cmntr-oauth-icon, matching the profile-bar icon pattern), tinted with the
@@ -1727,20 +1743,28 @@
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-apple::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-google::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-github::before,
-.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook::before {
+.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook::before,
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-microsoft::before,
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin::before {
     content: "";
     width: 20px;
     height: 20px;
     background-color: var(--text);
     -webkit-mask: var(--cmntr-oauth-icon) center / contain no-repeat;
             mask: var(--cmntr-oauth-icon) center / contain no-repeat;
-    transition: background-color 0.1s;
+    /* No transition here: the OIDC buttons get their .cmntr-idp-* class a
+       microtask AFTER the dialog is inserted, and WebKit botches a transition
+       on a freshly-created masked pseudo — it starts from transparent and the
+       composited mask layer never repaints, leaving an invisible glyph. The
+       hover tint just snaps; the button's own bg fade carries the effect. */
 }
 
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-apple:hover::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-google:hover::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-github:hover::before,
-.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook:hover::before {
+.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook:hover::before,
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-microsoft:hover::before,
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin:hover::before {
     background-color: var(--heading);
 }
 
@@ -1759,6 +1783,14 @@
 
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook {
     --cmntr-oauth-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z'/%3E%3C/svg%3E");
+}
+
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-microsoft {
+    --cmntr-oauth-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M0 0h11.377v11.372H0zm12.623 0H24v11.372H12.623zM0 12.628h11.377V24H0zm12.623 0H24V24H12.623z'/%3E%3C/svg%3E");
+}
+
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin {
+    --cmntr-oauth-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z'/%3E%3C/svg%3E");
 }
 
 /* ----------------------------------------------------------------------------
