@@ -1674,9 +1674,8 @@
     margin: 0;
 }
 
-/* The row: equal pills at a third of the dialog each, so the eventual six
-   providers wrap into two rows of three (per the mockup); fewer stretch to
-   share the row (one → full width, two → halves). */
+/* The row: the four providers as one row of equal pills (fewer stretch to
+   share the row; a hypothetical fifth would wrap to its own line). */
 .comentario-root .comentario-dialog .comentario-oauth-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -1689,7 +1688,7 @@
    font-size:0) for any provider without a mapped glyph yet — e.g. the future
    generic-OIDC ones — until it's added to the brand map below. */
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn {
-    flex: 1 1 30%;
+    flex: 1 1 22%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1721,20 +1720,17 @@
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-google,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-github,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook,
-.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-microsoft,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin {
     font-size: 0;
 }
 
-/* Display order: Apple leads (the house speciality), then the priority order
-   from docs/comentario-auth-providers.md. Comentario emits the buttons
-   alphabetically; flex order makes it deliberate. */
+/* Display order: Apple leads (the house speciality), then by reach. Comentario
+   emits the buttons alphabetically; flex order makes it deliberate. */
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-apple    { order: 1; }
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-google   { order: 2; }
-.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-microsoft     { order: 3; }
+.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook { order: 3; }
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-github   { order: 4; }
-.comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook { order: 5; }
-.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin      { order: 6; }
+.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin      { order: 5; }
 
 /* Brand glyph: a Simple Icons path inlined as a mask (per-brand via
    --cmntr-oauth-icon, matching the profile-bar icon pattern), tinted with the
@@ -1744,7 +1740,6 @@
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-google::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-github::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook::before,
-.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-microsoft::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin::before {
     content: "";
     width: 20px;
@@ -1763,7 +1758,6 @@
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-google:hover::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-github:hover::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook:hover::before,
-.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-microsoft:hover::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin:hover::before {
     background-color: var(--heading);
 }
@@ -1783,10 +1777,6 @@
 
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-facebook {
     --cmntr-oauth-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z'/%3E%3C/svg%3E");
-}
-
-.comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-microsoft {
-    --cmntr-oauth-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M0 0h11.377v11.372H0zm12.623 0H24v11.372H12.623zM0 12.628h11.377V24H0zm12.623 0H24V24H12.623z'/%3E%3C/svg%3E");
 }
 
 .comentario-root .comentario-dialog .comentario-oauth-buttons .cmntr-idp-linkedin {
