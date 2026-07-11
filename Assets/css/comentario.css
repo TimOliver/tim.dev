@@ -1264,16 +1264,18 @@
     box-shadow: none;
 }
 
-/* Email / password / name inputs: white field, rounded, neutral border. height:auto
-   overrides Comentario's fixed 40px so the taller padding drives the height. */
+/* Email / password / name inputs: white field, rounded, neutral border. Pinned to
+   the dialog's shared 44px control height (matching the solid buttons: 12px pad ×2
+   + 20px line-height) so fields and buttons read as one system — border-box, so
+   the 1px border is inside and the text centres itself. */
 .comentario-root .comentario-dialog .comentario-input {
     background: var(--bg);
     border: 1px solid var(--border-secondary);
     border-radius: 15px;
     corner-shape: squircle;
     color: var(--text);
-    height: auto;
-    padding: 15px 16px;
+    height: 44px;
+    padding: 0 16px;
     font-size: inherit;
     width: 100%;
 }
@@ -1298,9 +1300,12 @@
     color: var(--text-secondary);
 }
 
-/* Submit "Sign in": full-width solid black pill; swap the arrow icon for text. */
+/* Submit "Sign in": full-width solid black pill; swap the arrow icon for text.
+   Explicit 44px height (= the input height) so the whole dialog shares one
+   control height; the base button's flex centring places the label. */
 .comentario-root .comentario-dialog .comentario-btn-primary {
     width: 100%;
+    height: 44px;
     padding: 12px;
     border-radius: 12px;
     background: var(--heading);
@@ -1426,6 +1431,7 @@
 
 .comentario-root .comentario-dialog .comentario-dialog-centered:has(.comentario-btn-secondary) .comentario-btn-secondary {
     width: 100%;
+    height: 44px; /* the dialog's shared control height */
     margin: 0;
     padding: 12px;
     border-radius: 12px;
