@@ -704,10 +704,97 @@ body > header::before {
     background: var(--control-hover);
 }
 
-/* The RSS menu's rows are <a>s reusing .theme-option — keep them label-like
-   (no underline; the row hover fill is the affordance). */
-.rss-popover .theme-option {
+/* The RSS menu's rows are <a>s reusing .theme-option — unlike the theme
+   popover's <button>s they're caught by the header's anchor rules (`#menu a`
+   sets display:inline-block at ID specificity, and the hover scale), so the
+   row layout is restored behind the same ID. (The hover transform is already
+   neutralised by `#menu .menu-row-icons a:hover`.) */
+#menu .rss-popover .theme-option {
+    display: flex;
     text-decoration: none;
+}
+
+/* The featured "Blog" row needs room for its subtitle. */
+.rss-popover {
+    min-width: 260px;
+}
+
+/* Section labels — the site's eyebrow treatment (uppercase, letter-spaced,
+   muted), indented to the rows' text edge. */
+.rss-popover-label {
+    padding: 6px 16px 2px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+}
+
+/* Featured feed: RSS-orange squircle tile + title/subtitle stack. Same row
+   metrics and hover fill as .theme-option so the menu reads as one system. */
+#menu .rss-popover .rss-featured {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    corner-shape: squircle;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+#menu .rss-popover .rss-featured:hover {
+    background: var(--control-hover);
+}
+
+/* The one deliberate non-monochrome element: RSS's own brand orange, constant
+   across themes (like the provider glyphs, it identifies a third-party
+   convention rather than the site palette). Glyph is rss.svg masked white. */
+.rss-featured-icon {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    corner-shape: squircle;
+    background: #ee802f;
+    position: relative;
+}
+
+.rss-featured-icon::after {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    background: #fff;
+    -webkit-mask: url(/img/rss.svg) center / contain no-repeat;
+            mask: url(/img/rss.svg) center / contain no-repeat;
+}
+
+.rss-featured-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rss-featured-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--heading);
+    line-height: 1.2;
+}
+
+.rss-featured-sub {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    line-height: 1.3;
+}
+
+/* Divider between the featured feed and the category list — inset to the
+   rows' text edge, subtle enough for the --bg-secondary panel. */
+.rss-popover-divider {
+    height: 1px;
+    margin: 6px 16px;
+    background: var(--border-secondary);
 }
 
 .theme-option.active {

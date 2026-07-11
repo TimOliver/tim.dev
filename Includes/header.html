@@ -45,7 +45,16 @@
                              reaches the main feed; site.js upgrades it to open the menu. -->
                         <a href="/feed.xml" class="rss-toggle-link" aria-label="RSS feeds" aria-haspopup="true" aria-expanded="false"><img src="/img/rss.svg" alt=""></a>
                         <div class="theme-popover rss-popover" role="group" aria-label="RSS feeds">
-                            <a class="theme-option" href="/feed.xml">Everything</a>
+                            <div class="rss-popover-label">Subscribe via RSS</div>
+                            <a class="rss-featured" href="/feed.xml">
+                                <span class="rss-featured-icon" aria-hidden="true"></span>
+                                <span class="rss-featured-text">
+                                    <span class="rss-featured-title">Blog</span>
+                                    <span class="rss-featured-sub">All posts, every category</span>
+                                </span>
+                            </a>
+                            <div class="rss-popover-divider" role="separator"></div>
+                            <div class="rss-popover-label">By category</div>
                             <a class="theme-option" href="/feed-dev.xml">Development</a>
                             <a class="theme-option" href="/feed-icomics.xml">iComics</a>
                             <a class="theme-option" href="/feed-oss.xml">Open Source</a>
