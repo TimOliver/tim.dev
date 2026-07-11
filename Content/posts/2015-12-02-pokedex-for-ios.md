@@ -18,7 +18,7 @@ It was developed by [Creatures Inc](https://en.wikipedia.org/wiki/Creatures_(com
 
 Back in 2012, after meeting 2 of the producers from the Pokémon Company at [GDC](http://www.gdconf.com), I had been emailing them every few weeks about the prospects of officially licensing [iPokédex](/2011/03/29/ipokedex-pokemon-profile-view/). Each time, they would reply saying they were a bit too busy at the moment to discuss it, but to try again in a few weeks. A week before Pokédex for iOS was revealed, they said to me ‘We should be free in a week. Try again then. ;)’, which in retrospective should have been my first tip-off that this thing was coming. XD
 
-![Pokedex Snivy](/img/posts/2015/12/Pokedex_Snivy.png)
+![Pokedex Snivy](/img/posts/2015/12/Pokedex_Snivy.jpg)
 
 I could write a whole blog post on what I thought of the design or the amount of information in it, but suffice it to say, it was very visually confusing to look at, and eschewed nearly every single iOS UI control in favour of a completely ‘custom’ experience resulting in the interactions, feeling quite weird as a result. Also, it was REALLY obvious that it was originally built in Japanese, and then switched over to English at the end (Words being resized to fit into small boxes etc).
 
@@ -32,7 +32,7 @@ The app itself has been pulled from the App Store, but if you delete it off your
 
 What’s more troubling is the In-App Purchase content. If you had purchased any of the $6 content packs, they are now officially gone for good. If you re-download the app, and try and access their download page, this is all you get now:
 
-![Pokedex-Denied](/img/posts/2015/12/Pokedex-Denied.png)
+![Pokedex-Denied](/img/posts/2015/12/Pokedex-Denied.jpg)
 
 If you re-install the app, there is literally no way to restore any of the in-app content that you may have paid for. If you paid for all 4 packs, then you’re now officially $24USD out of pocket.
 

@@ -2,11 +2,11 @@
 title: Pokémon Black and White Released!
 date: 2010-09-19 01:04:57
 author: Tim Oliver
-image: /img/posts/2010/09/Pokemon_Black_Boxart.png
+image: /img/posts/2010/09/Pokemon_Black_Boxart.jpg
 tags: travel, video games
 path: /2010/09/19/pokemon-black-and-white-released/
 ---
-![Pokémon Black Box Art. The new logo looks purdy!](/img/posts/2010/09/Pokemon_Black_Boxart.png)Yep, I definitely have to admit… after getting hooked on HeartGold, I’ve become pretty epically addicted to the Pokémon Game Boy series again. XD
+![Pokémon Black Box Art. The new logo looks purdy!](/img/posts/2010/09/Pokemon_Black_Boxart.jpg)Yep, I definitely have to admit… after getting hooked on HeartGold, I’ve become pretty epically addicted to the Pokémon Game Boy series again. XD
 
 In case you haven’t heard yet, as of today, the next generation of Pokémon games, generation 5, [Pokémon White and Black](http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_Black_and_White_Versions) were released today!
 

@@ -99,3 +99,4 @@ iOSInjectionProject/
 /.claude
 /.swiftpm
 .DS_Store
+__pycache__/

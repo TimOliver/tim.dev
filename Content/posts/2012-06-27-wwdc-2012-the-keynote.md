@@ -31,7 +31,7 @@ After walking past all of that yet-to-be-announced stuff, we were directed into 
 
 It was at about this time that someone form Wired.com took a photo of me and one of my buddies, which made [their liveblog](http://www.wired.com/gadgetlab/2012/06/gadget-lab-wwdc-2012/)! XD
 
-![Wired.com snapped my buddy and I in this photo aptly named 'sea of nerds' XD](/img/posts/2012/06/WWDC2012_KeynoteSeaOfNerds.png)
+![Wired.com snapped my buddy and I in this photo aptly named 'sea of nerds' XD](/img/posts/2012/06/WWDC2012_KeynoteSeaOfNerds.jpg)
 
 And finally, after all of that, the keynote started at 10:00 on the dot.
 

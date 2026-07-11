@@ -2,7 +2,7 @@
 title: Pokémans HeartGold! Gotta buy ’em all!
 date: 2010-03-19 21:18:39
 author: Tim Oliver
-image: /img/posts/2010/03/pokemon_heartgold.png
+image: /img/posts/2010/03/pokemon_heartgold.jpg
 tags: travel, video games
 path: /2010/03/19/pokemans-heartgold-gotta-buy-em-all/
 ---
@@ -11,7 +11,7 @@ I’ve been sitting on this post like a crazed gunman with an itchy trigger fing
 The newest addition to the Pokémon line of games is finally upon us, [HeartGold and SoulSilver](http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_HeartGold_and_SoulSilver_Versions). It was released in America a few days ago and will be released here in Australia in a few days time. When it came out in Japan last year, one of my Japanese teachers was able to pick me up a copy and bring it back over, of which I’ve been playing ever since. ^\_^  
 At the time, my blog was offline, so I figured I’d hold onto this lovely post until the time of the English version release, where people might find some of this information useful (As opposed to posting it during Japan’s release, where it would be all but forgotten by now). 🙂
 
-![My Japanese import copy of HeartGold](/img/posts/2010/03/pokemon_heartgold.png)
+![My Japanese import copy of HeartGold](/img/posts/2010/03/pokemon_heartgold.jpg)
 
 When my Japanese teacher was on exchange with some students in Japan, I emailed her and asked if she could pick up a copy of the new HeartGold over there. I chose Gold over Silver since Silver is what I got for the GBC originally, and wanted it to be different than before. She said she checked out a Sofmap on her last day there, and found this copy of HeartGold, which was the last one they had. Suffice it to say when HeartGold/SoulSilver came out, they were selling like hotcakes!
 
@@ -21,7 +21,7 @@ When I first started playing it, I felt a wave of nostalgia. All the memories of
 
 There is a section for minigames now called the Pokéthlon where you can train your Pokémon to compete in a series of cute, touch based activities, which is pretty cool. Aside from that, the game plays through pretty much the same as the previous version.
 
-![My PokéWalker with my Ghastly rocking it inside. XD](/img/posts/2010/03/pokewalker.png)
+![My PokéWalker with my Ghastly rocking it inside. XD](/img/posts/2010/03/pokewalker.jpg)
 
 Now, one of the main reasons I wanted this game so badly was for the[ Pokéwalker](http://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9walker). XD
 
