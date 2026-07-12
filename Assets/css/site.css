@@ -1466,15 +1466,6 @@ footer .container {
     padding-top: 0.45em;
 }
 
-/* When the list sits under an eyebrow heading ("Details"), the first row gets
-   the hairline too, separating heading from rows. Scoped to the adjacent pair
-   so headingless spec-lists (About colophon) don't grow a floating top rule. */
-.collection-eyebrow + .spec-list > dt:first-of-type,
-.collection-eyebrow + .spec-list > dt:first-of-type + dd {
-    border-top: 1px solid var(--border);
-    padding-top: 0.45em;
-}
-
 .spec-list dt {
     font-size: 0.9em;
     font-weight: 600;

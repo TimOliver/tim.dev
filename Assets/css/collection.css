@@ -130,13 +130,15 @@ body:has(.collection-detail) {
     margin: 0 0 1.25em;
 }
 
-/* Sidebar section header — matches the About "Tech Specs" title. */
+/* Sidebar section header — matches the About "Tech Specs" title. The tight
+   bottom margin tucks the first row up under the heading, which does the
+   grouping on its own (a heading hairline was tried and dropped). */
 .collection-eyebrow {
     display: block;
     font-size: 1.2em;
     font-weight: 700;
     color: var(--heading);
-    margin: 0 0 0.8em;
+    margin: 0 0 0.35em;
 }
 
 .collection-eyebrow:not(:first-child) {
