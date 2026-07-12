@@ -530,8 +530,11 @@ body > header::before {
     }
 }
 
-/* Shared with .theme-toggle-icon below — the two 25px header glyph kinds. */
+/* Shared with .theme-toggle-icon below — the 25px header glyph kinds. The RSS
+   trigger's img needs naming explicitly: it sits inside .rss-toggle's wrapper
+   div, so the direct-child chain no longer reaches it. */
 #menu > li > a > img,
+.rss-toggle-link > img,
 .theme-toggle-icon {
     height: 25px;
     display: block;
@@ -793,6 +796,14 @@ body > header::before {
     filter: var(--icon-filter);
 }
 
+/* The RSS category rows use sprite <use> glyphs instead of imgs — they inherit
+   the row's currentColor, so no filter dance is needed. */
+.theme-option svg {
+    height: 24px;
+    width: 24px;
+    flex: none;
+}
+
 .menu-hamburger {
     display: none;
 }
@@ -1027,6 +1038,7 @@ body > header::before {
     }
 
     #header-content:has(.menu-toggle-input:checked) .menu-row-icons .theme-toggle-icon,
+    #header-content:has(.menu-toggle-input:checked) .menu-row-icons .rss-toggle-link > img,
     #header-content:has(.menu-toggle-input:checked) .menu-row-icons > a > img {
         height: 26px;
         opacity: 0.8;
