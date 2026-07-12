@@ -541,6 +541,14 @@ body > header::before {
     filter: var(--icon-filter);
 }
 
+/* Optically align the RSS glyph with the theme icon beside it: rss.svg fills
+   its viewBox edge-to-edge while the appearance glyphs are inset, so its
+   centre rides 4px high of the theme icon's (measured). */
+.rss-toggle-link > img {
+    position: relative;
+    top: 4px;
+}
+
 /* Theme toggle (the RSS feed menu shares the whole popover system — same
    wrapper behaviour, panel and row styling; see the .rss-toggle markup in
    Includes/header.html). */
@@ -682,6 +690,39 @@ body > header::before {
         .theme-popover.open {
             transform: scale(0.9);
         }
+    }
+}
+
+/* The RSS menu hangs off the LAST icon in the header, so it right-aligns at
+   every width — the centred default pushes half its 260px past the trigger,
+   which overflows the right screen edge on phones. (The theme popover only
+   needs this in the narrow band above; these mirror those state overrides.) */
+.rss-popover {
+    left: auto;
+    right: 0;
+    transform: scale(0.9);
+    transform-origin: top right;
+}
+
+@media (hover: hover) {
+    .rss-toggle:hover .rss-popover {
+        transform: scale(1);
+    }
+}
+
+.rss-popover.open {
+    transform: scale(1);
+}
+
+@starting-style {
+    @media (hover: hover) {
+        .rss-toggle:hover .rss-popover {
+            transform: scale(0.9);
+        }
+    }
+
+    .rss-popover.open {
+        transform: scale(0.9);
     }
 }
 
