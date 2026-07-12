@@ -745,26 +745,13 @@ body > header::before {
     background: var(--control-hover);
 }
 
-/* The one deliberate non-monochrome element: RSS's own brand orange, constant
-   across themes (like the provider glyphs, it identifies a third-party
-   convention rather than the site palette). Glyph is rss.svg masked white. */
+/* The one deliberate non-monochrome element: the classic RSS logo tile
+   (rss-logo.svg ships its own orange gradient + rounded corners), constant
+   across themes — it identifies a third-party convention, not site palette. */
 .rss-featured-icon {
     flex: none;
     width: 40px;
     height: 40px;
-    border-radius: 10px;
-    corner-shape: squircle;
-    background: #ee802f;
-    position: relative;
-}
-
-.rss-featured-icon::after {
-    content: "";
-    position: absolute;
-    inset: 9px;
-    background: #fff;
-    -webkit-mask: url(/img/rss.svg) center / contain no-repeat;
-            mask: url(/img/rss.svg) center / contain no-repeat;
 }
 
 .rss-featured-text {
