@@ -719,14 +719,12 @@ body > header::before {
     min-width: 260px;
 }
 
-/* Section labels — the site's eyebrow treatment (uppercase, letter-spaced,
-   muted), indented to the rows' text edge. */
+/* Section labels — bold and muted, sentence case (no small all-caps headers
+   in this design system), indented to the rows' text edge. */
 .rss-popover-label {
     padding: 6px 16px 2px;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
     color: var(--text-tertiary);
 }
 
