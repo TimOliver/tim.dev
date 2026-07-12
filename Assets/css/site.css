@@ -1085,6 +1085,12 @@ body > header::before {
         opacity: 0.8;
     }
 
+    /* The compact icon row is flex-centred, so the desktop-only optical nudge
+       on the RSS glyph (see .rss-toggle-link > img above) would push it low. */
+    #header-content:has(.menu-toggle-input:checked) .menu-row-icons .rss-toggle-link > img {
+        top: 0;
+    }
+
     #header-content:has(.menu-toggle-input:checked) .menu-hamburger {
         position: absolute;
         top: 8px;
