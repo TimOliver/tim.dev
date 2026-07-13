@@ -25,17 +25,21 @@ extension AppRenderer {
         // card's .app-card-head, so the detail reads as the expanded card).
         s += #"<a class="collection-back" href="/apps/">&lsaquo; Back to Apps</a>"#
         s += #"<div class="app-detail-head">"#
-        s += iconTile(icon: app.icon, tint: app.tint)
+        s += iconTile(icon: app.icon)
         s += #"<div class="app-detail-headings">"#
         s += #"<h1 class="collection-detail-name">\#(escape(app.title))</h1>"#
         s += #"<p class="collection-detail-tagline">\#(escape(app.tagline))</p>"#
         s += "</div>"  // app-detail-headings
         s += "</div>"  // app-detail-head
 
-        // Screenshot frames (three larger placeholders) in a surface
-        s += #"<div class="app-detail-shots">"#
-        s += frame(tint: app.tint) + frame(tint: app.tint) + frame(tint: app.tint)
-        s += "</div>"
+        // Screenshot stage. On a phone this becomes a full-bleed scroll-snap
+        // pager (apps.css) — one shot per view.
+        s += stage(
+            app.shots,
+            className: "app-detail-stage",
+            sizes: "(max-width: 720px) 74vw, 320px",
+            appName: app.title
+        )
 
         // Two-column body: prose + sidebar
         s += #"<div class="collection-detail-body">"#

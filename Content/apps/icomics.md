@@ -5,7 +5,6 @@ layout: AppDetail
 date: 2010-01-01 00:00:00
 year: 2010
 platform: iPad
-tint: linear-gradient(135deg, #F5567B, #E8455F)
 appstore: https://icomics.co
 github: https://github.com/TimOliver
 details: Role=Solo developer; Tenure=8 years

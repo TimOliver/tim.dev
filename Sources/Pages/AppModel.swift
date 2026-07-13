@@ -11,9 +11,9 @@ struct AppInfo {
     let year: String
     let platform: String
     let icon: String?
-    /// A CSS color/gradient string used for the icon-fallback tile and the
-    /// placeholder frame top bars. Defaults to a neutral gradient when absent.
-    let tint: String
+    /// Screenshot image paths from the comma-separated `shots:` key. The device
+    /// chrome is baked into each PNG by hand, so the site renders them bare.
+    let shots: [String]
     let path: String
     /// Ordered (label, value) rows for the detail sidebar table.
     let details: [(String, String)]
@@ -30,8 +30,10 @@ struct AppInfo {
         year = a.metadata["year"] as? String ?? ""
         platform = a.metadata["platform"] as? String ?? ""
         icon = CollectionRenderer.nonEmpty(a.metadata["icon"] as? String)
-        tint = CollectionRenderer.nonEmpty(a.metadata["tint"] as? String)
-            ?? CollectionRenderer.defaultTint
+        shots = (a.metadata["shots"] as? String ?? "")
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
         path = a.path
         details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")
         appStore = CollectionRenderer.nonEmpty(a.metadata["appstore"] as? String)
@@ -53,16 +55,30 @@ enum AppRenderer {
         return s
     }
 
-    /// A single placeholder phone frame whose top bar uses the app tint.
-    static func frame(tint: String) -> String {
-        #"<div class="app-frame"><div class="app-frame-bar" style="background: \#(escape(tint));"></div><div class="app-frame-body"></div></div>"#
+    /// The icon tile: the real app icon, or the flat empty surface until one lands.
+    static func iconTile(icon: String?) -> String {
+        CollectionRenderer.nonEmpty(icon).map {
+            Media.box(
+                container: "app-icon",
+                path: $0,
+                alt: "",
+                sizes: "(max-width: 720px) 80px, 128px"
+            )
+        } ?? #"<div class="app-icon is-empty"></div>"#
     }
 
-    /// The icon tile: the icon image when present, else a tinted placeholder.
-    static func iconTile(icon: String?, tint: String) -> String {
-        if let icon {
-            return #"<div class="app-icon"><img src="\#(escape(icon))" alt=""></div>"#
+    /// The stage the device shots stand on. Screenshots carry their own baked-in
+    /// chrome, so they are emitted bare — no wrapper, no rounding, no clipping.
+    /// With no shots yet the stage wears `.is-empty` and holds the space.
+    static func stage(_ shots: [String], className: String, sizes: String, appName: String) -> String {
+        guard !shots.isEmpty else {
+            return #"<div class="\#(className) is-empty"></div>"#
         }
-        return #"<div class="app-icon" style="background: \#(escape(tint));"></div>"#
+        var s = #"<div class="\#(className)">"#
+        for shot in shots {
+            s += Media.image(shot, alt: "\(appName) screenshot", sizes: sizes, className: "app-shot")
+        }
+        s += "</div>"
+        return s
     }
 }

@@ -5,7 +5,6 @@ layout: AppDetail
 date: 2020-01-01 00:00:00
 year: 2020
 platform: iPhone
-tint: linear-gradient(135deg, #FF5A30, #E8401C)
 details: Role=iOS Engineer; Team=Mercari — Listing; Tenure=2 years
 path: /apps/mercari-japan/
 ---

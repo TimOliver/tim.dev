@@ -26,14 +26,19 @@ extension AppRenderer {
         for app in apps {
             s += #"<a class="collection-card" href="\#(escape(app.path))">"#
             s += #"<div class="app-card-head">"#
-            s += iconTile(icon: app.icon, tint: app.tint)
+            s += iconTile(icon: app.icon)
             s += #"<div class="app-card-meta">"#
             s += #"<h2 class="app-card-name">\#(escape(app.title))</h2>"#
             s += #"<p class="app-card-tagline">\#(escape(app.tagline))</p>"#
             s += #"<div class="app-badges">\#(badges(year: app.year, platform: app.platform))</div>"#
             s += "</div>"  // app-card-meta
             s += "</div>"  // app-card-head
-            s += #"<div class="app-frames">\#(frame(tint: app.tint))\#(frame(tint: app.tint))</div>"#
+            s += stage(
+                app.shots,
+                className: "app-stage",
+                sizes: "(max-width: 720px) 90vw, 240px",
+                appName: app.title
+            )
             s += "</a>"
         }
         s += "</div>"  // collection-grid

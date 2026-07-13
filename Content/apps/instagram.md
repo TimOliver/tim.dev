@@ -5,7 +5,6 @@ layout: AppDetail
 date: 2022-01-01 00:00:00
 year: 2022
 platform: iPhone
-tint: linear-gradient(135deg, #F58529, #DD2A7B)
 appstore: https://apps.apple.com/app/instagram/id389801252
 details: Role=Senior iOS Engineer; Team=Meta — Instagram Stories; Tenure=2 years
 path: /apps/instagram/
