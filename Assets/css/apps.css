@@ -92,6 +92,12 @@
     max-width: 100%;
     max-height: 320px;
     display: block;
+    /* .app-shot is a replaced element, so its flex min-width:auto default
+       resolves to the intrinsic (density-corrected) image width, not the
+       shrink-to-fit an empty div would give. That floors the shot at its full
+       width and defeats the shrink `flex: 0 1 auto` promises — on a grid card
+       two wide shots can overflow the stage entirely. Zero it. */
+    min-width: 0;
 }
 
 .app-detail-stage {
@@ -196,11 +202,9 @@
     }
     .app-detail-stage .app-shot {
         flex: 0 0 74%;
-        /* .app-shot is a replaced element, so its flex min-width:auto default
-           resolves to the intrinsic image width (clamped by max-width: 100%),
-           not the shrink-to-fit an empty div would give — that min-width wins
-           over the 74% basis and blows the slide out to full width. Zero it. */
-        min-width: 0;
+        /* min-width: 0 comes from the base .app-shot rule above — needed here
+           too, since without it this flex-basis loses to the intrinsic image
+           width the same way the base rule's comment describes. */
         max-height: none;
         scroll-snap-align: start;
     }
