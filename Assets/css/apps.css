@@ -185,12 +185,22 @@
         scroll-snap-type: x mandatory;
         scroll-padding-left: 16px;
         scrollbar-width: none;
+        /* The shared rule above centers a short static row; here the stage is a
+           scroll container instead. Centering splits overflow across both edges
+           and strands shot 1 before the scroll origin — Chrome even clamps
+           scrollLeft there, so it becomes unreachable. Pin to the start. */
+        justify-content: flex-start;
     }
     .app-detail-stage::-webkit-scrollbar {
         display: none;
     }
     .app-detail-stage .app-shot {
         flex: 0 0 74%;
+        /* .app-shot is a replaced element, so its flex min-width:auto default
+           resolves to the intrinsic image width (clamped by max-width: 100%),
+           not the shrink-to-fit an empty div would give — that min-width wins
+           over the 74% basis and blows the slide out to full width. Zero it. */
+        min-width: 0;
         max-height: none;
         scroll-snap-align: start;
     }
