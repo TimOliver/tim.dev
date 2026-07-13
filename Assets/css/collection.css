@@ -289,3 +289,12 @@ body:has(.collection-detail) {
     color: var(--text);
     text-decoration: none;
 }
+
+/* ---------- Media slots with no image yet ----------
+   A flat neutral surface holding the space until the real image lands. No
+   gradient and no fake device chrome — the image simply hasn't arrived. Each
+   media container (.app-icon, .code-shot, .talks-thumb, .art-shot, .app-stage)
+   brings its own aspect ratio and rounding; this only paints the fill. */
+.is-empty {
+    background: var(--bg-secondary);
+}

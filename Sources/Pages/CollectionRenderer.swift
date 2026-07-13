@@ -105,3 +105,90 @@ enum CollectionRenderer {
         return s
     }
 }
+
+/// One image's build-time data, read from media-manifest.json.
+struct MediaEntry {
+    let width: Int
+    let height: Int
+    /// Tiny base64 PNG data URI — the blur-up placeholder.
+    let lqip: String
+    /// Responsive candidates, e.g. "/img/a@400w.png 400w, /img/a.png 1200w".
+    let srcset: String
+}
+
+/// Reads `media-manifest.json` (written by Scripts/build-media.py) and emits
+/// the `<img class="lqip">` shape that Assets/js/site.js swaps on scroll: a
+/// base64 blur in `src`, the real candidates parked in `data-srcset`/`data-sizes`.
+///
+/// The manifest is a BUILD INPUT and lives at the repo root — not under
+/// Assets/, which is copied verbatim into Build/ and shipped.
+@MainActor
+enum Media {
+    /// Manifest keyed by site path, e.g. "/img/apps/icomics/icon.png".
+    static let manifest: [String: MediaEntry] = load()
+
+    private static func load() -> [String: MediaEntry] {
+        let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+            .appendingPathComponent("media-manifest.json")
+        // No manifest = no collection images yet. Every media slot renders its
+        // empty surface; there is nothing to fail over.
+        guard let data = try? Data(contentsOf: url) else { return [:] }
+        guard let raw = try? JSONSerialization.jsonObject(with: data)
+                as? [String: [String: Any]] else {
+            fatalError("media-manifest.json is unreadable — run Scripts/build-media.py")
+        }
+        var out: [String: MediaEntry] = [:]
+        for (path, value) in raw {
+            guard let width = value["width"] as? Int,
+                  let height = value["height"] as? Int,
+                  let lqip = value["lqip"] as? String,
+                  let srcset = value["srcset"] as? String else {
+                fatalError("media-manifest.json entry \(path) is malformed — re-run Scripts/build-media.py")
+            }
+            out[path] = MediaEntry(width: width, height: height, lqip: lqip, srcset: srcset)
+        }
+        return out
+    }
+
+    /// An LQIP `<img>` for a manifest-known path, plus a `<noscript>` sibling
+    /// carrying the real image (noscript-lqip.html hides the placeholder when
+    /// JS is off, so without the sibling a JS-less visitor sees nothing).
+    ///
+    /// Fails LOUDLY on an unknown path: an image referenced in front matter but
+    /// missing from disk must not deploy as a silent hole in the page.
+    static func image(_ path: String, alt: String, sizes: String, className: String) -> String {
+        guard let entry = manifest[path] else {
+            fatalError("""
+                Image \(path) is referenced in front matter but is not in \
+                media-manifest.json. Add the file at Assets\(path), then run \
+                python3 Scripts/build-media.py
+                """)
+        }
+        let classes = className.isEmpty ? "lqip" : "lqip \(className)"
+        var s = #"<img class="\#(classes)" src="\#(entry.lqip)""#
+        s += #" data-srcset="\#(escape(entry.srcset))" data-sizes="\#(escape(sizes))""#
+        s += #" width="\#(entry.width)" height="\#(entry.height)""#
+        s += #" alt="\#(escape(alt))" loading="lazy">"#
+        s += #"<noscript><img\#(className.isEmpty ? "" : #" class="\#(className)""#)"#
+        s += #" src="\#(escape(path))" width="\#(entry.width)" height="\#(entry.height)""#
+        s += #" alt="\#(escape(alt))"></noscript>"#
+        return s
+    }
+
+    /// A media container that either holds the real image or, when the image
+    /// hasn't landed yet, wears `.is-empty` and shows the flat neutral surface.
+    /// `overlay` (a duration badge, say) is appended inside either state.
+    static func box(
+        container: String,
+        path: String?,
+        alt: String,
+        sizes: String,
+        overlay: String = ""
+    ) -> String {
+        guard let path else {
+            return #"<div class="\#(container) is-empty">\#(overlay)</div>"#
+        }
+        let img = image(path, alt: alt, sizes: sizes, className: "")
+        return #"<div class="\#(container)">\#(img)\#(overlay)</div>"#
+    }
+}

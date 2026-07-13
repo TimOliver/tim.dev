@@ -298,11 +298,14 @@ article img.hero {
     }
 }
 
-article img.lqip {
+/* Blur-up placeholder swap (site.js hands data-srcset over to the browser when
+   the image nears the viewport). Deliberately NOT scoped to `article`: the
+   collection cards use this too and have no <article> ancestor. */
+img.lqip {
     transition: filter 0.4s ease-out;
 }
 
-article img.lqip.loading {
+img.lqip.loading {
     filter: blur(8px);
 }
 
