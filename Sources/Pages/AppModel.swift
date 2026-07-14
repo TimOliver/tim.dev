@@ -55,16 +55,14 @@ enum AppRenderer {
         return s
     }
 
-    /// The icon tile: the real app icon, or the flat empty surface until one lands.
-    static func iconTile(icon: String?) -> String {
-        CollectionRenderer.nonEmpty(icon).map {
-            Media.box(
-                container: "app-icon",
-                path: $0,
-                alt: "",
-                sizes: "(max-width: 720px) 80px, 128px"
-            )
-        } ?? #"<div class="app-icon is-empty"></div>"#
+    /// The icon tile: the real app icon, or the flat empty surface until one
+    /// lands. `Media.box` already renders the `is-empty` surface for a nil
+    /// path, so this only threads the call-site-specific `sizes` (the grid
+    /// card's `.app-icon` is 64px at every width; the detail header's is
+    /// 128px desktop / 80px mobile — see apps.css) rather than re-deriving the
+    /// empty markup. `icon` is already `nonEmpty`-filtered by `AppInfo.init`.
+    static func iconTile(icon: String?, sizes: String) -> String {
+        Media.box(container: "app-icon", path: icon, alt: "", sizes: sizes)
     }
 
     /// The stage the device shots stand on. Screenshots carry their own baked-in
@@ -75,8 +73,12 @@ enum AppRenderer {
             return #"<div class="\#(className) is-empty"></div>"#
         }
         var s = #"<div class="\#(className)">"#
-        for shot in shots {
-            s += Media.image(shot, alt: "\(appName) screenshot", sizes: sizes, className: "app-shot")
+        // Position suffixed onto alt text: identical alt on every shot in a
+        // multi-shot stage would have a screen reader announce e.g. "iComics
+        // screenshot" twice with no way to tell them apart.
+        for (index, shot) in shots.enumerated() {
+            let alt = shots.count > 1 ? "\(appName) screenshot \(index + 1)" : "\(appName) screenshot"
+            s += Media.image(shot, alt: alt, sizes: sizes, className: "app-shot")
         }
         s += "</div>"
         return s

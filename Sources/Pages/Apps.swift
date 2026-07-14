@@ -26,7 +26,7 @@ extension AppRenderer {
         for app in apps {
             s += #"<a class="collection-card" href="\#(escape(app.path))">"#
             s += #"<div class="app-card-head">"#
-            s += iconTile(icon: app.icon)
+            s += iconTile(icon: app.icon, sizes: "64px")
             s += #"<div class="app-card-meta">"#
             s += #"<h2 class="app-card-name">\#(escape(app.title))</h2>"#
             s += #"<p class="app-card-tagline">\#(escape(app.tagline))</p>"#

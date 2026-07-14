@@ -81,7 +81,11 @@ front matter. Files live under `Assets/img/<collection>/<slug>/`.
 
 **Adding an image:**
 1. Drop the file in `Assets/img/<collection>/<slug>/`.
-2. Run `python3 Scripts/strip-exif.py` (GPS leaks otherwise).
+2. Run `python3 Scripts/strip-exif.py Assets/img/<collection>/<slug>/*` (GPS
+   leaks otherwise). With no arguments the script only walks
+   `Assets/img/posts/` — pass the path explicitly for anything else. Staged
+   images get this for free at commit time too: the pre-commit hook runs the
+   same script over staged paths under `Assets/` and re-stages the result.
 3. Run `python3 Scripts/build-media.py` — generates responsive `@<width>w`
    variants and rewrites `media-manifest.json` at the repo root.
 4. Reference it in front matter.

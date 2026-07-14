@@ -125,8 +125,8 @@ enum Media {
     static let manifest: [String: MediaEntry] = load()
 
     private static func load() -> [String: MediaEntry] {
-        let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-            .appendingPathComponent("media-manifest.json")
+        let cwd = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        let url = cwd.appendingPathComponent("media-manifest.json")
         // No manifest = no collection images yet. Every media slot renders its
         // empty surface; there is nothing to fail over.
         guard let data = try? Data(contentsOf: url) else { return [:] }
@@ -134,6 +134,7 @@ enum Media {
                 as? [String: [String: Any]] else {
             fatalError("media-manifest.json is unreadable — run Scripts/build-media.py")
         }
+        let assetsRoot = cwd.appendingPathComponent("Assets")
         var out: [String: MediaEntry] = [:]
         for (path, value) in raw {
             guard let width = value["width"] as? Int,
@@ -142,9 +143,33 @@ enum Media {
                   let srcset = value["srcset"] as? String else {
                 fatalError("media-manifest.json entry \(path) is malformed — re-run Scripts/build-media.py")
             }
+            // The manifest only records that build-media.py once found these
+            // files — it isn't re-verified on every build. A rename/delete of
+            // the source after the manifest was written must fail the build
+            // loudly, not ship a data-srcset whose URLs 404.
+            for sitePath in [path] + srcsetPaths(srcset) {
+                let relative = sitePath.hasPrefix("/") ? String(sitePath.dropFirst()) : sitePath
+                let onDisk = assetsRoot.appendingPathComponent(relative)
+                guard FileManager.default.fileExists(atPath: onDisk.path) else {
+                    fatalError("""
+                        media-manifest.json references \(sitePath) (from entry \
+                        \(path)) but Assets\(sitePath) is missing on disk. Restore \
+                        the file, or remove it from front matter, then re-run \
+                        python3 Scripts/build-media.py.
+                        """)
+                }
+            }
             out[path] = MediaEntry(width: width, height: height, lqip: lqip, srcset: srcset)
         }
         return out
+    }
+
+    /// Extracts the URL half of each `"<url> <width>w"` candidate in a srcset
+    /// string, e.g. `"/a@400w.png 400w, /a.png 1200w"` -> `["/a@400w.png", "/a.png"]`.
+    private static func srcsetPaths(_ srcset: String) -> [String] {
+        srcset.components(separatedBy: ", ").compactMap { candidate in
+            candidate.split(separator: " ").first.map(String.init)
+        }
     }
 
     /// An LQIP `<img>` for a manifest-known path, plus a `<noscript>` sibling
@@ -162,7 +187,7 @@ enum Media {
                 """)
         }
         let classes = className.isEmpty ? "lqip" : "lqip \(className)"
-        var s = #"<img class="\#(classes)" src="\#(entry.lqip)""#
+        var s = #"<img class="\#(classes)" src="\#(escape(entry.lqip))""#
         s += #" data-srcset="\#(escape(entry.srcset))" data-sizes="\#(escape(sizes))""#
         s += #" width="\#(entry.width)" height="\#(entry.height)""#
         s += #" alt="\#(escape(alt))" loading="lazy">"#

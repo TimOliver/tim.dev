@@ -25,7 +25,7 @@ extension AppRenderer {
         // card's .app-card-head, so the detail reads as the expanded card).
         s += #"<a class="collection-back" href="/apps/">&lsaquo; Back to Apps</a>"#
         s += #"<div class="app-detail-head">"#
-        s += iconTile(icon: app.icon)
+        s += iconTile(icon: app.icon, sizes: "(max-width: 720px) 80px, 128px")
         s += #"<div class="app-detail-headings">"#
         s += #"<h1 class="collection-detail-name">\#(escape(app.title))</h1>"#
         s += #"<p class="collection-detail-tagline">\#(escape(app.tagline))</p>"#
