@@ -67,6 +67,48 @@ layout: CustomArticlePage
 ```
 Article properties: `title`, `description`, `text`, `date`, `lastModified`, `tags`, `path`, `estimatedReadingMinutes`, `image`, `isPublished`.
 
+### Collection Media
+
+Collection items (apps, code, art, talks) reference real images by site path in
+front matter. Files live under `Assets/img/<collection>/<slug>/`.
+
+| Collection | Keys |
+|---|---|
+| Apps | `icon:` (one path), `shots:` (comma-separated paths) |
+| Code | `image:` |
+| Talks | `image:` (poster; the video itself comes from `youtube:`) |
+| Art | `image:` (poster) |
+
+**Adding an image:**
+1. Drop the file in `Assets/img/<collection>/<slug>/`.
+2. Run `python3 Scripts/strip-exif.py` (GPS leaks otherwise).
+3. Run `python3 Scripts/build-media.py` — generates responsive `@<width>w`
+   variants and rewrites `media-manifest.json` at the repo root.
+4. Reference it in front matter.
+
+`media-manifest.json` is a build input and deliberately lives outside `Assets/`
+(everything under `Assets/` is copied verbatim into `Build/`). Swift reads it
+via `Media.manifest`. Every call site into `Media.image`/`Media.box` threads
+its own `sizes` attribute — an app icon, an app screenshot, a grid thumbnail,
+and a detail hero each occupy a different fraction of the viewport, so each
+call site's `sizes` is tailored to where it renders, not a single shared
+default. An image referenced in front matter but missing from the manifest
+**fails the build** (a `fatalError`, not a warning) rather than shipping a
+silent hole in the page.
+
+Images render through the LQIP system: a base64 blur in `src`, real candidates
+in `data-srcset`, swapped in by `Assets/js/site.js` when the image nears the
+viewport, with a `<noscript>` sibling for JS-less visitors.
+
+**App screenshots carry their device chrome baked into the PNG** (so each can
+be tailored per device). They are therefore rendered bare — `.app-shot` must
+never get a `border-radius`, `background`, or `overflow: hidden`, or CSS
+clipping eats the bezel's own corners. This is the single most important
+non-obvious constraint for anyone adding images to Apps later.
+
+A media slot with no image yet renders a flat `.is-empty` surface — no
+gradient, no fake device shape.
+
 ### Environment
 ```swift
 @Environment(\.articles) var articles  // ArticleLoader — .all, .tagged("swift")

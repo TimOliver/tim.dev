@@ -46,9 +46,6 @@ enum CollectionRenderer {
         s.flatMap { $0.isEmpty ? nil : $0 }
     }
 
-    /// The neutral placeholder gradient used when an item sets no `tint`.
-    static let defaultTint = "linear-gradient(135deg, #c7c7cc, #8e8e93)"
-
     /// Derives a filesystem-safe key from a collection path, e.g.
     /// `/code/bluruikit/` with dir `code` → `bluruikit`. For blog-post paths
     /// (no matching dir prefix) it simply flattens the path: `/2021/11/22/35/`
