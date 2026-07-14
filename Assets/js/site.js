@@ -719,7 +719,7 @@
             btn._labelText = label ? label.textContent : null;
         }
         if (btn._revertTimer) clearTimeout(btn._revertTimer);
-        if (use) use.setAttribute('href', '/img/ui-icons.svg#clipboard-check');
+        if (use) use.setAttribute('href', '/img/site/ui-icons.svg#clipboard-check');
         if (label) label.textContent = 'Copied!';
         btn.classList.add('is-copied');
         var region = getLive();

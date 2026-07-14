@@ -42,7 +42,7 @@
 }
 
 [data-color-scheme="dark"] .code-gh-mark {
-    content: url("/img/github-white.svg");
+    content: url("/img/portfolio/github-white.svg");
 }
 
 .code-owner {

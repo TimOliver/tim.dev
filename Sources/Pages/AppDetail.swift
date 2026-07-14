@@ -53,7 +53,7 @@ extension AppRenderer {
             // the <img>; dark mode swaps it for the white one via CSS `content`
             // (see .app-store in apps.css). Both Apple badges live in /img/.
             s += #"<a class="app-store" href="\#(escape(appStore))" target="_blank" rel="noopener">"#
-            s += #"<img src="/img/app-store-black.svg" alt="Download on the App Store">"#
+            s += #"<img src="/img/portfolio/app-store-black.svg" alt="Download on the App Store">"#
             s += "</a>"
         }
 

@@ -164,8 +164,8 @@
     width: 20px;
     height: 20px;
     background-color: var(--text-secondary);
-    -webkit-mask: url(/img/comments-actions.svg) no-repeat;
-            mask: url(/img/comments-actions.svg) no-repeat;
+    -webkit-mask: url(/img/comentario/comments-actions.svg) no-repeat;
+            mask: url(/img/comentario/comments-actions.svg) no-repeat;
     -webkit-mask-size: auto 100%;
             mask-size: auto 100%;
     -webkit-mask-position: var(--cmntr-icon-pos) 50%;
@@ -336,8 +336,8 @@
     margin-right: 0.4em;
     vertical-align: -0.12em;
     background-color: currentColor;
-    -webkit-mask: url(/img/rss.svg) center / contain no-repeat;
-    mask: url(/img/rss.svg) center / contain no-repeat;
+    -webkit-mask: url(/img/site/rss.svg) center / contain no-repeat;
+    mask: url(/img/site/rss.svg) center / contain no-repeat;
 }
 
 /* ---- Comment editor ("Add a comment") ----
@@ -387,7 +387,7 @@
     transition: background-color 0.15s ease;
 }
 
-/* Leading comments glyph — same path as /img/ui-icons.svg#comments (Tabler), inlined
+/* Leading comments glyph — same path as /img/site/ui-icons.svg#comments (Tabler), inlined
    as a mask (a CSS mask can't reference a <symbol>) so it tints with the placeholder
    colour. Matches the spinner's inline-mask pattern above. */
 .comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted)::before {
@@ -1141,8 +1141,8 @@
     width: 1.2em;
     height: 1.2em;
     background: var(--text-secondary);
-    -webkit-mask: url(/img/comments-actions.svg) no-repeat;
-            mask: url(/img/comments-actions.svg) no-repeat;
+    -webkit-mask: url(/img/comentario/comments-actions.svg) no-repeat;
+            mask: url(/img/comentario/comments-actions.svg) no-repeat;
     -webkit-mask-size: auto 100%;
             mask-size: auto 100%;
     -webkit-mask-position: 0% 50%;
@@ -1904,8 +1904,8 @@
     width: 1.1em;
     height: 1.1em;
     background: var(--heart-gradient);
-    -webkit-mask: url(/img/heart-sprite.svg) no-repeat;
-            mask: url(/img/heart-sprite.svg) no-repeat;
+    -webkit-mask: url(/img/comentario/heart-sprite.svg) no-repeat;
+            mask: url(/img/comentario/heart-sprite.svg) no-repeat;
     -webkit-mask-size: auto 100%;
             mask-size: auto 100%;
     -webkit-mask-position: 100% 50%;

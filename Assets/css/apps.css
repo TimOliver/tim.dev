@@ -149,7 +149,7 @@
 }
 
 [data-color-scheme="dark"] .app-store img {
-    content: url("/img/app-store-white.svg");
+    content: url("/img/portfolio/app-store-white.svg");
 }
 
 /* Mobile tweaks for app-specific detail bits. */

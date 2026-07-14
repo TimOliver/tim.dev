@@ -104,10 +104,10 @@ struct MainLayout: Layout {
             // external <use href> references on cold cache. (social-logos.svg is
             // not preloaded: nothing references it until the first post with a
             // social embed ships — see Assets/css/social-embeds.css.)
-            MetaLink(href: "/img/brand-icons.svg", rel: "preload")
+            MetaLink(href: "/img/site/brand-icons.svg", rel: "preload")
                 .customAttribute(name: "as", value: "image")
                 .customAttribute(name: "type", value: "image/svg+xml")
-            MetaLink(href: "/img/ui-icons.svg", rel: "preload")
+            MetaLink(href: "/img/site/ui-icons.svg", rel: "preload")
                 .customAttribute(name: "as", value: "image")
                 .customAttribute(name: "type", value: "image/svg+xml")
             MetaLink(href: "/css/site.css", rel: .stylesheet)

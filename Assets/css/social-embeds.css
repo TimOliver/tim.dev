@@ -4,7 +4,7 @@
    so embeds Just Work when first authored. Loaded only on the home feed and
    post pages (MainLayout.swift).
 
-   NOTE: when the first embed ships, restore the /img/social-logos.svg preload
+   NOTE: when the first embed ships, restore the /img/site/social-logos.svg preload
    in MainLayout's <head> — Safari can fail to render external <use href>
    sprite references on a cold cache without it. The preload was removed while
    nothing referenced the sprite. */

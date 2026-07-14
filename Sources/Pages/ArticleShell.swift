@@ -24,9 +24,9 @@ enum ArticleShell {
         case page   // standalone post page: plain date/title; comments mount point at the end
     }
 
-    /// Sprite icon from /img/ui-icons.svg (Tabler outline, currentColor stroke).
+    /// Sprite icon from /img/site/ui-icons.svg (Tabler outline, currentColor stroke).
     private static func spriteIcon(_ id: String) -> String {
-        #"<svg class="post-icon-glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/ui-icons.svg#\#(id)"/></svg>"#
+        #"<svg class="post-icon-glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/site/ui-icons.svg#\#(id)"/></svg>"#
     }
 
     /// Link badge — navigates to the post page, a visible cue that the feed

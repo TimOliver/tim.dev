@@ -47,7 +47,7 @@ struct RepoInfo {
 enum CodeRenderer {
     /// The GitHub mark (black variant; dark mode swaps to white via CSS).
     static func githubMark() -> String {
-        #"<img class="code-gh-mark" src="/img/github-black.svg" alt="">"#
+        #"<img class="code-gh-mark" src="/img/portfolio/github-black.svg" alt="">"#
     }
 
     /// The repo's landscape screenshot, or the flat surface until one lands.
