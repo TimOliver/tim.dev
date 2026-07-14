@@ -4,7 +4,6 @@ layout: ArtDetail
 date: 2024-05-01 00:00:00
 duration: 8s
 meta: Commission · 8s · 2024
-tint: linear-gradient(135deg, #ef9a9a, #e57373)
 order: 2
 stats: Type=Intro sequence; Length=8s; Year=2024; Client=Mellow
 path: /art/commissions/mellow/

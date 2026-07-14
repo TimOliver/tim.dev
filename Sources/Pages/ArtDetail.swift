@@ -25,9 +25,18 @@ extension ArtRenderer {
             s += #"<p class="collection-detail-tagline">\#(escape(item.meta))</p>"#
         }
 
-        // Large tinted media placeholder in a bordered surface.
+        // Large poster in a bordered surface. Video items keep their
+        // "Watch on YouTube" sidebar link rather than embedding — art's
+        // `youtube:` holds a channel URL, not a video id.
         s += #"<div class="collection-detail-shot">"#
-        s += #"<div class="art-shot" style="background: \#(escape(item.tint));"></div>"#
+        // Same detail column as Code/Talks: 1250px page width minus 2x35px
+        // padding = 1180px — nowhere near the grid card's width.
+        s += Media.box(
+            container: "art-shot",
+            path: item.image,
+            alt: item.title,
+            sizes: "(max-width: 720px) 100vw, 1180px"
+        )
         s += "</div>"
 
         s += #"<div class="collection-detail-body">"#

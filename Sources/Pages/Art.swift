@@ -70,15 +70,22 @@ extension ArtRenderer {
         return s
     }
 
-    /// One art card: tinted landscape thumb with a duration overlay, then a
-    /// caption + meta line. Reuses the cardless .collection-card shell.
+    /// One art card: poster thumb with a duration overlay, then a caption +
+    /// meta line. Reuses the cardless .collection-card shell.
     static func card(_ item: ArtItem) -> String {
         var s = #"<a class="collection-card art-card" href="\#(escape(item.path))">"#
-        s += #"<div class="art-shot" style="background: \#(escape(item.tint));">"#
-        if !item.duration.isEmpty {
-            s += #"<span class="art-duration">\#(escape(item.duration))</span>"#
-        }
-        s += "</div>"  // art-shot
+        let badge = item.duration.isEmpty
+            ? ""
+            : #"<span class="art-duration">\#(escape(item.duration))</span>"#
+        // --art-cols varies 2-3 per section (art.css), so a vw-based guess
+        // beats one fixed px figure — close enough for sizes, not exact.
+        s += Media.box(
+            container: "art-shot",
+            path: item.image,
+            alt: item.title,
+            sizes: "(max-width: 600px) 90vw, (max-width: 900px) 45vw, 30vw",
+            overlay: badge
+        )
         s += #"<div class="art-body">"#
         s += #"<span class="art-name">\#(escape(item.title))</span>"#
         if !item.meta.isEmpty {

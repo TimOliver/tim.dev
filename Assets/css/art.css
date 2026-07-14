@@ -1,8 +1,8 @@
 /* ---------- Art page (art-specific) ----------
    Shared structure (cardless shell, hover, detail layout + header, spec list,
    sidebar links, .art-body padding) lives in collection.css / site.css. This
-   file holds the section headers, per-section grid, and the tinted thumbnail
-   with tag/duration overlays. */
+   file holds the section headers, per-section grid, and the poster thumbnail
+   with its duration overlay. */
 
 .art-section {
     margin: 0 0 3.5em;
@@ -33,17 +33,21 @@
     gap: 10px;
 }
 
-/* Tinted landscape thumbnail with overlays. A deliberately darker one-off
-   variant of the shared --hatch token (0.06 vs 0.04) — the art tints are
-   saturated enough to swallow the standard weave. */
+/* Landscape poster with overlays. Until an image lands, .is-empty paints the
+   flat surface (collection.css) and the aspect ratio holds the space. */
 .art-shot {
     position: relative;
     aspect-ratio: 16 / 10;
     border-radius: 14px;
     corner-shape: squircle;
     overflow: hidden;
-    background-image:
-        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 14px);
+}
+
+.art-shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 /* Duration overlay (bottom-right) on the thumbnail. The "tag" overlay was

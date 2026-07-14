@@ -4,7 +4,6 @@ layout: ArtDetail
 date: 2025-02-01 00:00:00
 duration: 6s
 meta: Commission · 6s · 2025
-tint: linear-gradient(135deg, #b39ddb, #9575cd)
 order: 4
 stats: Type=Brand loop; Length=6s; Year=2025; Client=Kanso
 path: /art/commissions/kanso/

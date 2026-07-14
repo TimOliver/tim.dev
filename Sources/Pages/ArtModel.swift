@@ -6,7 +6,7 @@ struct ArtItem {
     let title: String
     let duration: String     // overlay duration (may be empty)
     let meta: String         // caption meta line
-    let tint: String         // placeholder thumbnail color/gradient
+    let image: String?       // poster path, nil until one lands
     let order: Int           // position within its section
     let path: String
     let stats: [(String, String)]  // detail Details table
@@ -18,8 +18,7 @@ struct ArtItem {
         title = a.title
         duration = a.metadata["duration"] as? String ?? ""
         meta = a.metadata["meta"] as? String ?? ""
-        tint = CollectionRenderer.nonEmpty(a.metadata["tint"] as? String)
-            ?? CollectionRenderer.defaultTint
+        image = CollectionRenderer.nonEmpty(a.metadata["image"] as? String)
         order = Int(a.metadata["order"] as? String ?? "") ?? 0
         path = a.path
         stats = CollectionRenderer.parseDetails(a.metadata["stats"] as? String ?? "")
