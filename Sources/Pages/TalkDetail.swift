@@ -30,7 +30,9 @@ extension TalksRenderer {
         if let id = talk.youtube {
             s += #"<lite-youtube videoid="\#(escape(id))" playlabel="Play: \#(escape(talk.title))"></lite-youtube>"#
         } else {
-            s += thumb(image: talk.image, duration: "", title: talk.title)
+            // Same .collection-detail-shot box as CodeDetail's screenshot —
+            // 1250px page width minus 2x35px padding = 1180px.
+            s += thumb(image: talk.image, duration: "", title: talk.title, sizes: "(max-width: 720px) 100vw, 1180px")
         }
         s += "</div>"
 

@@ -51,12 +51,14 @@ enum CodeRenderer {
     }
 
     /// The repo's landscape screenshot, or the flat surface until one lands.
-    static func shot(image: String?, name: String) -> String {
+    /// `sizes` is threaded in rather than fixed here: the grid card and the
+    /// detail page render this at very different widths (see call sites).
+    static func shot(image: String?, name: String, sizes: String) -> String {
         Media.box(
             container: "code-shot",
             path: image,
             alt: "\(name) screenshot",
-            sizes: "(max-width: 720px) 90vw, 460px"
+            sizes: sizes
         )
     }
 

@@ -27,7 +27,10 @@ extension CodeRenderer {
         // Large landscape screenshot in a bordered surface (falls back to the
         // flat empty surface until one lands).
         s += #"<div class="collection-detail-shot">"#
-        s += shot(image: repo.image, name: repo.title)
+        // .collection-detail-shot spans the full detail column: 1250px page
+        // width minus 2x35px padding = 1180px — nowhere near the grid card's
+        // width, so it needs its own sizes value.
+        s += shot(image: repo.image, name: repo.title, sizes: "(max-width: 720px) 100vw, 1180px")
         s += "</div>"
 
         // Two-column body: prose + sidebar.

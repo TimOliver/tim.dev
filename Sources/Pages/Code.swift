@@ -25,7 +25,9 @@ extension CodeRenderer {
         s += #"<div class="collection-grid">"#
         for repo in repos {
             s += #"<a class="collection-card code-card" href="\#(escape(repo.path))">"#
-            s += shot(image: repo.image, name: repo.title)
+            // Card sits in a 2-3 col grid inside the 1100/1650px page width —
+            // renders around 460-490px; measured against collection.css.
+            s += shot(image: repo.image, name: repo.title, sizes: "(max-width: 720px) 90vw, 460px")
             s += #"<div class="code-body">"#
             s += repoLine(owner: repo.owner, name: repo.title)
             s += #"<p class="code-tagline">\#(escape(repo.tagline))</p>"#

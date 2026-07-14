@@ -45,8 +45,10 @@ struct TalkInfo {
 enum TalksRenderer {
     /// Poster thumbnail with an optional duration badge. Shared by the featured
     /// hero, the grid cards, and the detail page's no-video fallback. The badge
-    /// overlays both the real poster and the flat empty surface.
-    static func thumb(image: String?, duration: String, title: String) -> String {
+    /// overlays both the real poster and the flat empty surface. `sizes` is
+    /// threaded in rather than fixed here: the three call sites render this at
+    /// very different widths (hero ~700px, card ~460px, detail ~1180px).
+    static func thumb(image: String?, duration: String, title: String, sizes: String) -> String {
         let badge = duration.isEmpty
             ? ""
             : #"<span class="talks-duration">\#(escape(duration))</span>"#
@@ -54,7 +56,7 @@ enum TalksRenderer {
             container: "talks-thumb",
             path: image,
             alt: title.isEmpty ? "" : "\(title) — talk poster",
-            sizes: "(max-width: 720px) 90vw, 700px",
+            sizes: sizes,
             overlay: badge
         )
     }

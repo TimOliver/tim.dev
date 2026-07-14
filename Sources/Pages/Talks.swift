@@ -42,7 +42,9 @@ extension TalksRenderer {
         // Featured hero — the most-recent talk (talks are sorted desc).
         if let featured = talks.first {
             s += #"<a class="talks-featured" href="\#(escape(featured.path))">"#
-            s += thumb(image: featured.image, duration: featured.duration, title: featured.title)
+            // .talks-featured .talks-thumb is `flex: 0 1 700px` — 700px is the
+            // hero's actual cap, not a shared card estimate.
+            s += thumb(image: featured.image, duration: featured.duration, title: featured.title, sizes: "(max-width: 720px) 90vw, 700px")
             s += #"<div class="talks-featured-text">"#
             s += #"<span class="talks-eyebrow">Featured</span>"#
             s += #"<h2 class="talks-featured-title">\#(escape(featured.title))</h2>"#
@@ -87,7 +89,10 @@ extension TalksRenderer {
             let searchAttr = ([talk.title, talk.venue] + talk.topics)
                 .joined(separator: " ").lowercased()
             s += #"<a class="collection-card talks-card" href="\#(escape(talk.path))" data-topics="\#(escape(topicsAttr))" data-year="\#(talk.year)" data-search="\#(escape(searchAttr))">"#
-            s += thumb(image: talk.image, duration: talk.duration, title: talk.title)
+            // Talks cards sit in the same .collection-grid as Code cards (no
+            // talks-specific column override), so they render at the same
+            // ~460-490px — reuse that figure rather than the hero's 700px.
+            s += thumb(image: talk.image, duration: talk.duration, title: talk.title, sizes: "(max-width: 720px) 90vw, 460px")
             s += #"<div class="talks-card-body">"#
             s += #"<h3 class="talks-card-title">\#(escape(talk.title))</h3>"#
             s += #"<p class="talks-card-meta">\#(metaLine(venue: talk.venue, year: talk.year, duration: talk.duration))</p>"#
