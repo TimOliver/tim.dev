@@ -12,6 +12,8 @@ struct RepoInfo {
     let langColor: String
     /// Star stat shown on the card (free string, e.g. "★ 5.4k").
     let stars: String
+    /// Landscape screenshot path, or nil until one lands.
+    let image: String?
     let path: String
     /// Ordered (label, value) rows for the detail sidebar table.
     let details: [(String, String)]
@@ -28,6 +30,7 @@ struct RepoInfo {
         language = a.metadata["language"] as? String ?? ""
         langColor = CollectionRenderer.nonEmpty(a.metadata["langColor"] as? String) ?? "#8e8e93"
         stars = a.metadata["stars"] as? String ?? ""
+        image = CollectionRenderer.nonEmpty(a.metadata["image"] as? String)
         path = a.path
         details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")
         var collectedLinks: [(String, String)] = []
@@ -47,9 +50,14 @@ enum CodeRenderer {
         #"<img class="code-gh-mark" src="/img/github-black.svg" alt="">"#
     }
 
-    /// A landscape screenshot placeholder with a centered caption.
-    static func shot(_ repoName: String) -> String {
-        #"<div class="code-shot"><span class="code-shot-caption">screenshot · \#(escape(repoName))</span></div>"#
+    /// The repo's landscape screenshot, or the flat surface until one lands.
+    static func shot(image: String?, name: String) -> String {
+        Media.box(
+            container: "code-shot",
+            path: image,
+            alt: "\(name) screenshot",
+            sizes: "(max-width: 720px) 90vw, 460px"
+        )
     }
 
     /// The owner/name line with the GitHub mark.

@@ -25,7 +25,7 @@ extension CodeRenderer {
         s += #"<div class="collection-grid">"#
         for repo in repos {
             s += #"<a class="collection-card code-card" href="\#(escape(repo.path))">"#
-            s += shot(repo.title)
+            s += shot(image: repo.image, name: repo.title)
             s += #"<div class="code-body">"#
             s += repoLine(owner: repo.owner, name: repo.title)
             s += #"<p class="code-tagline">\#(escape(repo.tagline))</p>"#

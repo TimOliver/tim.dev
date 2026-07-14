@@ -24,9 +24,10 @@ extension CodeRenderer {
         s += #"<h1 class="collection-detail-name">\#(escape(repo.title))</h1>"#
         s += #"<p class="collection-detail-tagline">\#(escape(repo.tagline))</p>"#
 
-        // Large landscape screenshot placeholder in a bordered surface.
+        // Large landscape screenshot in a bordered surface (falls back to the
+        // flat empty surface until one lands).
         s += #"<div class="collection-detail-shot">"#
-        s += shot(repo.title)
+        s += shot(image: repo.image, name: repo.title)
         s += "</div>"
 
         // Two-column body: prose + sidebar.
