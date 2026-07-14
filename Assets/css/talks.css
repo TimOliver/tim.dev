@@ -3,18 +3,26 @@
    width, footer width, centered title/subtitle, grid columns, card + hero hover,
    the filter-pill capsule recipe, and the detail header/media surface; the
    empty state is shared in site.css). This file adds only the talk-specific
-   pieces: the featured hero, the tinted thumbnail, the search bar, filter
+   pieces: the featured hero, the poster thumbnail, the search bar, filter
    button behaviour, card internals, and topic badges.
    Tokens only; squircle; 720px collapse. */
 
-/* Tinted thumbnail surface — shared by the hero, the cards, and the detail
-   placeholder. The duration badge sits bottom-right. */
+/* Poster thumbnail — shared by the hero, the cards, and the detail fallback.
+   The duration badge sits bottom-right, over either the poster or (until one
+   lands) the flat .is-empty surface from collection.css. */
 .talks-thumb {
     position: relative;
     aspect-ratio: 16 / 9;
     border-radius: 14px;
     corner-shape: squircle;
     overflow: hidden;
+}
+
+.talks-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .talks-duration {

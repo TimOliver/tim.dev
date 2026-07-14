@@ -4,7 +4,6 @@ venue: iOSDevUK
 date: 2023-09-01 00:00:00
 duration: 36:42
 topics: UI
-tint: linear-gradient(135deg, #6a3a8c, #3a1f52)
 youtube:
 layout: TalkDetail
 path: /talks/designing-for-the-dynamic-island/

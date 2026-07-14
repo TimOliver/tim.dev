@@ -8,7 +8,7 @@ struct TalkInfo {
     let title: String
     let venue: String
     let duration: String
-    let tint: String          // thumbnail gradient/color (fallback when blank)
+    let image: String?        // poster path, nil until one lands
     let youtube: String?      // YouTube video id (detail embed + link)
     let slides: String?       // optional slides URL
     let path: String
@@ -21,8 +21,7 @@ struct TalkInfo {
         title = a.title
         venue = a.metadata["venue"] as? String ?? ""
         duration = a.metadata["duration"] as? String ?? ""
-        tint = CollectionRenderer.nonEmpty(a.metadata["tint"] as? String)
-            ?? CollectionRenderer.defaultTint
+        image = CollectionRenderer.nonEmpty(a.metadata["image"] as? String)
         youtube = CollectionRenderer.nonEmpty(a.metadata["youtube"] as? String)
         slides = CollectionRenderer.nonEmpty(a.metadata["slides"] as? String)
         path = a.path
@@ -44,15 +43,20 @@ struct TalkInfo {
 /// include with `CollectionRenderer`; holds only the talk-specific markup.
 @MainActor
 enum TalksRenderer {
-    /// Tinted thumbnail surface with an optional duration badge. Shared by the
-    /// featured hero, the grid cards, and the detail placeholder.
-    static func thumb(tint: String, duration: String) -> String {
-        var s = #"<div class="talks-thumb" style="background: \#(escape(tint));">"#
-        if !duration.isEmpty {
-            s += #"<span class="talks-duration">\#(escape(duration))</span>"#
-        }
-        s += "</div>"
-        return s
+    /// Poster thumbnail with an optional duration badge. Shared by the featured
+    /// hero, the grid cards, and the detail page's no-video fallback. The badge
+    /// overlays both the real poster and the flat empty surface.
+    static func thumb(image: String?, duration: String, title: String) -> String {
+        let badge = duration.isEmpty
+            ? ""
+            : #"<span class="talks-duration">\#(escape(duration))</span>"#
+        return Media.box(
+            container: "talks-thumb",
+            path: image,
+            alt: title.isEmpty ? "" : "\(title) — talk poster",
+            sizes: "(max-width: 720px) 90vw, 700px",
+            overlay: badge
+        )
     }
 
     /// The "venue · year · duration" meta line (empty parts omitted).

@@ -4,7 +4,6 @@ venue: iOSDC Japan
 date: 2021-09-01 00:00:00
 duration: 45:02
 topics: Career
-tint: linear-gradient(135deg, #7a2f5e, #421a33)
 youtube:
 layout: TalkDetail
 path: /talks/building-mercaris-listing-flow/

@@ -4,7 +4,6 @@ venue: try! Swift NYC
 date: 2023-05-01 00:00:00
 duration: 27:35
 topics: UI
-tint: linear-gradient(135deg, #8c2f4a, #4a1a2a)
 youtube:
 layout: TalkDetail
 path: /talks/when-swiftui-bites-back/

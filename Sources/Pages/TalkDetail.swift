@@ -25,12 +25,12 @@ extension TalksRenderer {
         s += #"<h1 class="collection-detail-name">\#(escape(talk.title))</h1>"#
         s += #"<p class="collection-detail-tagline">\#(metaLine(venue: talk.venue, year: talk.year, duration: ""))</p>"#
 
-        // Video: lite-youtube facade when a video id is set; tint placeholder otherwise.
+        // Video: lite-youtube facade when a video id is set; poster fallback otherwise.
         s += #"<div class="collection-detail-shot">"#
         if let id = talk.youtube {
             s += #"<lite-youtube videoid="\#(escape(id))" playlabel="Play: \#(escape(talk.title))"></lite-youtube>"#
         } else {
-            s += thumb(tint: talk.tint, duration: "")
+            s += thumb(image: talk.image, duration: "", title: talk.title)
         }
         s += "</div>"
 

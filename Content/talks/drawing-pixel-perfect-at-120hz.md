@@ -4,7 +4,6 @@ venue: iOSDC Japan
 date: 2022-09-01 00:00:00
 duration: 33:08
 topics: Performance
-tint: linear-gradient(135deg, #2f6b3a, #163a1f)
 youtube:
 layout: TalkDetail
 path: /talks/drawing-pixel-perfect-at-120hz/
