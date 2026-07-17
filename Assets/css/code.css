@@ -4,22 +4,14 @@
    .code-body padding. This holds repo-card internals and the landscape
    screenshot placeholder. */
 
-/* Landscape repo screenshot. Rounded even in the cardless resting state
-   ("only images rounded"). Until an image lands, .is-empty paints the flat
-   surface (collection.css) and the aspect ratio holds the space. */
+/* Landscape repo screenshot. The rounding/clip + img fill are the shared
+   media-surface rules (collection.css); the border is code-specific — the grid
+   shots hold their edge even against a near-bg screenshot. Until an image
+   lands, .is-empty paints the flat surface and the aspect ratio holds the
+   space. */
 .code-shot {
     aspect-ratio: 16 / 10;
-    overflow: hidden;
     border: 1px solid var(--border);
-    border-radius: 14px;
-    corner-shape: squircle;
-}
-
-.code-shot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
 }
 
 /* Repo line: github mark + owner/name. Wraps rather than overflowing — long,
@@ -88,13 +80,10 @@
 
 /* ----- Detail page ----- */
 
-/* Inside the detail wrapper (.collection-detail-shot) the .code-shot's own
-   border/radius/lift are redundant — the wrapper provides them. Neutralise so
-   there's no double border and no stray hover transform on the (non-card)
-   detail page. */
+/* Inside the detail wrapper the shared rules (collection.css) flatten the
+   rounding and set the 16:9 detail ratio; the border and any hover transition
+   are code-specific, so they're reset here. */
 .collection-detail-shot .code-shot {
-    aspect-ratio: 16 / 9;
     border: none;
-    border-radius: 0;
     transition: none;
 }

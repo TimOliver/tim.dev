@@ -8,21 +8,12 @@
    Tokens only; squircle; 720px collapse. */
 
 /* Poster thumbnail — shared by the hero, the cards, and the detail fallback.
-   The duration badge sits bottom-right, over either the poster or (until one
-   lands) the flat .is-empty surface from collection.css. */
+   Rounding/clip + img fill come from the shared media-surface rules
+   (collection.css). The duration badge sits bottom-right, over either the
+   poster or (until one lands) the flat .is-empty surface. */
 .talks-thumb {
     position: relative;
     aspect-ratio: 16 / 9;
-    border-radius: 14px;
-    corner-shape: squircle;
-    overflow: hidden;
-}
-
-.talks-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
 }
 
 .talks-duration {
@@ -226,12 +217,9 @@
 .talks-card.hidden,
 .talks-grid.hidden { display: none; }
 
-/* ----- Detail video surface (the bordered wrapper is the shared
-   .collection-detail-shot) — inside it the thumb/embed shouldn't double the
-   border or rounding. ----- */
-.collection-detail-shot .talks-thumb {
-    border-radius: 0;
-}
+/* ----- Detail video surface: the bordered wrapper is the shared
+   .collection-detail-shot, and the thumb's un-rounding inside it is the shared
+   neutralizer (collection.css). Only the embed itself is talks-specific. ----- */
 
 .collection-detail-shot lite-youtube {
     display: block;

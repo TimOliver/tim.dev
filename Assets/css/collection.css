@@ -294,7 +294,44 @@ body:has(.collection-detail) {
    A flat neutral surface holding the space until the real image lands. No
    gradient and no fake device chrome — the image simply hasn't arrived. Each
    media container (.app-icon, .code-shot, .talks-thumb, .art-shot, .app-stage)
-   brings its own aspect ratio and rounding; this only paints the fill. */
+   brings its own aspect ratio; this only paints the fill. */
 .is-empty {
     background: var(--bg-secondary);
+}
+
+/* ---------- Shared media-surface treatment ----------
+   Every collection's image container — Code's repo screenshot, Talks' poster,
+   Art's poster — wears the same 14px squircle clip ("only images rounded"),
+   so it's one design decision stated once. Aspect ratios, overlay positioning
+   and Code's border stay with each page's own file; Apps' .app-icon keeps its
+   own tighter 15px rounding in apps.css. NOT .app-shot: device chrome is baked
+   into those PNGs, and any rounding/clipping would eat the bezel's corners. */
+.code-shot,
+.talks-thumb,
+.art-shot {
+    border-radius: 14px;
+    corner-shape: squircle;
+    overflow: hidden;
+}
+
+/* The image fills its container; the container's aspect ratio decides the
+   crop. Shared by every clipped media surface, including the app icon tile. */
+.app-icon img,
+.code-shot img,
+.talks-thumb img,
+.art-shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Inside the bordered detail wrapper (.collection-detail-shot) the surface
+   must not double the wrapper's rounding, and detail media is 16:9 across the
+   collections. Code's border + hover-transition reset stays in code.css. */
+.collection-detail-shot .code-shot,
+.collection-detail-shot .talks-thumb,
+.collection-detail-shot .art-shot {
+    aspect-ratio: 16 / 9;
+    border-radius: 0;
 }

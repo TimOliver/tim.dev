@@ -33,21 +33,13 @@
     gap: 10px;
 }
 
-/* Landscape poster with overlays. Until an image lands, .is-empty paints the
-   flat surface (collection.css) and the aspect ratio holds the space. */
+/* Landscape poster with overlays. Rounding/clip + img fill come from the
+   shared media-surface rules (collection.css); so does the detail-page
+   neutralizer. Until an image lands, .is-empty paints the flat surface and
+   the aspect ratio holds the space. */
 .art-shot {
     position: relative;
     aspect-ratio: 16 / 10;
-    border-radius: 14px;
-    corner-shape: squircle;
-    overflow: hidden;
-}
-
-.art-shot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
 }
 
 /* Duration overlay (bottom-right) on the thumbnail. The "tag" overlay was
@@ -75,12 +67,6 @@
     font-size: 0.85em;
     color: var(--text-secondary);
     margin: 0.3em 0 0;
-}
-
-/* Detail-page media placeholder fills the bordered surface. */
-.collection-detail-shot .art-shot {
-    aspect-ratio: 16 / 9;
-    border-radius: 0;
 }
 
 /* Collapse multi-column sections on narrower viewports. */
