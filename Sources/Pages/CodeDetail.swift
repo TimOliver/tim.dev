@@ -17,34 +17,22 @@ struct CodeDetail: ArticlePage {
 
 extension CodeRenderer {
     static func detailHTML(for repo: RepoInfo) -> String {
-        var s = #"<div class="collection collection-detail">"#
-
-        // Back link + header (title + tagline, no icon — repos have no app icon).
-        s += #"<a class="collection-back" href="/code/">&lsaquo; Back to Code</a>"#
-        s += #"<h1 class="collection-detail-name">\#(escape(repo.title))</h1>"#
-        s += #"<p class="collection-detail-tagline">\#(escape(repo.tagline))</p>"#
-
-        // Large landscape screenshot in a bordered surface (falls back to the
-        // flat empty surface until one lands).
-        s += #"<div class="collection-detail-shot">"#
+        // Title + tagline (no icon — repos have no app icon), then the large
+        // landscape screenshot in a bordered surface (falls back to the flat
+        // empty surface until one lands).
+        var header = #"<h1 class="collection-detail-name">\#(escape(repo.title))</h1>"#
+        header += #"<p class="collection-detail-tagline">\#(escape(repo.tagline))</p>"#
+        header += #"<div class="collection-detail-shot">"#
         // .collection-detail-shot spans the full detail column: 1250px page
         // width minus 2x35px padding = 1180px — nowhere near the grid card's
         // width, so it needs its own sizes value.
-        s += shot(image: repo.image, name: repo.title, sizes: "(max-width: 720px) 100vw, 1180px")
-        s += "</div>"
+        header += shot(image: repo.image, name: repo.title, sizes: "(max-width: 720px) 100vw, 1180px")
+        header += "</div>"
 
-        // Two-column body: prose + sidebar.
-        s += #"<div class="collection-detail-body">"#
-        s += #"<div class="collection-detail-prose">\#(repo.bodyHTML)</div>"#
-        s += #"<aside class="collection-detail-sidebar">"#
-
-        s += CollectionRenderer.detailsBlock(repo.details)
-
-        s += CollectionRenderer.linksBlock(repo.links)
-
-        s += "</aside>"
-        s += "</div>"  // collection-detail-body
-        s += "</div>"  // collection collection-detail
-        return s
+        return CollectionRenderer.detailShell(
+            dir: "code", label: "Code",
+            header: header, prose: repo.bodyHTML,
+            sidebar: CollectionRenderer.detailsBlock(repo.details) + CollectionRenderer.linksBlock(repo.links)
+        )
     }
 }

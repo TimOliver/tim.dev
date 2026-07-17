@@ -101,6 +101,34 @@ enum CollectionRenderer {
         s += "</ul>"
         return s
     }
+
+    /// The shared detail-page skeleton: wrapper + back link, the caller's own
+    /// header/media HTML, then the two-column prose + sidebar body. All four
+    /// collection detail pages emitted exactly this shell; only what sits
+    /// between the back link and the body differs per collection.
+    static func detailShell(dir: String, label: String, header: String, prose: String, sidebar: String) -> String {
+        var s = #"<div class="collection collection-detail">"#
+        s += #"<a class="collection-back" href="/\#(dir)/">&lsaquo; Back to \#(label)</a>"#
+        s += header
+        s += #"<div class="collection-detail-body">"#
+        s += #"<div class="collection-detail-prose">\#(prose)</div>"#
+        s += #"<aside class="collection-detail-sidebar">\#(sidebar)</aside>"#
+        s += "</div>"  // collection-detail-body
+        s += "</div>"  // collection collection-detail
+        return s
+    }
+
+    /// The magnifier icon inside a search-field wrap; `className` scopes it to
+    /// the page's own CSS (.archive-search-icon / .talks-search-icon).
+    static func searchIcon(className: String) -> String {
+        #"<svg class="\#(className)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>"#
+    }
+
+    /// The fixed back-to-top button (fades in on scroll — wired by site.js,
+    /// styled in site.css). Shared by the Archive, Talks and Art indexes.
+    static func backToTopButton() -> String {
+        #"<button type="button" class="back-to-top" aria-label="Back to top">&uarr;</button>"#
+    }
 }
 
 /// One image's build-time data, read from media-manifest.json.

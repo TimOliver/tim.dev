@@ -17,45 +17,35 @@ struct TalkDetail: ArticlePage {
 
 extension TalksRenderer {
     static func detailHTML(for talk: TalkInfo) -> String {
-        var s = #"<div class="collection collection-detail">"#
-
-        // Back link + header (title + venue/year line — the shared metaLine
-        // minus the duration, which the sidebar table carries instead).
-        s += #"<a class="collection-back" href="/talks/">&lsaquo; Back to Talks</a>"#
-        s += #"<h1 class="collection-detail-name">\#(escape(talk.title))</h1>"#
-        s += #"<p class="collection-detail-tagline">\#(metaLine(venue: talk.venue, year: talk.year, duration: ""))</p>"#
-
-        // Video: lite-youtube facade when a video id is set; poster fallback otherwise.
-        s += #"<div class="collection-detail-shot">"#
+        // Title + venue/year line (the shared metaLine minus the duration,
+        // which the sidebar table carries instead), then the video:
+        // lite-youtube facade when a video id is set; poster fallback otherwise.
+        var header = #"<h1 class="collection-detail-name">\#(escape(talk.title))</h1>"#
+        header += #"<p class="collection-detail-tagline">\#(metaLine(venue: talk.venue, year: talk.year, duration: ""))</p>"#
+        header += #"<div class="collection-detail-shot">"#
         if let id = talk.youtube {
-            s += #"<lite-youtube videoid="\#(escape(id))" playlabel="Play: \#(escape(talk.title))"></lite-youtube>"#
+            header += #"<lite-youtube videoid="\#(escape(id))" playlabel="Play: \#(escape(talk.title))"></lite-youtube>"#
         } else {
             // Same .collection-detail-shot box as CodeDetail's screenshot —
             // 1250px page width minus 2x35px padding = 1180px.
-            s += thumb(image: talk.image, duration: "", title: talk.title, sizes: "(max-width: 720px) 100vw, 1180px")
+            header += thumb(image: talk.image, duration: "", title: talk.title, sizes: "(max-width: 720px) 100vw, 1180px")
         }
-        s += "</div>"
-
-        // Two-column body: prose + sidebar.
-        s += #"<div class="collection-detail-body">"#
-        s += #"<div class="collection-detail-prose">\#(talk.bodyHTML)</div>"#
-        s += #"<aside class="collection-detail-sidebar">"#
+        header += "</div>"
 
         var rows: [(String, String)] = []
         if !talk.venue.isEmpty { rows.append(("Venue", talk.venue)) }
         rows.append(("Year", String(talk.year)))
         if !talk.duration.isEmpty { rows.append(("Duration", talk.duration)) }
         if !talk.topics.isEmpty { rows.append(("Topic", talk.topics.joined(separator: ", "))) }
-        s += CollectionRenderer.detailsBlock(rows)
 
         var links: [(label: String, url: String)] = []
         if let id = talk.youtube { links.append(("Watch on YouTube", "https://www.youtube.com/watch?v=\(id)")) }
         if let slides = talk.slides { links.append(("Slides", slides)) }
-        s += CollectionRenderer.linksBlock(links)
 
-        s += "</aside>"
-        s += "</div>"  // collection-detail-body
-        s += "</div>"  // collection collection-detail
-        return s
+        return CollectionRenderer.detailShell(
+            dir: "talks", label: "Talks",
+            header: header, prose: talk.bodyHTML,
+            sidebar: CollectionRenderer.detailsBlock(rows) + CollectionRenderer.linksBlock(links)
+        )
     }
 }

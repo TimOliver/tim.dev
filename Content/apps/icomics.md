@@ -6,7 +6,6 @@ date: 2010-01-01 00:00:00
 year: 2010
 platform: iPad
 appstore: https://icomics.co
-github: https://github.com/TimOliver
 details: Role=Solo developer; Tenure=8 years
 path: /apps/icomics/
 ---

@@ -27,7 +27,7 @@ enum ArchivePage {
 
         // Search (client-side title filter; wired in site.js)
         s += #"<div class="archive-search-wrap">"#
-        s += #"<svg class="archive-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>"#
+        s += CollectionRenderer.searchIcon(className: "archive-search-icon")
         s += #"<input class="archive-search" type="search" aria-label="Search posts by title" placeholder="Search \#(posts.count) posts by title…">"#
         s += "</div>"
 
@@ -57,8 +57,7 @@ enum ArchivePage {
 
         s += #"<p class="archive-empty" hidden>No posts match your search.</p>"#
 
-        // Back-to-top (fixed; fades in on scroll — wired by site.js, styled in site.css).
-        s += #"<button type="button" class="back-to-top" aria-label="Back to top">&uarr;</button>"#
+        s += CollectionRenderer.backToTopButton()
 
         s += "</div>"  // archive
         return s

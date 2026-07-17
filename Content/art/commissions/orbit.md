@@ -5,7 +5,7 @@ date: 2024-06-01 00:00:00
 duration: 5s
 meta: Commission · 5s · 2024
 order: 1
-stats: Type=Logo sting; Length=5s; Year=2024; Client=Orbit
+details: Type=Logo sting; Length=5s; Year=2024; Client=Orbit
 path: /art/commissions/orbit/
 ---
 A five-second logo sting for Orbit — a quick, springy build-on with a satisfying settle.

@@ -9,7 +9,7 @@ struct ArtItem {
     let image: String?       // poster path, nil until one lands
     let order: Int           // position within its section
     let path: String
-    let stats: [(String, String)]  // detail Details table
+    let details: [(String, String)]  // detail Details table
     let youtube: String?     // "Watch on YouTube" link
     let bodyHTML: String
 
@@ -21,7 +21,9 @@ struct ArtItem {
         image = CollectionRenderer.nonEmpty(a.metadata["image"] as? String)
         order = Int(a.metadata["order"] as? String ?? "") ?? 0
         path = a.path
-        stats = CollectionRenderer.parseDetails(a.metadata["stats"] as? String ?? "")
+        // `details:` (not `stats:`) — same key name and mini-syntax as the
+        // Apps/Code front matter, one vocabulary across the collections.
+        details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")
         youtube = CollectionRenderer.nonEmpty(a.metadata["youtube"] as? String)
         bodyHTML = a.text
     }

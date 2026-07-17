@@ -65,7 +65,7 @@ extension ArtRenderer {
             s += "</section>"
         }
 
-        s += #"<button type="button" class="back-to-top" aria-label="Back to top">&uarr;</button>"#
+        s += CollectionRenderer.backToTopButton()
         s += "</div>"  // collection
         return s
     }
