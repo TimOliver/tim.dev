@@ -13,6 +13,7 @@ import Ignite
 /// [[project-ignite-core-js-pr]] for the upstream fix.
 @MainActor
 enum ArticleShell {
+
     /// The migration script writes dates as the original local wall-clock time
     /// with the timezone offset stripped (e.g., '2021-12-31T17:04:21+08:00' →
     /// '2021-12-31 17:04:21'). Ignite then parses that as GMT, so to display
@@ -22,18 +23,29 @@ enum ArticleShell {
 
     /// Which surface a post is being rendered for.
     enum Context {
-        case feed   // home page: date/title link to the post page; comment cue at the end
-        case page   // standalone post page: plain date/title; comments mount point at the end
+
+        /// Home page: the date and title link through to the post page, and
+        /// the item ends with a comment cue rather than the full thread.
+        case feed
+
+        /// Standalone post page: plain (unlinked) date and title, with the
+        /// live comments mount point at the end.
+        case page
     }
 
     /// Sprite icon from /img/site/ui-icons.svg (Tabler outline, currentColor stroke).
     private static func spriteIcon(_ id: String) -> String {
+
+        // A `<use>` reference into the shared sprite sheet — one HTTP request
+        // serves every glyph, and `currentColor` lets CSS recolour the stroke.
         #"<svg class="post-icon-glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/site/ui-icons.svg#\#(id)"/></svg>"#
     }
 
     /// Link badge — navigates to the post page, a visible cue that the feed
     /// item and its article are linked. `path` is already HTML-escaped.
     private static func linkBadge(path: String) -> String {
+
+        // Caller has already escaped `path`, so it is interpolated bare here.
         #"<a class="post-badge" href="\#(path)" aria-label="Open article">\#(spriteIcon("link"))</a>"#
     }
 
@@ -41,6 +53,9 @@ enum ArticleShell {
     /// Share API exists, and otherwise falls back to copying the post link —
     /// both handled in site.js. `path` and `title` are already HTML-escaped.
     private static func shareBadge(path: String, title: String) -> String {
+
+        // A <button>, not a link: site.js reads the data-share-* attributes to
+        // drive the Web Share API (or the copy-link fallback) on click.
         #"<button type="button" class="post-badge" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">\#(spriteIcon("share"))</button>"#
     }
 
@@ -50,11 +65,19 @@ enum ArticleShell {
     /// (the .has-count toggle in comentario-tweaks.js). `path` and `title` are
     /// already HTML-escaped.
     private static func badgeRow(path: String, title: String) -> String {
+
+        // Link badge first.
         var inner = linkBadge(path: path)
+
+        // Comments badge: the icon, plus a <comentario-count> element that stays
+        // empty (blank suffix/placeholder/zero/error text) until the widget
+        // resolves a non-zero count and .has-count reveals it.
         inner += #"<a class="post-badge" href="\#(path)#comments" aria-label="Comments">"#
         inner += spriteIcon("comments")
         inner += #"<comentario-count path="\#(path)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count>"#
         inner += "</a>"
+
+        // Share badge last, then wrap the trio in the row container.
         inner += shareBadge(path: path, title: title)
         return #"<div class="post-badges">\#(inner)</div>"#
     }
@@ -63,13 +86,20 @@ enum ArticleShell {
     /// count — small secondary text links sharing the badge icons. `path` and
     /// `title` are already HTML-escaped.
     private static func endLinks(path: String, title: String) -> String {
+
+        // Permalink: icon + visible "Permalink" label.
         var s = #"<div class="post-links">"#
         s += #"<a class="post-link" href="\#(path)" aria-label="Permalink">"#
         s += spriteIcon("link")
         s += #"<span class="post-link-label">Permalink</span></a>"#
+
+        // Share: same <button>/data-share-* mechanism as the top badge row.
         s += #"<button type="button" class="post-link" data-share-path="\#(path)" data-share-title="\#(title)" aria-label="Share">"#
         s += spriteIcon("share")
         s += #"<span class="post-link-label">Share</span></button>"#
+
+        // Comments: here the <comentario-count> carries visible " comments"
+        // text so the link reads as a label even before the count resolves.
         s += #"<a class="post-link" href="\#(path)#comments" aria-label="Comments">"#
         s += spriteIcon("comments")
         s += #"<comentario-count path="\#(path)" suffix=" comments" placeholder="comments" zero-text="comments" error-text="comments"></comentario-count>"#
@@ -78,7 +108,11 @@ enum ArticleShell {
         return s
     }
 
+    /// Renders `article` to the shared HTML shell and writes it out as an
+    /// `Include`, keyed by the post's path. The feed and page variants are
+    /// cached under distinct keys so the two renders never collide.
     static func include(for article: Article, context: Context) -> Include {
+
         // Feed and page variants differ, so they must not share one file.
         let suffix = context == .feed ? ".feed" : ""
         let key = CollectionRenderer.key(for: article.path, dir: "posts") + suffix
@@ -89,7 +123,15 @@ enum ArticleShell {
         )
     }
 
+    /// Builds the full `<article>` HTML for a post: header (date + title, plus
+    /// an optional subtitle), the badge row, an optional hero image, the
+    /// transformed body, and the end-of-article links. The standalone post page
+    /// (`.page`) additionally appends the Comentario thread; the feed (`.feed`)
+    /// links its date/title through to that page instead.
     static func htmlString(for article: Article, context: Context) -> String {
+
+        // Escape the path once — it is reused across the header link, badge
+        // row, and footer links below.
         let href = escape(article.path)
         var s = "<article>"
 
@@ -104,14 +146,25 @@ enum ArticleShell {
             s += #"<h1 class="title">\#(escape(article.title))</h1>"#
         }
 
+        // Optional subtitle, between the title and the badge row.
         if let subtitle = article.subtitle, !subtitle.isEmpty {
             s += "<p class=\"subtitle\">\(escape(subtitle))</p>"
         }
         // Badge row (link · comments · share) above the hero — feed and page.
         s += badgeRow(path: href, title: escape(article.title))
+
+        // Optional hero image (alt="" — it's decorative; the title carries the
+        // meaning). Emitted OUTSIDE the <section> below so the
+        // `.post-badges + img.hero` adjacency selector still matches.
         if let image = article.image, !image.isEmpty {
             s += #"<img class="hero" src="\#(escape(image))" alt="">"#
         }
+
+        // Body transform pipeline, innermost call first: expand Instagram
+        // embeds, rescue Markdown images that leaked as literal text, group
+        // consecutive images into lightbox galleries, then wrap the remaining
+        // single images in lightbox anchors. Order matters — grids must run
+        // before the single-image wrap so runs aren't wrapped one image at a time.
         let body = wrapStandaloneImages(
             groupImageGrids(
                 fixBareImages(InstagramEmbed.transform(article.text)),
@@ -152,6 +205,9 @@ enum ArticleShell {
         return f
     }()
 
+    /// ISO-8601 date formatter for the `<time datetime>` attribute. Uses the
+    /// POSIX locale so the numeric format is stable regardless of system locale,
+    /// and the same GMT rendering as `displayDateFormatter` (see displayTimeZone).
     private static let isoDateFormatter: DateFormatter = {
         let f = DateFormatter()
         f.locale = Locale(identifier: "en_US_POSIX")
@@ -160,10 +216,13 @@ enum ArticleShell {
         return f
     }()
 
+    /// Human-readable date for display (e.g. "31 December 2021").
     static func displayDate(_ date: Date) -> String {
         displayDateFormatter.string(from: date)
     }
 
+    /// Machine-readable date for the `<time datetime>` attribute (e.g.
+    /// "2021-12-31").
     static func isoDate(_ date: Date) -> String {
         isoDateFormatter.string(from: date)
     }
@@ -178,8 +237,14 @@ enum ArticleShell {
     /// from the figcaption where present, else the image's alt text. Single
     /// images are left exactly as they were.
     private static func groupImageGrids(_ html: String, galleryPrefix: String) -> String {
+
+        // A single grid-eligible item: a markdown image paragraph OR a WP image
+        // figure. `runPattern` then matches two or more such items in a row.
         let item = #"(?:<p><img\s[^>]+></p>|<figure class="wp-block-image[^"]*"><img\s[^>]+>(?:<figcaption>.*?</figcaption>)?</figure>)"#
         let runPattern = "\(item)(?:\\s*\(item))+"
+
+        // One gallery id per run, so lightbox3 groups only the images that
+        // actually sat together in the source.
         var runIndex = 0
         return replaceRegex(html, runPattern) { m, ns in
             runIndex += 1
@@ -201,6 +266,9 @@ enum ArticleShell {
                 items.append((src, alt.isEmpty ? caption : alt, caption))
                 return ""
             }
+
+            // Fewer than two images survived the extraction → leave the run as
+            // it was, so a genuine single image is never turned into a grid.
             guard items.count >= 2 else { return run }
 
             // 3-up by default; 2-up when a 2- or 4-image run would leave a
@@ -227,11 +295,14 @@ enum ArticleShell {
     /// <section> and stay unwrapped — the `.post-badges + img.hero` adjacency
     /// selector depends on that.
     private static func wrapStandaloneImages(_ html: String) -> String {
+
         // Plain markdown image paragraphs.
         var out = replaceRegex(html, #"<p>(<img\s[^>]+>)</p>"#) { m, ns in
             "<p>\(lightboxAnchor(imgTag: ns.substring(with: m.range(at: 1)), caption: nil))</p>"
         }
+
         // Single WP figures — keep the figure + visible caption, wrap the img.
+        // (?s) lets `.` span newlines so a multi-line figcaption still matches.
         out = replaceRegex(out, #"(?s)(<figure class="wp-block-image[^"]*">)(<img\s[^>]+>)(?:<figcaption>(.*?)</figcaption>)?(</figure>)"#) { m, ns in
             let open = ns.substring(with: m.range(at: 1))
             let img = ns.substring(with: m.range(at: 2))
@@ -247,24 +318,39 @@ enum ArticleShell {
     /// ensuring the image itself lazy-loads. Caption precedence: explicit
     /// (figcaption) → the image's alt text.
     private static func lightboxAnchor(imgTag: String, caption: String?) -> String {
+
+        // Already inside a lightbox anchor (has data-lightbox) → leave it be.
         guard imgTag.range(of: "data-lightbox") == nil else { return imgTag }
+
+        // The anchor needs the image's own src as its href; without one there
+        // is nothing to open, so return the tag untouched.
         var src = ""
         _ = replaceRegex(imgTag, #"src="([^"]*)""#) { m, ns in
             src = ns.substring(with: m.range(at: 1)); return ""
         }
         guard !src.isEmpty else { return imgTag }
+
+        // Caption precedence: an explicit figcaption wins; otherwise fall back
+        // to the image's own alt text.
         var cap = caption ?? ""
         if cap.isEmpty {
             _ = replaceRegex(imgTag, #"alt="([^"]*)""#) { m, ns in
                 cap = ns.substring(with: m.range(at: 1)); return ""
             }
         }
+
+        // Attribute-safe plain text: strip any inline tags, then quote-escape
+        // (the source is already HTML-encoded, so only `"` needs handling).
         cap = replaceRegex(cap, #"<[^>]+>"#) { _, _ in "" }
             .replacingOccurrences(of: "\"", with: "&quot;")
+
+        // Add native lazy-loading only if the tag doesn't already declare it.
         var img = imgTag
         if img.range(of: "loading=") == nil {
             img = replaceRegex(img, #"<img\s"#) { _, _ in #"<img loading="lazy" "# }
         }
+
+        // Bare `data-lightbox` (no value) marks this as a standalone, per lightbox3.
         return #"<a href="\#(src)" data-lightbox data-caption="\#(cap)">\#(img)</a>"#
     }
 
@@ -283,6 +369,8 @@ enum ArticleShell {
             let alt = ns.substring(with: m.range(at: 1))
             let thumb = ns.substring(with: m.range(at: 2))
             let full = ns.substring(with: m.range(at: 3))
+            // Only route to the lightbox when the link target is itself an
+            // image; otherwise it's an ordinary link and should navigate.
             let isImage = [".jpg", ".jpeg", ".png", ".gif", ".webp"]
                 .contains { full.lowercased().hasSuffix($0) }
             let lightbox = isImage ? #" data-lightbox data-caption="\#(escape(alt))""# : ""
@@ -307,18 +395,30 @@ enum ArticleShell {
     private static func replaceRegex(
         _ s: String, _ pattern: String, _ make: (NSTextCheckingResult, NSString) -> String
     ) -> String {
+
+        // Compile-and-cache on first sight of a pattern. `index(forKey:)`
+        // distinguishes "never compiled" from "compiled to nil" (a bad pattern),
+        // so a failed compile is stored once and never retried.
         if regexCache.index(forKey: pattern) == nil {
             regexCache[pattern] = try? NSRegularExpression(pattern: pattern)
         }
         guard let re = regexCache[pattern] ?? nil else { return s }
+
+        // Bridge to NSString so match ranges (UTF-16 based) index correctly.
         let ns = s as NSString
         var result = ""
         var last = 0
+
+        // Walk the matches, stitching the unmatched gap before each match and
+        // then the caller's replacement; `last` tracks the end of the previous
+        // match so the untouched spans between matches are copied through.
         for m in re.matches(in: s, range: NSRange(location: 0, length: ns.length)) {
             result += ns.substring(with: NSRange(location: last, length: m.range.location - last))
             result += make(m, ns)
             last = m.range.location + m.range.length
         }
+
+        // Copy the tail after the final match.
         result += ns.substring(with: NSRange(location: last, length: ns.length - last))
         return result
     }

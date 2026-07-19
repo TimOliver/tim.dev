@@ -3,14 +3,29 @@
 import Foundation
 import Ignite
 
+/// The site-wide wrapper wrapped around every page Ignite renders. It builds
+/// the `<head>` (title, social/meta tags, favicons, feed discovery, and the
+/// per-section stylesheets and scripts) and the `<body>` (the shared header
+/// include, the page's own content, the footer, and the conditional
+/// client-side scripts). Which extras a page loads is decided from the URL's
+/// first path component — see `section` and the computed flags below.
 struct MainLayout: Layout {
+
+    /// The page currently being rendered, injected by Ignite. The computed
+    /// properties below read its title, description, image and URL.
     @Environment(\.page) var page
+
+    /// The site-wide metadata (name, url, description). Supplies the fallbacks
+    /// the page-level values defer to (e.g. the default meta description).
     @Environment(\.site) var site
 
-    /// The title shown in toolbar of the browser.
-    /// Hardcode it so it's [tim.dev] on the landing page and
-    /// appropriately format for everything else.
+    /// The text shown in the browser tab / toolbar. The landing page is just
+    /// the bare `[tim.dev]` wordmark; every other page prefixes its own title
+    /// so a tab reads e.g. "About — [tim.dev]".
     var pageTitle: String {
+
+        // "Home" is the landing page's internal title — collapse it to the bare
+        // wordmark rather than rendering "Home — [tim.dev]".
         if page.title == "Home" { return "[tim.dev]" }
         return "\(page.title) — [tim.dev]"
     }
@@ -18,13 +33,20 @@ struct MainLayout: Layout {
     /// Meta/OG description: the page's own (articles can set `description:`
     /// front matter) or the site-wide one.
     private var metaDescription: String {
+        // Prefer the page's own `description:` front matter; fall back to the
+        // site-wide description when the page doesn't set one.
         page.description.isEmpty ? (site.description ?? "") : page.description
     }
 
     /// Absolute URL for the page's social image, if it has one (post heroes
     /// are site-relative paths like /img/posts/…).
     private var socialImageURL: String? {
+        // No hero image on this page — no og:image tag is emitted.
         guard let image = page.image else { return nil }
+
+        // Already absolute (has a scheme): use it verbatim. Otherwise it's a
+        // site-relative path (e.g. /img/posts/…), so resolve it against the
+        // site's base URL — og:image must be absolute for crawlers to honour it.
         if image.scheme != nil { return image.absoluteString }
         return site.url.appending(path: image.path).absoluteString
     }
@@ -35,6 +57,7 @@ struct MainLayout: Layout {
         page.url.path.split(separator: "/").first.map(String.init) ?? ""
     }
 
+    /// True on the home page, where the URL has no first path component.
     private var isHome: Bool { section.isEmpty }
 
     /// Blog posts live under year directories (/2008/… through /2021/…).
@@ -69,8 +92,15 @@ struct MainLayout: Layout {
     /// lite-youtube powers article video embeds and talk detail videos.
     private var wantsLiteYouTube: Bool { hasArticleContent || section == "talks" }
 
+    /// The document Ignite renders for every page: a `<head>` of metadata and
+    /// asset links followed by a `<body>` of header, page content, footer, and
+    /// scripts. The page's `content` is slotted into the `<main>` element.
     var body: some Document {
+
+        // <head>: title, search/social metadata, favicons, feed discovery, and
+        // the stylesheets/scripts this particular page needs.
         Head {
+
             MetaTag(characterSet: "UTF-8")
             MetaTag(name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover")
             Title(pageTitle)
@@ -132,7 +162,10 @@ struct MainLayout: Layout {
         }
         .standardHeadersDisabled()
 
+        // <body>: the shared header/footer includes wrap the page content, then
+        // the client-side scripts each page actually needs are appended.
         Body {
+
             // Replaces the `html.no-js` initial class from Template/ (Ignite
             // doesn't expose <html> attributes). Hides the LQIP placeholder
             // when JS is disabled so only the <noscript> real image shows.

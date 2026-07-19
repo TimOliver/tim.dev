@@ -7,26 +7,48 @@ import Ignite
 /// talk as a featured hero, and renders a filterable card grid. Search + topic +
 /// year filtering is layered on by site.js; with JS off the full grid shows.
 struct Talks: StaticPage {
+
+    /// Page title — also the nav label and the root of the `<title>` suffix.
     var title = "Talks"
 
+    /// All loaded articles, injected by Ignite; narrowed to the `talks`
+    /// collection in `body`.
     @Environment(\.articles) private var articles
 
+    /// Loads and sorts the talks, builds the grid HTML, then hands it to the
+    /// shared include writer so it lands in `Includes/_talks/index.html` for
+    /// Ignite to slot into the page shell.
     var body: some HTML {
+
+        // Newest first (the featured hero is `talks.first`), each raw article
+        // mapped through `TalkInfo` to its parsed view.
         let talks = articles.typed("talks")
             .sorted { $0.date > $1.date }
             .map(TalkInfo.init)
+
+        // Build the whole index as one HTML string, then persist it via the
+        // shared include machinery (writes the file and returns the `Include`).
         let html = TalksRenderer.gridHTML(for: talks)
         return CollectionRenderer.include(key: "index", dir: "talks", html: html)
     }
 }
 
+/// Talks index-grid markup — the `/talks/` landing page. Lives in an extension
+/// so `TalksRenderer` (declared in TalkModel.swift) keeps its shared thumb /
+/// metaLine / tagsBlock helpers close to the type and its page builders apart.
 extension TalksRenderer {
+
     /// Builds the full index: featured hero + search + filter bar + grid.
     static func gridHTML(for talks: [TalkInfo]) -> String {
+
+        // Drives the search-field placeholder ("Search N talks…").
         let total = talks.count
 
         // Sorted, de-duplicated topic list for the topic chips (display case
         // preserved; comparison case-insensitive).
+        //
+        // `seen` keys on the lowercased topic so "SwiftUI" and "swiftui" collapse
+        // to one chip; `topicList` keeps the first-seen casing for display.
         var seen = Set<String>()
         var topicList: [String] = []
         for talk in talks {
@@ -37,6 +59,8 @@ extension TalksRenderer {
         }
         topicList.sort { $0.lowercased() < $1.lowercased() }
 
+        // Page heading. The whole index is assembled into `s` as one HTML
+        // string; each `s +=` appends the next fragment in document order.
         var s = #"<div class="collection talks">"#
         s += #"<h1 class="page-title">Talks</h1>"#
         s += #"<p class="page-subtitle">Thirteen years of standing in front of iOS conference rooms.</p>"#
@@ -63,6 +87,10 @@ extension TalksRenderer {
         s += CollectionRenderer.searchIcon(className: "talks-search-icon")
         s += #"<input type="search" class="talks-search" aria-label="Search talks" placeholder="Search \#(total) talks by title, venue, or topic…">"#
         s += "</div>"
+
+        // Topic filter row: an always-present "All" chip, then one chip per
+        // deduped topic. site.js matches a chip's `data-topic` against each
+        // card's `data-topics` list.
         s += #"<div class="talks-filter-row">"#
         s += #"<span class="talks-filter-label">Topic</span>"#
         s += #"<div class="talks-filter-pills">"#
@@ -72,6 +100,11 @@ extension TalksRenderer {
         }
         s += "</div>"  // talks-filter-pills
         s += "</div>"  // talks-filter-row (topic)
+
+        // Year filter row: fixed multi-year buckets rather than one chip per
+        // year. The `data-year` id (e.g. "2023-26") is what site.js range-tests
+        // each card's numeric `data-year` against; the label is the en-dash
+        // display form.
         s += #"<div class="talks-filter-row">"#
         s += #"<span class="talks-filter-label">Year</span>"#
         s += #"<div class="talks-filter-pills">"#
@@ -87,6 +120,9 @@ extension TalksRenderer {
         // Grid — every talk (the featured one is intentionally also a card).
         s += #"<div class="collection-grid talks-grid">"#
         for talk in talks {
+            // Per-card filter/search hooks read by site.js: `data-topics` is the
+            // lowercased space-joined topic list, `data-search` folds title +
+            // venue + topics into one lowercased haystack for the search box.
             let topicsAttr = talk.topics.map { $0.lowercased() }.joined(separator: " ")
             let searchAttr = ([talk.title, talk.venue] + talk.topics)
                 .joined(separator: " ").lowercased()
@@ -107,6 +143,7 @@ extension TalksRenderer {
         // Empty state — shown by site.js when filters match nothing.
         s += #"<p class="talks-empty" hidden>No talks match your filters.</p>"#
 
+        // Fixed back-to-top button (fades in on scroll; shared helper).
         s += CollectionRenderer.backToTopButton()
 
         s += "</div>"  // collection talks

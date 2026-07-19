@@ -8,9 +8,22 @@ import Ignite
 /// name to this type). Mirrors `PostPage`: implement only `body` and reference
 /// the injected `article`.
 struct AppDetail: ArticlePage {
+
+    /// Builds the per-app detail include. Parses the injected `article`,
+    /// renders the detail markup, and writes it to its own fragment file keyed
+    /// off the article path (so `/apps/icomics/` yields `_apps/icomics.html`).
     var body: some HTML {
+
+        // Parse this app's front matter into the shared view. `article` is the
+        // Ignite-injected model for the page currently being rendered.
         let app = AppInfo(article)
+
+        // Assemble the detail markup (header + stage + prose + sidebar).
         let html = AppRenderer.detailHTML(for: app)
+
+        // Write it to Includes/_apps/<key>.html and return the `Include`. The
+        // key is derived from the article path (see `CollectionRenderer.key`),
+        // giving every app its own fragment file.
         return CollectionRenderer.include(
             key: CollectionRenderer.key(for: article.path, dir: "apps"),
             dir: "apps",
@@ -19,10 +32,19 @@ struct AppDetail: ArticlePage {
     }
 }
 
+/// Detail-page markup for `AppRenderer` (the enum and the shared
+/// `iconTile`/`stage` builders live in AppModel.swift).
 extension AppRenderer {
+
+    /// Renders one app's detail page body: the icon + headings header, the
+    /// screenshot stage, then a two-column prose + sidebar block (the sidebar
+    /// carrying the details table and, when present, the App Store badge).
+    /// Returns the HTML string `AppDetail.body` writes to its include.
     static func detailHTML(for app: AppInfo) -> String {
+
         // Icon + name/tagline header row (mirrors the grid card's
-        // .app-card-head, so the detail reads as the expanded card).
+        // .app-card-head, so the detail reads as the expanded card). The icon
+        // `sizes` differ from the grid's: 128px on desktop, 80px on mobile.
         var header = #"<div class="app-detail-head">"#
         header += iconTile(icon: app.icon, sizes: "(max-width: 720px) 80px, 128px")
         header += #"<div class="app-detail-headings">"#
@@ -31,7 +53,8 @@ extension AppRenderer {
         header += "</div>"  // app-detail-headings
         header += "</div>"  // app-detail-head
 
-        // Screenshot stage. On a phone this becomes a full-bleed scroll-snap
+        // Screenshot stage. The shots render bare (their device chrome is baked
+        // into each PNG). On a phone this becomes a full-bleed scroll-snap
         // pager (apps.css) — one shot per view.
         header += stage(
             app.shots,
@@ -40,7 +63,12 @@ extension AppRenderer {
             appName: app.title
         )
 
+        // Sidebar starts with the shared details table (empty string when the
+        // app has no `details:` rows).
         var sidebar = CollectionRenderer.detailsBlock(app.details)
+
+        // Append the App Store badge only when a link is present (`appStore` is
+        // already nil-filtered by AppInfo.init).
         if let appStore = app.appStore {
             // Centered "Download on the App Store" badge. The black variant is
             // the <img>; dark mode swaps it for the white one via CSS `content`
@@ -50,6 +78,9 @@ extension AppRenderer {
             sidebar += "</a>"
         }
 
+        // Hand header/prose/sidebar to the shared shell, which frames them with
+        // the wrapper, back link, and two-column body that every collection
+        // detail page shares.
         return CollectionRenderer.detailShell(
             dir: "apps", label: "Apps",
             header: header, prose: app.bodyHTML, sidebar: sidebar
