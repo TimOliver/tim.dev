@@ -1,3 +1,5 @@
+// tim.dev — released into the public domain. No rights reserved.
+
 import Foundation
 
 /// Rewrites legacy Instagram embeds in compiled article HTML into clean, modern

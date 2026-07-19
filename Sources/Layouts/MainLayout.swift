@@ -1,3 +1,5 @@
+// tim.dev — released into the public domain. No rights reserved.
+
 import Foundation
 import Ignite
 
@@ -5,6 +7,9 @@ struct MainLayout: Layout {
     @Environment(\.page) var page
     @Environment(\.site) var site
 
+    /// The title shown in toolbar of the browser.
+    /// Hardcode it so it's [tim.dev] on the landing page and
+    /// appropriately format for everything else.
     var pageTitle: String {
         if page.title == "Home" { return "[tim.dev]" }
         return "\(page.title) — [tim.dev]"
