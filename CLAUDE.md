@@ -6,9 +6,19 @@ Built with [Ignite](https://github.com/twostraws/Ignite), a Swift static site ge
 
 ```
 Sources/
-├── Site.swift              # Site config (@main entry point, ExampleSite: Site)
+├── Site.swift               # Site config (@main entry point, TimDevSite: Site)
 ├── Layouts/MainLayout.swift # Page wrapper (nav, content, footer)
-└── Pages/Home.swift         # Homepage (StaticPage)
+└── Pages/                   # StaticPages, article/error templates, shared renderers
+    ├── Apps/                #   grid (Apps) · detail (AppDetail) · model (AppModel)
+    ├── Art/                 #   Art · ArtDetail · ArtModel
+    ├── Code/                #   Code · CodeDetail · CodeModel
+    ├── Talks/               #   Talks · TalkDetail · TalkModel
+    ├── CollectionRenderer.swift  # Shared collection parsing / media / HTML helpers
+    ├── ArticleShell.swift        # Shared article-body renderer (posts + detail pages)
+    ├── Home.swift · About.swift · Contact.swift · Archive.swift  # Standalone pages
+    ├── PostPage.swift            # ArticlePage template for Markdown blog posts
+    ├── InstagramEmbed.swift      # Instagram embed rewriter
+    └── NotFound.swift            # Custom 404 (ErrorPage)
 Content/                     # Markdown articles (YAML front matter)
 Assets/                      # Static files (images, fonts) — copied to Build/
 Includes/                    # Raw HTML snippets, loaded via Include("file.html")
