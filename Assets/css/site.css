@@ -1193,12 +1193,11 @@ article > .post-links {
     margin-inline: auto;
 }
 
-/* Heroes are designed around 16:9 (matching the live card): a --media-width-wide
-   16:9 box, centred, with object-fit (from `article img.hero`) cropping any
-   non-16:9 source into the box. Body text stays at the narrower readable measure. */
+/* Heroes fill a --media-width-wide box at their natural aspect ratio, centred;
+   height is capped by the base `article img` max-height (650px), which object-fit
+   crops only when a tall/square source would overshoot. Body text stays narrower. */
 article > img.hero {
     max-width: var(--media-width);
-    aspect-ratio: 16 / 9;
     margin-inline: auto;
 }
 
