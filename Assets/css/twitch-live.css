@@ -23,10 +23,6 @@
    card could show before the script reveals it. */
 .twitch-live[hidden] { display: none; }
 
-/* The frame is always near-black. In dark mode it sits on a dark page, so a faint
-   hairline keeps its edge readable; in light mode the black-on-white edge needs none. */
-[data-color-scheme="dark"] .twitch-live { border: 1px solid rgba(255, 255, 255, 0.09); }
-
 /* --- media surface ------------------------------------------------------- */
 
 .twitch-live-media {
