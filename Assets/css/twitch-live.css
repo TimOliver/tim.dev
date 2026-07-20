@@ -5,7 +5,7 @@
 .twitch-live {
     display: flex;
     flex-direction: column;
-    margin: 0 0 clamp(44px, 7vw, 72px); /* generous gap before the first post */
+    margin: 0 0 clamp(60px, 9vw, 96px); /* generous gap before the first post */
     /* Stroke only, no drop shadow: a low-opacity black line (white in dark mode,
        see below) that blends into the video edge and the page background. */
     border: 1px solid rgba(0, 0, 0, 0.12);
@@ -199,9 +199,9 @@
    title. */
 .twitch-live-title-dot {
     display: inline-block;
-    width: 8px;
-    height: 8px;
-    margin-right: 8px;
+    width: 10px;
+    height: 10px;
+    margin-right: 6px;
     border-radius: 50%;
     background: #e0163a;
     vertical-align: middle;
