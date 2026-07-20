@@ -117,6 +117,36 @@
         }
     }
 
+    // --- facade player: nothing from Twitch loads until the visitor clicks ---
+
+    var playButton = root.querySelector('[data-twitch-play]');
+
+    // Muted autoplay is browser-allowed; the visitor unmutes via Twitch's own
+    // controls. `parent` must list every host that serves this page.
+    function buildEmbed() {
+        var src = 'https://player.twitch.tv/?channel=' + encodeURIComponent(CHANNEL);
+        EMBED_PARENTS.forEach(function (parent) {
+            src += '&parent=' + encodeURIComponent(parent);
+        });
+        src += '&muted=true&autoplay=true';
+
+        var iframe = document.createElement('iframe');
+        iframe.className = 'twitch-live-embed';
+        iframe.src = src;
+        iframe.title = 'Twitch stream';
+        iframe.allow = 'autoplay; fullscreen';
+        iframe.setAttribute('allowfullscreen', '');
+        return iframe;
+    }
+
+    function onPlay() {
+        if (playing) return;
+        media.appendChild(buildEmbed());
+        media.classList.add('is-playing');
+        playing = true;
+    }
+
+    if (playButton) playButton.addEventListener('click', onPlay);
     document.addEventListener('visibilitychange', onVisibilityChange);
 
     refresh();
