@@ -15,7 +15,7 @@
     transform: translateX(-50%);
     padding: 14px;                      /* the black matte around player + metadata */
     background: #0b0b0f;
-    border-radius: 44px;               /* concentric with the player radius + 14px matte */
+    border-radius: 30px;               /* matches the post hero images */
     corner-shape: squircle;
 }
 
@@ -39,7 +39,7 @@ main .container:has(.twitch-live:not([hidden])) {
     position: relative;
     aspect-ratio: 16 / 9;
     overflow: hidden;                 /* clip the blurred thumbnail's overspill */
-    border-radius: 30px;              /* matches the post hero images */
+    border-radius: 16px;              /* concentric inside the 30px frame (minus the 14px matte) */
     corner-shape: squircle;
     cursor: pointer;                  /* the whole canvas starts playback */
     background: radial-gradient(120% 120% at 50% 0%, #3a2170 0%, #1c1030 45%, #0b0714 100%);
