@@ -7,9 +7,9 @@
     display: flex;
     flex-direction: column;
     gap: 12px;                          /* matte between the player and the metadata */
-    /* Break out of the ~880px content column to span the header (~1104px), centred
-       on the page; capped to the viewport (minus a gutter) on narrow screens. */
-    width: min(1104px, calc(100vw - 48px));
+    /* Break out of the ~880px content column to a wider, contrasting featured size,
+       centred on the page; capped to the viewport (minus a gutter) on narrow screens. */
+    width: min(975px, calc(100vw - 48px));
     margin-block: 0 clamp(45px, 9vw, 81px);
     margin-left: 50%;
     transform: translateX(-50%);
