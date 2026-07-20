@@ -1,20 +1,21 @@
 /* Twitch "live now" card — home page only (loaded from MainLayout when isHome).
-   The media area is a dark video surface in both themes; the bar below adapts
-   to light/dark via the site's design tokens. See Includes/twitch-live.html. */
+   A cinematic, always-dark frame: a near-black rounded slab that breaks out to
+   the header width, with the 16:9 player and the metadata floating inside a
+   matte. Deliberately a featured, ephemeral element. See Includes/twitch-live.html. */
 
 .twitch-live {
     display: flex;
     flex-direction: column;
-    max-width: var(--media-width);      /* locked to the post hero width (site.css) */
-    /* Balanced gaps above/below: +15px on top and -15px on the bottom vs. the
-       page's ~70px top offset and ~100px card margin, landing both near ~85px. */
-    margin: 15px auto clamp(45px, 9vw, 81px);
-    /* Stroke only, no drop shadow: a low-opacity black line (white in dark mode,
-       see below) that blends into the video edge and the page background. */
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 18px;
-    overflow: hidden;                 /* clip the media corners to the card radius */
-    background: var(--bg);
+    gap: 12px;                          /* matte between the player and the metadata */
+    /* Break out of the ~880px content column to span the header (~1104px), centred
+       on the page; capped to the viewport (minus a gutter) on narrow screens. */
+    width: min(1104px, calc(100vw - 48px));
+    margin-block: 15px clamp(45px, 9vw, 81px);
+    margin-left: 50%;
+    transform: translateX(-50%);
+    padding: 14px;                      /* the black matte around player + metadata */
+    background: #0b0b0f;
+    border-radius: 24px;
 }
 
 /* Guarantee the hidden state beats the .twitch-live display rule above: the
@@ -22,10 +23,9 @@
    card could show before the script reveals it. */
 .twitch-live[hidden] { display: none; }
 
-/* Dark mode: switch the stroke to low-opacity white so it still blends into the
-   video/background. Themed via [data-color-scheme] (theme.js stamps it before
-   first paint), matching the rest of the site. */
-[data-color-scheme="dark"] .twitch-live { border-color: rgba(255, 255, 255, 0.14); }
+/* The frame is always near-black. In dark mode it sits on a dark page, so a faint
+   hairline keeps its edge readable; in light mode the black-on-white edge needs none. */
+[data-color-scheme="dark"] .twitch-live { border: 1px solid rgba(255, 255, 255, 0.09); }
 
 /* --- media surface ------------------------------------------------------- */
 
@@ -33,6 +33,7 @@
     position: relative;
     aspect-ratio: 16 / 9;
     overflow: hidden;                 /* clip the blurred thumbnail's overspill */
+    border-radius: 14px;              /* inset rounded player floating in the matte */
     cursor: pointer;                  /* the whole canvas starts playback */
     background: radial-gradient(120% 120% at 50% 0%, #3a2170 0%, #1c1030 45%, #0b0714 100%);
     color: #fff;
@@ -166,8 +167,7 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 16px 20px;
-    background: var(--bg);
+    padding: 4px 4px 6px;             /* aligns the metadata with the player edges */
 }
 .twitch-live-avatar-wrap {
     position: relative;
@@ -180,7 +180,7 @@
     height: 52px;
     border-radius: 50%;
     object-fit: cover;
-    background: var(--bg-secondary);
+    background: rgba(255, 255, 255, 0.08);  /* dark placeholder while the avatar loads */
 }
 /* Twitch-style LIVE badge straddling the bottom of the avatar — the persistent
    live indicator (the in-video badge is covered once the player opens). */
@@ -197,7 +197,7 @@
     color: #fff;
     background: #e0163a;
     border-radius: 5px;
-    border: 2px solid var(--bg);      /* cutout ring so it reads as sitting on top */
+    border: 2px solid #0b0b0f;        /* cutout ring matching the frame */
 }
 .twitch-live-meta {
     flex: 1 1 auto;
@@ -207,7 +207,7 @@
     margin: 0;
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--text);
+    color: #f5f5f7;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -215,7 +215,7 @@
 .twitch-live-sub {
     margin: 2px 0 0;
     font-size: 0.9rem;
-    color: var(--text-secondary);
+    color: rgba(235, 235, 245, 0.62);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
