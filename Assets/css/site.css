@@ -568,6 +568,16 @@ body > header::before {
     top: 4px;
 }
 
+/* Tablet/phone: normalise all header glyphs to a single 20px height so the sun,
+   moon, and RSS icons match each other and sit close to the nav text size. */
+@media (max-width: 1000px) {
+    #menu > li > a > img,
+    .rss-toggle-link > img,
+    .theme-toggle-icon {
+        height: 20px;
+    }
+}
+
 /* Theme toggle (the RSS feed menu shares the whole popover system — same
    wrapper behaviour, panel and row styling; see the .rss-toggle markup in
    Includes/header.html). */
@@ -943,11 +953,6 @@ body > header::before {
     #menu {
         font-size: 1em;
         gap: 6px;
-    }
-
-    #menu > li > a > img,
-    .theme-toggle-icon {
-        height: 18px;
     }
 
     .theme-toggle {
