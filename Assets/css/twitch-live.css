@@ -18,9 +18,10 @@
    card could show before the script reveals it. */
 .twitch-live[hidden] { display: none; }
 
-@media (prefers-color-scheme: dark) {
-    .twitch-live { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); }
-}
+/* The site themes exclusively via [data-color-scheme] (theme.js stamps it
+   before first paint); deepen the shadow in dark mode through that, not a
+   prefers-color-scheme media query, so a manually-forced light theme on a
+   dark-OS machine still gets the light shadow. */
 [data-color-scheme="dark"] .twitch-live { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); }
 
 /* --- media surface ------------------------------------------------------- */

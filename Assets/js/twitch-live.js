@@ -141,14 +141,22 @@
 
     function onPlay() {
         if (playing) return;
-        media.appendChild(buildEmbed());
+        var iframe = buildEmbed();
+        media.appendChild(iframe);
         media.classList.add('is-playing');
         playing = true;
+        // The play button is now display:none; move keyboard focus onto the
+        // player the visitor just opened instead of dropping it to <body>.
+        iframe.focus();
     }
 
     if (playButton) playButton.addEventListener('click', onPlay);
     document.addEventListener('visibilitychange', onVisibilityChange);
 
-    refresh();
-    startPolling();
+    // Fetch + start polling only if the tab is currently visible. A page opened
+    // in a background tab starts hidden and fires no visibilitychange until the
+    // user activates it, so unconditional polling would run forever unviewed.
+    // onVisibilityChange() does refresh()+startPolling() when visible and nothing
+    // when hidden; the listener above resumes it on activation.
+    onVisibilityChange();
 })();
