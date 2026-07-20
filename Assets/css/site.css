@@ -37,10 +37,9 @@
        width; plus the readable measure article body copy centres within. */
     --container-pad: 35px;
     --text-measure: 680px;
-    /* Shared width for wide media (post hero images + the Twitch live card): a
-       16:9 box a touch narrower than the content column so body text stays
-       readable. Change here to resize both in lock-step. */
-    --media-width: 840px;
+    /* Width for post hero images — a touch narrower than the content column so
+       body text stays readable. (The Twitch live card has its own width now.) */
+    --media-width: 775px;
     --font-text: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -395,7 +394,7 @@ h1, h2, h3 {
 
 h1 {
     font-weight: 800;
-    font-size: 2.7em;
+    font-size: 2.4em;
     line-height: 1.2em;
     letter-spacing: -0.003em;
     margin: 0 auto 2rem;
