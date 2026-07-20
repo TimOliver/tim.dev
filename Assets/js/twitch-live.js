@@ -169,6 +169,9 @@
     // no-op once playing, and clicks inside the cross-origin embed don't bubble
     // out, so the running player is never disturbed.
     media.addEventListener('click', onPlay);
+    // "Watch on Twitch" opens the stream in a new tab — tear the inline embed
+    // down so we're not left with two players (and two audio streams) running.
+    if (watch) watch.addEventListener('click', teardownEmbed);
     document.addEventListener('visibilitychange', onVisibilityChange);
 
     // Fetch + start polling only if the tab is currently visible. A page opened
