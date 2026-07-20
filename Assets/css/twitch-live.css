@@ -26,11 +26,10 @@
 .twitch-live[hidden] { display: none; }
 
 /* When the live card is showing, replace the page's normal top gap with a fixed
-   60px so the frame sits vertically centred between the header and the first
-   article (its bottom margin matches). Scoped to the card being visible; offline
-   (hidden) keeps the normal spacing. */
+   40px (a touch tighter than the 60px below, so the frame sits slightly high).
+   Scoped to the card being visible; offline (hidden) keeps the normal spacing. */
 main .container:has(.twitch-live:not([hidden])) {
-    margin-top: 60px;
+    margin-top: 40px;
     padding-top: 0;
 }
 
