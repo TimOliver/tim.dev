@@ -454,7 +454,7 @@ body > header::before {
        linear-gradient alpha ramp shows. The y-offset (1st value) carries the
        solid down past the bar's zero bottom-padding; the blur (2nd) sets the
        fade length. */
-    box-shadow: 0 0px 25px 25px var(--bg);
+    box-shadow: 0 15px 25px 15px var(--bg);
     z-index: -1;
 }
 
