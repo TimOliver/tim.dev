@@ -458,6 +458,14 @@ body > header::before {
     z-index: -1;
 }
 
+/* Tablet/phone: shrink the header's colour-matched scrim so its fade doesn't
+   bleed onto the live frame sitting close below it. */
+@media (max-width: 1000px) {
+    body > header::before {
+        box-shadow: 0 5px 20px 15px var(--bg);
+    }
+}
+
 #header-content {
     align-items: center;
     gap: clamp(20px, 4vw, 70px);
