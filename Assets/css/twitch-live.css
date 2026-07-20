@@ -25,14 +25,6 @@
    card could show before the script reveals it. */
 .twitch-live[hidden] { display: none; }
 
-/* When the live card is showing, replace the page's normal top gap with a fixed
-   40px (a touch tighter than the 60px below, so the frame sits slightly high).
-   Scoped to the card being visible; offline (hidden) keeps the normal spacing. */
-main .container:has(.twitch-live:not([hidden])) {
-    margin-top: 40px;
-    padding-top: 0;
-}
-
 /* --- media surface ------------------------------------------------------- */
 
 .twitch-live-media {
@@ -263,16 +255,12 @@ main .container:has(.twitch-live:not([hidden])) {
     }
 }
 
-/* --- responsive vertical spacing (only while the frame is visible) -------- */
+/* --- responsive: card bottom gap ----------------------------------------- */
 
-/* Tablet: halve the gap above and below the frame (60px -> 30px). */
+/* Tablet/phone: halve the card's bottom gap (60px -> 30px). The TOP gap is set
+   for all article pages in site.css (body:has(article) main .container). */
 @media (max-width: 1000px) {
-    main .container:has(.twitch-live:not([hidden])) { margin-top: 30px; }
     .twitch-live { margin-block: 0 30px; }
-}
-/* Narrow phones: tighten the top gap further. */
-@media (max-width: 720px) {
-    main .container:has(.twitch-live:not([hidden])) { margin-top: 25px; }
 }
 
 /* --- reduced motion ------------------------------------------------------ */
