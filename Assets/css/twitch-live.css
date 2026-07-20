@@ -10,7 +10,7 @@
     /* Break out of the ~880px content column to span the header (~1104px), centred
        on the page; capped to the viewport (minus a gutter) on narrow screens. */
     width: min(1104px, calc(100vw - 48px));
-    margin-block: 15px clamp(45px, 9vw, 81px);
+    margin-block: 0 clamp(45px, 9vw, 81px);
     margin-left: 50%;
     transform: translateX(-50%);
     padding: 14px;                      /* the black matte around player + metadata */
@@ -22,6 +22,14 @@
    class and the UA `[hidden]` rule have equal specificity, so without this the
    card could show before the script reveals it. */
 .twitch-live[hidden] { display: none; }
+
+/* When the live card is showing, pull the content up tight under the header
+   (35px — just clearing its drop shadow) instead of the page's normal top gap.
+   Scoped to the card being visible; offline (hidden) keeps the normal spacing. */
+main .container:has(.twitch-live:not([hidden])) {
+    margin-top: 35px;
+    padding-top: 0;
+}
 
 /* --- media surface ------------------------------------------------------- */
 
