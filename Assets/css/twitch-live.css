@@ -5,7 +5,8 @@
 .twitch-live {
     display: flex;
     flex-direction: column;
-    margin: 0 0 clamp(60px, 9vw, 96px); /* generous gap before the first post */
+    max-width: var(--media-width);      /* locked to the post hero width (site.css) */
+    margin: 0 auto clamp(60px, 9vw, 96px); /* centred; generous gap before the first post */
     /* Stroke only, no drop shadow: a low-opacity black line (white in dark mode,
        see below) that blends into the video edge and the page background. */
     border: 1px solid rgba(0, 0, 0, 0.12);

@@ -37,6 +37,10 @@
        width; plus the readable measure article body copy centres within. */
     --container-pad: 35px;
     --text-measure: 680px;
+    /* Shared width for wide media (post hero images + the Twitch live card): a
+       16:9 box a touch narrower than the content column so body text stays
+       readable. Change here to resize both in lock-step. */
+    --media-width: 800px;
     --font-text: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -1189,12 +1193,12 @@ article > .post-links {
     margin-inline: auto;
 }
 
-/* The hero fills the content column (matching the live card's width). Height is
-   still capped by the base `article img` max-height (650px), which object-fit
-   crops when a tall/square source would otherwise overshoot — so widening shows
-   more of the image horizontally at the same height rather than growing taller. */
+/* Heroes are designed around 16:9 (matching the live card): a --media-width-wide
+   16:9 box, centred, with object-fit (from `article img.hero`) cropping any
+   non-16:9 source into the box. Body text stays at the narrower readable measure. */
 article > img.hero {
-    max-width: 100%;
+    max-width: var(--media-width);
+    aspect-ratio: 16 / 9;
     margin-inline: auto;
 }
 
