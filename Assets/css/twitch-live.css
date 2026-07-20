@@ -176,13 +176,11 @@ main .container:has(.twitch-live:not([hidden])) {
     gap: 16px;
     padding: 4px 4px 6px;             /* aligns the metadata with the player edges */
 }
-/* The LIVE badge overhangs the avatar's bottom by 10px. Reserving that 10px below
-   every row item makes the avatar+badge read as a centred unit while the avatar,
-   text, and button stay aligned to each other (all nudged up ~5px in step). */
-.twitch-live-bar > * { margin-bottom: 10px; }
 .twitch-live-avatar-wrap {
     position: relative;
     flex: 0 0 auto;
+    height: 62px;                     /* avatar (52) + the LIVE badge's 10px overhang, so
+                                         the wrap IS the unit and centres (with the text) as one */
     line-height: 0;                   /* no descender gap under the avatar */
 }
 .twitch-live-avatar {
@@ -197,7 +195,7 @@ main .container:has(.twitch-live:not([hidden])) {
    live indicator (the in-video badge is covered once the player opens). */
 .twitch-live-avatar-badge {
     position: absolute;
-    bottom: -10px;
+    bottom: 0;                        /* sits at the wrap's base (its overhang is now in the box) */
     left: 50%;
     transform: translateX(-50%);
     padding: 2px 6px;
@@ -218,7 +216,7 @@ main .container:has(.twitch-live:not([hidden])) {
     margin: 0;
     font-size: 1.05rem;
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1.4;
     color: #f5f5f7;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -227,7 +225,7 @@ main .container:has(.twitch-live:not([hidden])) {
 .twitch-live-sub {
     margin: 0;
     font-size: 0.9rem;
-    line-height: 1.25;
+    line-height: 1.4;
     color: rgba(235, 235, 245, 0.62);
     overflow: hidden;
     text-overflow: ellipsis;
