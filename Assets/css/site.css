@@ -206,13 +206,15 @@ article + article {
     }
 }
 
-/* On mid/small screens the title shrinks with the body font while the
-   fixed-height badges don't — bump it ~20% to keep the balance. Extra-small
-   (<=389px) keeps its own smaller title, so this stops above it. (The date
-   needs no bump here — its base 1.25em rule already wins.) */
+/* Mid/small screens (tablet + larger phones): scale the title down with the body
+   text so it stays proportionate; in the tablet range the date shrinks too (below
+   720px the date rule further down wins). Extra-small (<=389px) has its own sizes. */
 @media (min-width: 389.02px) and (max-width: 1000px) {
     .title {
-        font-size: 2.55em;
+        font-size: 2.2em;
+    }
+    article .date {
+        font-size: 1.15em;
     }
 }
 
