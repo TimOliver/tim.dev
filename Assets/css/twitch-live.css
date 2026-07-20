@@ -6,7 +6,9 @@
     display: flex;
     flex-direction: column;
     max-width: var(--media-width);      /* locked to the post hero width (site.css) */
-    margin: 0 auto clamp(60px, 9vw, 96px); /* centred; generous gap before the first post */
+    /* Balanced gaps above/below: +15px on top and -15px on the bottom vs. the
+       page's ~70px top offset and ~100px card margin, landing both near ~85px. */
+    margin: 15px auto clamp(45px, 9vw, 81px);
     /* Stroke only, no drop shadow: a low-opacity black line (white in dark mode,
        see below) that blends into the video edge and the page background. */
     border: 1px solid rgba(0, 0, 0, 0.12);
