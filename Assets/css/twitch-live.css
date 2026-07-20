@@ -5,12 +5,13 @@
 .twitch-live {
     display: flex;
     flex-direction: column;
-    margin: 0 0 clamp(28px, 5vw, 44px);
-    border: 1px solid var(--border);
+    margin: 0 0 clamp(44px, 7vw, 72px); /* generous gap before the first post */
+    /* Stroke only, no drop shadow: a low-opacity black line (white in dark mode,
+       see below) that blends into the video edge and the page background. */
+    border: 1px solid rgba(0, 0, 0, 0.12);
     border-radius: 18px;
     overflow: hidden;                 /* clip the media corners to the card radius */
     background: var(--bg);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
 }
 
 /* Guarantee the hidden state beats the .twitch-live display rule above: the
@@ -18,19 +19,43 @@
    card could show before the script reveals it. */
 .twitch-live[hidden] { display: none; }
 
-/* The site themes exclusively via [data-color-scheme] (theme.js stamps it
-   before first paint); deepen the shadow in dark mode through that, not a
-   prefers-color-scheme media query, so a manually-forced light theme on a
-   dark-OS machine still gets the light shadow. */
-[data-color-scheme="dark"] .twitch-live { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35); }
+/* Dark mode: switch the stroke to low-opacity white so it still blends into the
+   video/background. Themed via [data-color-scheme] (theme.js stamps it before
+   first paint), matching the rest of the site. */
+[data-color-scheme="dark"] .twitch-live { border-color: rgba(255, 255, 255, 0.14); }
 
 /* --- media surface ------------------------------------------------------- */
 
 .twitch-live-media {
     position: relative;
     aspect-ratio: 16 / 9;
+    overflow: hidden;                 /* clip the blurred thumbnail's overspill */
     background: radial-gradient(120% 120% at 50% 0%, #3a2170 0%, #1c1030 45%, #0b0714 100%);
     color: #fff;
+}
+
+/* Blurred live preview behind the play button — a soft ambient backdrop that
+   hides the modest source resolution. The gradient shows through until it loads
+   (or if it never does). Below the scrim and the overlays. */
+.twitch-live-thumb {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.15);           /* overfill so blurred edges don't reveal the box */
+    filter: blur(18px);
+    z-index: 0;
+}
+/* Gentle scrim over the preview so the LIVE badge and play button stay legible
+   over bright frames. */
+.twitch-live-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 7, 20, 0.32);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .twitch-live-badge {
@@ -47,6 +72,7 @@
     color: #fff;
     background: #e0163a;
     border-radius: 999px;
+    z-index: 2;
 }
 .twitch-live-badge-dot {
     width: 8px;
@@ -75,6 +101,7 @@
     border-radius: 999px;
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
+    z-index: 2;
 }
 .twitch-live-viewers-dot {
     width: 7px;
@@ -98,6 +125,7 @@
     border: 6px solid rgba(255, 255, 255, 0.10);
     border-radius: 50%;
     cursor: pointer;
+    z-index: 2;
     transition: transform 0.18s ease, background 0.18s ease;
 }
 .twitch-live-play svg { margin-left: 4px; }   /* optically centre the triangle */
@@ -117,6 +145,7 @@
     width: 100%;
     height: 100%;
     border: 0;
+    z-index: 3;
 }
 /* Once the player is live, the facade overlays get out of its way. */
 .twitch-live-media.is-playing .twitch-live-play,
@@ -164,6 +193,21 @@
     white-space: nowrap;
 }
 .twitch-live-channel { font-weight: 600; }
+
+/* Persistent live indicator in the bar: once the player is open the top-left
+   LIVE badge is covered, so this red dot keeps signalling "live" beside the
+   title. */
+.twitch-live-title-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: #e0163a;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+}
 
 /* Scoped two classes deep so the white text beats any `.container a` link
    colour without needing !important. */

@@ -48,6 +48,7 @@
     if (!root) return;
 
     var media = root.querySelector('.twitch-live-media');
+    var thumb = root.querySelector('[data-twitch-thumb]');
     var slots = {
         title: root.querySelector('[data-twitch-title]'),
         game: root.querySelector('[data-twitch-game]'),
@@ -56,12 +57,21 @@
     };
     var timer = null;
     var playing = false;
+    // The channel currently being watched, reported by the endpoint. Drives the
+    // embed and preview thumbnail; falls back to the owner's channel if absent.
+    var currentLogin = CHANNEL;
 
     function render(stream) {
         slots.title.textContent = stream.title || '';
         slots.game.textContent = stream.game || '';
         slots.viewers.textContent = formatViewers(stream.viewers);
         slots.ago.textContent = relativeTime(stream.startedAt, Date.now());
+        currentLogin = stream.login || CHANNEL;
+        // Fill Helix's {width}x{height} template; the CSS blurs it, so a modest
+        // resolution reads as a soft ambient backdrop rather than an upscale.
+        if (thumb && stream.thumbnail) {
+            thumb.src = stream.thumbnail.replace('{width}', '1280').replace('{height}', '720');
+        }
     }
 
     // Remove the on-demand Twitch embed (used when the stream ends). No-op until
@@ -124,7 +134,7 @@
     // Muted autoplay is browser-allowed; the visitor unmutes via Twitch's own
     // controls. `parent` must list every host that serves this page.
     function buildEmbed() {
-        var src = 'https://player.twitch.tv/?channel=' + encodeURIComponent(CHANNEL);
+        var src = 'https://player.twitch.tv/?channel=' + encodeURIComponent(currentLogin);
         EMBED_PARENTS.forEach(function (parent) {
             src += '&parent=' + encodeURIComponent(parent);
         });
