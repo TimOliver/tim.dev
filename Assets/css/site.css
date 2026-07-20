@@ -1189,11 +1189,12 @@ article > .post-links {
     margin-inline: auto;
 }
 
-/* The hero sits a touch wider than the text column but is capped so it isn't
-   oversized on the wide content box; centred (width:100% from the base rule,
-   capped here). On narrow screens it stays full content width. */
+/* The hero fills the content column (matching the live card's width). Height is
+   still capped by the base `article img` max-height (650px), which object-fit
+   crops when a tall/square source would otherwise overshoot — so widening shows
+   more of the image horizontally at the same height rather than growing taller. */
 article > img.hero {
-    max-width: 750px;
+    max-width: 100%;
     margin-inline: auto;
 }
 
