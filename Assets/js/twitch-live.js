@@ -49,6 +49,7 @@
 
     var media = root.querySelector('.twitch-live-media');
     var thumb = root.querySelector('[data-twitch-thumb]');
+    var watch = root.querySelector('.twitch-live-watch');
     var slots = {
         title: root.querySelector('[data-twitch-title]'),
         game: root.querySelector('[data-twitch-game]'),
@@ -67,6 +68,9 @@
         slots.viewers.textContent = formatViewers(stream.viewers);
         slots.ago.textContent = relativeTime(stream.startedAt, Date.now());
         currentLogin = stream.login || CHANNEL;
+        // "Watch on Twitch" follows the channel actually being watched (the
+        // hardcoded href in the markup is the no-JS fallback to the owner's).
+        if (watch) watch.href = 'https://twitch.tv/' + encodeURIComponent(currentLogin);
         // Fill Helix's {width}x{height} template; the CSS blurs it, so a modest
         // resolution reads as a soft ambient backdrop rather than an upscale.
         if (thumb && stream.thumbnail) {
