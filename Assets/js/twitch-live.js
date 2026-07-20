@@ -165,6 +165,10 @@
     }
 
     if (playButton) playButton.addEventListener('click', onPlay);
+    // Clicking anywhere on the video canvas also starts playback. onPlay is a
+    // no-op once playing, and clicks inside the cross-origin embed don't bubble
+    // out, so the running player is never disturbed.
+    media.addEventListener('click', onPlay);
     document.addEventListener('visibilitychange', onVisibilityChange);
 
     // Fetch + start polling only if the tab is currently visible. A page opened
