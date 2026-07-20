@@ -1,0 +1,23 @@
+<!-- Twitch "live now" card. Ships hidden; Assets/js/twitch-live.js fetches
+     https://twitch.tim.dev and, when the channel is live, fills the [data-…]
+     slots and clears [hidden]. Home page only (included from Home.swift). -->
+<section class="twitch-live" data-twitch-live aria-label="Live on Twitch" hidden>
+    <div class="twitch-live-media">
+        <span class="twitch-live-badge"><span class="twitch-live-badge-dot" aria-hidden="true"></span>LIVE</span>
+        <span class="twitch-live-viewers" aria-live="polite"><span class="twitch-live-viewers-dot" aria-hidden="true"></span><span data-twitch-viewers>0</span> watching</span>
+        <button type="button" class="twitch-live-play" data-twitch-play aria-label="Play stream">
+            <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+        </button>
+    </div>
+    <div class="twitch-live-bar">
+        <img class="twitch-live-avatar" src="https://static-cdn.jtvnw.net/jtv_user_pictures/fbe0c50e-c33c-486d-b9f3-f861976b5c54-profile_image-300x300.png" alt="" width="48" height="48" loading="lazy" decoding="async">
+        <div class="twitch-live-meta">
+            <p class="twitch-live-title">Live now · <span data-twitch-title></span></p>
+            <p class="twitch-live-sub"><span class="twitch-live-channel">timXD</span> · <span data-twitch-game></span> · started <span data-twitch-ago></span></p>
+        </div>
+        <a class="twitch-live-watch" href="https://twitch.tv/timXD" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><use href="/img/site/brand-icons.svg#twitch"/></svg>
+            Watch on Twitch
+        </a>
+    </div>
+</section>

@@ -149,6 +149,10 @@ struct MainLayout: Layout {
             for stylesheet in pageStylesheets {
                 MetaLink(href: stylesheet, rel: .stylesheet)
             }
+            // The Twitch live card and its assets are home-page only.
+            if isHome {
+                MetaLink(href: "/css/twitch-live.css", rel: .stylesheet)
+            }
             // lightbox3 (1.1.0) + lite-youtube-embed (0.3.4) are vendored into
             // Assets/ (like embla) — a render-blocking cross-origin stylesheet
             // in <head> put jsdelivr's DNS+TLS on the critical path of every
@@ -186,6 +190,10 @@ struct MainLayout: Layout {
                 // Gallery scroller carousel — the About page is its only user;
                 // site.js's init early-exits everywhere else.
                 Script(file: "/js/embla-carousel.umd.js")
+            }
+            if isHome {
+                // Reveals + populates the live card; polls the status endpoint.
+                Script(file: "/js/twitch-live.js")
             }
             Script(file: "/js/site.js")
             if hasArticleContent {

@@ -35,9 +35,14 @@ struct Home: StaticPage {
             .sorted { $0.date > $1.date }
             .prefix(Home.recentPostCount)
 
+        // The Twitch "live now" card. Ships hidden; twitch-live.js reveals it
+        // only while the channel is live. First child of <main>, so it sits
+        // between the header and the first article.
+        Include("twitch-live.html")
+
         // Render each surviving post through the shared shell in feed context,
         // so a card here matches the same post on the tag/archive listings.
-        return ForEach(Array(recent)) { article in
+        ForEach(Array(recent)) { article in
             ArticleShell.include(for: article, context: .feed)
         }
     }
