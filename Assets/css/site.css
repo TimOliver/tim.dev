@@ -206,15 +206,18 @@ article + article {
     }
 }
 
-/* Mid/small screens (tablet + larger phones): scale the title down with the body
-   text so it stays proportionate; in the tablet range the date shrinks too (below
-   720px the date rule further down wins). Extra-small (<=389px) has its own sizes. */
-@media (min-width: 389.02px) and (max-width: 1000px) {
+/* Article header type scale — exactly three tiers: desktop (base) / tablet / phone.
+   This is the TABLET tier (<=1000px); the phone tier (<=720px, further down) wins
+   below 720. Base desktop sizes: title 2.4em (h1), date 1.25em, subtitle 1.5em. */
+@media (max-width: 1000px) {
     .title {
         font-size: 2.2em;
     }
     article .date {
         font-size: 1.15em;
+    }
+    article .subtitle {
+        font-size: 1.4em;
     }
 }
 
@@ -1129,13 +1132,18 @@ body > header::before {
         font-size: 2.0em;
     }
 
+    /* Article header type scale — PHONE tier (<=720px). */
+    .title {
+        font-size: 1.9em;
+    }
+
     article .subtitle {
         font-size: 1.35em;
         margin-top: 0.15rem;
     }
 
     article .date {
-        font-size: 1.25em;
+        font-size: 1.05em;
     }
 }
 
@@ -1144,18 +1152,9 @@ body > header::before {
         display: none;
     }
 
-    /* Smallest phones: 16px content inset, a larger date and a slightly smaller
-       title for balance against the badges. */
+    /* Smallest phones: tighter content inset. (Title + date use the phone tier.) */
     :root {
         --container-pad: 16px;
-    }
-
-    .title {
-        font-size: 1.9em;
-    }
-
-    article .date {
-        font-size: 1.3em;
     }
 }
 
@@ -1405,11 +1404,6 @@ footer .container {
 
     :root {
         --container-pad: 8px;
-    }
-
-    /* Larger em to offset the 15.5px body so the date isn't tiny here. */
-    article .date {
-        font-size: 1.6em;
     }
 }
 
