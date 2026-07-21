@@ -10,7 +10,7 @@
     /* Break out to a wide, contrasting featured banner, centred on the page; on
        narrow screens it caps to the viewport minus the same gutter as the content
        (--container-pad), so its edges match the hero images. */
-    width: min(950px, calc(100vw - 2 * var(--container-pad)));
+    width: min(900px, calc(100vw - 2 * var(--container-pad)));
     margin-block: 0 60px;
     margin-left: 50%;
     transform: translateX(-50%);
@@ -37,7 +37,7 @@
     border-radius: 16px;              /* concentric inside the 30px frame (minus the 14px matte) */
     corner-shape: squircle;
     cursor: pointer;                  /* the whole canvas starts playback */
-    background: radial-gradient(120% 120% at 50% 0%, #3a2170 0%, #1c1030 45%, #0b0714 100%);
+    background: #0b0b0f;              /* dark fallback; the blurred thumbnail covers it */
     color: #fff;
 }
 
@@ -78,7 +78,7 @@
     overflow: hidden;
     border-radius: 10px;
     corner-shape: squircle;
-    background: radial-gradient(120% 120% at 50% 0%, #3a2170 0%, #1c1030 45%, #0b0714 100%);
+    /* Transparent: the blurred thumbnail behind shows through until the embed loads. */
     z-index: 2;
 }
 
