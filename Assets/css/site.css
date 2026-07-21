@@ -1185,17 +1185,23 @@ body > header::before {
     display: block;
 }
 
-/* Fixed, tight top gap for article-bearing pages (home feed + posts + tag/archive)
-   so content sits the same distance below the sticky header whether the live card
-   is showing or not — and doesn't shift when clicking from the feed into a post.
-   Scoped to main's .container (the footer also uses .container). */
+/* Top gap for article-bearing pages (home feed + posts + tag/archive) so content
+   clears the sticky header's fade gradient rather than sitting under it. That scrim
+   is invisible over a white post but visibly hazes the top of the dark live card, so
+   the gap has to exceed the gradient's reach — which shrinks per breakpoint, hence
+   60/40/30. One value per breakpoint keeps the home card and posts consistent (no
+   shift when clicking from the feed into a post). Scoped to main's .container (the
+   footer also uses .container). */
 body:has(article) main .container {
-    margin-top: 30px;
+    margin-top: 60px;
     padding-top: 0;
 }
 
+@media (max-width: 1000px) {
+    body:has(article) main .container { margin-top: 40px; }
+}
 @media (max-width: 720px) {
-    body:has(article) main .container { margin-top: 25px; }
+    body:has(article) main .container { margin-top: 30px; }
 }
 
 /* The body section (and permalink row) caps at the readable measure and centres.
