@@ -71,7 +71,11 @@
 .twitch-live-stage {
     position: absolute;
     top: 0;
-    bottom: 0;
+    height: 100%;                     /* clamp to the canvas height. NOT top:0 + bottom:0 +
+                                         aspect-ratio — that trio over-constrains the box, and
+                                         engines disagree on which wins, leaving a sub-pixel gap
+                                         at the bottom. A definite height + aspect-ratio is
+                                         unambiguous: height fills, width derives from it. */
     left: 50%;
     transform: translateX(-50%);
     aspect-ratio: 16 / 9;
@@ -179,6 +183,18 @@
 }
 /* Once the player owns the canvas, drop the "click to play" cursor. */
 .twitch-live-media.is-playing { cursor: default; }
+
+/* Playing: deepen the scrim so the blurred letterbox bars recede behind the
+   live player (the scrim sits below the stage, so only the bars dim — the video
+   itself stays untouched), and give the stage a soft shadow. Together they ramp
+   the contrast from the bright video out to the dimmed bars, reading as two
+   clearly separated layers rather than one flat surface. */
+.twitch-live-media.is-playing::after {
+    background: rgba(0, 0, 0, 0.5);
+}
+.twitch-live-media.is-playing .twitch-live-stage {
+    box-shadow: 0 6px 34px rgba(0, 0, 0, 0.55);
+}
 
 /* --- bar ----------------------------------------------------------------- */
 
