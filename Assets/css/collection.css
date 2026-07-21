@@ -218,8 +218,9 @@ body:has(.collection-detail) {
 }
 .store-badge svg {
     display: block;
-    height: 48px;
-    width: auto;
+    width: 260px;
+    max-width: 100%;
+    height: auto;
 }
 /* YouTube's field is its brand near-black, and its ink flips to that in dark. */
 .store-badge-youtube { --pill: #212121; }
