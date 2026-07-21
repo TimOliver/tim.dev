@@ -1185,19 +1185,22 @@ body > header::before {
     display: block;
 }
 
-/* Top gap for article-bearing pages (home feed + posts + tag/archive) so content
-   sits below the sticky header's fade gradient rather than under it — the gradient
-   is invisible over a white post but hazes the top of the dark live card. 40px down
-   to the phone breakpoint, 30px below it; one value per breakpoint keeps the home
-   card and posts consistent (no shift clicking from the feed into a post). Scoped to
-   main's .container (the footer also uses .container). */
+/* Top gap for article-bearing pages (home feed + posts + tag/archive). On desktop it
+   keeps content below the sticky header's fade gradient (invisible over a white post,
+   but it hazes the top of the dark live card); the header and its gradient shrink on
+   smaller screens, so the gap tightens too — 40 / 30 / 5. One value per breakpoint
+   keeps the home card and posts consistent (no shift clicking from the feed into a
+   post). Scoped to main's .container (the footer also uses .container). */
 body:has(article) main .container {
     margin-top: 40px;
     padding-top: 0;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1000px) {
     body:has(article) main .container { margin-top: 30px; }
+}
+@media (max-width: 720px) {
+    body:has(article) main .container { margin-top: 5px; }
 }
 
 /* The body section (and permalink row) caps at the readable measure and centres.
