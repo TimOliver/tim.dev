@@ -218,7 +218,7 @@ body:has(.collection-detail) {
 }
 .store-badge svg {
     display: block;
-    width: 260px;
+    width: 200px;
     max-width: 100%;
     height: auto;
 }
