@@ -223,7 +223,11 @@
                                          This drives the bar's height, so a smaller avatar tightens
                                          the whole metadata section. */
     line-height: 0;                   /* no descender gap under the avatar */
+    text-decoration: none;            /* it's a link to the owner's Twitch */
 }
+/* No hover state on the avatar link — suppress the global a:hover underline that
+   would otherwise strike through the LIVE badge. */
+.twitch-live .twitch-live-avatar-wrap:hover { text-decoration: none; }
 .twitch-live-avatar {
     display: block;
     position: relative;
