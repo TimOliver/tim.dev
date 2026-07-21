@@ -7,10 +7,10 @@
     display: flex;
     flex-direction: column;
     gap: 12px;                          /* matte between the player and the metadata */
-    /* Break out of the ~880px content column to a wider, contrasting featured size,
-       centred on the page; on narrow screens it caps to the viewport minus the same
-       gutter as the content (--container-pad), so its edges match the hero images. */
-    width: min(975px, calc(100vw - 2 * var(--container-pad)));
+    /* A compact, contrasting featured size (~the hero-image width), centred on the
+       page; on narrow screens it caps to the viewport minus the same gutter as the
+       content (--container-pad), so its edges match the hero images. */
+    width: min(750px, calc(100vw - 2 * var(--container-pad)));
     margin-block: 0 60px;
     margin-left: 50%;
     transform: translateX(-50%);
