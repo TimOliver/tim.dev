@@ -1188,9 +1188,10 @@ body > header::before {
 /* Top gap for article-bearing pages (home feed + posts + tag/archive). On desktop it
    keeps content below the sticky header's fade gradient (invisible over a white post,
    but it hazes the top of the dark live card); the header and its gradient shrink on
-   smaller screens, so the gap tightens too — 50 / 35 / 5. One value per breakpoint
-   keeps the home card and posts consistent (no shift clicking from the feed into a
-   post). Scoped to main's .container (the footer also uses .container). */
+   smaller screens, so the gap tightens too — 50 desktop / 35 tablet / 5 iPhone. That
+   iPhone 5px is the card-present tuck; with no visible card (not live, or any post)
+   the bare first article gets 25px instead — see the :has() override. Scoped to
+   main's .container (the footer also uses .container). */
 body:has(article) main .container {
     margin-top: 50px;
     padding-top: 0;
@@ -1200,7 +1201,11 @@ body:has(article) main .container {
     body:has(article) main .container { margin-top: 35px; }
 }
 @media (max-width: 720px) {
-    body:has(article) main .container { margin-top: 5px; }
+    /* Default (no visible card — not live, or a post/archive page): give the bare
+       first article breathing room. */
+    body:has(article) main .container { margin-top: 25px; }
+    /* Live card showing: let it tuck tight under the header instead. */
+    body:has(article) main .container:has(.twitch-live:not([hidden])) { margin-top: 5px; }
 }
 
 /* The body section (and permalink row) caps at the readable measure and centres.
