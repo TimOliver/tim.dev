@@ -213,14 +213,16 @@
 .twitch-live-avatar-wrap {
     position: relative;
     flex: 0 0 auto;
-    height: 62px;                     /* avatar (52) + the LIVE badge's 10px overhang, so
-                                         the wrap IS the unit and centres (with the text) as one */
+    height: 56px;                     /* avatar (46) + the LIVE badge's 10px overhang, so
+                                         the wrap IS the unit and centres (with the text) as one.
+                                         This drives the bar's height, so a smaller avatar tightens
+                                         the whole metadata section. */
     line-height: 0;                   /* no descender gap under the avatar */
 }
 .twitch-live-avatar {
     display: block;
-    width: 52px;
-    height: 52px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     object-fit: cover;
     background: rgba(255, 255, 255, 0.08);  /* dark placeholder while the avatar loads */
