@@ -300,11 +300,19 @@
 /* --- narrow screens ------------------------------------------------------ */
 
 @media (max-width: 560px) {
+    /* Narrow columns: drop the letterbox. A 16:9 canvas + the 16:9 stage means the
+       stage spans the full width (no pillarbox bars) — the video just fills it. */
+    .twitch-live-media { aspect-ratio: 16 / 9; }
+    /* Avatar + title/subtitle stay on one row (flex-basis:0 stops the nowrap title
+       from giving the meta a huge basis that bumps it onto its own line); the button
+       drops to a full-width row below. Two classes are needed so this flex beats the
+       base `.twitch-live .twitch-live-watch { flex: 0 0 auto }`. */
     .twitch-live-bar { flex-wrap: wrap; }
-    .twitch-live-watch {
+    .twitch-live-meta { flex-basis: 0; }
+    .twitch-live .twitch-live-watch {
         flex: 1 0 100%;
-        justify-content: center;
         order: 3;
+        justify-content: center;
     }
 }
 
