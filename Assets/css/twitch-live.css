@@ -7,10 +7,10 @@
     display: flex;
     flex-direction: column;
     gap: 12px;                          /* matte between the player and the metadata */
-    /* A compact, contrasting featured size (~the hero-image width), centred on the
-       page; on narrow screens it caps to the viewport minus the same gutter as the
-       content (--container-pad), so its edges match the hero images. */
-    width: min(750px, calc(100vw - 2 * var(--container-pad)));
+    /* Break out to a wide, contrasting featured banner, centred on the page; on
+       narrow screens it caps to the viewport minus the same gutter as the content
+       (--container-pad), so its edges match the hero images. */
+    width: min(950px, calc(100vw - 2 * var(--container-pad)));
     margin-block: 0 60px;
     margin-left: 50%;
     transform: translateX(-50%);
@@ -25,11 +25,14 @@
    card could show before the script reveals it. */
 .twitch-live[hidden] { display: none; }
 
-/* --- media surface ------------------------------------------------------- */
+/* --- media: a wide, short "letterbox" canvas ----------------------------- */
 
+/* The blurred thumbnail fills this canvas edge to edge; the real 16:9 player
+   (.twitch-live-stage) floats centred inside it, so the sides show the blurred
+   stream as ambient letterbox bars — a wide banner that stays short. */
 .twitch-live-media {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 5 / 2;             /* wide + short — keeps the card's height down */
     overflow: hidden;                 /* clip the blurred thumbnail's overspill */
     border-radius: 16px;              /* concentric inside the 30px frame (minus the 14px matte) */
     corner-shape: squircle;
@@ -62,6 +65,23 @@
     pointer-events: none;
 }
 
+/* The real 16:9 player, centred in the canvas at its full height, so its width is
+   narrower than the wide canvas → blurred letterbox bars on the sides. The play
+   button centres in here; the embed fills it on click. */
+.twitch-live-stage {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 10px;
+    corner-shape: squircle;
+    background: radial-gradient(120% 120% at 50% 0%, #3a2170 0%, #1c1030 45%, #0b0714 100%);
+    z-index: 2;
+}
+
 .twitch-live-badge {
     position: absolute;
     top: 16px;
@@ -76,7 +96,7 @@
     color: #fff;
     background: #e0163a;
     border-radius: 999px;
-    z-index: 2;
+    z-index: 3;
 }
 .twitch-live-badge-dot {
     width: 8px;
@@ -105,7 +125,7 @@
     border-radius: 999px;
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    z-index: 2;
+    z-index: 3;
 }
 .twitch-live-viewers-dot {
     width: 7px;

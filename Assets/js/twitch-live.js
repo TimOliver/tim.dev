@@ -48,6 +48,7 @@
     if (!root) return;
 
     var media = root.querySelector('.twitch-live-media');
+    var stage = root.querySelector('[data-twitch-stage]');
     var thumb = root.querySelector('[data-twitch-thumb]');
     var watch = root.querySelector('.twitch-live-watch');
     var slots = {
@@ -156,7 +157,7 @@
     function onPlay() {
         if (playing) return;
         var iframe = buildEmbed();
-        media.appendChild(iframe);
+        stage.appendChild(iframe);         /* into the 16:9 stage, not the wide canvas */
         media.classList.add('is-playing');
         playing = true;
         // The play button is now display:none; move keyboard focus onto the
