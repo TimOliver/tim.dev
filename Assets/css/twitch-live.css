@@ -193,6 +193,12 @@
     background: rgba(0, 0, 0, 0.5);
 }
 .twitch-live-media.is-playing .twitch-live-stage {
+    /* Solid dark surface the moment play is clicked. The class (and this shadow)
+       apply instantly, but the Twitch iframe takes a beat to load — without a
+       background the stage stays transparent and the shadow appears to be cast
+       by nothing. This also reads as a clean loading backdrop the player fades
+       into. */
+    background: #18181b;
     box-shadow: 0 6px 34px rgba(0, 0, 0, 0.55);
 }
 
