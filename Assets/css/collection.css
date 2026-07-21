@@ -199,6 +199,32 @@ body:has(.collection-detail) {
     color: var(--text-tertiary);
 }
 
+/* --- "get it" store badges (App Store / YouTube / GitHub) -------------------
+   One inlined, theme-variable SVG per store (see Badge.swift). --pill paints the
+   badge's field, --ink its logo + text; the page flips them per data-color-scheme
+   so a single SVG follows the manual theme toggle. Brand marks (YouTube's red,
+   the grey hairline) are baked into the SVGs. Centred, with room above whatever
+   sidebar block precedes it. */
+.store-badge {
+    display: block;
+    width: fit-content;
+    margin: 2.4em auto 0;
+    --pill: #000;
+    --ink: #fff;
+}
+[data-color-scheme="dark"] .store-badge {
+    --pill: #fff;
+    --ink: #000;
+}
+.store-badge svg {
+    display: block;
+    height: 48px;
+    width: auto;
+}
+/* YouTube's field is its brand near-black, and its ink flips to that in dark. */
+.store-badge-youtube { --pill: #212121; }
+[data-color-scheme="dark"] .store-badge-youtube { --pill: #fff; --ink: #212121; }
+
 /* Cardless card body — text sits flush-left beneath standalone imagery
    (no card surface or side padding). Talks adds its own 2px-inset variant. */
 .code-body,

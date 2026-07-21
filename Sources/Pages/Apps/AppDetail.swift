@@ -68,14 +68,12 @@ extension AppRenderer {
         var sidebar = CollectionRenderer.detailsBlock(app.details)
 
         // Append the App Store badge only when a link is present (`appStore` is
-        // already nil-filtered by AppInfo.init).
+        // already nil-filtered by AppInfo.init). The shared inlined, theme-aware
+        // badge — see Badge.swift / .store-badge in collection.css.
         if let appStore = app.appStore {
-            // Centered "Download on the App Store" badge. The black variant is
-            // the <img>; dark mode swaps it for the white one via CSS `content`
-            // (see .app-store in apps.css). Both Apple badges live in /img/.
-            sidebar += #"<a class="app-store" href="\#(escape(appStore))" target="_blank" rel="noopener">"#
-            sidebar += #"<img src="/img/portfolio/app-store-black.svg" alt="Download on the App Store">"#
-            sidebar += "</a>"
+            sidebar += Badge.store(
+                kind: "appstore", file: "app-store-badge.svg",
+                href: appStore, label: "Download \(app.title) on the App Store")
         }
 
         // Hand header/prose/sidebar to the shared shell, which frames them with

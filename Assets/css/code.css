@@ -27,14 +27,12 @@
     color: var(--heading);
 }
 
+/* Inline octocat (fill=currentColor) — follows the repo line's text colour in
+   both themes, so no per-scheme swap is needed. */
 .code-gh-mark {
     width: 18px;
     height: 18px;
     flex: 0 0 auto;
-}
-
-[data-color-scheme="dark"] .code-gh-mark {
-    content: url("/img/portfolio/github-white.svg");
 }
 
 .code-owner {

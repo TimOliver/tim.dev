@@ -131,21 +131,7 @@
     margin: 0.1em 0 0;
 }
 
-/* "Download on the App Store" badge — centered below the Details table. */
-.app-store {
-    display: block;
-    text-align: center;
-    margin: 1.6em 0 0;
-}
-
-.app-store img {
-    width: 200px;
-    height: auto;
-}
-
-[data-color-scheme="dark"] .app-store img {
-    content: url("/img/portfolio/app-store-white.svg");
-}
+/* The App Store badge now uses the shared .store-badge component (collection.css). */
 
 /* Mobile tweaks for app-specific detail bits. */
 @media (max-width: 720px) {

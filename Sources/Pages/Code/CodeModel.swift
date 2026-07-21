@@ -48,8 +48,12 @@ struct RepoInfo {
     /// front-matter `details:` string by `CollectionRenderer.parseDetails`.
     let details: [(String, String)]
 
-    /// Ordered (label, url) links for the detail sidebar. Assembled in `init`
-    /// from the optional `github:` and `docs:` front-matter keys, in that order.
+    /// The repo's GitHub URL (front-matter `github:`), or nil. Drives the
+    /// "Get it on GitHub" badge on the detail page.
+    let github: String?
+
+    /// Ordered (label, url) secondary links for the detail sidebar. Assembled in
+    /// `init` from the optional `docs:` key — the `github:` URL becomes a badge.
     let links: [(String, String)]
 
     /// Already-rendered HTML body (markdown compiled by Ignite).
@@ -92,12 +96,11 @@ struct RepoInfo {
         // (label, value) rows for the sidebar table.
         details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")
 
-        // Sidebar links are assembled in a fixed order from two optional keys —
-        // `github:` then `docs:`. Each row is appended only when its key is
-        // present and non-blank, so a repo without a docs URL simply omits that
-        // link rather than showing an empty one.
+        // `github:` becomes the "Get it on GitHub" badge (rendered separately in
+        // CodeDetail); `docs:` stays a secondary text link. Each is set only when
+        // its key is present and non-blank.
+        github = CollectionRenderer.nonEmpty(a.metadata["github"] as? String)
         var collectedLinks: [(String, String)] = []
-        if let u = a.metadata["github"] as? String, !u.isEmpty { collectedLinks.append(("View on GitHub", u)) }
         if let u = a.metadata["docs"] as? String, !u.isEmpty { collectedLinks.append(("Read the docs", u)) }
         links = collectedLinks
 
@@ -114,12 +117,14 @@ struct RepoInfo {
 @MainActor
 enum CodeRenderer {
 
-    /// The GitHub mark (black variant; dark mode swaps to white via CSS).
+    /// The inline octocat mark preceding the owner/name line.
     static func githubMark() -> String {
 
-        // Static markup — the black SVG is flipped to white in dark mode by CSS.
-        // Empty alt: it's decorative next to the owner/name text it precedes.
-        #"<img class="code-gh-mark" src="/img/portfolio/github-black.svg" alt="">"#
+        // Inline the octocat (fill=currentColor) so it follows the repo line's
+        // text colour in both themes — no per-scheme file swap. The sizing class
+        // is injected onto the <svg> (see .code-gh-mark in code.css).
+        Badge.svg("github-logo.svg").replacingOccurrences(
+            of: "<svg ", with: #"<svg class="code-gh-mark" "#)
     }
 
     /// The repo's landscape screenshot, or the flat surface until one lands.

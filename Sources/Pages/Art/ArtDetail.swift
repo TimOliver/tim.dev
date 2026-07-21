@@ -59,11 +59,13 @@ extension ArtRenderer {
         )
         header += "</div>"
 
-        // Sidebar: the Details table, then the optional YouTube link block (only
-        // when the item carries a `youtube:` URL).
+        // Sidebar: the Details table, then the optional "Watch on YouTube" badge
+        // (only when the item carries a `youtube:` URL).
         var sidebar = CollectionRenderer.detailsBlock(item.details)
         if let youtube = item.youtube {
-            sidebar += CollectionRenderer.linksBlock([("Watch on YouTube", youtube)])
+            sidebar += Badge.store(
+                kind: "youtube", file: "youtube-badge.svg",
+                href: youtube, label: "Watch \(item.title) on YouTube")
         }
 
         // Pour the header + prose body + sidebar into the shared detail skeleton.

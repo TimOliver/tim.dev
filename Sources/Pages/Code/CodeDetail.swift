@@ -49,13 +49,21 @@ extension CodeRenderer {
         header += shot(image: repo.image, name: repo.title, sizes: "(max-width: 720px) 100vw, 1180px")
         header += "</div>"
 
+        // Sidebar: the details table, then the "Get it on GitHub" badge (when a
+        // `github:` URL is set), then any secondary links (docs).
+        var sidebar = CollectionRenderer.detailsBlock(repo.details)
+        if let github = repo.github {
+            sidebar += Badge.store(
+                kind: "github", file: "github-badge.svg",
+                href: github, label: "Get \(repo.title) on GitHub")
+        }
+        sidebar += CollectionRenderer.linksBlock(repo.links)
+
         // Hand the header + prose + sidebar to the shared skeleton every
-        // collection detail page uses; the sidebar is the details table
-        // followed by the links block (either may be empty).
+        // collection detail page uses.
         return CollectionRenderer.detailShell(
             dir: "code", label: "Code",
-            header: header, prose: repo.bodyHTML,
-            sidebar: CollectionRenderer.detailsBlock(repo.details) + CollectionRenderer.linksBlock(repo.links)
+            header: header, prose: repo.bodyHTML, sidebar: sidebar
         )
     }
 }

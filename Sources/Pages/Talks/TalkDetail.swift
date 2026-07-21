@@ -65,11 +65,17 @@ extension TalksRenderer {
         if !talk.duration.isEmpty { rows.append(("Duration", talk.duration)) }
         if !talk.topics.isEmpty { rows.append(("Topic", talk.topics.joined(separator: ", "))) }
 
-        // Sidebar "Links" rows. The YouTube link is built from the raw video id
-        // (a full watch URL, distinct from the inline facade above); slides are
-        // added only when present.
+        // Primary CTA: the "Watch on YouTube" badge, built from the raw video id
+        // (a full watch URL, distinct from the inline facade above). Slides, when
+        // present, stay a secondary text link below it.
+        var badge = ""
+        if let id = talk.youtube {
+            badge = Badge.store(
+                kind: "youtube", file: "youtube-badge.svg",
+                href: "https://www.youtube.com/watch?v=\(id)",
+                label: "Watch \(talk.title) on YouTube")
+        }
         var links: [(label: String, url: String)] = []
-        if let id = talk.youtube { links.append(("Watch on YouTube", "https://www.youtube.com/watch?v=\(id)")) }
         if let slides = talk.slides { links.append(("Slides", slides)) }
 
         // Hand header/prose/sidebar to the shared detail skeleton (back link +
@@ -77,7 +83,7 @@ extension TalksRenderer {
         return CollectionRenderer.detailShell(
             dir: "talks", label: "Talks",
             header: header, prose: talk.bodyHTML,
-            sidebar: CollectionRenderer.detailsBlock(rows) + CollectionRenderer.linksBlock(links)
+            sidebar: CollectionRenderer.detailsBlock(rows) + badge + CollectionRenderer.linksBlock(links)
         )
     }
 }
