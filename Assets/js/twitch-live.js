@@ -51,6 +51,7 @@
     var stage = root.querySelector('[data-twitch-stage]');
     var thumb = root.querySelector('[data-twitch-thumb]');
     var watch = root.querySelector('.twitch-live-watch');
+    var titleLink = root.querySelector('[data-twitch-title-link]');
     var slots = {
         title: root.querySelector('[data-twitch-title]'),
         game: root.querySelector('[data-twitch-game]'),
@@ -69,9 +70,12 @@
         slots.viewers.textContent = formatViewers(stream.viewers);
         slots.ago.textContent = relativeTime(stream.startedAt, Date.now());
         currentLogin = stream.login || CHANNEL;
-        // "Watch on Twitch" follows the channel actually being watched (the
-        // hardcoded href in the markup is the no-JS fallback to the owner's).
-        if (watch) watch.href = 'https://twitch.tv/' + encodeURIComponent(currentLogin);
+        // "Watch on Twitch" and the stream title both follow the channel actually
+        // being watched (the hardcoded hrefs in the markup are the no-JS fallback to
+        // the owner's). The "timXD" channel link stays fixed on the owner's account.
+        var streamUrl = 'https://twitch.tv/' + encodeURIComponent(currentLogin);
+        if (watch) watch.href = streamUrl;
+        if (titleLink) titleLink.href = streamUrl;
         // Fill Helix's {width}x{height} template; the CSS blurs it, so a modest
         // resolution reads as a soft ambient backdrop rather than an upscale.
         if (thumb && stream.thumbnail) {
@@ -170,9 +174,10 @@
     // no-op once playing, and clicks inside the cross-origin embed don't bubble
     // out, so the running player is never disturbed.
     media.addEventListener('click', onPlay);
-    // "Watch on Twitch" opens the stream in a new tab — tear the inline embed
-    // down so we're not left with two players (and two audio streams) running.
+    // "Watch on Twitch" and the title both open the stream in a new tab — tear the
+    // inline embed down so we're not left with two players (and two audio streams).
     if (watch) watch.addEventListener('click', teardownEmbed);
+    if (titleLink) titleLink.addEventListener('click', teardownEmbed);
     document.addEventListener('visibilitychange', onVisibilityChange);
 
     // Fetch + start polling only if the tab is currently visible. A page opened

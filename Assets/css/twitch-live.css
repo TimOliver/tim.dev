@@ -276,6 +276,19 @@
 }
 .twitch-live-channel { font-weight: 600; }
 
+/* Title and channel are links to Twitch — keep their resting appearance (inherit the
+   title/subtitle colour; two classes to beat `.container a`'s link colour) and only
+   reveal the link affordance on hover. */
+.twitch-live .twitch-live-title-link,
+.twitch-live .twitch-live-channel {
+    color: inherit;
+    text-decoration: none;
+}
+.twitch-live .twitch-live-title-link:hover,
+.twitch-live .twitch-live-channel:hover {
+    text-decoration: underline;
+}
+
 /* Scoped two classes deep so the white text beats any `.container a` link
    colour without needing !important. */
 .twitch-live .twitch-live-watch {
