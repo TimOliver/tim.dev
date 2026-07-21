@@ -199,7 +199,7 @@
        by nothing. This also reads as a clean loading backdrop the player fades
        into. */
     background: #18181b;
-    box-shadow: 0 6px 34px rgba(0, 0, 0, 0.55);
+    box-shadow: 0 0 50px 25px rgba(0, 0, 0, 0.55);
 }
 
 /* --- bar ----------------------------------------------------------------- */
