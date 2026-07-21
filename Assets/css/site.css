@@ -37,8 +37,8 @@
        width; plus the readable measure article body copy centres within. */
     --container-pad: 35px;
     --text-measure: 680px;
-    /* Width for post hero images — a touch narrower than the content column so
-       body text stays readable. (The Twitch live card has its own width now.) */
+    /* Width for post hero images (and the Twitch live card) — a touch narrower than
+       the content column so body text stays readable. */
     --media-width: 775px;
     --font-text: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";

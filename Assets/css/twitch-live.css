@@ -7,10 +7,10 @@
     display: flex;
     flex-direction: column;
     gap: 12px;                          /* matte between the player and the metadata */
-    /* Break out to a wide, contrasting featured banner, centred on the page; on
-       narrow screens it caps to the viewport minus the same gutter as the content
-       (--container-pad), so its edges match the hero images. */
-    width: min(900px, calc(100vw - 2 * var(--container-pad)));
+    /* Matches the hero-image width (--media-width), centred on the page; on narrow
+       screens it caps to the viewport minus the same gutter as the content
+       (--container-pad), so its edges line up with the hero images. */
+    width: min(var(--media-width), calc(100vw - 2 * var(--container-pad)));
     margin-block: 0 60px;
     margin-left: 50%;
     transform: translateX(-50%);
@@ -32,7 +32,7 @@
    stream as ambient letterbox bars — a wide banner that stays short. */
 .twitch-live-media {
     position: relative;
-    aspect-ratio: 5 / 2;             /* wide + short — keeps the card's height down */
+    aspect-ratio: 2.15 / 1;          /* wide + short letterbox — keeps the card's height down */
     overflow: hidden;                 /* clip the blurred thumbnail's overspill */
     border-radius: 16px;              /* concentric inside the 30px frame (minus the 14px matte) */
     corner-shape: squircle;
