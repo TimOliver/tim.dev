@@ -1188,16 +1188,16 @@ body > header::before {
 /* Top gap for article-bearing pages (home feed + posts + tag/archive). On desktop it
    keeps content below the sticky header's fade gradient (invisible over a white post,
    but it hazes the top of the dark live card); the header and its gradient shrink on
-   smaller screens, so the gap tightens too — 40 / 30 / 5. One value per breakpoint
+   smaller screens, so the gap tightens too — 50 / 35 / 5. One value per breakpoint
    keeps the home card and posts consistent (no shift clicking from the feed into a
    post). Scoped to main's .container (the footer also uses .container). */
 body:has(article) main .container {
-    margin-top: 40px;
+    margin-top: 50px;
     padding-top: 0;
 }
 
 @media (max-width: 1000px) {
-    body:has(article) main .container { margin-top: 30px; }
+    body:has(article) main .container { margin-top: 35px; }
 }
 @media (max-width: 720px) {
     body:has(article) main .container { margin-top: 5px; }
