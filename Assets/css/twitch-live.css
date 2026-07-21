@@ -14,7 +14,9 @@
     margin-block: 0 60px;
     margin-left: 50%;
     transform: translateX(-50%);
-    padding: 14px;                      /* the black matte around player + metadata */
+    padding: 14px 14px 12px;            /* black matte around player + metadata; a hair less at
+                                           the bottom so the Watch button nests concentrically into
+                                           the frame's bottom-right corner (see .twitch-live-watch) */
     background: #0b0b0f;
     border-radius: 30px;               /* matches the post hero images */
     corner-shape: squircle;
@@ -208,7 +210,10 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 4px 4px 6px;             /* aligns the metadata with the player edges */
+    padding: 1px 4px;                 /* 4px sides align the metadata with the player edges; the
+                                         1px top/bottom leaves the button equally spaced above and
+                                         below (the rest of its breathing room is the frame gap +
+                                         padding, tuned so top gap == bottom gap == 18px) */
 }
 .twitch-live-avatar-wrap {
     position: relative;
@@ -281,7 +286,9 @@
     font-weight: 700;
     color: #fff;
     background: #9146ff;
-    border-radius: 12px;
+    border-radius: 12px;              /* 30px frame radius − 18px gap = 12px → concentric with the
+                                         frame's bottom-right corner */
+    corner-shape: squircle;          /* match the frame's squircle so the nesting is a true concentric */
     text-decoration: none;
     transition: background 0.18s ease;
 }
