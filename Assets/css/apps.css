@@ -101,13 +101,6 @@
     margin-bottom: 2.5em;
 }
 
-/* Empty stage (no shots): 16:10 flat surface. Cap its height on short viewports
-   and narrow it (centred) to keep the ratio, so it doesn't fill the screen. */
-.app-detail-stage.is-empty {
-    width: min(100%, calc(var(--detail-media-max-h) * 16 / 10));
-    margin-inline: auto;
-}
-
 .app-detail-stage .app-shot {
     /* Shrink with the viewport on short screens (keeping the header + a peek of
        the description visible); capped at 460px on tall ones. width follows. */

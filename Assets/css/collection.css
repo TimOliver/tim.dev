@@ -30,6 +30,21 @@ body:has(.collection-detail) {
     margin-top: 40px;
 }
 
+/* On short viewports the whole detail column narrows (centred) so its aspect-ratio
+   hero fits vertically with the header and a peek of prose still on screen — the
+   column moves as one, not just the media. Width is driven off the hero's ratio
+   (16:10 for an empty app stage, 16:9 for the shot everywhere else); on tall
+   screens --detail-media-max-h is large, so neither term binds and the column
+   keeps its full width. */
+.collection-detail:has(.collection-detail-shot) {
+    max-width: min(100%, calc(var(--detail-media-max-h) * 16 / 9));
+    margin-inline: auto;
+}
+.collection-detail:has(.app-detail-stage.is-empty) {
+    max-width: min(100%, calc(var(--detail-media-max-h) * 16 / 10));
+    margin-inline: auto;
+}
+
 /* Centered page title + subtitle. Size/weight/alignment/colour come from the
    global .page-title / .page-subtitle rules; this only adjusts spacing,
    size and measure. */
@@ -173,10 +188,6 @@ body:has(.collection-detail) {
     overflow: hidden;
     border: 1px solid var(--border);
     margin-bottom: 2.5em;
-    /* The media inside is 16:9; cap its height on short viewports and let the
-       wrapper narrow (centred) to keep the ratio. */
-    width: min(100%, calc(var(--detail-media-max-h) * 16 / 9));
-    margin-inline: auto;
 }
 
 /* Sidebar links list (text links with a trailing arrow). */
