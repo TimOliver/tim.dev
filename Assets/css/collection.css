@@ -35,13 +35,14 @@ body:has(.collection-detail) {
    column moves as one, not just the media. Width is driven off the hero's ratio
    (16:10 for an empty app stage, 16:9 for the shot everywhere else); on tall
    screens --detail-media-max-h is large, so neither term binds and the column
-   keeps its full width. */
+   keeps its full width. The 850px floor stops the two-column body from collapsing
+   when the window gets very short — past that the hero just overflows and scrolls. */
 .collection-detail:has(.collection-detail-shot) {
-    max-width: min(100%, calc(var(--detail-media-max-h) * 16 / 9));
+    max-width: min(100%, max(850px, calc(var(--detail-media-max-h) * 16 / 9)));
     margin-inline: auto;
 }
 .collection-detail:has(.app-detail-stage.is-empty) {
-    max-width: min(100%, calc(var(--detail-media-max-h) * 16 / 10));
+    max-width: min(100%, max(850px, calc(var(--detail-media-max-h) * 16 / 10)));
     margin-inline: auto;
 }
 
