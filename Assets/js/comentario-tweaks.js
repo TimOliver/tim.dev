@@ -53,6 +53,23 @@
     });
   })();
 
+  /* ---- 1b. Singular comment count on the end-of-article links ----
+     Those links use a fixed " comments" suffix, so a single comment renders
+     "1 comments"; rewrite it to "1 comment". (The badge and heading counts show a
+     bare number, so they need no fix.) */
+  (function () {
+    var links = document.querySelectorAll('.post-link comentario-count');
+    if (!links.length) return;
+    function fix(el) {
+      if ((el.textContent || '').trim() === '1 comments') el.textContent = '1 comment';
+    }
+    Array.prototype.forEach.call(links, function (el) {
+      fix(el);  // in case the count resolved before this script ran
+      new MutationObserver(function () { fix(el); })
+        .observe(el, { childList: true, characterData: true, subtree: true });
+    });
+  })();
+
   // Everything below operates on the live comments widget — bail on pages that
   // only have count badges (the home feed) so no listeners/observers/polls are
   // left running against a widget that can never appear.

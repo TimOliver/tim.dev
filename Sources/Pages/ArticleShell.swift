@@ -98,11 +98,13 @@ enum ArticleShell {
         s += spriteIcon("share")
         s += #"<span class="post-link-label">Share</span></button>"#
 
-        // Comments: here the <comentario-count> carries visible " comments"
-        // text so the link reads as a label even before the count resolves.
+        // Comments: the <comentario-count> reads as a label ("Comments") before the
+        // count resolves and at zero; once resolved it becomes "N comments" (the
+        // singular "1 comments" is corrected to "1 comment" in comentario-tweaks.js,
+        // since Comentario's suffix can't pluralise).
         s += #"<a class="post-link" href="\#(path)#comments" aria-label="Comments">"#
         s += spriteIcon("comments")
-        s += #"<comentario-count path="\#(path)" suffix=" comments" placeholder="comments" zero-text="comments" error-text="comments"></comentario-count>"#
+        s += #"<comentario-count path="\#(path)" suffix=" comments" placeholder="Comments" zero-text="Comments" error-text="Comments"></comentario-count>"#
         s += "</a>"
         s += "</div>"
         return s
