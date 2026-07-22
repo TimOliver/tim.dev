@@ -18,6 +18,12 @@ body:has(.collection) {
    above — being later in the file is what makes it win.) */
 body:has(.collection-detail) {
     --page-width: 1250px;
+    /* Ceiling for the detail hero media's height: full viewport minus the room the
+       header takes plus a peek of the description below. On tall screens this term
+       never binds (media keeps its natural, content-width height); on short ones
+       (e.g. an iPad) the media caps here and narrows to keep its ratio, so the
+       header and a sliver of prose stay on screen. */
+    --detail-media-max-h: calc(100vh - 25rem);
 }
 
 .collection {
@@ -167,6 +173,10 @@ body:has(.collection-detail) {
     overflow: hidden;
     border: 1px solid var(--border);
     margin-bottom: 2.5em;
+    /* The media inside is 16:9; cap its height on short viewports and let the
+       wrapper narrow (centred) to keep the ratio. */
+    width: min(100%, calc(var(--detail-media-max-h) * 16 / 9));
+    margin-inline: auto;
 }
 
 /* Sidebar links list (text links with a trailing arrow). */
