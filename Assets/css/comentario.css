@@ -69,6 +69,13 @@
     background: var(--text);
 }
 
+/* A comment toolbar's vote button spins in place while its request is in flight,
+   and in that state it sits flush against the neighbouring Reply button. Give the
+   spinning tool button a little left breathing room so it doesn't read as cramped. */
+.comentario-root .comentario-btn-tool.comentario-spinner {
+    margin-left: 16px;
+}
+
 /* The dialog's solid-black primaries (Sign in / Sign up / Save) carry inverted
    labels, so their spinner inverts too… */
 .comentario-root .comentario-dialog .comentario-btn-primary.comentario-spinner::after {
