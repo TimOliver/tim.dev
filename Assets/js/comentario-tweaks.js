@@ -30,6 +30,15 @@
  *    providers carry a brand class (.comentario-btn-google) but generic-OIDC ones
  *    all share .comentario-btn-dark, so without the slug CSS can't tell Microsoft
  *    from a future LinkedIn to swap in the right brand glyph.
+ *
+ * 6. OAuth popup pre-open, so Safari doesn't block the sign-in window. Comentario
+ *    only calls window.open() two async hops after the provider button is clicked
+ *    (after the dialog's close animation, then a token fetch). Chrome's transient
+ *    activation tolerates that; Safari doesn't, blocks the window, and Comentario
+ *    falls into its "Popup blocked" / Retry dialog — whose Retry reuses the same
+ *    one-time token and fails with "Token is missing or invalid" once the user has
+ *    allowed the blocked window and signed in through it. We open a blank popup
+ *    synchronously in the click instead and hand it to Comentario when it asks.
  */
 (function () {
   'use strict';
@@ -254,5 +263,58 @@
         }
       }).observe(root, { childList: true, subtree: true });
     })();
+  })();
+
+  /* ---- 6. Pre-open the OAuth popup so Safari doesn't block it ----
+     A popup only survives Safari's blocker if window.open() runs synchronously
+     inside the user's click. So on a provider button click (capture phase, ahead
+     of Comentario's own handler) open a blank window right away, then shim
+     window.open(): when Comentario later asks for its auth URL, navigate our
+     window there and hand it back instead of opening a new one. Comentario then
+     polls that handle for closure exactly as it would its own. The shim is
+     one-shot and self-removing; any other window.open() call passes straight
+     through. This mirrors the fix that would go upstream (open first, fetch the
+     token second) without carrying a fork. */
+  (function () {
+    var FEATURES = 'popup,width=800,height=600'; // same as Comentario's own
+    var nativeOpen = window.open;
+    var pending = null;   // blank popup waiting for Comentario's window.open()
+    var timer = null;
+
+    function unshim() {
+      if (window.open === shimmedOpen) window.open = nativeOpen;
+      clearTimeout(timer);
+      timer = null;
+    }
+
+    // Give up on the pre-opened window: close it so a blank popup isn't left behind.
+    function abandon() {
+      if (pending && !pending.closed) pending.close();
+      pending = null;
+      unshim();
+    }
+
+    function shimmedOpen(url) {
+      var p = pending;
+      if (p && !p.closed && /\/api\/oauth\//.test(String(url))) {
+        pending = null;
+        unshim();
+        p.location.href = url;
+        return p;
+      }
+      return nativeOpen.apply(window, arguments);
+    }
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('.comentario-oauth-buttons .comentario-btn');
+      if (!btn) return;
+      abandon(); // stale leftover from an earlier attempt, if any
+      pending = nativeOpen.call(window, 'about:blank', '_blank', FEATURES);
+      if (!pending) return; // blocked even now (popups fully disabled): leave Comentario to its own dialog
+      window.open = shimmedOpen;
+      // If Comentario never asks for the window (token fetch failed, etc.), don't
+      // leave a blank one open forever.
+      timer = setTimeout(abandon, 20000);
+    }, true);
   })();
 })();
