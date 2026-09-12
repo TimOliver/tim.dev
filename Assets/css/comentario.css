@@ -438,9 +438,13 @@
 }
 
 /* Placeholder text — dim it to the secondary colour. Comentario colours the
-   "Add a comment" text at high specificity, so force it. */
+   "Add a comment" text at high specificity, so force it. Comentario also
+   centres it (flex:1 + justify-content/text-align center); start-align it so
+   it sits beside the leading glyph instead of floating mid-capsule. */
 .comentario-root .comentario-add-comment-host .comentario-add-comment-placeholder {
     color: var(--text-secondary) !important;
+    justify-content: flex-start;
+    text-align: left;
 }
 
 /* Comentario's i18n placeholder is just "Add a comment" (no trailing dots); append
