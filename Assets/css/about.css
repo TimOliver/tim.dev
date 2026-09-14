@@ -145,6 +145,18 @@ body:has(.about) {
     grid-template-columns: 1fr 3fr;
 }
 
+/* Mirror of --narrow: the wide prose column on the left, the narrow timeline on
+   the right. Lets the "Why Japan?" history block sit opposite "A Brief History". */
+.about-cols--narrow-reverse {
+    grid-template-columns: 3fr 1fr;
+}
+
+/* The variant alone decides which side the timeline sits on, independent of source
+   order: --narrow pins it to the narrow LEFT column, --narrow-reverse to the narrow
+   RIGHT column (the prose takes the wide side either way). */
+.about-cols--narrow > .about-timeline { order: -1; }
+.about-cols--narrow-reverse > .about-timeline { order: 1; }
+
 .about-cols h3 {
     font-size: 1.25em;
     font-weight: 700;
@@ -530,7 +542,7 @@ body:has(.about) {
 }
 
 .gallery-card {
-    flex: 0 0 clamp(260px, 72vw, 440px);
+    flex: 0 0 clamp(195px, 54vw, 330px);   /* 75% of the former 260/72vw/440 */
     min-width: 0;
     margin: 0;
 }
@@ -603,6 +615,22 @@ body:has(.about) {
        and Previously reads as too much dead space. */
     .about-cols {
         gap: 1.5em;
+    }
+
+    /* Tablet portrait (iPad mini is 744px): the 35px page gutter leaves the
+       prose stopping well short of the edge, and a 1fr timeline column (~160px)
+       wraps "Web development" onto two lines. Pull the gutter in to the phone
+       value and give the timeline a fixed 190px — enough for the longest h3 on
+       one line — so the prose keeps its measure and slides into the freed
+       margin instead of shrinking. The footer follows via --container-pad. */
+    body:has(.about) {
+        --container-pad: 20px;
+    }
+    .about-cols--narrow {
+        grid-template-columns: 190px 1fr;
+    }
+    .about-cols--narrow-reverse {
+        grid-template-columns: 1fr 190px;
     }
 
     /* Stack each Previously job's head: the narrow columns make the role wrap

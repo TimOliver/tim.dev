@@ -372,33 +372,39 @@
 // Embla Carousel: pointer drag (mouse + touch), arrow buttons, and snapping, without native scroll.
 // (.gallery-track) as the slide container.
 (function() {
-    var viewport = document.querySelector('.gallery-scroller');
-    if (!viewport || typeof EmblaCarousel === 'undefined') return;
-    var prev = document.querySelector('.gallery-arrow--prev');
-    var next = document.querySelector('.gallery-arrow--next');
+    if (typeof EmblaCarousel === 'undefined') return;
 
-    // Rest each slide one overhang-width in from the viewport edge so every
-    // snapped card sits flush with the content column, clear of the edge fade.
-    // The scroller is pulled out into the page margin (negative margin-inline
-    // = --overhang), so a card aligned to the viewport's own start edge lands
-    // out in that bleed, behind the gradient — which is what made the snap
-    // positions look arbitrary. Read the resolved margin-left (a real px value)
-    // and offset every snap inward by it. Reading the computed margin rather
-    // than recomputing the clamp keeps this locked to the CSS --overhang no
-    // matter how that's retuned; Embla calls it again on reInit (resize).
-    function startInset() {
-        return -(parseFloat(getComputedStyle(viewport).marginLeft) || 0);
-    }
-    var embla = EmblaCarousel(viewport, { align: startInset, containScroll: 'trimSnaps' });
+    // One page can hold several galleries (e.g. About has one per history
+    // section), so init each independently with its own viewport and arrows.
+    document.querySelectorAll('.gallery').forEach(function(gallery) {
+        var viewport = gallery.querySelector('.gallery-scroller');
+        if (!viewport) return;
+        var prev = gallery.querySelector('.gallery-arrow--prev');
+        var next = gallery.querySelector('.gallery-arrow--next');
 
-    function update() {
-        if (prev) prev.disabled = !embla.canScrollPrev();
-        if (next) next.disabled = !embla.canScrollNext();
-    }
-    if (prev) prev.addEventListener('click', function() { embla.scrollPrev(); });
-    if (next) next.addEventListener('click', function() { embla.scrollNext(); });
-    embla.on('select', update).on('reInit', update);
-    update();
+        // Rest each slide one overhang-width in from the viewport edge so every
+        // snapped card sits flush with the content column, clear of the edge fade.
+        // The scroller is pulled out into the page margin (negative margin-inline
+        // = --overhang), so a card aligned to the viewport's own start edge lands
+        // out in that bleed, behind the gradient — which is what made the snap
+        // positions look arbitrary. Read the resolved margin-left (a real px value)
+        // and offset every snap inward by it. Reading the computed margin rather
+        // than recomputing the clamp keeps this locked to the CSS --overhang no
+        // matter how that's retuned; Embla calls it again on reInit (resize).
+        function startInset() {
+            return -(parseFloat(getComputedStyle(viewport).marginLeft) || 0);
+        }
+        var embla = EmblaCarousel(viewport, { align: startInset, containScroll: 'trimSnaps' });
+
+        function update() {
+            if (prev) prev.disabled = !embla.canScrollPrev();
+            if (next) next.disabled = !embla.canScrollNext();
+        }
+        if (prev) prev.addEventListener('click', function() { embla.scrollPrev(); });
+        if (next) next.addEventListener('click', function() { embla.scrollNext(); });
+        embla.on('select', update).on('reInit', update);
+        update();
+    });
 })();
 
 // Apps page: in-place content swap (progressive enhancement). Each app is a
