@@ -238,4 +238,9 @@ struct TimDevSite: Site {
     /// Swift-defined (non-markdown) pages: About/Contact plus each collection's
     /// index page and the blog archive.
     var staticPages: [any StaticPage] = [About(), Archive(), Apps(), Code(), Art(), Contact(), Talks()]
+
+    /// Markdown renderer for Content/ — keeps every body heading instead of
+    /// letting Ignite drop the first one as a presumed duplicate title.
+    /// See ArticleMarkdownRenderer.
+    var articleRenderer: ArticleMarkdownRenderer.Type { ArticleMarkdownRenderer.self }
 }
