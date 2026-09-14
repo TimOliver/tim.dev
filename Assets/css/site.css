@@ -1272,6 +1272,13 @@ article section {
     margin-top: 1rem;
 }
 
+/* No hero: the body follows the badge row directly, so give it the same gap
+   the hero gets (--post-header-gap) instead of the 1rem section default —
+   a short image-less post otherwise sits visibly tighter under its pills. */
+article > .post-badges + section {
+    margin-top: var(--post-header-gap);
+}
+
 article ul,
 article ol {
     margin-block: 1.5em;
