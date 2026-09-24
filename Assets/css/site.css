@@ -65,6 +65,9 @@
     --pinned-gold: #E8B931;
     --border: #38383C;
     --border-secondary: rgba(255, 255, 255, 0.14);
+    /* Feed post separator peak: --border pulled toward the page (see the
+       article + article::before rule) so it reads quieter on near-black. */
+    --post-rule: color-mix(in srgb, #38383C 60%, #141414);
     --icon-filter: invert(1);
     --capsule-bg: rgba(32, 32, 32, 0.7);
     --capsule-border: rgba(255, 255, 255, 0.08);
@@ -184,13 +187,34 @@ article {
 }
 
 /* Home feed: stacked posts are separated by whitespace alone — generous
-   enough that the gap does the separating by itself. A hairline separator was
-   tried here (2026-07) and removed: any rule above the centred date/title
-   block fought with its clean, floating look. In-article <hr>s remain the
-   soft gradient rule above. Only matches the multi-post home page
-   (single-post pages have one <article>). */
+   enough that the gap does most of the separating; a fading gradient rule
+   (below) marks the boundary. Two other separators were tried and removed: a
+   full-width solid hairline (2026-07) fought the floating title block, and a
+   short centred 56px rule (2026-09) pulled the eye away from the next title.
+   Only matches the multi-post home page (single-post pages have one
+   <article>). */
 article + article {
     margin-top: var(--post-gap);
+    position: relative;
+}
+
+/* Post boundary: the in-article gradient rule reused between posts — it fades
+   into the page at both ends, so unlike the two rejected separators (a solid
+   hairline, a short centred rule) there's no hard edge under the next title
+   block and nothing for the eye to snag on. Spans the text measure, centred
+   in the gap. The itch it scratches: left-aligned body text followed by a
+   centred date read as one block with odd alignment. */
+article + article::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: calc(-0.5 * var(--post-gap));
+    width: min(var(--text-measure), 100%);
+    height: 1px;
+    transform: translate(-50%, -0.5px);
+    /* Peak colour: --border by default (light mode); the dark theme sets
+       --post-rule to a version pulled toward the page. */
+    background: linear-gradient(to right, var(--bg) 0%, var(--post-rule, var(--border)) 25%, var(--post-rule, var(--border)) 50%, var(--post-rule, var(--border)) 75%, var(--bg) 100%);
 }
 
 /* Tighten the rhythm on smaller screens; phones drop to a compact gap so the
