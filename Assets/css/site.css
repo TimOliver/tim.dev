@@ -147,19 +147,18 @@ hr {
     border-top: 1px solid var(--border);
 }
 
-/* In-article section break — the soft gradient rule from Template's
-   .article-separator: 2px, fading into the page background at both ends —
-   deliberately lighter than a solid hairline, so it reads as a breather
-   within a post rather than a post boundary (those are whitespace-only, see
-   the feed rules below). Scoped to the post-content <section> and excluding
-   .post-comments so the <hr>s Comentario injects at runtime (login dialog
-   dividers, etc.) keep their own styling rather than inheriting the gradient. */
+/* In-article section break — a plain solid hairline in --border-secondary.
+   Deliberately NOT the fading gradient: that rule is reserved for the boundary
+   BETWEEN posts on the home feed (article + article::before), so a reader can
+   tell "new section" from "new post" at a glance. Scoped to the post-content
+   <section> and excluding .post-comments so the <hr>s Comentario injects at
+   runtime (login dialog dividers, etc.) keep their own styling. */
 article > section:not(.post-comments) hr {
-    height: 1px;
+    height: 0;
     clear: both;
     border: 0;
+    border-top: 1px solid var(--border-secondary);
     margin: 2rem auto;
-    background: linear-gradient(to right, var(--bg) 0%, var(--border) 25%, var(--border) 50%, var(--border) 75%, var(--bg) 100%);
 }
 
 /* Gap between the post header's badge row and the hero image below it —
@@ -193,10 +192,11 @@ article + article {
     position: relative;
 }
 
-/* Post boundary: the in-article gradient rule reused between posts — it fades
-   into the page at both ends, so unlike the two rejected separators (a solid
-   hairline, a short centred rule) there's no hard edge under the next title
-   block and nothing for the eye to snag on. Spans the text measure, centred
+/* Post boundary: a fading gradient rule — used ONLY here, so it always means
+   "new post" (in-article <hr>s are solid hairlines). It fades into the page
+   at both ends, so unlike the two rejected separators (a solid hairline, a
+   short centred rule) there's no hard edge under the next title block and
+   nothing for the eye to snag on. Spans the text measure, centred
    in the gap. The itch it scratches: left-aligned body text followed by a
    centred date read as one block with odd alignment. */
 article + article::before {
