@@ -145,17 +145,8 @@ body:has(.about) {
     grid-template-columns: 1fr 3fr;
 }
 
-/* Mirror of --narrow: the wide prose column on the left, the narrow timeline on
-   the right. Lets the "Why Japan?" history block sit opposite "A Brief History". */
-.about-cols--narrow-reverse {
-    grid-template-columns: 3fr 1fr;
-}
-
-/* The variant alone decides which side the timeline sits on, independent of source
-   order: --narrow pins it to the narrow LEFT column, --narrow-reverse to the narrow
-   RIGHT column (the prose takes the wide side either way). */
+/* Pin the timeline to the narrow LEFT column regardless of source order. */
 .about-cols--narrow > .about-timeline { order: -1; }
-.about-cols--narrow-reverse > .about-timeline { order: 1; }
 
 .about-cols h3 {
     font-size: 1.25em;
@@ -181,6 +172,10 @@ body:has(.about) {
     margin: 0;
     padding-left: 28px;
     position: relative;
+    /* Size to the entries, not the grid row — otherwise the list stretches to
+       the prose column's height and its vertical line (::before) runs on past
+       the last entry into empty space. */
+    align-self: start;
 }
 
 .about-timeline::before {
@@ -188,7 +183,8 @@ body:has(.about) {
     position: absolute;
     left: 10px;
     top: 0.5em;
-    bottom: 0.5em;
+    /* Stops at the last caption's baseline rather than its line box bottom. */
+    bottom: 0.3em;
     width: 1px;
     background: var(--border);
     transform: translateX(-50%);
@@ -200,6 +196,12 @@ body:has(.about) {
 }
 
 .about-timeline li:last-child {
+    margin-bottom: 0;
+}
+
+/* The list is a grid item, so the last caption's paragraph margin can't
+   collapse out of it — drop it so the list (and its line) ends at the text. */
+.about-timeline li:last-child > :last-child {
     margin-bottom: 0;
 }
 
@@ -289,9 +291,7 @@ body:has(.about) {
     margin: 0 0 0.2em;
 }
 
-/* Card header row — title left, meta right, sharing a baseline. Same recipe
-   for Work entries and the hobby cards below. */
-.about-job-head,
+/* Card header row — title left, meta right, sharing a baseline (hobby cards). */
 .hobby-head {
     display: flex;
     align-items: baseline;
@@ -299,11 +299,9 @@ body:has(.about) {
     gap: 1em;
 }
 
-.about-job-meta {
-    font-size: 0.85em;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
+/* Previously entries: company on its own line, then role · years as an
+   .about-meta line beneath — the same shape as the Currently entries. (Years
+   were right-pinned once; they looked detached, worst on phones.) */
 
 .about-job p {
     margin: 0;
@@ -392,7 +390,7 @@ body:has(.about) {
     padding: 18px 22px;
 }
 
-/* .hobby-head shares the .about-job-head header-row recipe (see Work above). */
+/* .hobby-head: title left, meta right (see the header-row recipe above). */
 .hobby-card h3 {
     font-size: 1.5em;
     font-weight: 700;
@@ -628,20 +626,6 @@ body:has(.about) {
     }
     .about-cols--narrow {
         grid-template-columns: 190px 1fr;
-    }
-    .about-cols--narrow-reverse {
-        grid-template-columns: 1fr 190px;
-    }
-
-    /* Stack each Previously job's head: the narrow columns make the role wrap
-       while the right-pinned years detach. Put the years on their own line
-       below the company/role instead of fighting for space on the right. */
-    .about-job-head {
-        display: block;
-    }
-    .about-job-head .about-job-meta {
-        display: block;
-        margin-top: 0.15em;
     }
 }
 
