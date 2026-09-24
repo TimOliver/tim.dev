@@ -275,6 +275,25 @@ body:has(.collection-detail) {
 }
 
 /* Mobile — single column. */
+/* Tablet band: at iPad-portrait widths the fixed 300px sidebar plus the 3em
+   gap left the prose barely wider than the Details table. Narrow both so the
+   prose clearly leads. */
+@media (min-width: 720.02px) and (max-width: 1000px) {
+    /* Same move as the About page: pull the 35px page gutter in to the phone
+       value so the freed margin goes to the prose. The footer follows via
+       --container-pad. */
+    body:has(.collection-detail) {
+        --container-pad: 20px;
+    }
+    /* 260px keeps every Details row on one line at 18px (longest value today:
+       "Senior iOS Engineer"). Recheck all detail pages if a longer value is
+       added — the table has no room to wrap gracefully. */
+    .collection-detail-body {
+        grid-template-columns: minmax(0, 1fr) 260px;
+        gap: 2em;
+    }
+}
+
 @media (max-width: 720px) {
     .collection-grid {
         grid-template-columns: 1fr;

@@ -133,17 +133,12 @@ p {
     /* ~one line-height of space between paragraphs. em (not rem) so it
        scales with the responsive body size instead of staying a fixed 40px. */
     margin: 0 auto 1.5em;
-    /* Avoid orphan words on the last line + tidy the rag. Progressive
-       enhancement — ignored by browsers that don't support it. */
-    text-wrap: pretty;
-}
-
-/* On phones, let the main article text wrap normally — in a narrow column
-   `pretty` can leave awkwardly short lines / an uneven rag. */
-@media (max-width: 720px) {
-    article p {
-        text-wrap: wrap;
-    }
+    /* Body text wraps normally — deliberately NOT `text-wrap: pretty`. Safari
+       implements `pretty` by evening the rag across the whole paragraph, so it
+       breaks every line early and leaves a wide gap on the right, worst in
+       narrow columns (it needed per-page opt-outs before being dropped in
+       2026-09). Headings keep `balance` (see h1–h6). For a one-off orphan, use
+       a non-breaking space or `balance` on that element. */
 }
 
 hr {
@@ -955,10 +950,22 @@ body > header::before {
     pointer-events: none;
 }
 
+/* Tablet band: page content stays at the 18px base. The body drops to 17px
+   here (next rule) only so the full nav fits above the hamburger breakpoint;
+   letting the reading text shrink too left tablet with the smallest type above
+   phone size inside the same 740px measure as desktop — up to ~91 characters
+   a line. Header and footer sit outside <main>, so they keep the 17px. */
+@media (min-width: 720.02px) and (max-width: 1000px) {
+    main {
+        font-size: 18px;
+    }
+}
+
 @media (max-width: 1000px) {
     /* Mid-width (tablet) scale-down: body + header drop a notch so the full nav
        isn't cramped above the 720px hamburger breakpoint (e.g. iPad mini
-       portrait). Slightly below the 18px base. */
+       portrait). Slightly below the 18px base. Page content is put back to
+       18px just below (tablet band only) — the drop is for the nav's sake. */
     body {
         font-size: 17px;
     }
