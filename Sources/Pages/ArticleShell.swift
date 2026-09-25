@@ -113,7 +113,7 @@ enum ArticleShell {
     /// Renders `article` to the shared HTML shell and writes it out as an
     /// `Include`, keyed by the post's path. The feed and page variants are
     /// cached under distinct keys so the two renders never collide.
-    static func include(for article: Article, context: Context) -> Include {
+    static func include(for article: Article, context: Context, eagerHero: Bool = false) -> Include {
 
         // Feed and page variants differ, so they must not share one file.
         let suffix = context == .feed ? ".feed" : ""
@@ -121,7 +121,7 @@ enum ArticleShell {
         return CollectionRenderer.include(
             key: key,
             dir: "posts",
-            html: htmlString(for: article, context: context)
+            html: htmlString(for: article, context: context, eagerHero: eagerHero)
         )
     }
 
@@ -130,7 +130,7 @@ enum ArticleShell {
     /// transformed body, and the end-of-article links. The standalone post page
     /// (`.page`) additionally appends the Comentario thread; the feed (`.feed`)
     /// links its date/title through to that page instead.
-    static func htmlString(for article: Article, context: Context) -> String {
+    static func htmlString(for article: Article, context: Context, eagerHero: Bool = false) -> String {
 
         // Escape the path once — it is reused across the header link, badge
         // row, and footer links below.
@@ -159,17 +159,17 @@ enum ArticleShell {
         // meaning). Emitted OUTSIDE the <section> below so the
         // `.post-badges + img.hero` adjacency selector still matches.
         if let image = article.image, !image.isEmpty {
-            s += #"<img class="hero" src="\#(escape(image))" alt="">"#
+            s += ArticleImages.hero(image, eager: context == .page || eagerHero)
         }
 
         // Body transform pipeline, innermost call first: expand Instagram
         // embeds, rescue Markdown images that leaked as literal text, group
         // consecutive images into lightbox galleries, then wrap the remaining
-        // single images in lightbox anchors. Order matters — grids must run
+        // single images in lightbox anchors and adds responsive metadata. Order matters — grids must run
         // before the single-image wrap so runs aren't wrapped one image at a time.
-        let body = wrapStandaloneImages(
+        let body = ArticleImages.enhance(
             groupImageGrids(
-                fixBareImages(InstagramEmbed.transform(article.text)),
+                ArticleContent.normalizedHTML(article.text),
                 galleryPrefix: CollectionRenderer.key(for: article.path, dir: "posts")
             )
         )
@@ -285,106 +285,6 @@ enum ArticleShell {
             out += "</div>"
             return out
         }
-    }
-
-    /// Wraps every remaining standalone article image in a lightbox anchor so
-    /// all images opt into full-screen viewing by default, and adds native
-    /// lazy-loading where the markdown compiler didn't (WP figures already
-    /// carry it). Runs AFTER groupImageGrids, so only singles remain: plain
-    /// markdown image paragraphs and single WP figures (whose visible
-    /// figcaption doubles as the lightbox caption). Bare `data-lightbox`
-    /// (no value) = standalone, per lightbox3. Heroes are emitted outside
-    /// <section> and stay unwrapped — the `.post-badges + img.hero` adjacency
-    /// selector depends on that.
-    private static func wrapStandaloneImages(_ html: String) -> String {
-
-        // Plain markdown image paragraphs.
-        var out = replaceRegex(html, #"<p>(<img\s[^>]+>)</p>"#) { m, ns in
-            "<p>\(lightboxAnchor(imgTag: ns.substring(with: m.range(at: 1)), caption: nil))</p>"
-        }
-
-        // Single WP figures — keep the figure + visible caption, wrap the img.
-        // (?s) lets `.` span newlines so a multi-line figcaption still matches.
-        out = replaceRegex(out, #"(?s)(<figure class="wp-block-image[^"]*">)(<img\s[^>]+>)(?:<figcaption>(.*?)</figcaption>)?(</figure>)"#) { m, ns in
-            let open = ns.substring(with: m.range(at: 1))
-            let img = ns.substring(with: m.range(at: 2))
-            let cap = m.range(at: 3).location == NSNotFound ? nil : ns.substring(with: m.range(at: 3))
-            let close = ns.substring(with: m.range(at: 4))
-            let figcaption = cap.map { "<figcaption>\($0)</figcaption>" } ?? ""
-            return open + lightboxAnchor(imgTag: img, caption: cap) + figcaption + close
-        }
-        return out
-    }
-
-    /// Builds the standalone lightbox anchor for an existing `<img>` tag,
-    /// ensuring the image itself lazy-loads. Caption precedence: explicit
-    /// (figcaption) → the image's alt text.
-    private static func lightboxAnchor(imgTag: String, caption: String?) -> String {
-
-        // Already inside a lightbox anchor (has data-lightbox) → leave it be.
-        guard imgTag.range(of: "data-lightbox") == nil else { return imgTag }
-
-        // The anchor needs the image's own src as its href; without one there
-        // is nothing to open, so return the tag untouched.
-        var src = ""
-        _ = replaceRegex(imgTag, #"src="([^"]*)""#) { m, ns in
-            src = ns.substring(with: m.range(at: 1)); return ""
-        }
-        guard !src.isEmpty else { return imgTag }
-
-        // Caption precedence: an explicit figcaption wins; otherwise fall back
-        // to the image's own alt text.
-        var cap = caption ?? ""
-        if cap.isEmpty {
-            _ = replaceRegex(imgTag, #"alt="([^"]*)""#) { m, ns in
-                cap = ns.substring(with: m.range(at: 1)); return ""
-            }
-        }
-
-        // Attribute-safe plain text: strip any inline tags, then quote-escape
-        // (the source is already HTML-encoded, so only `"` needs handling).
-        cap = replaceRegex(cap, #"<[^>]+>"#) { _, _ in "" }
-            .replacingOccurrences(of: "\"", with: "&quot;")
-
-        // Add native lazy-loading only if the tag doesn't already declare it.
-        var img = imgTag
-        if img.range(of: "loading=") == nil {
-            img = replaceRegex(img, #"<img\s"#) { _, _ in #"<img loading="lazy" "# }
-        }
-
-        // Bare `data-lightbox` (no value) marks this as a standalone, per lightbox3.
-        return #"<a href="\#(src)" data-lightbox data-caption="\#(cap)">\#(img)</a>"#
-    }
-
-    /// Converts Markdown image syntax that leaked into the compiled HTML as
-    /// literal text into real `<img>` tags. Old WordPress posts wrap images in
-    /// raw HTML (`<figure class="wp-block-image">![](…)</figure>`); because the
-    /// `![](…)` sits inside a raw-HTML block, the Markdown parser never renders
-    /// it. Properly-parsed images are already `<img>`, so only the leaked ones
-    /// match here.
-    private static func fixBareImages(_ html: String) -> String {
-        var out = html
-        // Linked thumbnails first: [![alt](thumb "title")](full) → <a><img></a>.
-        // WordPress's classic thumbnail→full-size pairs: when the link target
-        // is itself an image, open it in the lightbox instead of navigating.
-        out = replaceRegex(out, #"\[!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)\]\(([^)\s]+)(?:\s+"[^"]*")?\)"#) { m, ns in
-            let alt = ns.substring(with: m.range(at: 1))
-            let thumb = ns.substring(with: m.range(at: 2))
-            let full = ns.substring(with: m.range(at: 3))
-            // Only route to the lightbox when the link target is itself an
-            // image; otherwise it's an ordinary link and should navigate.
-            let isImage = [".jpg", ".jpeg", ".png", ".gif", ".webp"]
-                .contains { full.lowercased().hasSuffix($0) }
-            let lightbox = isImage ? #" data-lightbox data-caption="\#(escape(alt))""# : ""
-            return #"<a href="\#(escape(full))"\#(lightbox)><img src="\#(escape(thumb))" alt="\#(escape(alt))" loading="lazy"></a>"#
-        }
-        // Then standalone images, with an optional Markdown title: ![alt](src "title").
-        out = replaceRegex(out, #"!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)"#) { m, ns in
-            let alt = ns.substring(with: m.range(at: 1))
-            let src = ns.substring(with: m.range(at: 2))
-            return #"<img src="\#(escape(src))" alt="\#(escape(alt))" loading="lazy">"#
-        }
-        return out
     }
 
     /// Compiled patterns, keyed by pattern string. replaceRegex runs ~10× per

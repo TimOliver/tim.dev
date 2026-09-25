@@ -2,16 +2,14 @@
 """
 Strip ALL EXIF / metadata from images under Assets/img/posts/.
 
-- JPEG: re-saved with quality='keep' (preserves original quantization tables,
-  no perceptible quality loss) and no exif bytes.
+- JPEG: applies orientation before stripping, retaining quantization tables,
+  chroma sampling, ICC profile and progressive encoding.
 - PNG:  re-saved with no text/iTXt/zTXt chunks.
 - GIF:  not touched (no standard privacy metadata).
 
-Why we strip everything rather than just GPS: Pillow can't selectively edit
-EXIF, and adding piexif as a dep for one tag isn't worth it. Make/Model and
-capture timestamps are minor info but harmless to drop. Orientation tags are
-also dropped — historical web JPEGs from a 2008–2021 blog have already been
-pre-rotated by browsers/editors of the era, so this isn't a practical issue.
+Orientation is applied to the pixels before metadata is discarded, so new
+phone photos stay the right way up. ICC colour profiles are retained. JPEG
+rewrites still recompress pixels; an already-clean image is never rewritten.
 
 Idempotent: re-running on already-stripped images is a no-op (no EXIF found).
 
@@ -24,16 +22,18 @@ Usage:
 from __future__ import annotations
 
 import sys
+import shutil
+import tempfile
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageOps, JpegImagePlugin
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TARGET = REPO_ROOT / "Assets/img/posts"
 
 
 def has_metadata(img: Image.Image) -> bool:
-    if "exif" in img.info:
+    if any(key in img.info for key in ("exif", "xmp", "comment", "XML:com.adobe.xmp")):
         return True
     if hasattr(img, "_getexif") and img._getexif():
         return True
@@ -48,64 +48,70 @@ def has_metadata(img: Image.Image) -> bool:
 def strip(path: Path) -> bool:
     """Returns True if the file was rewritten."""
     suffix = path.suffix.lower()
-    if suffix in {".jpg", ".jpeg"}:
-        with Image.open(path) as img:
-            if not has_metadata(img):
-                return False
-            img.load()
-            img.info.pop("exif", None)
-            # quality='keep' preserves the JPEG's existing quantization tables —
-            # no re-encoding artifacts. The ICC profile and progressive encoding
-            # must be passed explicitly: Pillow's JPEG writer only reads them
-            # from save() kwargs, so omitting them silently drops the colour
-            # profile (desaturating Display-P3 iPhone photos) and re-encodes
-            # progressive files as baseline.
-            img.save(
-                path,
-                format="JPEG",
-                quality="keep",
-                optimize=False,
-                icc_profile=img.info.get("icc_profile"),
-                progressive=img.info.get("progressive", False),
-            )
-        return True
-    if suffix == ".png":
-        with Image.open(path) as img:
-            if not has_metadata(img):
-                return False
-            img.load()
-            # Strip text chunks; Pillow won't write them unless we pass pnginfo.
-            img.save(path, format="PNG")
-        return True
-    return False
+    if suffix not in {".jpg", ".jpeg", ".png"}:
+        return False
+    with Image.open(path) as img:
+        if not has_metadata(img):
+            return False
+        if getattr(img, "is_animated", False):
+            raise ValueError("Animated PNG metadata must be removed with an animation-aware editor")
+        img.load()
+        save_options = {"icc_profile": img.info.get("icc_profile")}
+        if suffix in {".jpg", ".jpeg"}:
+            # ImageOps returns a plain Image without JPEG's format/quantization
+            # attributes, so quality='keep' cannot be used after transposition.
+            # Pass the source encoder settings explicitly instead.
+            save_options.update(format="JPEG", qtables=img.quantization,
+                                subsampling=JpegImagePlugin.get_sampling(img),
+                                optimize=False, progressive=img.info.get("progressive", False))
+        else:
+            save_options.update(format="PNG", optimize=True)
+            if "transparency" in img.info:
+                save_options["transparency"] = img.info["transparency"]
+        clean = ImageOps.exif_transpose(img)
+        clean.info.clear()
+        # Write alongside the source and replace only after a complete save.
+        # A failed encoder/disk write must not corrupt the author's original.
+        with tempfile.NamedTemporaryFile(dir=path.parent, prefix=".strip-exif-", delete=False) as tmp:
+            temporary = Path(tmp.name)
+        try:
+            clean.save(temporary, **save_options)
+            shutil.copymode(path, temporary)
+            temporary.replace(path)
+        finally:
+            temporary.unlink(missing_ok=True)
+    return True
 
 
-def main() -> None:
+def main() -> int:
     if len(sys.argv) > 1:
-        files = [Path(arg) for arg in sys.argv[1:] if Path(arg).is_file()]
+        files = [Path(arg) for arg in sys.argv[1:]]
         base: Path | None = None
     else:
         if not TARGET.exists():
             print(f"error: {TARGET} not found", file=sys.stderr)
-            sys.exit(1)
+            return 1
         files = sorted(p for p in TARGET.rglob("*") if p.is_file())
         base = TARGET
 
     stripped = []
+    errors = 0
     for p in files:
         try:
             if strip(p):
                 stripped.append(p.relative_to(base) if base else p)
         except Exception as e:
+            errors += 1
             display = p.relative_to(base) if base else p
             print(f"  error processing {display}: {e}", file=sys.stderr)
     if base is None and not stripped:
-        return  # quiet when invoked from the hook with nothing to do
+        return int(errors > 0)  # quiet when there was nothing to do
     print(f"scanned: {len(files)} files")
     print(f"stripped: {len(stripped)}")
     for p in stripped:
         print(f"  {p}")
+    return int(errors > 0)
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

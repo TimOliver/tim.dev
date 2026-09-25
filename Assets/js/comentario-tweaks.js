@@ -82,7 +82,37 @@
   // Everything below operates on the live comments widget — bail on pages that
   // only have count badges (the home feed) so no listeners/observers/polls are
   // left running against a widget that can never appear.
-  if (!document.querySelector('comentario-comments')) return;
+  var widget = document.querySelector('comentario-comments');
+  if (!widget) return;
+
+  // Share one bounded readiness observer. A blocked/offline external script
+  // may never render its root; stop waiting after 20 seconds without polling.
+  var readyRoot = null;
+  var readyCallbacks = [];
+  var rootObserver = null;
+  var rootTimeout = null;
+  var rootUnavailable = false;
+  function whenRootReady(callback) {
+    if (readyRoot) { callback(readyRoot); return; }
+    if (rootUnavailable) return;
+    readyCallbacks.push(callback);
+    function checkRoot() {
+      readyRoot = widget.querySelector('.comentario-root');
+      if (!readyRoot) return;
+      if (rootObserver) rootObserver.disconnect();
+      clearTimeout(rootTimeout);
+      readyCallbacks.splice(0).forEach(function (apply) { apply(readyRoot); });
+    }
+    checkRoot();
+    if (readyRoot || rootObserver) return;
+    rootObserver = new MutationObserver(checkRoot);
+    rootObserver.observe(widget, { childList: true, subtree: true });
+    rootTimeout = setTimeout(function () {
+      rootObserver.disconnect();
+      readyCallbacks = [];
+      rootUnavailable = true;
+    }, 20000);
+  }
 
   /* ---- 2. Clear the editor draft after a successful post ---- */
 
@@ -202,14 +232,10 @@
     requestAnimationFrame(function () { applyScheduled = false; applyAnonStatus(); });
   }
 
-  // The widget element exists on this page (checked above), so this poll always
-  // terminates — comentario.js creates .comentario-root inside it on render.
-  (function watchRoot() {
-    var root = document.querySelector('.comentario-root');
-    if (!root) { setTimeout(watchRoot, 150); return; }
+  whenRootReady(function (root) {
     new MutationObserver(scheduleApply).observe(root, { childList: true, subtree: true });
     applyAnonStatus();
-  })();
+  });
 
   /* ---- 4. Collapsed-editor refocus ----
      Comentario's "Add a comment" host expands on focus, but after Cancel it stays
@@ -253,16 +279,15 @@
     // is scoped through it), and a document-wide subtree observer would fire
     // for lightbox insertions, the share live-region, and every other page
     // mutation for the life of the page.
-    (function watchDialog() {
-      var root = document.querySelector('.comentario-root');
-      if (!root) { setTimeout(watchDialog, 150); return; }
+    whenRootReady(function (root) {
+      apply(root);
       new MutationObserver(function (mutations) {
         for (var i = 0; i < mutations.length; i++) {
           var added = mutations[i].addedNodes;
           for (var j = 0; j < added.length; j++) apply(added[j]);
         }
       }).observe(root, { childList: true, subtree: true });
-    })();
+    });
   })();
 
   /* ---- 6. Pre-open the OAuth popup so Safari doesn't block it ----

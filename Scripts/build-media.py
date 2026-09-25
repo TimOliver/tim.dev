@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Generates responsive variants + LQIP blur placeholders for collection media
+Generates responsive variants + LQIP blur placeholders for post and collection media
 and writes media-manifest.json at the repo root.
 
-Sources are the images you drop into Assets/img/{apps,code,art,talks}/.
+Sources are the images you drop into Assets/img/{posts,apps,code,art,talks}/.
 For each source this emits <stem>@<width>w<ext> variants beside it, computes a
 ~20px-wide base64 blur placeholder, and records the intrinsic dimensions (so
 cards reserve space and never shift as images load).
@@ -15,7 +15,10 @@ into Build/ and shipped.
 Idempotent: re-runs skip variants that are newer than their source, and
 generated variants are never themselves treated as sources.
 
-Run after adding collection images:  python3 Scripts/build-media.py
+GIFs and animated PNGs retain their original animation and receive metadata
+without resized variants. Original source files are never modified.
+
+Run after adding or changing images:  python3 Scripts/build-media.py
 """
 
 from __future__ import annotations
@@ -25,18 +28,19 @@ import io
 import json
 import re
 import sys
+import tempfile
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ASSETS = REPO_ROOT / "Assets"
-COLLECTIONS = ("apps", "code", "art", "talks")
+COLLECTIONS = ("posts", "apps", "code", "art", "talks")
 MANIFEST = REPO_ROOT / "media-manifest.json"
 
 VARIANT_WIDTHS = (400, 800, 1200, 1600)
 LQIP_WIDTH = 20
-SOURCE_SUFFIXES = {".png", ".jpg", ".jpeg"}
+SOURCE_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif"}
 
 # Matches only this script's own <stem>@<width>w<ext> suffix — NOT any "@" in
 # the stem. A looser "@" in path.stem check (the old behaviour) also matches
@@ -66,8 +70,8 @@ def validate_source(path: Path) -> None:
     (e.g. the @2x retina convention) would otherwise be silently skipped as
     if it were a generated variant.
     """
-    name = path.name
-    if " " in name or "," in name or "@" in name:
+    name = path.relative_to(ASSETS).as_posix()
+    if any(char.isspace() for char in name) or "," in name or "@" in name:
         print(
             f"error: {path.relative_to(REPO_ROOT)} has a space, comma, or '@' "
             "in its filename. Rename it (spaces/commas break srcset parsing; "
@@ -86,9 +90,13 @@ def site_path(path: Path) -> str:
 def lqip_data_uri(im: Image.Image) -> str:
     """A ~20px-wide PNG of the image, inlined as a base64 data URI."""
     height = max(1, round(im.height * LQIP_WIDTH / im.width))
-    tiny = im.resize((LQIP_WIDTH, height), Image.LANCZOS)
+    tiny = im.convert("RGBA" if "transparency" in im.info or "A" in im.getbands() else "RGB")
+    tiny = tiny.resize((LQIP_WIDTH, height), Image.Resampling.LANCZOS)
+    # Keep the colour profile, but never copy EXIF/XMP into an inline thumbnail.
+    icc_profile = tiny.info.get("icc_profile")
+    tiny.info.clear()
     buf = io.BytesIO()
-    tiny.save(buf, format="PNG", optimize=True)
+    tiny.save(buf, format="PNG", optimize=True, icc_profile=icc_profile)
     return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
 
 
@@ -102,25 +110,45 @@ def build_variants(
     source asks for anymore (a replaced or renamed source otherwise leaves
     its old variants behind as dead bytes that still ship into Build/).
     """
+    # GIFs keep their original frames, timing and palette; the manifest still
+    # supplies dimensions and an original-only srcset. Animated PNGs follow the
+    # same rule. Do not accidentally publish a flattened animation as a variant.
+    if src.suffix.lower() == ".gif" or getattr(im, "is_animated", False):
+        return [(im.width, site_path(src))]
+
     # Screenshots with baked-in device chrome are transparent PNGs — keep PNG.
     # Re-containering them as JPEG would fill the bezel's transparency black.
     is_png = src.suffix.lower() == ".png"
     out: list[tuple[int, str]] = []
 
     for width in VARIANT_WIDTHS:
-        if width >= im.width:
-            continue  # never upscale; the source itself covers this width
+        if width >= im.width * 0.9:
+            continue  # never upscale or emit a near-duplicate of the original
         dst = src.with_name(f"{src.stem}@{width}w{src.suffix}")
-        expected.add(dst)
-        if not dst.exists() or dst.stat().st_mtime < src.stat().st_mtime:
+        newest_input = max(src.stat().st_mtime, Path(__file__).stat().st_mtime)
+        if not dst.exists() or dst.stat().st_mtime < newest_input:
             height = max(1, round(im.height * width / im.width))
-            resized = im.resize((width, height), Image.LANCZOS)
-            if is_png:
-                resized.save(dst, format="PNG", optimize=True)
-            else:
-                resized.convert("RGB").save(
-                    dst, format="JPEG", quality=80, progressive=True, optimize=True
-                )
+            mode = "RGBA" if is_png and ("transparency" in im.info or "A" in im.getbands()) else "RGB"
+            resized = im.convert(mode).resize((width, height), Image.Resampling.LANCZOS)
+            icc_profile = im.info.get("icc_profile")
+            resized.info.clear()
+            with tempfile.NamedTemporaryFile(dir=dst.parent, prefix=".media-", delete=False) as tmp:
+                temporary = Path(tmp.name)
+            try:
+                if is_png:
+                    resized.save(temporary, format="PNG", optimize=True, icc_profile=icc_profile)
+                else:
+                    resized.save(temporary, format="JPEG", quality=80, progressive=True,
+                                 optimize=True, icc_profile=icc_profile)
+                temporary.chmod(0o644)
+                temporary.replace(dst)
+            finally:
+                temporary.unlink(missing_ok=True)
+        # Antialiasing a tiny flat-colour PNG can increase its byte size. Keep
+        # the original as the candidate instead of offering a costlier derivative.
+        if dst.stat().st_size >= src.stat().st_size:
+            continue
+        expected.add(dst)
         out.append((width, site_path(dst)))
 
     # The source is always the largest candidate.
@@ -161,8 +189,12 @@ def main() -> None:
             if src.suffix.lower() not in SOURCE_SUFFIXES or is_variant(src):
                 continue
             validate_source(src)
-            with Image.open(src) as im:
-                im.load()
+            with Image.open(src) as original:
+                original.load()
+                # Match how a browser displays EXIF-oriented originals without
+                # modifying them. Metadata stripping remains a separate step.
+                animated = getattr(original, "is_animated", False)
+                im = original if animated else ImageOps.exif_transpose(original)
                 variants = build_variants(src, im, expected_variants)
                 manifest[site_path(src)] = {
                     "width": im.width,
@@ -173,7 +205,16 @@ def main() -> None:
 
     prune_orphaned_variants(expected_variants)
 
-    MANIFEST.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    with tempfile.NamedTemporaryFile(mode="w", dir=MANIFEST.parent, prefix=".media-manifest-",
+                                     encoding="utf-8", delete=False) as tmp:
+        temporary = Path(tmp.name)
+        try:
+            tmp.write(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+            tmp.close()
+            temporary.chmod(0o644)
+            temporary.replace(MANIFEST)
+        finally:
+            temporary.unlink(missing_ok=True)
     print(f"media-manifest.json: {len(manifest)} image(s)")
 
 

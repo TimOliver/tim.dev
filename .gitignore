@@ -56,6 +56,9 @@ Includes/_code/
 Includes/_art/
 Includes/_talks/
 
+# Responsive derivatives are reproducible; build-media.py regenerates them.
+Assets/img/**/*@[0-9]*w.*
+
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However

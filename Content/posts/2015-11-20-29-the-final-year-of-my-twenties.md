@@ -64,7 +64,9 @@ In June, I travelled back to San Francisco to work directly with everyone else a
 > 
 > </div>
 
-<script async="" defer="defer" src="//platform.instagram.com/en_US/embeds.js"></script>Though incredibly tiring by the end (I slept SO well the following weekend XD), I had an absolutely fantastic week in San Francisco. One of the main highlights was definitely getting the unexpected chance to meet [Marco Arment](https://en.wikipedia.org/wiki/Marco_Arment), one of the most prominent (and nicest) iOS developers out there. 😀
+<script async="" defer="defer" src="//platform.instagram.com/en_US/embeds.js"></script>
+
+Though incredibly tiring by the end (I slept SO well the following weekend XD), I had an absolutely fantastic week in San Francisco. One of the main highlights was definitely getting the unexpected chance to meet [Marco Arment](https://en.wikipedia.org/wiki/Marco_Arment), one of the most prominent (and nicest) iOS developers out there. 😀
 
 > <div style="padding: 8px;"><div style="background: #F8F8F8; line-height: 0; margin-top: 40px; padding: 50.0% 0; text-align: center; width: 100%;"></div>[Got a photo with @marcoarment. This trip was worth it. XD](https://www.instagram.com/p/3u_lO3syb3/) A photo posted by Tim Oliver (@timoliver) on <time datetime="2015-06-10T03:54:21+00:00" style="font-family: Arial,sans-serif; font-size: 14px; line-height: 17px;">Jun 9, 2015 at 8:54pm PDT</time>
 > 

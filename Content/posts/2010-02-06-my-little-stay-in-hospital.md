@@ -37,7 +37,9 @@ After the 5th day, I was able to (VERY slowly) get out of my bed and make it to 
 
 <div class="wp-caption alignright" id="attachment_210" style="width: 310px">![Tim's Hospital Release](/img/posts/2010/02/tim_hospital_release.jpg)Taken just before going home. The epically terrible posture is because it actually hurt to stand up straight at the time. ^\_^;
 
-</div>About a week after the surgery, I took a photo of the wound. 😀  
+</div>
+
+About a week after the surgery, I took a photo of the wound. 😀<br>
 [Don’t click this if you’re squeamish!!](/img/posts/2010/02/tims_epic_wound.jpg "Tim's Kidney wound, 1.5 weeks after surgery")  
 (This is a picture of my left side from my back. The red dot is one of the drainage holes. Doc told me since he had to get around the back of the kidney, he had to cut a huge hole haha.)
 

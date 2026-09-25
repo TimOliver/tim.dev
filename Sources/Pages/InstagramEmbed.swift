@@ -24,7 +24,13 @@ enum InstagramEmbed {
     /// output of the previous one — the dead embed script is stripped first,
     /// then each container form (figure, align-center div, blockquote, iframe)
     /// is reduced to the post shortcode and re-emitted as one clean iframe.
-    static func transform(_ html: String) -> String {
+    static func transform(_ html: String, forFeed: Bool = false) -> String {
+
+        // Feed readers cannot run the iframe sizing script. Keep every post
+        // accessible with a plain permalink in that context.
+        let render: (String) -> String = { code in
+            forFeed ? #"<p><a href="https://www.instagram.com/p/\#(code)/">View this post on Instagram</a></p>"# : embed(code)
+        }
 
         // Rewritten in place; each `replace` folds its result back into `out`
         // so the passes compose.
@@ -33,18 +39,24 @@ enum InstagramEmbed {
         // Drop the dead Instagram embed script(s).
         out = replace(out, #"<script\b[^>]*instagram\.com[^>]*>.*?</script>"#) { _ in "" }
 
+        // Rewrite existing frames before creating replacements below, so a
+        // newly emitted iframe is not wrapped in a second .ig-embed container.
+        out = replace(out, #"<iframe\b[^>]*>(?:\s*</iframe>)?"#) { frame in
+            frame.contains("instagram.com/p/") ? shortcode(in: frame).map(render) : nil
+        }
+
         // Newer WordPress figure-wrapped embeds. Matching the whole
         // `<figure>…</figure>` is self-bounding (stops at the first </figure>),
         // so it can't over-consume an adjacent embed.
         out = replace(out, #"<figure\b[^>]*is-provider-instagram[^>]*>.*?</figure>"#) { fig in
-            shortcode(in: fig).map(embed)
+            shortcode(in: fig).map(render)
         }
 
         // Same placeholder, but wrapped in `<div align="center">` (no figure).
         // Anchored on the inner padding placeholder, ending at the two closing
         // divs (padding + align), so it stays within the one embed.
         out = replace(out, #"<div align="center">\s*(?:&gt;|>)?\s*<div style="padding:[^"]*">.*?\]\(https?://(?:www\.)?instagram\.com/p/[A-Za-z0-9_-]+[^)]*\)(?:\s*\[[^\]]*\]\([^)]*\))?(?:[^<]*<time\b[^>]*>.*?</time>)?\s*(?:(?:&gt;|>)\s*)*</div>\s*</div>"#) { block in
-            shortcode(in: block).map(embed)
+            shortcode(in: block).map(render)
         }
 
         // Mangled blockquote embeds → clean iframe (non-Instagram quotes kept).
@@ -53,12 +65,7 @@ enum InstagramEmbed {
         // ordinary markdown quote that merely links an Instagram post must
         // stay a quote.
         out = replace(out, #"<blockquote\b[^>]*>.*?</blockquote>"#) { block in
-            block.contains(#"<div style="padding:"#) ? shortcode(in: block).map(embed) : nil
-        }
-
-        // Pre-existing Instagram iframes → normalized clean iframe.
-        out = replace(out, #"<iframe\b[^>]*>(?:\s*</iframe>)?"#) { frame in
-            frame.contains("instagram.com/p/") ? shortcode(in: frame).map(embed) : nil
+            block.contains(#"<div style="padding:"#) ? shortcode(in: block).map(render) : nil
         }
 
         return out

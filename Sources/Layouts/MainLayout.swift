@@ -38,6 +38,8 @@ struct MainLayout: Layout {
         page.description.isEmpty ? (site.description ?? "") : page.description
     }
 
+    private var canonicalURL: String { SiteURL.canonicalPage(page.url) }
+
     /// Absolute URL for the page's social image, if it has one (post heroes
     /// are site-relative paths like /img/posts/…).
     private var socialImageURL: String? {
@@ -57,8 +59,12 @@ struct MainLayout: Layout {
         page.url.path.split(separator: "/").first.map(String.init) ?? ""
     }
 
-    /// True on the home page, where the URL has no first path component.
-    private var isHome: Bool { section.isEmpty }
+    /// ErrorPage exposes Ignite's current render error. The page metadata alone
+    /// cannot distinguish 404.html from Home because both receive the base URL.
+    private var isErrorPage: Bool { NotFound().error.statusCode >= 400 }
+
+    /// True on the home page, excluding Ignite's root-URL error-page render.
+    private var isHome: Bool { section.isEmpty && !isErrorPage }
 
     /// Blog posts live under year directories (/2008/… through /2021/…).
     private var isPost: Bool {
@@ -104,15 +110,19 @@ struct MainLayout: Layout {
             MetaTag(characterSet: "UTF-8")
             MetaTag(name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover")
             Title(pageTitle)
-            // Search + link-preview metadata. Every page gets a description
-            // and canonical; posts add their hero as the social image.
+            // Error pages have no canonical identity: a host can serve this
+            // document at any missing URL. Keep it out of search results.
             MetaTag(name: "description", content: metaDescription)
-            MetaLink(href: page.url.absoluteString, rel: "canonical")
+            if isErrorPage {
+                MetaTag(name: "robots", content: "noindex")
+            } else {
+                MetaLink(href: canonicalURL, rel: "canonical")
+                MetaTag(property: "og:url", content: canonicalURL)
+            }
             MetaTag(property: "og:site_name", content: "tim.dev")
             MetaTag(property: "og:type", content: isPost ? "article" : "website")
             MetaTag(property: "og:title", content: pageTitle)
             MetaTag(property: "og:description", content: metaDescription)
-            MetaTag(property: "og:url", content: page.url.absoluteString)
             if let socialImageURL {
                 MetaTag(property: "og:image", content: socialImageURL)
             }

@@ -43,7 +43,7 @@ struct Home: StaticPage {
         // Render each surviving post through the shared shell in feed context,
         // so a card here matches the same post on the tag/archive listings.
         ForEach(Array(recent)) { article in
-            ArticleShell.include(for: article, context: .feed)
+            ArticleShell.include(for: article, context: .feed, eagerHero: article.path == recent.first?.path)
         }
     }
 }

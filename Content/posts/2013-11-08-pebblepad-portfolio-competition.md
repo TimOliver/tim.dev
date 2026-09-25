@@ -20,7 +20,9 @@ Sounding very intrigued (Especially at the premise of a new iPad!), I asked the 
 
 So with that all squared away, I built a portfolio in PebblePad and submitted it to the competition. It took a few days of reading PebblePad documents and watching YouTube tutorial videos, and a few extra days to actually design and implement the portfolio, but in the end, I was able to produce this:
 
-![PebblePad Portfolio](/img/posts/2013/11/PebblePadPortfolio.jpg)[/eportfolio](/eportfolio)
+![PebblePad Portfolio](/img/posts/2013/11/PebblePadPortfolio.jpg)
+
+The portfolio was originally available at /eportfolio.
 
 I was actually quite amazed at PebblePad’s capabilities. The editor had a BIT of a WordPress vibe to it, but it was even more simplified to the point where there was not even a hint of doing any HTML writing in there. I thought this was an excellent thing for users looking to quickly build a portfolio without needing to know any web editing. 🙂
 

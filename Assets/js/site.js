@@ -43,9 +43,16 @@
         }, { rootMargin: '200px' })
         : null;
 
-    document.querySelectorAll('img.lqip[data-srcset]').forEach(function(img) {
-        if (io) io.observe(img); else loadReal(img);
-    });
+    function initialize() {
+        // Release removed collection images before observing the replacement.
+        if (io) io.disconnect();
+        document.querySelectorAll('img.lqip[data-srcset]').forEach(function(img) {
+            if (img.srcset) return;
+            if (io) io.observe(img); else loadReal(img);
+        });
+    }
+    initialize();
+    document.addEventListener('collection:swapped', initialize);
 })();
 
 (function() {
@@ -154,9 +161,18 @@
     var staggerStep = 35;
 
     var animating = false;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var mobileMenu = window.matchMedia('(max-width: 720px)');
 
     function setExpanded(expanded) {
         label.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        checkbox.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+        var closedBar = getClosedBar();
+        if (closedBar) {
+            // Opacity alone leaves the duplicate About/Archive links focusable.
+            closedBar.inert = expanded && mobileMenu.matches;
+            closedBar.setAttribute('aria-hidden', closedBar.inert ? 'true' : 'false');
+        }
     }
 
     setExpanded(checkbox.checked);
@@ -175,6 +191,34 @@
     function getClosedBar() {
         return capsule.querySelector('.menu-closed-bar');
     }
+
+    function resetMenu() {
+        // A completed navigation can interrupt an opening animation. Cancel all
+        // header animations and clear the same inline state their finish handlers
+        // normally release, so no old callback can reopen the menu afterward.
+        capsule.getAnimations({ subtree: true }).forEach(function(animation) {
+            animation.cancel();
+        });
+        getColumnItems().concat([getIconsRow()]).forEach(function(item) {
+            if (!item) return;
+            item.style.opacity = '';
+            item.style.transform = '';
+        });
+        capsule.style.height = '';
+        capsule.style.overflow = '';
+        label.style.pointerEvents = '';
+        animating = false;
+        checkbox.checked = false;
+        setExpanded(false);
+    }
+
+    document.addEventListener('collection:before-swap', resetMenu);
+    document.addEventListener('keydown', function(event) {
+        if (event.key !== 'Escape' || !checkbox.checked || !mobileMenu.matches) return;
+        resetMenu();
+        checkbox.focus();
+    });
+    mobileMenu.addEventListener('change', resetMenu);
 
     // Swap hamburger <-> X icons + cross-fade label background. Returns
     // the three animation handles so the caller can cancel them.
@@ -212,6 +256,10 @@
         }
 
         setExpanded(checkbox.checked);
+
+        // CSS already describes both final states; skip WAAPI entirely when
+        // motion is reduced, including all per-item delays and icon transforms.
+        if (reduceMotion.matches) return;
 
         if (checkbox.checked) {
             animateOpen();
@@ -407,106 +455,153 @@
     });
 })();
 
-// Apps page: in-place content swap (progressive enhancement). Each app is a
-// real page at /apps/<slug>/ that works without JS; this intercepts in-section
-// navigation, fetches the target page, swaps only the .container contents, and
-// keeps real URLs via the History API (so back/forward, refresh, and direct
-// links all work). Any failure falls back to a normal navigation.
+// Collection pages: preserve in-section content fades and real permalinks.
+// Different sections use normal navigation so their assets load together.
 (function() {
-    // The page content is a `.container` div inside <main> (class is
-    // "ig-main-content container"), so target `main .container`, NOT
-    // `main.container` (which matches nothing).
     var container = document.querySelector('main .container');
     if (!container || !window.history || !window.fetch || !window.DOMParser) return;
 
-    // Only operate on Apps/Code/Art/Talks pages (grid or a detail page).
-    function isCollectionPath(path) {
+    function collectionSection(path) {
+        var match = path.match(/^\/(apps|code|art|talks)\//);
+        if (!match) return null;
         return /^\/(apps|code|art|talks)\/$/.test(path)
             || /^\/(apps|code|talks)\/[^/]+\/$/.test(path)
-            || /^\/art\/[^/]+\/[^/]+\/$/.test(path);
+            || /^\/art\/[^/]+\/[^/]+\/$/.test(path) ? match[1] : null;
     }
-    // A collection ITEM detail page (apps/code/talks: 2-deep; art: 3-deep) — NOT
-    // a grid index. The content fade is reserved for navigating into an item, so
-    // moving between section grids (Apps ↔ Code via nav) doesn't crossfade.
     function isDetailPath(path) {
         return /^\/(apps|code|talks)\/[^/]+\/$/.test(path)
             || /^\/art\/[^/]+\/[^/]+\/$/.test(path);
     }
-    if (!isCollectionPath(location.pathname)) return;
+    var section = collectionSection(location.pathname);
+    if (!section) return;
 
-    // Represent the initial page in history so the first back press is real.
-    history.replaceState({ apps: true }, '', location.href);
+    var sequence = 0;
+    var controller = null;
+    var positions = Object.create(null);
+    var entrySequence = 0;
+    function newEntry() {
+        return { collection: true, key: Date.now() + ':' + (++entrySequence), scroll: [0, 0] };
+    }
+    var currentEntry = history.state && history.state.collection ? history.state : newEntry();
+    history.replaceState(currentEntry, '', location.href);
+    // Only suspend native restoration while a Back/Forward fetch is pending.
+    // Initial loads, reloads and full-page navigations retain browser behavior.
+    window.addEventListener('pagehide', function() { history.scrollRestoration = 'auto'; });
 
-    function swapTo(url, push, fade) {
-        return fetch(url, { headers: { 'X-Requested-With': 'fetch' } })
+    function rememberPosition() {
+        positions[currentEntry.key] = [window.scrollX, window.scrollY];
+        currentEntry.scroll = positions[currentEntry.key];
+    }
+
+    function updateMetadata(doc) {
+        document.title = doc.title;
+        var selector = 'link[rel="canonical"], meta[name="description"], meta[property^="og:"], meta[name^="twitter:"]';
+        document.head.querySelectorAll(selector).forEach(function(node) { node.remove(); });
+        doc.head.querySelectorAll(selector).forEach(function(node) {
+            document.head.appendChild(node.cloneNode(true));
+        });
+    }
+
+    function hashTarget(hash) {
+        if (!hash) return null;
+        try { return document.getElementById(decodeURIComponent(hash.slice(1))); }
+        catch (err) { return null; }
+    }
+
+    function swapTo(url, push, fade, destinationEntry) {
+        var request = ++sequence;
+        if (controller) controller.abort();
+        controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+        var options = { headers: { 'X-Requested-With': 'fetch' } };
+        if (controller) options.signal = controller.signal;
+        return fetch(url, options)
             .then(function(resp) {
                 if (!resp.ok) throw new Error('bad status ' + resp.status);
+                // A server redirect can cross into a section requiring other assets.
+                if (resp.url) {
+                    var finalURL = new URL(resp.url, location.href);
+                    if (finalURL.origin !== location.origin || collectionSection(finalURL.pathname) !== section) {
+                        throw new Error('redirect outside collection');
+                    }
+                }
                 return resp.text();
             })
             .then(function(htmlText) {
+                if (request !== sequence) return;
                 var doc = new DOMParser().parseFromString(htmlText, 'text/html');
                 var incoming = doc.querySelector('main .container');
                 if (!incoming) throw new Error('no container in response');
+                if (push) {
+                    rememberPosition();
+                    // During a pending Back request, the address already names
+                    // another entry while this DOM still belongs to currentEntry.
+                    if (history.state && history.state.key === currentEntry.key) {
+                        history.replaceState(currentEntry, '', location.href);
+                    }
+                    currentEntry = newEntry();
+                    history.pushState(currentEntry, '', url);
+                } else {
+                    currentEntry = destinationEntry || newEntry();
+                    history.replaceState(currentEntry, '', url);
+                }
+                document.dispatchEvent(new Event('collection:before-swap'));
                 container.innerHTML = incoming.innerHTML;
-                // Fade only when navigating INTO an item (fade === true): a fresh
-                // node gets the class so the animation runs. Grid↔grid nav and
-                // back-links swap without a crossfade.
+                updateMetadata(doc);
                 if (fade) {
                     var root = container.querySelector('.collection');
                     if (root) root.classList.add('collection-swapped');
                 }
-                if (push) history.pushState({ apps: true }, '', url);
-                window.scrollTo(0, 0);
+                var heading = container.querySelector('h1') || container;
+                heading.setAttribute('tabindex', '-1');
+                heading.focus({ preventScroll: true });
+                var position = positions[currentEntry.key] || currentEntry.scroll || [0, 0];
+                var target = hashTarget(new URL(url, location.href).hash);
+                if (push && target) target.scrollIntoView({ behavior: 'instant', block: 'start' });
+                else window.scrollTo({ left: position[0], top: position[1], behavior: 'instant' });
+                history.scrollRestoration = 'auto';
+                document.dispatchEvent(new Event('collection:swapped'));
             })
-            .catch(function() {
-                // Fallback: hard navigation always gets the user somewhere.
+            .catch(function(error) {
+                // Aborted/late requests must never replace the latest destination.
+                if (request !== sequence || error.name === 'AbortError') return;
                 window.location.href = url;
             });
     }
 
-    // In-page hash links (the jump-nav chips → #section) get an explicit,
-    // controlled smooth-scroll. Handling them here — rather than letting the
-    // native anchor jump run — avoids a race where the URL-hash change and the
-    // swap/popstate machinery briefly scroll the page back to the top.
-    var reduceMotion = window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.addEventListener('click', function(e) {
         if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey ||
             e.shiftKey || e.altKey) return;
         var a = e.target.closest('a');
-        if (!a) return;
+        if (!a || a.hasAttribute('download') || (a.target && a.target !== '_self') ||
+            a.origin !== location.origin) return;
         var href = a.getAttribute('href');
-        if (!href || href.charAt(0) !== '#' || href.length < 2) return;
-        var target = document.getElementById(href.slice(1));
-        if (!target) return;
-        e.preventDefault();
-        target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-        history.replaceState(history.state, '', href);
-    });
+        if (!href) return;
 
-    // Intercept clicks on same-origin /apps/ links (cards + "Back to Apps").
-    document.addEventListener('click', function(e) {
-        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey ||
-            e.shiftKey || e.altKey) return;
-        var a = e.target.closest('a');
-        if (!a) return;
-        var href = a.getAttribute('href');
-        if (!href || a.target === '_blank' || a.origin !== location.origin) return;
-        // In-page hash links are handled by the smooth-scroll listener above.
-        if (href.charAt(0) === '#') return;
-        if (!isCollectionPath(a.pathname)) return;
+        // Keep jump chips on the current page out of the fetch/history machinery.
+        if (a.pathname === location.pathname && a.search === location.search && a.hash) {
+            var target = hashTarget(a.hash);
+            if (!target) return;
+            e.preventDefault();
+            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            target.scrollIntoView({ behavior: reduce ? 'instant' : 'smooth', block: 'start' });
+            history.replaceState(currentEntry, '', a.href);
+            return;
+        }
+        if (href.charAt(0) === '#' || collectionSection(a.pathname) !== section) return;
         e.preventDefault();
-        // Fade only when the destination is an item detail page (clicking a
-        // card), not when moving between section grids via the nav.
         swapTo(a.href, true, isDetailPath(a.pathname));
     });
 
-    // Back/forward: swap to whatever URL history lands on (within /apps/);
-    // outside the section, let the browser do a normal load.
-    window.addEventListener('popstate', function() {
-        if (isCollectionPath(location.pathname)) {
-            swapTo(location.href, false);
+    window.addEventListener('popstate', function(event) {
+        // popstate precedes native scroll restoration; prevent a restore onto
+        // the outgoing content, then apply it once the destination is inserted.
+        history.scrollRestoration = 'manual';
+        rememberPosition();
+        if (collectionSection(location.pathname) === section) {
+            swapTo(location.href, false, false, event.state);
         } else {
+            ++sequence;
+            if (controller) controller.abort();
             window.location.reload();
         }
     });
@@ -571,11 +666,8 @@
 // delegation, so it survives the content-swap re-inserting the index. With JS
 // off the full grid simply shows.
 (function() {
-    // The grid only exists on /talks/, but the collection swap can carry the
-    // user there from any collection page — gate on both so the document-level
-    // listeners below aren't installed on the ~200 pages that can never show it.
-    if (!document.querySelector('.talks-grid') &&
-        !/^\/(apps|code|art|talks)\//.test(location.pathname)) return;
+    // The talks index can also appear after a same-section detail-page swap.
+    if (!/^\/talks\//.test(location.pathname)) return;
 
     var YEAR_BUCKETS = {
         '2023-26': [2023, 2026],
@@ -613,6 +705,8 @@
         var empty = document.querySelector('.talks-empty');
         if (empty) empty.hidden = visible !== 0;
         grid.classList.toggle('hidden', visible === 0);
+        var status = document.querySelector('.talks-results');
+        if (status) status.textContent = visible + (visible === 1 ? ' talk' : ' talks') + ' found.';
     }
 
     document.addEventListener('click', function(e) {
@@ -623,6 +717,7 @@
         var sibs = row.querySelectorAll('.talks-filter');
         Array.prototype.forEach.call(sibs, function(s) {
             s.classList.toggle('is-active', s === btn);
+            s.setAttribute('aria-pressed', s === btn ? 'true' : 'false');
         });
         apply();
     });

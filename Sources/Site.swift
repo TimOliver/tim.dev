@@ -24,7 +24,7 @@ struct IgniteWebsite {
             // read and rewrite the files it just produced. buildFeeds scopes
             // and splits the RSS; stripIgniteCore removes the unused bundle.
             try await site.publish()
-            try buildFeeds()
+            try buildFeeds(siteURL: site.url)
             try stripIgniteCore()
         } catch {
             // Fail loud: a zero exit here would let a deploy script ship a
@@ -97,7 +97,7 @@ struct IgniteWebsite {
     /// blog post) would top the feed. Post-process /feed.xml down to dated
     /// blog posts (paths starting /YYYY/), cap the item count, and derive the
     /// per-category feeds from the same item pool.
-    static func buildFeeds(maxItems: Int = 20) throws {
+    static func buildFeeds(siteURL: URL, maxItems: Int = 20) throws {
 
         // Read back the feed.xml Ignite just wrote; everything below rewrites
         // this one file and derives the per-category feeds from its items.
@@ -115,9 +115,8 @@ struct IgniteWebsite {
         let header = String(xml[..<firstItem.lowerBound])
         let tail = String(xml[channelEnd.lowerBound...])
 
-        // Items are emitted as contiguous <item>…</item> blocks. Slice them out
-        // by hand rather than via an XML parser so each block round-trips
-        // byte-for-byte — no re-serialisation that could disturb Ignite's markup.
+        // Items are emitted as contiguous <item>…</item> blocks. Retain their
+        // XML structure while repairing permalinks and legacy body content.
         var items: [String] = []
         var cursor = firstItem.lowerBound
         while let start = xml.range(of: "<item>", range: cursor..<channelEnd.lowerBound),
@@ -127,14 +126,13 @@ struct IgniteWebsite {
         }
 
         // Blog posts live at /YYYY/…; collection items live at /apps/… etc.
-        // Ignite double-appends the trailing slash on item URLs (path already
-        // ends in "/", then URL.appending adds another) — normalise it so
-        // guid/link match the canonical page URL.
+        // Normalize content with the same repairs used by article pages.
+        // Feed-specific rendering uses ordinary links for interactive embeds
+        // and absolute URLs so entries work independently of the website.
         let blogItems = items.filter {
             $0.range(of: #"<link>https://tim\.dev/\d{4}/"#, options: .regularExpression) != nil
         }.map {
-            $0.replacingOccurrences(of: "//</guid>", with: "/</guid>")
-                .replacingOccurrences(of: "//</link>", with: "/</link>")
+            ArticleContent.normalizedFeedItem($0, siteURL: siteURL)
         }
 
         /// Assembles one feed file from the shared header/tail plus a slice of

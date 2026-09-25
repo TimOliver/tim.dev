@@ -11,22 +11,23 @@
 #
 set -euo pipefail
 
-# Newline-separated list of staged image files under Assets/.
-staged=$(git diff --cached --name-only --diff-filter=AM -z \
-    | tr '\0' '\n' \
-    | grep -iE '^Assets/.*\.(jpe?g|png)$' \
-    || true)
+# Preserve git's NUL separators, including filenames with spaces or newlines.
+# Arrays/read -d work with the Bash 3.2 shipped by macOS.
+staged=()
+while IFS= read -r -d '' path; do
+    case "$path" in
+        Assets/*.[jJ][pP][gG]|Assets/*.[jJ][pP][eE][gG]|Assets/*.[pP][nN][gG])
+            staged+=("$path") ;;
+    esac
+done < <(git diff --cached --name-only --diff-filter=AM -z)
 
-if [[ -z "$staged" ]]; then
+if [[ ${#staged[@]} -eq 0 ]]; then
     exit 0
 fi
 
-count=$(printf '%s\n' "$staged" | wc -l | tr -d ' ')
+count=${#staged[@]}
 echo "pre-commit: stripping EXIF from $count staged image(s)..."
 
-# Pass paths to the strip script and re-stage on success. NUL-delimited
-# through xargs -0 — plain xargs splits on any whitespace, so a filename
-# containing a space would be silently skipped by the strip and then break
-# the re-stage. (BSD xargs has no -d, hence the tr round-trip.)
-printf '%s\n' "$staged" | tr '\n' '\0' | xargs -0 python3 Scripts/strip-exif.py
-printf '%s\n' "$staged" | tr '\n' '\0' | xargs -0 git add
+# set -e prevents re-staging or committing when any image fails processing.
+python3 Scripts/strip-exif.py "${staged[@]}"
+git add -- "${staged[@]}"

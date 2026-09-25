@@ -50,4 +50,4 @@ Finally, if you’re still disappointed about the Pokémon Company’s decision 
 - On a bit more of a direct note (if you’re up for some writing), contact the Pokémon Company directly and tell them that you are disappointed in their decision to shut down all of the fan-made apps.  
     If the feedback I’ve heard is anything, they definitely take fan feedback seriously. Just remember, BE POLITE. They extended a very nice courtesy to me, and they deserve the same in return. The email address is feedback\[AT\]pokemon\[DOT\]com
 
-<div>Anyway, from this point on, I’ve got the design and protoype for [my next app ](/2012/01/13/introducing-icomics/)more-or-less down now, so I’m going to be focusing on that. This one’s going to be a paid one, so I plan to do all of my homework this time. XD</div>
+Anyway, from this point on, I’ve got the design and protoype for [my next app](/2012/01/13/introducing-icomics/) more-or-less down now, so I’m going to be focusing on that. This one’s going to be a paid one, so I plan to do all of my homework this time. XD

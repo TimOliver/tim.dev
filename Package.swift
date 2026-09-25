@@ -13,5 +13,8 @@ let package = Package(
         .executableTarget(
             name: "IgniteStarter",
             dependencies: ["Ignite"]),
+        .testTarget(
+            name: "IgniteStarterTests",
+            dependencies: ["IgniteStarter"]),
     ]
 )

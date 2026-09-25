@@ -94,9 +94,9 @@ extension TalksRenderer {
         s += #"<div class="talks-filter-row">"#
         s += #"<span class="talks-filter-label">Topic</span>"#
         s += #"<div class="talks-filter-pills">"#
-        s += #"<button type="button" class="talks-filter talks-filter-topic is-active" data-topic="all">All</button>"#
+        s += #"<button type="button" class="talks-filter talks-filter-topic is-active" data-topic="all" aria-pressed="true">All</button>"#
         for topic in topicList {
-            s += #"<button type="button" class="talks-filter talks-filter-topic" data-topic="\#(escape(topic.lowercased()))">\#(escape(topic))</button>"#
+            s += #"<button type="button" class="talks-filter talks-filter-topic" data-topic="\#(escape(topic.lowercased()))" aria-pressed="false">\#(escape(topic))</button>"#
         }
         s += "</div>"  // talks-filter-pills
         s += "</div>"  // talks-filter-row (topic)
@@ -108,10 +108,10 @@ extension TalksRenderer {
         s += #"<div class="talks-filter-row">"#
         s += #"<span class="talks-filter-label">Year</span>"#
         s += #"<div class="talks-filter-pills">"#
-        s += #"<button type="button" class="talks-filter talks-filter-year is-active" data-year="all">All</button>"#
+        s += #"<button type="button" class="talks-filter talks-filter-year is-active" data-year="all" aria-pressed="true">All</button>"#
         let buckets = [("2023-26", "2023–26"), ("2019-22", "2019–22"), ("2015-18", "2015–18"), ("2011-14", "2011–14")]
         for (id, label) in buckets {
-            s += #"<button type="button" class="talks-filter talks-filter-year" data-year="\#(id)">\#(label)</button>"#
+            s += #"<button type="button" class="talks-filter talks-filter-year" data-year="\#(id)" aria-pressed="false">\#(label)</button>"#
         }
         s += "</div>"  // talks-filter-pills
         s += "</div>"  // talks-filter-row (year)
@@ -141,6 +141,7 @@ extension TalksRenderer {
         s += "</div>"  // collection-grid
 
         // Empty state — shown by site.js when filters match nothing.
+        s += #"<p class="talks-results visually-hidden" role="status" aria-live="polite"></p>"#
         s += #"<p class="talks-empty" hidden>No talks match your filters.</p>"#
 
         // Fixed back-to-top button (fades in on scroll; shared helper).
