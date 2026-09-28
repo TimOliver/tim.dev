@@ -1,17 +1,3 @@
-// iPad detection for site.css's `html.is-ipad` rules. Safari on iPad reports
-// itself as a Mac (platform "MacIntel") in most contexts, so the touch-point
-// count is the tell; narrow "iPhone mode" windows report "iPad" outright.
-// Used to scope the sticky-capsule offset that keeps it clear of Safari's
-// collapsing toolbar (see #header-content in site.css) to iPads only.
-(function() {
-    try {
-        var p = navigator.platform || '';
-        if (/iPad/.test(p) || (p === 'MacIntel' && navigator.maxTouchPoints > 1)) {
-            document.documentElement.classList.add('is-ipad');
-        }
-    } catch (e) { /* detection is best-effort */ }
-})();
-
 // LQIP swap: each <img.lqip> ships with an inline tiny base64 PNG as
 // its initial `src` and a responsive `data-srcset` (+ `data-sizes`).
 // When the image scrolls near the viewport, we hand the data attrs

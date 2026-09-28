@@ -806,17 +806,21 @@ body > header::before {
         padding: 8px 8px 8px 23px;
         gap: 12px;
         position: absolute;
-        /* Safari's compact toolbar floats over narrow iPad pages as it
-           collapses. Follow the reclaimed dynamic viewport height so this
-           absolutely positioned capsule remains below it (the live site scopes
-           this to iPads via html.is-ipad and grows the header scrim by the
-           same amount — see Assets/css/site.css). */
         top: 12px;
-        top: calc(12px + clamp(0px, calc(100dvh - 100svh), 20px));
         left: 16px;
         right: 16px;
         width: auto;
         margin: 0;
+    }
+
+    /* Keep one fixed, worst-case toolbar clearance throughout scrolling.
+       lvh and svh do not change when Safari expands or collapses its chrome. */
+    html.is-ipad {
+        --chrome-shift: clamp(0px, calc(100lvh - 100svh), 20px);
+    }
+
+    html.is-ipad #header-content {
+        top: calc(12px + var(--chrome-shift));
     }
 
     #menu {
@@ -956,6 +960,12 @@ body > header::before {
 
     main .container {
         padding: 0 20px;
+    }
+
+    /* Match the live site's tighter first-content tuck on phones while
+       preserving the additional compact-toolbar clearance reserved on iPad. */
+    html:not(.is-ipad) body:has(article) main .container {
+        margin-top: max(0px, calc(clamp(10px, 4dvh, 56px) - 20px));
     }
 
     h1 {

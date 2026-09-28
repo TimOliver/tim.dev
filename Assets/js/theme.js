@@ -7,6 +7,19 @@
 // MutationObserver (toggle changes) + matchMedia listener (OS pref).
 (function() {
     var root = document.documentElement;
+
+    // Apply the narrow-iPad Safari layout class before first paint. Modern
+    // iPadOS commonly reports MacIntel; multiple touch points disambiguate it
+    // from a Mac. Keeping this in the synchronous head script avoids a late
+    // capsule-position jump when site.js loads at the end of the body.
+    try {
+        var platform = navigator.platform || '';
+        if (/iPad/.test(platform) ||
+            (platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+            root.classList.add('is-ipad');
+        }
+    } catch (e) { /* detection is best-effort */ }
+
     var darkQuery = window.matchMedia
         ? window.matchMedia('(prefers-color-scheme: dark)')
         : { matches: false };

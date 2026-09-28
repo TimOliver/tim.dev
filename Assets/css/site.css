@@ -1066,27 +1066,18 @@ body > header::before {
         width: auto;
         margin: 0;
     }
-    /* iPad only (html.is-ipad, set by site.js): in a narrow iPadOS Safari
-       window the collapsing toolbar floats OVER the top of the page — the
-       page's edge doesn't move — so drop the capsule by the amount of chrome
-       currently collapsed. 100dvh − 100svh is exactly that (0 at rest, the
-       collapsed strip's height once scrolled, animating between), capped at
-       the ~20px the compact pill actually overlaps (36px overshot by ~18). Not applied on iPhone: its collapsing
-       chrome doesn't overlay the page top, so the shift would be a regression
-       there. Positions the absolutely-placed capsule itself — padding on the
-       parent header wouldn't move it. */
+    /* iPad only (html.is-ipad, set before first paint by theme.js): in a
+       narrow iPadOS Safari window the compact toolbar can float over the top
+       of the page. Reserve its worst-case overlap for the entire scroll so
+       the capsule never moves as the toolbar expands or collapses. Unlike
+       dvh, lvh and svh are stable while scrolling; their difference is capped
+       at the measured ~20px overlap. Not applied on iPhone, whose collapsing
+       chrome does not overlay the page top. */
     html.is-ipad {
-        --chrome-shift: clamp(0px, calc(100dvh - 100svh), 20px);
+        --chrome-shift: clamp(0px, calc(100lvh - 100svh), 20px);
     }
     html.is-ipad #header-content {
         top: calc(12px + var(--chrome-shift));
-    }
-    /* The capsule moved but the header's scrim didn't: extend it by the same
-       amount so the strip between pill and capsule stays solid page colour
-       rather than showing the first line of the post. Pseudo only — the
-       header's own box (and the page layout below it) doesn't change. */
-    html.is-ipad body > header::before {
-        bottom: calc(-1 * var(--chrome-shift));
     }
 
     #menu {
@@ -1299,6 +1290,13 @@ body:has(article) main .container:has(.twitch-live:not([hidden])) {
     body:has(article) main .container:has(.twitch-live:not([hidden])) { margin-top: 35px; }
 }
 @media (max-width: 720px) {
+    /* The iPhone has no compact-toolbar overlap to reserve, so tuck the first
+       post 20px closer to the header. Keep --post-gap itself unchanged: it
+       still controls the rhythm between posts and remains untouched on iPad. */
+    html:not(.is-ipad) body:has(article) main .container {
+        margin-top: calc(var(--post-gap) - 20px);
+    }
+
     body:has(article) main .container:has(.twitch-live:not([hidden])) { margin-top: 5px; }
 }
 
