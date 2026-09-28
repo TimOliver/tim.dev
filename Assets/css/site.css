@@ -483,7 +483,13 @@ body > header {
 body > header::before {
     content: '';
     position: absolute;
-    inset: 0;
+    /* Extend the scrim well above the header. iOS Safari's translucent toolbar
+       (compact tab bar, Stage Manager) shows the page layer that has scrolled
+       past the top of the viewport, blurred — with the scrim stopping at the
+       header's top edge, that's post text peeking through the chrome above
+       the capsule. Painting --bg 200px further up puts plain background there
+       instead. Off-screen everywhere else, so it costs nothing. */
+    inset: -200px 0 0;
     background-color: var(--bg);
     /* The bar is a solid plateau; the fade below it is a colour-matched
        drop shadow, not a gradient mask. A box-shadow's blur is Gaussian and
@@ -1059,6 +1065,28 @@ body > header::before {
         right: 16px;
         width: auto;
         margin: 0;
+    }
+    /* iPad only (html.is-ipad, set by site.js): in a narrow iPadOS Safari
+       window the collapsing toolbar floats OVER the top of the page — the
+       page's edge doesn't move — so drop the capsule by the amount of chrome
+       currently collapsed. 100dvh − 100svh is exactly that (0 at rest, the
+       collapsed strip's height once scrolled, animating between), capped at
+       the ~20px the compact pill actually overlaps (36px overshot by ~18). Not applied on iPhone: its collapsing
+       chrome doesn't overlay the page top, so the shift would be a regression
+       there. Positions the absolutely-placed capsule itself — padding on the
+       parent header wouldn't move it. */
+    html.is-ipad {
+        --chrome-shift: clamp(0px, calc(100dvh - 100svh), 20px);
+    }
+    html.is-ipad #header-content {
+        top: calc(12px + var(--chrome-shift));
+    }
+    /* The capsule moved but the header's scrim didn't: extend it by the same
+       amount so the strip between pill and capsule stays solid page colour
+       rather than showing the first line of the post. Pseudo only — the
+       header's own box (and the page layout below it) doesn't change. */
+    html.is-ipad body > header::before {
+        bottom: calc(-1 * var(--chrome-shift));
     }
 
     #menu {

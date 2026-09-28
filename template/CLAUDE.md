@@ -62,6 +62,7 @@ A floating "capsule" — sticky, backdrop-blurred, centered, with a max-width.
 - **Sticky positioning** with a `::before` pseudo-element that fades out the underlying page content below it (mask gradient). Without this, content shows through the blur sharply at the bottom edge of the header.
 - **`box-sizing: border-box`** on the header is essential — without it, the right side overflows the viewport at narrow widths.
 - **Nav needs `min-width: 0`** to allow proper flexbox shrinking, otherwise content forces overflow.
+- **Compact Safari chrome**: below 720px the capsule is absolutely positioned, so its `top` includes a `100dvh - 100svh` offset capped at 20px — the amount narrow iPadOS Safari windows let the collapsed toolbar overlap the page (the page's top edge doesn't move). Applying the offset to parent padding would not move the absolute capsule. The live site scopes it to iPads (`html.is-ipad`, set by site.js — iPhone's collapsing chrome doesn't overlay the page top) and extends the header's `::before` scrim by the same amount so no content shows between pill and capsule.
 
 ### Responsive scaling
 Below 941px the entire header content scales (font-sizes shrink, gap clamps tighten). This is preferable to reflowing or wrapping the menu.

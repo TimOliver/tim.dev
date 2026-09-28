@@ -806,7 +806,13 @@ body > header::before {
         padding: 8px 8px 8px 23px;
         gap: 12px;
         position: absolute;
+        /* Safari's compact toolbar floats over narrow iPad pages as it
+           collapses. Follow the reclaimed dynamic viewport height so this
+           absolutely positioned capsule remains below it (the live site scopes
+           this to iPads via html.is-ipad and grows the header scrim by the
+           same amount — see Assets/css/site.css). */
         top: 12px;
+        top: calc(12px + clamp(0px, calc(100dvh - 100svh), 20px));
         left: 16px;
         right: 16px;
         width: auto;
