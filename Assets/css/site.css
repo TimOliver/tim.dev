@@ -1286,6 +1286,15 @@ body:has(article) main .container:has(.twitch-live:not([hidden])) {
     margin-top: 50px;
 }
 
+/* Tablet band: pull the feed/post content 25px closer to the header — at
+   these widths the header sits taller under Safari's own chrome and the full
+   --post-gap read as too much dead space above the first title. */
+@media (min-width: 720.02px) and (max-width: 1000px) {
+    body:has(article) main .container {
+        margin-top: calc(var(--post-gap) - 25px);
+    }
+}
+
 @media (max-width: 1000px) {
     body:has(article) main .container:has(.twitch-live:not([hidden])) { margin-top: 35px; }
 }
