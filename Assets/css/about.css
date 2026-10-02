@@ -516,8 +516,18 @@ body:has(.about) {
     .gallery-scroller::after {
         display: none;
     }
+    /* The body is padded by the safe-area insets (notch / rounded corners in
+       landscape), so `main` — and with it this clip — would stop at the
+       safe-area line and slice the cards there. Stretch main's box out to the
+       physical screen edges with a negative margin, and pad it back by the
+       same amount so nothing inside moves: only the clip edge changes, and
+       cards now run under the safe area to the edge of the glass. */
     main:has(.gallery) {
         overflow-x: clip;
+        margin-left: calc(-1 * env(safe-area-inset-left, 0px));
+        margin-right: calc(-1 * env(safe-area-inset-right, 0px));
+        padding-left: env(safe-area-inset-left, 0px);
+        padding-right: env(safe-area-inset-right, 0px);
     }
 }
 

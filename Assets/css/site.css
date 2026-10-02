@@ -496,8 +496,12 @@ body > header::before {
        past the top of the viewport, blurred — with the scrim stopping at the
        header's top edge, that's post text peeking through the chrome above
        the capsule. Painting --bg 200px further up puts plain background there
-       instead. Off-screen everywhere else, so it costs nothing. */
-    inset: -200px 0 0;
+       instead. Off-screen everywhere else, so it costs nothing.
+       Sideways it reaches out by the safe-area insets: the header sits inside
+       the body's safe-area padding, but content that bleeds under the notch
+       area in landscape (the About gallery) would otherwise show beside the
+       bar instead of passing beneath it. */
+    inset: -200px calc(-1 * env(safe-area-inset-right, 0px)) 0 calc(-1 * env(safe-area-inset-left, 0px));
     background-color: var(--bg);
     /* The bar is a solid plateau; the fade below it is a colour-matched
        drop shadow, not a gradient mask. A box-shadow's blur is Gaussian and
