@@ -185,6 +185,14 @@ article {
    short centred 56px rule (2026-09) pulled the eye away from the next title.
    Only matches the multi-post home page (single-post pages have one
    <article>). */
+/* A post with no comments yet ends on the collapsed "Add a comment" bar; the
+   full --post-gap below that lone bar read as a hole above the footer. Tuck
+   the footer up while Comentario's comment list is empty — the rule stops
+   matching the moment a comment exists, restoring the normal gap. */
+article:has(.comentario-comments:empty) {
+    margin-bottom: min(var(--post-gap), 3rem);
+}
+
 article + article {
     margin-top: var(--post-gap);
     position: relative;
