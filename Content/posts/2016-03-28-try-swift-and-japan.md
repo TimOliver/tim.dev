@@ -150,7 +150,7 @@ In the middle of the day, I met and hung out with a few of my Twitter heroes. �
 
 > Lunch with these iOS experts = magical [@allonsykraken](https://twitter.com/allonsykraken) [@ayanonagon](https://twitter.com/ayanonagon) [@purpleyay](https://twitter.com/purpleyay) [@chriseidhof](https://twitter.com/chriseidhof) [@TimOliverAU](https://twitter.com/TimOliverAU) [@nerdonica](https://twitter.com/nerdonica) [pic.twitter.com/5FAxDB6rK8](https://t.co/5FAxDB6rK8)
 > 
-> — Novall Khan (@novallkhan) [March 3, 2016](https://twitter.com/novallkhan/status/705307608832278528)
+> - Novall Khan (@novallkhan) [March 3, 2016](https://twitter.com/novallkhan/status/705307608832278528)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 
@@ -172,19 +172,19 @@ In any case, I went out there and delivered my presentation in Japanese as best 
 > 
 > Currently reverse engineering the lock screen! [pic.twitter.com/4FVup8NvYZ](https://t.co/4FVup8NvYZ)
 > 
-> — Adam Bell (@b3ll) [March 2, 2016](https://twitter.com/b3ll/status/704937373331791872)
+> - Adam Bell (@b3ll) [March 2, 2016](https://twitter.com/b3ll/status/704937373331791872)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 
 > 1st talk I attended was, naturally, animation-related. ?'d talk from [@TimOliverAU](https://twitter.com/TimOliverAU) on Core Animation! [\#tryswiftconf](https://twitter.com/hashtag/tryswiftconf?src=hash) [pic.twitter.com/SmvEIB3iuq](https://t.co/SmvEIB3iuq)
 > 
-> — Natasha Godwin (@natashasgodwin) [March 2, 2016](https://twitter.com/natashasgodwin/status/704949242750771200)
+> - Natasha Godwin (@natashasgodwin) [March 2, 2016](https://twitter.com/natashasgodwin/status/704949242750771200)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 
 > My colleague [@TimOliverAU](https://twitter.com/TimOliverAU) is killing it with his presentation on Core Animation at [@tryswiftconf](https://twitter.com/tryswiftconf)… in Japanese! [pic.twitter.com/9LrlcCLGVD](https://t.co/9LrlcCLGVD)
 > 
-> — JP Simard (@simjp) [March 2, 2016](https://twitter.com/simjp/status/704933491478302720)
+> - JP Simard (@simjp) [March 2, 2016](https://twitter.com/simjp/status/704933491478302720)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 
@@ -192,19 +192,19 @@ Also judging from the tweets, the ‘spectacle’ of a caucasian person speaking
 
 > Why do I have a translator in my ears to listen to [@TimOliverAU](https://twitter.com/TimOliverAU) give his CA talk? He's Aussie? He's talking Japanese! [\#tryswiftconf](https://twitter.com/hashtag/tryswiftconf?src=hash)
 > 
-> — Phill Farrugia (@phillfarrugia) [March 2, 2016](https://twitter.com/phillfarrugia/status/704932725090852864)
+> - Phill Farrugia (@phillfarrugia) [March 2, 2016](https://twitter.com/phillfarrugia/status/704932725090852864)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 
 > So [@TimOliverAU](https://twitter.com/TimOliverAU) is doing his [\#tryswiftconf](https://twitter.com/hashtag/tryswiftconf?src=hash) talk in fluent Japanese while I'm listening to live English translation [pic.twitter.com/FvqZAN8f4w](https://t.co/FvqZAN8f4w)
 > 
-> — NatashaTheRobot (@NatashaTheRobot) [March 2, 2016](https://twitter.com/NatashaTheRobot/status/704935218793353216)
+> - NatashaTheRobot (@NatashaTheRobot) [March 2, 2016](https://twitter.com/NatashaTheRobot/status/704935218793353216)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 
 > [@TimOliverAU](https://twitter.com/TimOliverAU) I think she’s having trouble understanding you 😉
 > 
-> — Sean Woodhouse (@seanwoodhouse) [March 2, 2016](https://twitter.com/seanwoodhouse/status/704932948718579713)
+> - Sean Woodhouse (@seanwoodhouse) [March 2, 2016](https://twitter.com/seanwoodhouse/status/704932948718579713)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 
@@ -224,7 +224,7 @@ One of the other major ‘highlights’ was that one of the other presenters ref
 
 > Guys…. [pic.twitter.com/s8HVrYToAg](https://t.co/s8HVrYToAg)
 > 
-> — Tim Oliver (@TimOliverAU) [March 3, 2016](https://twitter.com/TimOliverAU/status/705348001313587200)
+> - Tim Oliver (@TimOliverAU) [March 3, 2016](https://twitter.com/TimOliverAU/status/705348001313587200)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 

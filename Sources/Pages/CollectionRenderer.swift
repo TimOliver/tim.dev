@@ -1,10 +1,10 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
 
 /// Escapes text for interpolation into HTML (attribute-safe: also quotes).
-/// Module-wide — every renderer calls this bare.
+/// Module-wide - every renderer calls this bare.
 func escape(_ s: String) -> String {
 
     // `&` is replaced first on purpose: every replacement below introduces an
@@ -24,7 +24,7 @@ func escape(_ s: String) -> String {
 enum CollectionRenderer {
 
     /// Path prefixes of the collection sections; everything else under
-    /// Content/ is a dated blog post. Used by the Home feed and Archive —
+    /// Content/ is a dated blog post. Used by the Home feed and Archive -
     /// MainLayout's per-page stylesheet switch keys off the same names, and
     /// .gitignore lists the matching Includes/_* dirs.
     static let collectionPathPrefixes = ["/apps/", "/code/", "/art/", "/talks/"]
@@ -33,7 +33,7 @@ enum CollectionRenderer {
     static func isBlogPost(_ article: Article) -> Bool {
 
         // A post is anything whose path matches none of the collection
-        // prefixes — so negate the "starts with any prefix" test.
+        // prefixes - so negate the "starts with any prefix" test.
         !collectionPathPrefixes.contains { article.path.hasPrefix($0) }
     }
 
@@ -43,7 +43,7 @@ enum CollectionRenderer {
     static func parseDetails(_ s: String) -> [(String, String)] {
 
         // Split into candidate rows on `;`, then turn each into a (label,
-        // value) pair — `compactMap` drops any row that fails the guard below.
+        // value) pair - `compactMap` drops any row that fails the guard below.
         s.split(separator: ";").compactMap { chunk -> (String, String)? in
 
             // `maxSplits: 1` keeps everything after the first `=` as the value,
@@ -92,7 +92,7 @@ enum CollectionRenderer {
     /// Writes an HTML string to `Includes/_<dir>/<key>.html` and returns the
     /// matching `Include`. Fails LOUDLY: a silent write failure here would let
     /// the build finish with exit code 0 while Ignite renders a missing/stale
-    /// fragment — a broken site would deploy.
+    /// fragment - a broken site would deploy.
     static func include(key: String, dir: String, html: String) -> Include {
 
         // Target dir: Includes/_<dir> under the build's working directory. The
@@ -103,7 +103,7 @@ enum CollectionRenderer {
         let file = root.appendingPathComponent("\(key).html")
 
         // Create the directory (idempotent) and write the fragment. Any failure
-        // is fatal — per the doc comment, a swallowed error would ship a hole.
+        // is fatal - per the doc comment, a swallowed error would ship a hole.
         do {
             try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
             try html.write(to: file, atomically: true, encoding: .utf8)
@@ -182,7 +182,7 @@ enum CollectionRenderer {
         #"<svg class="\#(className)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>"#
     }
 
-    /// The fixed back-to-top button (fades in on scroll — wired by site.js,
+    /// The fixed back-to-top button (fades in on scroll - wired by site.js,
     /// styled in site.css). Shared by the Archive, Talks and Art indexes.
     static func backToTopButton() -> String {
 
@@ -194,16 +194,16 @@ enum CollectionRenderer {
 /// One image's build-time data, read from media-manifest.json.
 struct MediaEntry {
 
-    /// Intrinsic pixel width of the full-size image — emitted as the `<img>`
+    /// Intrinsic pixel width of the full-size image - emitted as the `<img>`
     /// `width` so the browser can reserve layout space before the file loads.
     let width: Int
 
-    /// Intrinsic pixel height of the full-size image — the matching `height`
+    /// Intrinsic pixel height of the full-size image - the matching `height`
     /// attribute, which together with `width` pins the aspect ratio and keeps
     /// the image from shifting layout as it swaps in.
     let height: Int
 
-    /// Tiny base64 PNG data URI — the blur-up placeholder.
+    /// Tiny base64 PNG data URI - the blur-up placeholder.
     let lqip: String
 
     /// Responsive candidates, e.g. "/img/a@400w.png 400w, /img/a.png 1200w".
@@ -214,7 +214,7 @@ struct MediaEntry {
 /// the `<img class="lqip">` shape that Assets/js/site.js swaps on scroll: a
 /// base64 blur in `src`, the real candidates parked in `data-srcset`/`data-sizes`.
 ///
-/// The manifest is a BUILD INPUT and lives at the repo root — not under
+/// The manifest is a BUILD INPUT and lives at the repo root - not under
 /// Assets/, which is copied verbatim into Build/ and shipped.
 @MainActor
 enum Media {
@@ -224,8 +224,8 @@ enum Media {
 
     /// Loads and validates the manifest once, on first access to `manifest`.
     /// Returns an empty map when the file is simply absent (a site with no
-    /// collection images yet), but treats a present-but-corrupt manifest — or
-    /// any entry whose files have gone missing on disk — as a fatal build error
+    /// collection images yet), but treats a present-but-corrupt manifest - or
+    /// any entry whose files have gone missing on disk - as a fatal build error
     /// rather than shipping images that would 404.
     private static func load() -> [String: MediaEntry] {
 
@@ -240,7 +240,7 @@ enum Media {
         // is corrupt, not merely absent, so fail rather than silently drop it.
         guard let raw = try? JSONSerialization.jsonObject(with: data)
                 as? [String: [String: Any]] else {
-            fatalError("media-manifest.json is unreadable — run Scripts/build-media.py")
+            fatalError("media-manifest.json is unreadable - run Scripts/build-media.py")
         }
 
         let assetsRoot = cwd.appendingPathComponent("Assets")
@@ -253,10 +253,10 @@ enum Media {
                   let height = value["height"] as? Int,
                   let lqip = value["lqip"] as? String,
                   let srcset = value["srcset"] as? String else {
-                fatalError("media-manifest.json entry \(path) is malformed — re-run Scripts/build-media.py")
+                fatalError("media-manifest.json entry \(path) is malformed - re-run Scripts/build-media.py")
             }
             // The manifest only records that build-media.py once found these
-            // files — it isn't re-verified on every build. A rename/delete of
+            // files - it isn't re-verified on every build. A rename/delete of
             // the source after the manifest was written must fail the build
             // loudly, not ship a data-srcset whose URLs 404.
             for sitePath in [path] + srcsetPaths(srcset) {
@@ -275,7 +275,7 @@ enum Media {
                 }
             }
 
-            // All candidates verified — record the entry.
+            // All candidates verified - record the entry.
             out[path] = MediaEntry(width: width, height: height, lqip: lqip, srcset: srcset)
         }
         return out
@@ -286,7 +286,7 @@ enum Media {
     private static func srcsetPaths(_ srcset: String) -> [String] {
 
         // Split on the ", " between candidates, then take the token before the
-        // first space in each — that leading token is the URL.
+        // first space in each - that leading token is the URL.
         srcset.components(separatedBy: ", ").compactMap { candidate in
             candidate.split(separator: " ").first.map(String.init)
         }
@@ -301,7 +301,7 @@ enum Media {
     static func image(_ path: String, alt: String, sizes: String, className: String) -> String {
 
         // An unknown path means front matter references an image the manifest
-        // never recorded — fail rather than emit an <img> that 404s.
+        // never recorded - fail rather than emit an <img> that 404s.
         guard let entry = manifest[path] else {
             fatalError("""
                 Image \(path) is referenced in front matter but is not in \

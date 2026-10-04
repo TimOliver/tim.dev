@@ -8,4 +8,4 @@ youtube:
 layout: TalkDetail
 path: /talks/swift-concurrency-in-production/
 ---
-async/await reads beautifully in a demo. Shipping it across a large, mature codebase is a different story — actors, reentrancy, and the migration order that kept us sane.
+async/await reads beautifully in a demo. Shipping it across a large, mature codebase is a different story - actors, reentrancy, and the migration order that kept us sane.

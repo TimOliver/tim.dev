@@ -1,17 +1,17 @@
-# Template/ — Design Mockup Notes
+# Template/ - Design Mockup Notes
 
 This folder is the hand-coded mockup that establishes the design language for `tim.dev`. It's the source of truth for visual + interaction decisions that need to be ported to Ignite components/plugins.
 
 ```
 Template/
-├── index.html              Markup only — semantics + content
+├── index.html              Markup only - semantics + content
 ├── css/site.css            All styles
 ├── js/
 │   ├── theme.js            Head script: FOUC prevention + data-theme/data-color-scheme sync
 │   └── site.js             Body script: theme popover, hamburger animation, LQIP swap
 ├── img/
-│   ├── social-logos.svg    SVG symbol sprite — filled Twitter/Bluesky/Mastodon logos used inside embed cards
-│   ├── brand-icons.svg     SVG symbol sprite — outline Tabler-style icons used in the footer (LinkedIn, GitHub, YouTube, Twitch, Bluesky, Mastodon)
+│   ├── social-logos.svg    SVG symbol sprite - filled Twitter/Bluesky/Mastodon logos used inside embed cards
+│   ├── brand-icons.svg     SVG symbol sprite - outline Tabler-style icons used in the footer (LinkedIn, GitHub, YouTube, Twitch, Bluesky, Mastodon)
 │   ├── appearance/         Theme picker icons (auto/sun/moon)
 │   └── (sample images)
 └── AGENTS.md               This file
@@ -19,11 +19,11 @@ Template/
 
 Both icon sets live in SVG sprite files (`img/social-logos.svg` for filled embed logos, `img/brand-icons.svg` for outline footer icons). Each sprite is a single `<svg style="display: none">` containing multiple `<symbol>` definitions; markup references them via `<svg viewBox="..."><use href="img/brand-icons.svg#linkedin"/></svg>`. This preserves `fill`/`stroke="currentColor"` for theme-aware coloring (the footer drops the old `filter: var(--icon-filter)` hack in favor of `color: var(--text)` on the wrapping svg).
 
-**Gotcha**: the wrapping `<svg>` in markup *must* repeat the symbol's `viewBox` attribute — the `<symbol>`'s viewBox does NOT propagate to the wrapping `<svg>` for layout sizing. Without it, the wrapping `<svg>` falls back to the browser's default `300×150` placeholder size and blows out whatever container it's in. With it (plus explicit width/height in CSS), the icon scales correctly.
+**Gotcha**: the wrapping `<svg>` in markup *must* repeat the symbol's `viewBox` attribute - the `<symbol>`'s viewBox does NOT propagate to the wrapping `<svg>` for layout sizing. Without it, the wrapping `<svg>` falls back to the browser's default `300×150` placeholder size and blows out whatever container it's in. With it (plus explicit width/height in CSS), the icon scales correctly.
 
-**Safari gotcha**: external `<use href="sprite.svg#id">` references can intermittently fail to render on first paint — the icons appear blank until the page is re-navigated (not just hard-refreshed). The fix is `<link rel="preload" href="..." as="image" type="image/svg+xml">` in `<head>` for each sprite, which biases the fetch order so the sprite is in cache by the time `<use>` resolves. Both `brand-icons.svg` and `social-logos.svg` are preloaded for this reason. If symptoms recur, inline-sprite-injection is the bulletproof alternative (~3 KB inline, no external fetch, no race).
+**Safari gotcha**: external `<use href="sprite.svg#id">` references can intermittently fail to render on first paint - the icons appear blank until the page is re-navigated (not just hard-refreshed). The fix is `<link rel="preload" href="..." as="image" type="image/svg+xml">` in `<head>` for each sprite, which biases the fetch order so the sprite is in cache by the time `<use>` resolves. Both `brand-icons.svg` and `social-logos.svg` are preloaded for this reason. If symptoms recur, inline-sprite-injection is the bulletproof alternative (~3 KB inline, no external fetch, no race).
 
-Originally the CSS + JS lived inline in `index.html`; it was extracted once the design stabilized. **`theme.js` must load synchronously in `<head>` before any paintable content** — it sets `data-color-scheme` before the first paint to prevent FOUC. Don't add `defer` or `async`.
+Originally the CSS + JS lived inline in `index.html`; it was extracted once the design stabilized. **`theme.js` must load synchronously in `<head>` before any paintable content** - it sets `data-color-scheme` before the first paint to prevent FOUC. Don't add `defer` or `async`.
 
 When porting, prefer to **preserve behavior verbatim** rather than "improve" it; many decisions below came from iteration and have non-obvious reasons.
 
@@ -37,7 +37,7 @@ Three states: `auto` (follows OS), `light`, `dark`. Stored in `localStorage` und
 - **FOUC prevention**: `js/theme.js` (synchronous `<script>` in `<head>`) reads `localStorage` and sets `data-theme` + `data-color-scheme` *before* paint. Don't move it to a deferred / async script.
 - **Light-mode icon swap**: the moon icon in the header automatically replaces with `sun-bold.svg` (stroke-width 2.5) when the effective theme is light. Driven by CSS selectors keyed off the resolved `[data-color-scheme]`, no runtime JS toggle logic.
 - **Popover background must be opaque** (`var(--bg-secondary)`), not translucent. Stacking `backdrop-filter: blur` on the popover *and* the capsule header underneath looked bad on iOS.
-- **Theme popover position**: right-aligned only when viewport ≤ 1049.98px or horizontal safe-area insets are non-zero (Dynamic Island landscape). Centered otherwise. Don't right-align always — looks weird on desktop.
+- **Theme popover position**: right-aligned only when viewport ≤ 1049.98px or horizontal safe-area insets are non-zero (Dynamic Island landscape). Centered otherwise. Don't right-align always - looks weird on desktop.
 
 ### Color palette
 Loosely iOS UIColor-aligned semantic variables, with alphas adjusted for WCAG over strict iOS parity (iOS's 0.6/0.3 alphas are tuned for native hierarchies, not web contrast minimums). When porting, define both light and dark sets:
@@ -47,20 +47,20 @@ Loosely iOS UIColor-aligned semantic variables, with alphas adjusted for WCAG ov
   - Dark: secondary `rgba(235, 235, 245, 0.6)` (~5.7:1, AA body), tertiary `rgba(235, 235, 245, 0.45)` (~3.7:1, large-text)
   - Favour WCAG over iOS exact alpha values. Don't drop tertiary below ~3:1; don't drop secondary below 4.5:1.
 - `--heading`
-- `--link` / `--link-hover` — currently Apple Music red (`#FA233B` light, `#F82D48` dark), but the body text isn't styled with link colors — link styling is only used on certain UI elements (footer links use `--text` directly).
+- `--link` / `--link-hover` - currently Apple Music red (`#FA233B` light, `#F82D48` dark), but the body text isn't styled with link colors - link styling is only used on certain UI elements (footer links use `--text` directly).
 - `--capsule-bg` (translucent for backdrop-filter), `--capsule-border`
 
-`.subtitle` uses `--text-secondary` (not tertiary). The subtitle is content, not decoration — it needs to be legible, and at narrower viewports it drops below WCAG's "large text" size threshold (24px) where the 3:1 tertiary tier would fail AA.
+`.subtitle` uses `--text-secondary` (not tertiary). The subtitle is content, not decoration - it needs to be legible, and at narrower viewports it drops below WCAG's "large text" size threshold (24px) where the 3:1 tertiary tier would fail AA.
 
 ---
 
 ## Sticky Capsule Header
 
-A floating "capsule" — sticky, backdrop-blurred, centered, with a max-width.
+A floating "capsule" - sticky, backdrop-blurred, centered, with a max-width.
 
 - **Backdrop-filter**: `blur(20px) saturate(180%)` over a translucent background. Required for the iOS-feel.
 - **Sticky positioning** with a `::before` pseudo-element that fades out the underlying page content below it (mask gradient). Without this, content shows through the blur sharply at the bottom edge of the header.
-- **`box-sizing: border-box`** on the header is essential — without it, the right side overflows the viewport at narrow widths.
+- **`box-sizing: border-box`** on the header is essential - without it, the right side overflows the viewport at narrow widths.
 - **Nav needs `min-width: 0`** to allow proper flexbox shrinking, otherwise content forces overflow.
 - **Compact Safari chrome**: below 720px the capsule is absolutely positioned. Narrow iPadOS Safari windows can let the compact toolbar overlap the page, whose top edge does not move. Reserve that clearance for the entire scroll with `100lvh - 100svh`, capped at 20px; unlike `dvh`, these viewport variants stay fixed as the toolbar expands and collapses, so the header does not jitter. The rule is scoped to iPads (`html.is-ipad`, set before first paint by the synchronous `theme.js`); iPhone's collapsing chrome does not overlay the page top.
 
@@ -77,17 +77,17 @@ Below 720px the menu collapses to a "closed bar" with just About + Archive + the
 
 ### Critical architectural decisions
 
-- **Separate `<div class="menu-closed-bar">`** sibling of the menu `<ul>` — NOT a reused `<li>` inside the menu. This solves the "pop-in" problem where reused items would flash at the end of close animation.
-- **Hidden checkbox toggle** (`<input type="checkbox" id="menu-toggle">`) flipped by a `<label>` click. Use `clip: rect(0,0,0,0)` to hide it, not `pointer-events: none` — iOS doesn't reliably honor pointer-events on hidden inputs.
+- **Separate `<div class="menu-closed-bar">`** sibling of the menu `<ul>` - NOT a reused `<li>` inside the menu. This solves the "pop-in" problem where reused items would flash at the end of close animation.
+- **Hidden checkbox toggle** (`<input type="checkbox" id="menu-toggle">`) flipped by a `<label>` click. Use `clip: rect(0,0,0,0)` to hide it, not `pointer-events: none` - iOS doesn't reliably honor pointer-events on hidden inputs.
 - **`change` event, not `click`**: programmatic `checked = X` doesn't fire `change`, which lets the JS use a temp-toggle pattern to measure both heights in one handler.
-- **All button visuals driven by WAAPI**, not CSS transitions. The icon swap (hamburger ↔ X), label background, capsule height — every animation runs via `Element.animate()`. CSS transitions on these elements were removed because they fired a second time at the end of the WAAPI close animation.
+- **All button visuals driven by WAAPI**, not CSS transitions. The icon swap (hamburger ↔ X), label background, capsule height - every animation runs via `Element.animate()`. CSS transitions on these elements were removed because they fired a second time at the end of the WAAPI close animation.
 - **iOS easing curve**: `cubic-bezier(0.32, 0.72, 0, 1)` for all menu animations. Keep this.
 
 ### Animation defense
 Three layers, all needed:
 1. `animating` flag set on each animation start
 2. `label.style.pointerEvents = 'none'` during animation
-3. State-revert fallback inside the `change` handler — if rapid clicks slip through, `checkbox.checked = !checkbox.checked` undoes the desync
+3. State-revert fallback inside the `change` handler - if rapid clicks slip through, `checkbox.checked = !checkbox.checked` undoes the desync
 
 Don't remove any of these. They each catch a different race condition.
 
@@ -101,10 +101,10 @@ Don't remove any of these. They each catch a different race condition.
 
 Three-zone layout (left: byline, center: social icons, right: build credit), stacking below 519.98px with icons first, then byline, then build credit.
 
-- **Left**: `By [Tim Oliver]` — name link → about (TBD).
+- **Left**: `By [Tim Oliver]` - name link → about (TBD).
 - **Center**: social icon row using `img/brand-icons.svg` symbols with `currentColor` so light/dark color follows normal text color.
-- **Right**: `Built with [Ignite] ([305ca60]).` — Ignite link → upstream repo, commit hash → GitHub commit URL.
-- **Link styling**: links use `color: var(--text)` + `font-weight: 600` + underline on hover. No `<strong>` tags — the weight is on the `<a>` directly.
+- **Right**: `Built with [Ignite] ([305ca60]).` - Ignite link → upstream repo, commit hash → GitHub commit URL.
+- **Link styling**: links use `color: var(--text)` + `font-weight: 600` + underline on hover. No `<strong>` tags - the weight is on the `<a>` directly.
 
 ---
 
@@ -138,7 +138,7 @@ Every blog image should ship with:
 
 ### Why each piece matters
 - **Inline base64 PNG** (32px wide, ~1-2 KB) as initial `src`. PNG preserves alpha. Could be WebP if `cwebp` is available at build time (macOS ImageIO can't write WebP natively as of Sequoia).
-- **`aspect-ratio` inline style** is required to prevent layout pop. Without `auto` qualifier, this CSS rule overrides the browser's preference for using the loaded image's natural dimensions — so the 32×N placeholder's slightly-different aspect ratio doesn't cause reflow when the real image swaps in.
+- **`aspect-ratio` inline style** is required to prevent layout pop. Without `auto` qualifier, this CSS rule overrides the browser's preference for using the loaded image's natural dimensions - so the 32×N placeholder's slightly-different aspect ratio doesn't cause reflow when the real image swaps in.
 - **`width`/`height` HTML attrs** mirror the real image's dimensions (not the placeholder's).
 - **`data-srcset` + `data-sizes`** hold the responsive variant candidates and the size hint. Runtime JS hands these over to the browser by setting `srcset` + `sizes` directly; from there the browser handles candidate selection, fetching, and the visible swap.
 - **`<noscript>` fallback**: full markup loads when JS is disabled, including its own native `srcset` so JS-disabled users still get responsive serving. The `<html class="no-js">` + head-script-removes-it pattern (combined with `.no-js article img.lqip { display: none; }`) ensures non-JS users see only the real image, not both.
@@ -156,11 +156,11 @@ Every blog image should ship with:
 For each image referenced in markdown:
 1. Read the source image, capture width × height.
 2. **LQIP**: downscale to 32px wide → encode as PNG (preserves alpha) → base64.
-3. **Variants**: downscale to ~700px and ~1400px wide using `CGContext` / `NSImage`. Output as WebP (if `cwebp` available) or PNG (preserves alpha) or JPEG (smaller, no alpha — fine for photos).
+3. **Variants**: downscale to ~700px and ~1400px wide using `CGContext` / `NSImage`. Output as WebP (if `cwebp` available) or PNG (preserves alpha) or JPEG (smaller, no alpha - fine for photos).
 4. **Original**: copy verbatim to `Build/`. This is the lightbox target.
 5. Emit the markup above. The `sizes` value should match the article content width (currently `(max-width: 720px) 100vw, 700px`).
 
-Use a custom `LazyImage(...)` Ignite view that wraps this. Don't try to retrofit `Image(...)` — the markup difference is substantial. Consider caching variant generation by source hash so rebuilds don't redo unchanged images.
+Use a custom `LazyImage(...)` Ignite view that wraps this. Don't try to retrofit `Image(...)` - the markup difference is substantial. Consider caching variant generation by source hash so rebuilds don't redo unchanged images.
 
 ### Skip-variants short-circuit
 If the source image is narrower than ~1400px, skip generating the 1400 variant. If it's narrower than ~700px, skip both variants and just inline the original as the lone candidate (or omit `srcset` entirely). The LQIP + lightbox pieces still apply.
@@ -169,15 +169,15 @@ If the source image is narrower than ~1400px, skip generating the 1400 variant. 
 The mockup currently uses PNG variants because macOS ImageIO can't write WebP. In production, prefer WebP for ~70% smaller files. Install via `brew install webp` and shell out to `cwebp -q 75 -m 6 <in> -o <out>` from the Ignite build, or use a Swift WebP encoder package if one becomes available.
 
 ### Sizing constraints
-`article img` is capped at `max-height: 650px` to prevent tall portrait images from dominating the layout. Combined with the inline `aspect-ratio` and `max-width: 100%`, the browser proportionally narrows the width when height clamps. Centered horizontally via `margin: 0 auto 1.75em` — block-level images with auto side margins center within the section even when wrapped by an inline lightbox anchor (the anchor doesn't establish a containing block for the block img). Landscape images at full width are unaffected; only height-clamped images visibly shift to center.
+`article img` is capped at `max-height: 650px` to prevent tall portrait images from dominating the layout. Combined with the inline `aspect-ratio` and `max-width: 100%`, the browser proportionally narrows the width when height clamps. Centered horizontally via `margin: 0 auto 1.75em` - block-level images with auto side margins center within the section even when wrapped by an inline lightbox anchor (the anchor doesn't establish a containing block for the block img). Landscape images at full width are unaffected; only height-clamped images visibly shift to center.
 
 On iPhone-class landscape viewports (`@media (orientation: landscape) and (max-height: 500px)`), the cap tightens to 320px so media doesn't dominate the short viewport:
 - Images: `max-height: 320px` (works directly with aspect-ratio).
-- `lite-youtube`: `max-width: calc(320px * 16 / 9)` (~569px). The library enforces 16:9 via `padding-bottom` on a `::after` pseudo, which doesn't respect `max-height` — so we cap *width* such that 16:9 gives a 320px height. Update this if the library ever switches to native `aspect-ratio`.
+- `lite-youtube`: `max-width: calc(320px * 16 / 9)` (~569px). The library enforces 16:9 via `padding-bottom` on a `::after` pseudo, which doesn't respect `max-height` - so we cap *width* such that 16:9 gives a 320px height. Update this if the library ever switches to native `aspect-ratio`.
 
 ### ThumbHash was considered and rejected
 We initially used [evanw/thumbhash](https://github.com/evanw/thumbhash) (procedural ~30-byte hashes). The Swift port exists and is buildable, but:
-- Decoded placeholders are colored blobs, not recognizable miniatures of the image — looks like a glitch on stylized/transparent content.
+- Decoded placeholders are colored blobs, not recognizable miniatures of the image - looks like a glitch on stylized/transparent content.
 - Required ~150 lines of JS decoder + PNG encoder runtime.
 - Blur filter transitions had visual artifacts on transparent images.
 
@@ -191,7 +191,7 @@ If you ever want to revisit ThumbHash, the Swift API is `imageToThumbHash(image:
 
 Clicking any blog image opens [Lightbox3](https://github.com/lokesh/lightbox3) for full-screen viewing with spring-physics zoom.
 
-- **Zero-dependency** (no jQuery), zero-config — auto-binds to any `<a data-lightbox>` it finds.
+- **Zero-dependency** (no jQuery), zero-config - auto-binds to any `<a data-lightbox>` it finds.
 - Loaded from jsdelivr CDN: `lightbox3@1.1.0/dist/lightbox3.css` + `dist/lightbox3.umd.js`.
 - For self-hosting later, copy both files to `Assets/` and update the URLs.
 - The `<a href="real.webp" data-lightbox>` wraps the LQIP `<img>`. Both the lazy load and the lightbox bindings work on the same element without conflict.
@@ -200,14 +200,14 @@ Clicking any blog image opens [Lightbox3](https://github.com/lokesh/lightbox3) f
 
 ## Social Embeds (X / Bluesky / Mastodon)
 
-All three platforms use a **unified custom-card facade** — no third-party widget JS, no iframes. Base pattern lifted from [alexwlchan.net/2025/good-embedded-toots/](https://alexwlchan.net/2025/good-embedded-toots/), extended to all three platforms via a `data-platform="..."` attribute. Dark mode adapts automatically through the site's existing CSS variables.
+All three platforms use a **unified custom-card facade** - no third-party widget JS, no iframes. Base pattern lifted from [alexwlchan.net/2025/good-embedded-toots/](https://alexwlchan.net/2025/good-embedded-toots/), extended to all three platforms via a `data-platform="..."` attribute. Dark mode adapts automatically through the site's existing CSS variables.
 
 ### Why the same pattern for all three
 - ✅ Zero runtime JS for embeds (drop ~200 KB of widget scripts).
-- ✅ Dark mode Just Works — no per-widget theme attribute juggling, no iframe filter hacks, no re-mount on toggle.
+- ✅ Dark mode Just Works - no per-widget theme attribute juggling, no iframe filter hacks, no re-mount on toggle.
 - ✅ Identical visual rhythm across platforms; same border, same padding, same typography.
 - ❌ Like/reply counts are frozen at build time (not live).
-- ❌ Embedded media (polls, multi-image grids, quote-of-quote) need bespoke rendering — currently only images are supported.
+- ❌ Embedded media (polls, multi-image grids, quote-of-quote) need bespoke rendering - currently only images are supported.
 
 ### Unified markup pattern
 
@@ -239,24 +239,24 @@ All three platforms use a **unified custom-card facade** — no third-party widg
 ```
 
 `data-platform` controls:
-- **Link accent color** (`--accent`) — Mastodon purple, Bluesky blue, Twitter blue.
-- **Avatar shape** — Twitter + Bluesky are circular (`border-radius: 50%`); Mastodon uses an 8px rounded square (matches the Mastodon app).
+- **Link accent color** (`--accent`) - Mastodon purple, Bluesky blue, Twitter blue.
+- **Avatar shape** - Twitter + Bluesky are circular (`border-radius: 50%`); Mastodon uses an 8px rounded square (matches the Mastodon app).
 - **Brand SVG** picked per-platform in the markup (logo paths live inline so they get `fill: currentColor`). Mastodon's logo inherits `--text-secondary`; Twitter and Bluesky override to their brand blue.
 
 ### Per-platform palettes
-All three platforms opt out of the site's theme variables for surface colors. They share a single set of unified custom properties — `--accent`, `--embed-bg`, `--embed-border`, `--embed-text`, `--embed-text-secondary` — that each platform redefines per `data-platform` value, with dark-mode overrides in a single `[data-color-scheme="dark"]` block. The base rule reads these vars; per-platform rules just supply different values. New platforms only need to define the vars; no rule duplication needed.
+All three platforms opt out of the site's theme variables for surface colors. They share a single set of unified custom properties - `--accent`, `--embed-bg`, `--embed-border`, `--embed-text`, `--embed-text-secondary` - that each platform redefines per `data-platform` value, with dark-mode overrides in a single `[data-color-scheme="dark"]` block. The base rule reads these vars; per-platform rules just supply different values. New platforms only need to define the vars; no rule duplication needed.
 
-**Mastodon** — the Mastodon web/app palette.
+**Mastodon** - the Mastodon web/app palette.
 - Light: `#FFFFFF` bg, `#C0CDD9` border, `#191B22` text, `#606984` handle/meta
 - Dark: `#282C37` bg, `#393F4F` border, `#FFFFFF` text, `#9BAEA0` (the iconic Mastodon greenish-gray) handle/meta
 - Elephant logo + link accent: `#6364FF` light, `#8C8DFF` dark.
 
-**Twitter** — pre-rebrand identity. Light = "default" theme, dark = "Dim".
+**Twitter** - pre-rebrand identity. Light = "default" theme, dark = "Dim".
 - Light: `#F5F8FA` bg, `#E1E8ED` border, `#14171A` text, `#657786` handle/meta
 - Dark: `#15202B` bg, `#38444D` border, `#FFFFFF` text, `#8899A6` handle/meta
 - Bird logo: `#1DA1F2` (classic Twitter blue) in both modes.
 
-**Bluesky** — the Bluesky web app palette.
+**Bluesky** - the Bluesky web app palette.
 - Light: `#FFFFFF` bg, `#D4DBE2` border, `#0B0F19` text, `#42576C` handle/meta
 - Dark: `#161E27` bg, `#2E3641` border, `#FFFFFF` text, `#8D9AAA` handle/meta
 - Butterfly logo + link accent: `#0085FF` light, `#208BFE` dark.
@@ -266,13 +266,13 @@ We deliberately use the OG Twitter identity (bird logo, classic blue) rather tha
 The `.media` grid uses 2 columns by default, collapsing to 1 column via `:has(> a:only-child)` when there's a single attachment. Clicking opens the original-resolution image via Lightbox3. Drop `<div class="media">` entirely for text-only posts.
 
 ### Styling
-Width caps at 508px (matches Mastodon's official embed minus padding). CSS Grid handles the header layout. Per-platform link accent flows through a single `--accent` custom property set on the blockquote based on `data-platform`, with light/dark variants for Mastodon and Bluesky. The brand SVG inside `.embed_logo` inherits that accent through `currentColor`. No `!important` overrides — we control all the markup.
+Width caps at 508px (matches Mastodon's official embed minus padding). CSS Grid handles the header layout. Per-platform link accent flows through a single `--accent` custom property set on the blockquote based on `data-platform`, with light/dark variants for Mastodon and Bluesky. The brand SVG inside `.embed_logo` inherits that accent through `currentColor`. No `!important` overrides - we control all the markup.
 
-The generic article `blockquote::before` rule (which draws a 5px gray left bar for pull-quotes) is explicitly suppressed on `.embed_social` via `content: none;` — otherwise it leaked into the embed cards and made them look like double-quoted content. Pull-quote blockquotes elsewhere on the page keep their bar.
+The generic article `blockquote::before` rule (which draws a 5px gray left bar for pull-quotes) is explicitly suppressed on `.embed_social` via `content: none;` - otherwise it leaked into the embed cards and made them look like double-quoted content. Pull-quote blockquotes elsewhere on the page keep their bar.
 
 ### Per-platform fetching
 
-**Mastodon — public per-instance API**
+**Mastodon - public per-instance API**
 ```
 GET https://<instance>/api/v1/statuses/<status-id>
 ```
@@ -281,7 +281,7 @@ GET https://<instance>/api/v1/statuses/<status-id>
 - `url` + `created_at` → `.meta`.
 - `media_attachments[].{preview_url, url, description}` → `.media` (Lightbox3 anchor wrapping each).
 
-**Bluesky — public AT Proto API (no auth)**
+**Bluesky - public AT Proto API (no auth)**
 ```
 GET https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at://<did>/app.bsky.feed.post/<rkey>&depth=0
 ```
@@ -291,20 +291,20 @@ GET https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=at://<did>/
 - `thread.post.record.createdAt` → `<time datetime>`.
 - `thread.post.embed.images[].{thumb, fullsize, alt}` → `.media`.
 
-**X / Twitter — no free API**
+**X / Twitter - no free API**
 The public oEmbed endpoint returns 401 unauthenticated; the paid API is overkill for a blog. Practical paths:
 1. **Manual paste** of all fields (post text, handle, display name, avatar URL, date) into the markup. Fine for occasional embeds.
-2. **Local archive** — if you have a Twitter Archive download, the plugin can read post data from there.
-3. **Scraper** — fragile, against ToS.
+2. **Local archive** - if you have a Twitter Archive download, the plugin can read post data from there.
+3. **Scraper** - fragile, against ToS.
 
 ### Caching
-Mirror avatars + media locally at build time. Store under `Assets/social-cache/<post-hash>/` so embeds survive the original CDN going away. The mockup currently references CDN URLs directly for convenience — production should swap to local paths.
+Mirror avatars + media locally at build time. Store under `Assets/social-cache/<post-hash>/` so embeds survive the original CDN going away. The mockup currently references CDN URLs directly for convenience - production should swap to local paths.
 
 ### Ignite plugin sketch
 Three views, one shared output template:
-- `MastodonPost("POST_URL")` — hit `<instance>/api/v1/statuses/<id>` at build time, transform, emit `.embed_social[data-platform="mastodon"]`.
-- `BlueskyPost("POST_URL")` — resolve handle → DID, hit `getPostThread`, emit `.embed_social[data-platform="bluesky"]`.
-- `Tweet(handle:displayName:avatarPath:text:statusURL:date:)` — fields-in API since there's no public fetch path. Emit `.embed_social[data-platform="twitter"]`.
+- `MastodonPost("POST_URL")` - hit `<instance>/api/v1/statuses/<id>` at build time, transform, emit `.embed_social[data-platform="mastodon"]`.
+- `BlueskyPost("POST_URL")` - resolve handle → DID, hit `getPostThread`, emit `.embed_social[data-platform="bluesky"]`.
+- `Tweet(handle:displayName:avatarPath:text:statusURL:date:)` - fields-in API since there's no public fetch path. Emit `.embed_social[data-platform="twitter"]`.
 
 No runtime widget scripts needed; embed loaders should be removed from the layout entirely.
 
@@ -312,7 +312,7 @@ No runtime widget scripts needed; embed loaders should be removed from the layou
 
 ## YouTube Embeds (lite-youtube-embed)
 
-YouTube's native `<iframe>` ships ~1 MB+ of JS just to render the player chrome — bad for Lighthouse on pages where the video isn't always played. We use the **facade pattern** via Paul Irish's [`lite-youtube-embed`](https://github.com/paulirish/lite-youtube-embed) (~3 KB): render a thumbnail + play button, swap in the real iframe only on click.
+YouTube's native `<iframe>` ships ~1 MB+ of JS just to render the player chrome - bad for Lighthouse on pages where the video isn't always played. We use the **facade pattern** via Paul Irish's [`lite-youtube-embed`](https://github.com/paulirish/lite-youtube-embed) (~3 KB): render a thumbnail + play button, swap in the real iframe only on click.
 
 ### Markup pattern
 ```html
@@ -322,10 +322,10 @@ YouTube's native `<iframe>` ships ~1 MB+ of JS just to render the player chrome 
 </noscript>
 ```
 
-- **`videoid`** is the only required attribute — the YouTube video ID (11 chars).
+- **`videoid`** is the only required attribute - the YouTube video ID (11 chars).
 - **`params`** are URL-encoded querystring params passed to the embed iframe on click. Use `modestbranding=1&rel=0` to suppress related videos and minimize YouTube branding.
 - **Thumbnail fetched at runtime** from `i.ytimg.com/vi/<id>/hqdefault.jpg` by the library. No build-time fetch required.
-- **Uses `youtube-nocookie.com`** domain by default — privacy-respecting (no tracking until play).
+- **Uses `youtube-nocookie.com`** domain by default - privacy-respecting (no tracking until play).
 - **`<noscript>` fallback** loads a regular iframe directly so JS-disabled users still see the video. Same privacy domain.
 
 ### CSS overrides (applied in the template)
@@ -340,7 +340,7 @@ article lite-youtube {
 The library's defaults handle aspect ratio (16:9 via padding-bottom trick), maximum width (720px), and the play-button overlay. We just round the corners and match the article spacing.
 
 ### Build-time work (Ignite side)
-A simple `YouTube("VIDEO_ID", params: "modestbranding=1&rel=0")` view that emits the `<lite-youtube>` element + the `<noscript>` fallback. No asset generation needed — thumbnails come from YouTube's CDN at runtime.
+A simple `YouTube("VIDEO_ID", params: "modestbranding=1&rel=0")` view that emits the `<lite-youtube>` element + the `<noscript>` fallback. No asset generation needed - thumbnails come from YouTube's CDN at runtime.
 
 For self-hosting later, copy `lite-yt-embed.css` and `lite-yt-embed.js` to `Assets/` and update the CDN URLs. The library file sizes are tiny (~3 KB combined), so this is mostly about avoiding the third-party request.
 
@@ -354,7 +354,7 @@ All loaded from `cdn.jsdelivr.net` or platform-specific CDNs. Pin exact versions
 |---------|-------|-------|
 | Lightbox3 image viewer | `lightbox3@1.1.0/dist/lightbox3.css` + `dist/lightbox3.umd.js` | Zero-dep. Auto-binds to `<a data-lightbox>`. |
 | YouTube facade | `lite-youtube-embed@0.3.4/src/lite-yt-embed.css` + `src/lite-yt-embed.js` | ~3 KB. Web component (`<lite-youtube>`). |
-| Social embed assets (per-post) | platform CDNs (`files.mastodon.social`, `cdn.bsky.app`, etc.) | Avatars + media images only. Social embeds are all custom CSS facades — no runtime widget JS. Cache locally at build time. |
+| Social embed assets (per-post) | platform CDNs (`files.mastodon.social`, `cdn.bsky.app`, etc.) | Avatars + media images only. Social embeds are all custom CSS facades - no runtime widget JS. Cache locally at build time. |
 
 Total weight when all loaded: ~10-30 KB transferred (Lightbox3 + lite-youtube-embed). When porting to Ignite, layout views should conditionally inject only the loaders that this page actually needs.
 
@@ -363,7 +363,7 @@ Total weight when all loaded: ~10-30 KB transferred (Lightbox3 + lite-youtube-em
 ## iOS / Safe-Area Concerns
 
 - **Viewport meta**: `viewport-fit=cover` is required to extend the background under the notch/island. Combined with `padding: env(safe-area-inset-*)` on `<body>` to inset content from the unsafe regions.
-- **Don't try to conditionally cancel safe-area-inset in landscape**. We explored detecting notched-device via `@media (max-height: calc(env(safe-area-inset-top) * 1000))` — broke other Safari behaviors. Live with the inset.
+- **Don't try to conditionally cancel safe-area-inset in landscape**. We explored detecting notched-device via `@media (max-height: calc(env(safe-area-inset-top) * 1000))` - broke other Safari behaviors. Live with the inset.
 - **Text size adjust**: `-webkit-text-size-adjust: 100%` + `text-size-adjust: 100%` on body to prevent iOS Safari from inflating text on rotation.
 - **Touch testing**: iOS Simulator requires a local HTTP server (e.g., `python3 -m http.server 8001`). `file://` URLs don't trigger many touch behaviors correctly.
 
@@ -371,7 +371,7 @@ Total weight when all loaded: ~10-30 KB transferred (Lightbox3 + lite-youtube-em
 
 ## Breakpoints
 
-The mockup uses these breakpoint boundaries (not all are arbitrary — the .98 suffixes match the smallest layout-affecting widths just below a round number):
+The mockup uses these breakpoint boundaries (not all are arbitrary - the .98 suffixes match the smallest layout-affecting widths just below a round number):
 
 | Width | Trigger |
 |-------|---------|
@@ -401,7 +401,7 @@ The mockup uses these breakpoint boundaries (not all are arbitrary — the .98 s
 - **`YouTube("VIDEO_ID")`**: emits `<lite-youtube>` + `<noscript>` iframe.
 - **`Tweet(handle:displayName:avatarPath:text:statusURL:date:)`**: fields-in markup (no free API). Emits `.embed_social[data-platform="twitter"]`.
 - **`BlueskyPost("POST_URL")`**: at build time, resolves handle → DID, hits `getPostThread`, caches avatar + media locally, emits `.embed_social[data-platform="bluesky"]`.
-- **`MastodonPost("POST_URL")`**: at build time, hits `<instance>/api/v1/statuses/<status-id>`, caches avatar + media locally, converts `<p>` paragraphs to `<br><br>`-separated text, emits `.embed_social[data-platform="mastodon"]`. All three are pure HTML/CSS — no runtime widget needed.
+- **`MastodonPost("POST_URL")`**: at build time, hits `<instance>/api/v1/statuses/<status-id>`, caches avatar + media locally, converts `<p>` paragraphs to `<br><br>`-separated text, emits `.embed_social[data-platform="mastodon"]`. All three are pure HTML/CSS - no runtime widget needed.
 
 ### Asset pipeline plugin
 A single build-time pass that:
@@ -414,10 +414,10 @@ A single build-time pass that:
 Layouts should inject embed/widget loaders **only on pages that use them**. Cleanest approach: each content view sets a flag in `@Environment` during render; the layout's `<body>` end reads those flags and emits the corresponding loader scripts.
 
 ### CSS split suggestion
-- `theme.css` — variables (light + dark sets) + base body
-- `header.css` — capsule, menu, hamburger
+- `theme.css` - variables (light + dark sets) + base body
+- `header.css` - capsule, menu, hamburger
 - `footer.css`
-- `article.css` — typography, hr, `img.lqip`, social embed margins, lite-youtube overrides
-- `iphone-landscape.css` — the `@media (orientation: landscape) and (max-height: 500px)` rules
+- `article.css` - typography, hr, `img.lqip`, social embed margins, lite-youtube overrides
+- `iphone-landscape.css` - the `@media (orientation: landscape) and (max-height: 500px)` rules
 
 Match the existing class names where possible so the mockup remains a reference.

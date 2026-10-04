@@ -1,9 +1,9 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
 
-/// The Archive page — the full, permanent index of every blog post, grouped by
+/// The Archive page - the full, permanent index of every blog post, grouped by
 /// year and filterable by title. Where `Home` shows only the newest handful,
 /// this lists everything. The page markup is built as a raw HTML string by
 /// `ArchivePage` and handed back to Ignite via a collection include.
@@ -31,7 +31,7 @@ struct Archive: StaticPage {
 }
 
 /// Builds the Archive page's HTML. A `@MainActor` enum used purely as a
-/// namespace for static builders (it has no cases and is never instantiated) —
+/// namespace for static builders (it has no cases and is never instantiated) -
 /// the same pattern the collection renderers use. Kept separate from `Archive`
 /// so the string-building helpers stay out of the `StaticPage` conformance.
 @MainActor
@@ -51,7 +51,7 @@ enum ArchivePage {
 
         var s = #"<div class="archive">"#
 
-        // Header — page title plus the pluralised summary line.
+        // Header - page title plus the pluralised summary line.
         s += #"<h1 class="page-title">Archive</h1>"#
         s += #"<p class="page-subtitle">\#(summaryText(postCount: posts.count, yearCount: years.count))</p>"#
 
@@ -62,7 +62,7 @@ enum ArchivePage {
         s += #"<input class="archive-search" type="search" aria-label="Search posts by title" placeholder="Search \#(posts.count) posts by title…">"#
         s += "</div>"
 
-        // Year sections — year + post count on the left, a flat list of posts
+        // Year sections - year + post count on the left, a flat list of posts
         // (title + date) on the right. Years descend newest-first for scanning.
         for group in grouped {
             s += #"<section class="archive-year" id="year-\#(group.year)">"#
@@ -104,7 +104,7 @@ enum ArchivePage {
 
     // MARK: - Helpers
 
-    /// One year's worth of posts — the unit the archive groups and renders by.
+    /// One year's worth of posts - the unit the archive groups and renders by.
     private struct YearGroup {
 
         /// The calendar year (e.g. 2026), used as the section id and heading.
@@ -131,7 +131,7 @@ enum ArchivePage {
         return byYear.keys.sorted(by: >).map { YearGroup(year: $0, posts: byYear[$0] ?? []) }
     }
 
-    /// The page subtitle, e.g. "42 posts across 5 years. Or close enough." —
+    /// The page subtitle, e.g. "42 posts across 5 years. Or close enough." -
     /// pluralised for both counts, with a self-deprecating tail because the
     /// year math is approximate.
     private static func summaryText(postCount: Int, yearCount: Int) -> String {
@@ -151,7 +151,7 @@ enum ArchivePage {
         return cal
     }
 
-    /// Configured once — DateFormatter construction is expensive, and this
+    /// Configured once - DateFormatter construction is expensive, and this
     /// runs for every archive row. Formats the short "MMM d" day label (e.g.
     /// "Jul 19") in en_AU and the site's display time zone.
     private static let dayLabelFormatter: DateFormatter = {

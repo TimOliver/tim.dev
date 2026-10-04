@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -56,7 +56,7 @@ extension CodeRenderer {
             // for the href attribute).
             s += #"<a class="collection-card code-card" href="\#(escape(repo.path))">"#
 
-            // Card sits in a 2-3 col grid inside the 1100/1650px page width —
+            // Card sits in a 2-3 col grid inside the 1100/1650px page width -
             // renders around 460-490px; measured against collection.css.
             s += shot(image: repo.image, name: repo.title, sizes: "(max-width: 720px) 90vw, 460px")
 

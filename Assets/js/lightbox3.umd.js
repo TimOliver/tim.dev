@@ -40,7 +40,7 @@
             settled,
         };
     }
-    // Presets — tuned for Motion.dev-style feel
+    // Presets - tuned for Motion.dev-style feel
     const SPRING_OPEN = { stiffness: 260, damping: 26, mass: 1 };
     const SPRING_CLOSE = { stiffness: 500, damping: 38, mass: 1 };
 
@@ -434,16 +434,16 @@
             }
             if (e.key === 'Escape') {
                 if (this.dismiss.active) {
-                    // Dismiss gesture in progress — complete the close
+                    // Dismiss gesture in progress - complete the close
                     this.dismissClose(0, 0);
                     return;
                 }
                 if (this.zoom.zoomingOut) {
-                    // Zoom-out already in progress — close the lightbox
+                    // Zoom-out already in progress - close the lightbox
                     this.close();
                 }
                 else if (this.zoom.zoomed || this.zoom.scale !== 1) {
-                    // Zoomed in (idle or animating in) — zoom out first
+                    // Zoomed in (idle or animating in) - zoom out first
                     this.zoomOut();
                 }
                 else {
@@ -512,7 +512,7 @@
                 this.openTextLink(triggerEl || null, src);
                 return;
             }
-            // triggerEl is guaranteed here — the isTextLink guard above returns early without one
+            // triggerEl is guaranteed here - the isTextLink guard above returns early without one
             const thumbRect = this.getThumbRect(triggerEl);
             this.thumbBorderRadius = this.getThumbBorderRadius(triggerEl);
             this.createOverlay(thumbSrc || src);
@@ -547,7 +547,7 @@
             if (thumbSrc && thumbSrc !== src) {
                 this.swapToFullRes(src);
             }
-            // Preload neighbor images BEFORE populating adjacent slides — this ensures
+            // Preload neighbor images BEFORE populating adjacent slides - this ensures
             // the preload cache has Image objects that setupSlideImage can attach load
             // listeners to. Without this, adjacent slides fall back to thumbnails because
             // the cache entry doesn't exist yet when the slide is created.
@@ -557,7 +557,7 @@
             // Populate adjacent gallery slides (off-screen, ready for swipe)
             this.populateAdjacentSlides();
             // Start spring from FLIP position → identity.
-            // onEarlyComplete fires when visually done (opacity ≈ 1) — clears isAnimating
+            // onEarlyComplete fires when visually done (opacity ≈ 1) - clears isAnimating
             // so dismiss tracking isn't blocked, but the spring keeps bouncing visually.
             const openVisuallyDone = (s) => s.opacity > 0.99;
             this.animateSpring({ translateX: flipX, translateY: flipY, scale: flipScale, opacity: 0, crop: hasCrop ? 1 : 0, borderRadius: this.thumbBorderRadius }, { translateX: 0, translateY: 0, scale: 1, opacity: 1, crop: 0, borderRadius: this.getTargetBorderRadius() }, this.opts.springOpen, () => {
@@ -570,11 +570,11 @@
             const cached = this.preloadCache.get(src);
             const fullResReady = cached?.complete && cached.naturalWidth > 0;
             if (fullResReady) {
-                // Image already loaded — run the normal FLIP morph using image aspect ratio
+                // Image already loaded - run the normal FLIP morph using image aspect ratio
                 this.openTextLinkWithImage(triggerEl, src, cached.naturalWidth, cached.naturalHeight);
                 return;
             }
-            // Image not ready — show overlay + spinner, load, then morph
+            // Image not ready - show overlay + spinner, load, then morph
             this.createOverlay('');
             this.createChrome();
             const cx = triggerEl
@@ -672,7 +672,7 @@
             this.loadImage(src).then((size) => {
                 if (!this.imgEl || this.state.currentSrc !== src)
                     return;
-                // Full-res loaded after close started — don't reposition the image
+                // Full-res loaded after close started - don't reposition the image
                 if (this.state.isClosing || !this.state.isOpen)
                     return;
                 this.imgEl.src = src;
@@ -960,7 +960,7 @@
             // Hide new thumbnail
             this.setThumbVisibility(false);
             this.emit('navigate');
-            // Update chrome UI — cross-fade already swapped caption/counter text,
+            // Update chrome UI - cross-fade already swapped caption/counter text,
             // so just ensure it's correct for the new index and reset fade state.
             this.updateChromeContent();
             this.chromeFadeSwapped = false;
@@ -968,14 +968,14 @@
                 this.chromeCaption.style.opacity = '';
             if (this.chromeCounter)
                 this.chromeCounter.style.opacity = '';
-            // Reset strip BEFORE recycling — recycleSlots creates a new adjacent slide
+            // Reset strip BEFORE recycling - recycleSlots creates a new adjacent slide
             // and appends it to the strip. If the strip still has its animation transform
             // (-slideWidth), the new slide at left:slideWidth appears at visual position 0
             // (center) for one frame before the transform is cleared.
             this.stripOffset = 0;
             if (this.stripEl)
                 this.stripEl.style.transform = '';
-            // Schedule preloads BEFORE recycling — recycleSlots creates a new adjacent
+            // Schedule preloads BEFORE recycling - recycleSlots creates a new adjacent
             // slide, and it needs the preload cache entry to exist so it can attach a
             // load listener for the full-res upgrade.
             this.schedulePreloads();
@@ -1091,7 +1091,7 @@
             this.stopStripSpring();
             const slideWidth = window.innerWidth + SLIDE_GAP;
             if (Math.abs(this.stripOffset) > slideWidth / 2) {
-                // Past halfway — complete the navigation
+                // Past halfway - complete the navigation
                 const direction = (this.stripOffset < 0 ? 1 : -1);
                 const newIndex = this.currentIndex + direction;
                 if (newIndex >= 0 && newIndex < this.gallery.length) {
@@ -1299,7 +1299,7 @@
             const destIndex = this.currentIndex + direction;
             const hasDestination = destIndex >= 0 && destIndex < this.gallery.length;
             if (!hasDestination)
-                return; // At edge (bounce) — don't fade
+                return; // At edge (bounce) - don't fade
             const slideWidth = window.innerWidth + SLIDE_GAP;
             const progress = Math.min(1, Math.abs(offset) / slideWidth);
             const fadeOpacity = Math.abs(1 - progress * 2);
@@ -1335,7 +1335,7 @@
         }
         /**
          * Rubber-band bounce at gallery edges. Kicks the strip with velocity in the
-         * attempted direction — the spring overshoots then settles back to 0,
+         * attempted direction - the spring overshoots then settles back to 0,
          * hinting that there are no more images that way.
          * direction: 1 = shift right (at first image), -1 = shift left (at last).
          */
@@ -1360,7 +1360,7 @@
                 this.completeNavigation(this.pendingNavDirection);
             }
             else {
-                // Bounce or other non-navigation animation — just reset
+                // Bounce or other non-navigation animation - just reset
                 this.stripOffset = 0;
                 this.applyStripOffset(0);
             }
@@ -1433,7 +1433,7 @@
                 this.zoom.panY = rY.position;
                 this.zoom.scale = rS.position;
                 this.applyPanTransform();
-                // Make interactive as soon as visually zoomed — don't wait for spring tail
+                // Make interactive as soon as visually zoomed - don't wait for spring tail
                 if (!madeInteractive && rS.position > 1) {
                     madeInteractive = true;
                     this.zoom.zoomed = true;
@@ -1500,7 +1500,7 @@
                 this.zoom.panY = rY.position;
                 this.zoom.scale = rS.position;
                 this.applyPanTransform();
-                // Update state as soon as visually settled — don't wait for spring tail
+                // Update state as soon as visually settled - don't wait for spring tail
                 if (!madeInteractive &&
                     Math.abs(rS.position - 1) < VISUAL_THRESHOLD &&
                     Math.abs(rX.position) < 1 &&
@@ -1535,13 +1535,13 @@
             // Add to pointer cache
             this.pointerCache.push(e);
             e.target.setPointerCapture(e.pointerId);
-            // Second finger down — start pinch
+            // Second finger down - start pinch
             if (this.pointerCache.length === 2) {
                 this.startPinch();
                 return;
             }
-            // Single pointer at fit scale — track for potential swipe-to-dismiss or swipe-to-navigate.
-            // Block during open animation (isAnimating=true) — the image is mid-FLIP
+            // Single pointer at fit scale - track for potential swipe-to-dismiss or swipe-to-navigate.
+            // Block during open animation (isAnimating=true) - the image is mid-FLIP
             // and freezing it would leave a partial-open state. Snap-back doesn't set
             // isAnimating, so it stays interruptible.
             // Use !zoomed rather than scale<=1: during zoom-out spring tail, scale may
@@ -1570,7 +1570,7 @@
                 this.addVelocitySample(e.clientX, e.clientY);
                 return;
             }
-            // Interrupt any in-progress zoom-in animation — user is grabbing it
+            // Interrupt any in-progress zoom-in animation - user is grabbing it
             this.stopSpring();
             this.zoom.zoomed = true;
             this.state.isAnimating = false;
@@ -1627,7 +1627,7 @@
             const idx = this.pointerCache.findIndex((p) => p.pointerId === e.pointerId);
             if (idx >= 0)
                 this.pointerCache[idx] = e;
-            // Pinch active — handle two-finger zoom+pan
+            // Pinch active - handle two-finger zoom+pan
             if (this.pinch.active && this.pointerCache.length === 2) {
                 this.updatePinch();
                 return;
@@ -1669,7 +1669,7 @@
             catch {
                 // Pointer capture may already be released
             }
-            // Pinch ended — settle with spring
+            // Pinch ended - settle with spring
             if (this.pinch.active) {
                 if (this.pointerCache.length < 2) {
                     this.endPinch();
@@ -1691,11 +1691,11 @@
                 return;
             const wasDrag = this.zoom.dragMoved;
             this.zoom.isDragging = false;
-            // Don't clear dragMoved here — handleImageClick needs it to suppress the click
+            // Don't clear dragMoved here - handleImageClick needs it to suppress the click
             this.updateCursorState();
             if (!wasDrag) {
                 this.zoomOut();
-                // Mark dragMoved so the subsequent click event is suppressed —
+                // Mark dragMoved so the subsequent click event is suppressed -
                 // without this, handleImageClick also calls zoomOut() on the same tap.
                 this.zoom.dragMoved = true;
                 return;
@@ -1731,13 +1731,13 @@
             const dx = e.clientX - this.dismiss.startX;
             const dy = e.clientY - this.dismiss.startY;
             if (!this.dismiss.active) {
-                // Still tracking — determine axis once past threshold.
+                // Still tracking - determine axis once past threshold.
                 // Use a larger threshold than DRAG_THRESHOLD so the angle has enough
                 // signal to commit reliably, especially on mobile.
                 if (Math.hypot(dx, dy) < AXIS_LOCK_THRESHOLD)
                     return;
                 if (Math.abs(dy) > Math.abs(dx) * 1.5) {
-                    // Vertical wins — activate dismiss
+                    // Vertical wins - activate dismiss
                     this.dismiss.active = true;
                     this.dismiss.tracking = false;
                     this.zoom.dragMoved = true; // Suppress the click that follows pointerup
@@ -1748,7 +1748,7 @@
                     }
                 }
                 else {
-                    // Horizontal — start swipe-to-navigate if in a gallery
+                    // Horizontal - start swipe-to-navigate if in a gallery
                     if (this.gallery.length > 1) {
                         const startX = this.dismiss.startX;
                         this.dismiss = this.defaultDismissState();
@@ -1822,7 +1822,7 @@
             this.dismiss = this.defaultDismissState();
             const thumbRect = this.state.triggerEl ? this.getThumbRect(this.state.triggerEl) : null;
             const currentBR = this.getTargetBorderRadius();
-            // Off-screen thumbnails — fade out in place
+            // Off-screen thumbnails - fade out in place
             if (!thumbRect || !this.isInViewport(thumbRect)) {
                 this.animateSpring({ translateX: offsetX, translateY: offsetY, scale, opacity, crop: 0, borderRadius: currentBR }, { translateX: offsetX, translateY: offsetY, scale, opacity: 0, crop: 0, borderRadius: currentBR }, this.opts.springClose, () => this.finishClose(), (s) => s.opacity < 0.01, { translateX: velocityX, translateY: velocityY });
                 return;
@@ -1835,7 +1835,7 @@
             const flipX = morphRect.x + morphRect.width / 2 - (fitRect.x + fitRect.width / 2);
             const flipY = morphRect.y + morphRect.height / 2 - (fitRect.y + fitRect.height / 2);
             const { flipScale, hasCrop } = this.computeFlipCrop(morphRect, fitRect, this.state.triggerEl, this.isTextLink);
-            // Clean up as soon as the image is visually at the thumbnail — the swap
+            // Clean up as soon as the image is visually at the thumbnail - the swap
             // from animated image → real thumbnail is imperceptible at this point.
             // Don't use opacity alone: it may already be near 0 from the drag.
             // Tolerances are wide enough to survive spring overshoot from fast flicks
@@ -1871,7 +1871,7 @@
         dismissSnapBack(velocityX, velocityY) {
             const { offsetX, offsetY, scale, opacity } = this.dismiss;
             this.dismiss = this.defaultDismissState();
-            // Don't set isAnimating — snap-back is visual recovery, not a state
+            // Don't set isAnimating - snap-back is visual recovery, not a state
             // transition. This keeps it interruptible by a new dismiss gesture
             // (the user can grab the image mid-snap-back) while isAnimating=true
             // during the open animation correctly blocks dismiss tracking.
@@ -1931,11 +1931,11 @@
             }
             // At fit scale: determine primary axis
             if (absX > absY && this.gallery.length > 1) {
-                // Horizontal dominant — navigate gallery
+                // Horizontal dominant - navigate gallery
                 this.wheelNavigate(deltaX);
             }
             else if (absY > 0) {
-                // Vertical dominant — dismiss
+                // Vertical dominant - dismiss
                 this.wheelDismiss(deltaY);
             }
         }
@@ -2039,7 +2039,7 @@
         handleSwipeNavRelease() {
             const { vx } = this.computeVelocity();
             const offset = this.swipeNav.offsetX;
-            // Reset swipe nav state immediately — spring animation is just visual follow-through
+            // Reset swipe nav state immediately - spring animation is just visual follow-through
             this.swipeNav = this.defaultSwipeNavState();
             const slideWidth = window.innerWidth + SLIDE_GAP;
             const progress = Math.abs(offset) / slideWidth;
@@ -2158,7 +2158,7 @@
                 const dt = (performance.now() - this.pinch.prevScaleTime) / 1000;
                 const scaleVelocity = dt > 0.001 ? (this.zoom.scale - this.pinch.prevScale) / dt : 0;
                 if (this.zoom.scale < PINCH_CLOSE_SCALE || scaleVelocity < PINCH_CLOSE_VELOCITY) {
-                    // Commit to close — bridge into dismiss path
+                    // Commit to close - bridge into dismiss path
                     this.pinchClose();
                 }
                 else {
@@ -2175,7 +2175,7 @@
                 this.animateChrome(1);
             }
             else {
-                // Valid zoom — clamp pan to bounds and settle
+                // Valid zoom - clamp pan to bounds and settle
                 this.zoom.zoomed = this.zoom.scale > 1;
                 this.animateChrome(this.zoom.scale > 1 ? 1 : 0);
                 const bounds = this.computePanBounds(this.zoom.scale);
@@ -2190,7 +2190,7 @@
                     this.updateCursorState();
                 }
             }
-            // Don't auto-transition to single-finger drag — the second finger
+            // Don't auto-transition to single-finger drag - the second finger
             // lifting off produces noisy velocity that triggers unwanted momentum.
             // User can lift and re-place a finger to pan intentionally.
         }
@@ -2218,14 +2218,14 @@
             const { panX, panY, scale } = this.zoom;
             const dismissProgress = 1 - scale;
             const opacity = Math.max(0, 1 - dismissProgress / 0.35);
-            // Reset zoom state — animation system takes over via animateSpring
+            // Reset zoom state - animation system takes over via animateSpring
             this.zoom.scale = 1;
             this.zoom.panX = 0;
             this.zoom.panY = 0;
             this.zoom.zoomed = false;
             const thumbRect = this.state.triggerEl ? this.getThumbRect(this.state.triggerEl) : null;
             const currentBR = this.getTargetBorderRadius();
-            // Off-screen or no thumbnail — fade out in place
+            // Off-screen or no thumbnail - fade out in place
             if (!thumbRect || !this.isInViewport(thumbRect)) {
                 this.animateSpring({ translateX: panX, translateY: panY, scale, opacity, crop: 0, borderRadius: currentBR }, { translateX: panX, translateY: panY, scale, opacity: 0, crop: 0, borderRadius: currentBR }, this.opts.springClose, () => this.finishClose(), (s) => s.opacity < 0.01);
                 return;
@@ -2256,7 +2256,7 @@
             const { panX, panY, scale } = this.zoom;
             const dismissProgress = 1 - scale;
             const opacity = Math.max(0, 1 - dismissProgress / 0.35);
-            // Reset zoom to fit — the spring animates the visual recovery
+            // Reset zoom to fit - the spring animates the visual recovery
             this.zoom.scale = 1;
             this.zoom.panX = 0;
             this.zoom.panY = 0;
@@ -2298,7 +2298,7 @@
                 this.zoom.panY = rY.position;
                 this.zoom.scale = rS.position;
                 this.applyPanTransform();
-                // Update state as soon as visually settled — don't wait for spring tail
+                // Update state as soon as visually settled - don't wait for spring tail
                 if (!madeInteractive &&
                     Math.abs(rS.position - targetScale) < VISUAL_THRESHOLD * targetScale &&
                     Math.abs(rX.position - targetPanX) < 1 &&
@@ -2397,7 +2397,7 @@
             if (this.pendingNavDirection !== null) {
                 this.forceCompleteStripAnimation();
             }
-            // Zoomed (idle or animating) — zoom out
+            // Zoomed (idle or animating) - zoom out
             if (this.zoom.zoomed || this.zoom.scale !== 1) {
                 this.zoomOut();
                 return;
@@ -2583,7 +2583,7 @@
         }
         animateChrome(target) {
             this.stopChromeSpring();
-            // Reset drift — directional drift is only used during open/close morph
+            // Reset drift - directional drift is only used during open/close morph
             this.resetChromeDrift();
             if (this.reducedMotion) {
                 this.chromeSpring = { position: target, velocity: 0 };
@@ -2706,7 +2706,7 @@
             backdrop.className = 'lightbox3-backdrop';
             backdrop.style.opacity = '0';
             backdrop.addEventListener('click', this.close);
-            // Strip container — translates horizontally for gallery navigation
+            // Strip container - translates horizontally for gallery navigation
             const strip = document.createElement('div');
             strip.className = 'lightbox3-strip';
             // Center slide
@@ -2969,7 +2969,7 @@
                 // What portion of the local (pre-transform) image is visible after scaling
                 const visibleLocalW = morphRect.width / flipScale;
                 const visibleLocalH = morphRect.height / flipScale;
-                // Symmetric (centered) crop — matches the common center-crop default
+                // Symmetric (centered) crop - matches the common center-crop default
                 this.cropInsets = {
                     top: Math.max(0, (fitRect.height - visibleLocalH) / 2),
                     bottom: Math.max(0, (fitRect.height - visibleLocalH) / 2),
@@ -2978,7 +2978,7 @@
                 };
                 return { flipScale, hasCrop: true };
             }
-            // No crop needed — aspect ratios match
+            // No crop needed - aspect ratios match
             return { flipScale: Math.min(scaleX, scaleY), hasCrop: false };
         }
         setThumbVisibility(visible) {
@@ -2999,7 +2999,7 @@
             return new DOMRect((vw - w) / 2, (vh - h) / 2, w, h);
         }
         /** Like computeTargetRect but without the scale ≤ 1 cap. Used when full-res
-         *  dimensions are unknown — fills the viewport based on aspect ratio alone. */
+         *  dimensions are unknown - fills the viewport based on aspect ratio alone. */
         computeTargetRectFromAspectRatio(width, height) {
             const vw = window.innerWidth;
             const vh = window.innerHeight;

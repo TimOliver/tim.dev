@@ -2,11 +2,11 @@
    Comentario theme override.
 
    Loaded via the <comentario-comments css-override="…"> attribute, i.e. AFTER
-   Comentario's default stylesheet — so equal-specificity rules win by source
+   Comentario's default stylesheet - so equal-specificity rules win by source
    order. Selectors are prefixed with `.comentario-root` to match the defaults.
 
    It loads into the page (light DOM), so it can use the site's CSS custom
-   properties — the comments follow the site's light/dark theme for free. Paired
+   properties - the comments follow the site's light/dark theme for free. Paired
    with no-fonts="true" so the widget inherits the site's SF font.
 
    Goal: the clean, rounded, neutral look from the design spec.
@@ -21,7 +21,7 @@
     /* Match the article text (1em inherits the body's 18px, and scales with it
        on smaller screens) rather than 1rem, which is the smaller root size.
        line-height inherits the body's 1.6 so comments read at the same size and
-       spacing as the article — neither elevated over the other. */
+       spacing as the article - neither elevated over the other. */
     font-size: 1em;
     line-height: inherit;
     position: static;
@@ -49,7 +49,7 @@
 
 /* Spinning BUTTONS (Comentario adds .comentario-spinner to e.g. the "Sign in"
    pill while an OAuth popup is open, or a submit while in flight): the base
-   --bg-secondary tint above is for the page-loading spinner on the page bg —
+   --bg-secondary tint above is for the page-loading spinner on the page bg -
    on a filled pill it's fill-on-fill, drawn over the still-visible label. Hide
    the label (transparent keeps the pill's size) and tint the spinner the
    colour the label would be. */
@@ -57,7 +57,7 @@
     color: transparent;
 }
 
-/* Comentario dims disabled buttons to 30% (!important) — right for genuinely
+/* Comentario dims disabled buttons to 30% (!important) - right for genuinely
    disabled controls, but a spinning button is *busy*, not unavailable, and at
    30% the spinner all but vanishes on the pill fill. Restore full strength
    while the spinner runs. */
@@ -89,7 +89,7 @@
 }
 
 /* Skeleton placeholder card (shown while comments load): drop Comentario's
-   top/left card rules — the shimmer blocks read as the card on their own. */
+   top/left card rules - the shimmer blocks read as the card on their own. */
 .comentario-root .comentario-ph-comment-card {
     border: none;
     padding-left: 85px;
@@ -100,7 +100,7 @@
     margin-bottom: 45px;
 }
 
-/* Hide the placeholder profile bar — simpler loading state without it. */
+/* Hide the placeholder profile bar - simpler loading state without it. */
 .comentario-root .comentario-ph-profile-bar {
     display: none;
 }
@@ -114,7 +114,7 @@
 }
 
 /* Lift the login / profile bar (with "Sign in") up onto our "Comments · N"
-   heading row — anchored to the top-right of the .post-comments section. */
+   heading row - anchored to the top-right of the .post-comments section. */
 .comentario-root .comentario-profile-bar {
     position: absolute;
     top: 22px;
@@ -127,7 +127,7 @@
     align-items: center;
 }
 
-/* Centre each section's own contents too — the avatar against the name, and the
+/* Centre each section's own contents too - the avatar against the name, and the
    lock/settings/logout buttons on the same axis. */
 .comentario-root .comentario-profile-bar .comentario-toolbar-section {
     display: flex;
@@ -238,7 +238,7 @@
     justify-content: space-between;
     gap: 14px;
     /* Lots of space above pulls the toolbar away from the editor and groups it
-       with the comment list below. No bottom border — the sort row reads cleaner
+       with the comment list below. No bottom border - the sort row reads cleaner
        without a divider line under it. */
     padding-top: 1.25em;
     padding-bottom: 0;
@@ -249,7 +249,7 @@
        .post-comments divider); padding-inline brings the buttons back to reading
        width so the row tracks the comment content edges. --container-pad from
        main .container. (RSS sits flush to the right edge via the button rule
-       below, not by removing this padding — that would push it into the gutter.) */
+       below, not by removing this padding - that would push it into the gutter.) */
     margin-inline: calc(-1 * var(--container-pad));
     padding-inline: var(--container-pad);
 }
@@ -265,7 +265,7 @@
     display: none;
 }
 
-/* Hide the "Powered by Comentario" footer — credited on the about page instead. */
+/* Hide the "Powered by Comentario" footer - credited on the about page instead. */
 .comentario-root .comentario-footer {
     display: none;
 }
@@ -278,13 +278,13 @@
 
 /* Sort buttons hug their labels (drop Comentario's btn padding/margin); the
    container gap sets the spacing, and the row stays flush-left. Uniform weight
-   (700) and size across all three — the selected one is shown by colour only. */
+   (700) and size across all three - the selected one is shown by colour only. */
 .comentario-root .comentario-sort-buttons .comentario-btn {
     margin: 0;
     padding-left: 0;
     padding-right: 0;
     font-weight: 700;
-    /* rem (not em) so the relabeled "Popular" ::before matches exactly — its host
+    /* rem (not em) so the relabeled "Popular" ::before matches exactly - its host
        button is font-size:0, where em resolves to 0. Same rem on both = identical. */
     font-size: 0.9rem;
 }
@@ -301,13 +301,13 @@
     padding-right: 0;
 }
 
-/* Drop the sort dropdown caret — it reads as a plain toggle. */
+/* Drop the sort dropdown caret - it reads as a plain toggle. */
 .comentario-root .comentario-sort-buttons .comentario-icon {
     display: none;
 }
 
 /* Selected sort: primary label colour; the others stay muted (secondary, from
-   .comentario-btn-link). Colour alone marks the selection — weight is uniform. */
+   .comentario-btn-link). Colour alone marks the selection - weight is uniform. */
 .comentario-root .comentario-sort-buttons .comentario-btn-active {
     color: var(--text);
 }
@@ -356,7 +356,7 @@
     corner-shape: squircle;
 }
 
-/* Collapsed editor: placeholder top-left — the default centres it in a
+/* Collapsed editor: placeholder top-left - the default centres it in a
    130px-tall flex box. */
 .comentario-root .comentario-add-comment-host {
     justify-content: flex-start;
@@ -367,7 +367,7 @@
 
 /* Expanded editor: Comentario nests host > editor > textarea, each bordered, so
    clicking in gives three stacked borders. Make the host a transparent wrapper
-   (drop the outermost border) — the editor below keeps the single visible box,
+   (drop the outermost border) - the editor below keeps the single visible box,
    and the textarea border is removed too. */
 .comentario-root .comentario-add-comment-host.comentario-editor-inserted {
     background: none;
@@ -376,9 +376,9 @@
     min-height: 0;
 }
 
-/* Collapsed "Add a comment": a compact, borderless capsule — single line, the
+/* Collapsed "Add a comment": a compact, borderless capsule - single line, the
    placeholder vertically centred behind a leading speech-bubble glyph (our Tabler
-   "comments" icon) to hint it's a writeable field. No stroke — iOS-style, relies
+   "comments" icon) to hint it's a writeable field. No stroke - iOS-style, relies
    on the fill against the page. Hover lifts the fill (and darkens the glyph) so it
    reads as clickable before you click. */
 .comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted) {
@@ -394,7 +394,7 @@
     transition: background-color 0.15s ease;
 }
 
-/* Leading comments glyph — same path as /img/site/ui-icons.svg#comments (Tabler), inlined
+/* Leading comments glyph - same path as /img/site/ui-icons.svg#comments (Tabler), inlined
    as a mask (a CSS mask can't reference a <symbol>) so it tints with the placeholder
    colour. Matches the spinner's inline-mask pattern above. */
 .comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted)::before {
@@ -408,7 +408,7 @@
             mask: var(--cmntr-icon) center / contain no-repeat;
 }
 
-/* Hover: deepen the fill a touch and darken the glyph — a clickable cue before
+/* Hover: deepen the fill a touch and darken the glyph - a clickable cue before
    focus. color-mix keeps the shift relative to the resting fill in both modes
    (darkens in light, lightens in dark), so it survives --bg-secondary changes. */
 .comentario-root .comentario-add-comment-host:not(.comentario-editor-inserted):hover {
@@ -419,7 +419,7 @@
     background: var(--text);
 }
 
-/* Expanded editor matches the collapsed placeholder — same secondary fill, no
+/* Expanded editor matches the collapsed placeholder - same secondary fill, no
    border, same radius. */
 .comentario-root .comentario-comment-editor {
     background: var(--bg-secondary);
@@ -437,7 +437,7 @@
     margin-top: 1.25em;
 }
 
-/* Placeholder text — dim it to the secondary colour. Comentario colours the
+/* Placeholder text - dim it to the secondary colour. Comentario colours the
    "Add a comment" text at high specificity, so force it. Comentario also
    centres it (flex:1 + justify-content/text-align center); start-align it so
    it sits beside the leading glyph instead of floating mid-capsule. */
@@ -458,9 +458,9 @@
 }
 
 /* Relabel the submit from "Add Comment" to the punchier "Post" (matches the composer's
-   intent and the anonymous "Post" button) — at every width. Done in CSS rather than
-   Comentario's global i18n so it stays in-repo: font-size:0 hides the real text node —
-   the pill keeps its size because Comentario's button padding is px, not em — and
+   intent and the anonymous "Post" button) - at every width. Done in CSS rather than
+   Comentario's global i18n so it stays in-repo: font-size:0 hides the real text node -
+   the pill keeps its size because Comentario's button padding is px, not em - and
    ::after supplies the label (an em size would resolve to 0 off the zeroed host font).
    The :not()s lift specificity above Comentario's own 0.85em button-text rule. */
 .comentario-root .comentario-comment-editor-footer .comentario-btn-primary:not(.comentario-btn-link):not(.comentario-btn-tool):not(.comentario-btn-active) {
@@ -476,7 +476,7 @@
     font-size: 12.75px;
 }
 
-/* Textarea / contenteditable — borderless typing area inside the editor box
+/* Textarea / contenteditable - borderless typing area inside the editor box
    (the editor carries the single border), no blue focus ring. */
 .comentario-root .comentario-comment-editor textarea,
 .comentario-root textarea {
@@ -492,7 +492,7 @@
        textarea defaults. */
     font-size: inherit;
     line-height: inherit;
-    /* No drag handle — auto-size to the content instead (field-sizing grows the
+    /* No drag handle - auto-size to the content instead (field-sizing grows the
        box as the user types, starting compact and capping before it scrolls). */
     resize: none;
     field-sizing: content;
@@ -507,7 +507,7 @@
     box-shadow: none;
 }
 
-/* Comentario flags an empty/invalid textarea with a red border once touched —
+/* Comentario flags an empty/invalid textarea with a red border once touched -
    suppress it; the box stays borderless. */
 .comentario-root textarea.comentario-touched:invalid {
     border: none;
@@ -533,12 +533,12 @@
     margin-bottom: 0;
 }
 
-/* While previewing, the markdown toolbar is disabled — hide it entirely. */
+/* While previewing, the markdown toolbar is disabled - hide it entirely. */
 .comentario-root .comentario-toolbar.comentario-disabled {
     display: none;
 }
 
-/* Markdown toolbar icons in the editor (and any remaining tool buttons) — muted. */
+/* Markdown toolbar icons in the editor (and any remaining tool buttons) - muted. */
 .comentario-root .comentario-btn-tool {
     color: var(--text-secondary);
 }
@@ -570,7 +570,7 @@
 .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon,
 .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) .comentario-icon svg,
 .comentario-root .comentario-comment-editor .comentario-btn-tool:not([title="Editor help"]) svg {
-    /* 1.7em lands the glyphs on whole pixels — avoids the table grid distorting
+    /* 1.7em lands the glyphs on whole pixels - avoids the table grid distorting
        (1.8em pushed its thin lines onto fractional pixels). */
     width: 1.7em;
     height: 1.7em;
@@ -596,7 +596,7 @@
 
 /* Subtle separator between the formatting toolbar and the textarea. Scoped to the
    editor toolbar (not the card action tray). --border-secondary reads on the
-   editor's --bg-secondary fill — plain --border would vanish. */
+   editor's --bg-secondary fill - plain --border would vanish. */
 .comentario-root .comentario-comment-editor .comentario-toolbar {
     border-bottom: 1px solid var(--border-secondary);
     padding-bottom: 0.5em;
@@ -639,7 +639,7 @@
     font-size: 0.85em;
 }
 
-/* Secondary ("Preview"): match the post-badges — a slightly-grey pill that
+/* Secondary ("Preview"): match the post-badges - a slightly-grey pill that
    deepens to the control-hover tint and turns black on hover/active. Driven
    through Comentario's own btn variables, so every state re-tints in one place
    (the lavender secondary fill is gone). */
@@ -652,7 +652,7 @@
     --cmntr-btn-active-bg: var(--control-hover);
 }
 
-/* Primary ("Add Comment"): inverted to read as the main CTA — the primary label
+/* Primary ("Add Comment"): inverted to read as the main CTA - the primary label
    colour as the fill, the opposite (background) colour as the label. Deepens to
    pure black on hover/active. The login-dialog primary sets its own colours at
    higher specificity, so it's unaffected. */
@@ -665,7 +665,7 @@
     --cmntr-btn-active-bg: var(--heading);
 }
 
-/* The profile-bar "Sign in" is a btn-primary too, but it's a utility action —
+/* The profile-bar "Sign in" is a btn-primary too, but it's a utility action -
    a solid black pill there is too heavy and competes with the "Add Comment"
    CTA, so give it the lighter grey secondary pill instead. */
 .comentario-root .comentario-profile-bar .comentario-btn-primary {
@@ -690,7 +690,7 @@
     color: var(--heading);
 }
 
-/* Cancel as a quiet ghost pill — matched size + pill padding so it reads as a proper
+/* Cancel as a quiet ghost pill - matched size + pill padding so it reads as a proper
    tertiary button (transparent at rest, faint outline + faint fill on hover) rather
    than weak bare text next to the filled action buttons. Two places: the editor footer
    (next to Preview / Add Comment) and the confirm dialog (next to the danger "OK",
@@ -716,7 +716,7 @@
     background: var(--bg-tertiary);
 }
 
-/* Reply — show as a "Reply" text link instead of an icon-only button. */
+/* Reply - show as a "Reply" text link instead of an icon-only button. */
 .comentario-root .comentario-btn-tool[title="Reply"] .comentario-icon {
     display: none;
 }
@@ -732,7 +732,7 @@
     border: none;
     /* width:auto overrides Comentario's width:100%. With box-sizing:border-box, an
        explicit 100% width pins the border box to the container, which over-constrains
-       the negative margins — the browser drops margin-right, so the card shifts left
+       the negative margins - the browser drops margin-right, so the card shifts left
        and ends 25px short on the right. auto lets both negative margins widen the box
        symmetrically (25px bleed each side; content stays at the reading width). */
     width: auto;
@@ -747,7 +747,7 @@
     margin: 0 calc(-1 * min(25px, var(--container-pad))) 0.5em;
 }
 
-/* No trailing gap under the last card — also absorb its 15px bottom padding. */
+/* No trailing gap under the last card - also absorb its 15px bottom padding. */
 .comentario-root .comentario-card:last-child {
     margin-bottom: -15px;
 }
@@ -763,11 +763,11 @@
 /* ----------------------------------------------------------------------------
    Deep-link highlight. Comentario flashes a comment (the .comentario-bg-highlight
    class + 5s animation on .comentario-card-self) when you open its permalink. We
-   move the flash onto the padded card so it rounds and gets breathing room — but
+   move the flash onto the padded card so it rounds and gets breathing room - but
    card-self ALSO flashes by default, and --cmntr-bg-highlight (--bg-tertiary) is
    semi-transparent, so the two layers double the alpha and read as an inner box.
    Fix: flash the card via :has(), and on card-self set --cmntr-bg-highlight to
-   transparent so its (still-running) animation paints nothing — that keeps the
+   transparent so its (still-running) animation paints nothing - that keeps the
    animationend Comentario listens for to clear the class, so it stays
    re-triggerable. Single, uniform background. ------------------------------- */
 .comentario-root .comentario-card:has(.comentario-card-self.comentario-bg-highlight) {
@@ -784,11 +784,11 @@
     align-items: center;
     gap: 10px;
     /* Avatar is absolutely positioned (out of flow), so pad the header left to
-       clear it — matching the body/toolbar indent. Without this the header
+       clear it - matching the body/toolbar indent. Without this the header
        collapsed to one line but sat under the avatar. 62px top-level / 54px
        replies (override). */
     padding-left: 62px;
-    /* Tighter than Comentario's 6px — pull the body up under the name. */
+    /* Tighter than Comentario's 6px - pull the body up under the name. */
     margin-bottom: 2px;
 }
 
@@ -802,7 +802,7 @@
     /* The comments embed lives inside <article>, so the site's `article img` rule
        leaks onto avatar images: a 1px border, a 650px cap, and `margin: 0 auto
        1.75em`. That bottom margin is what pushed the profile-bar avatar to the top
-       of the row. Strip the leak — Comentario's own size (32px) and margin-right
+       of the row. Strip the leak - Comentario's own size (32px) and margin-right
        (the gap to the name) are untouched. */
     border: none;
     max-height: none;
@@ -821,7 +821,7 @@
    the circle. */
 .comentario-root .comentario-card .comentario-avatar,
 .comentario-root .comentario-card .comentario-avatar-img {
-    /* Out of flow (top-left of the card) so it doesn't drive the header height —
+    /* Out of flow (top-left of the card) so it doesn't drive the header height -
        lets the name + inline date sit on one line with no empty gap below it. The
        header/body/toolbar left padding clears it. */
     position: absolute;
@@ -869,7 +869,7 @@
     line-height: 1.2;
 }
 
-/* Timestamp — secondary colour, same size as the name, not a link colour.
+/* Timestamp - secondary colour, same size as the name, not a link colour.
    Matches Comentario's .comentario-card .comentario-subtitle specificity. */
 .comentario-root .comentario-card .comentario-subtitle {
     color: var(--text-secondary);
@@ -886,7 +886,7 @@
     text-decoration: none;
 }
 
-/* AUTHOR / role chip — subtle outlined uppercase pill. */
+/* AUTHOR / role chip - subtle outlined uppercase pill. */
 .comentario-root .comentario-badge {
     background: none;
     color: var(--text-tertiary);
@@ -900,7 +900,7 @@
     text-transform: uppercase;
 }
 
-/* Hide the "Moderator" role chip — the owner doesn't need it flagged on their own
+/* Hide the "Moderator" role chip - the owner doesn't need it flagged on their own
    comments. (Any other badge keeps the chip styling above.) */
 .comentario-root .comentario-badge-moderator {
     display: none;
@@ -919,7 +919,7 @@
     padding-left: 54px;
 }
 
-/* The body's first paragraph hugs the header — drop Comentario's 6px top margin
+/* The body's first paragraph hugs the header - drop Comentario's 6px top margin
    on it so the text sits snug under the name (other paragraphs keep their gap). */
 .comentario-root .comentario-card-body > p:first-child {
     margin-top: 0;
@@ -936,7 +936,7 @@
     padding-left: 54px;
 }
 
-/* Links inside comments — site red, underline on hover (not the default blue). */
+/* Links inside comments - site red, underline on hover (not the default blue). */
 .comentario-root .comentario-card-body a {
     color: var(--link);
     text-decoration: none;
@@ -949,7 +949,7 @@
 /* ---- Nested replies: gentle indent + a neutral grey hairline. Comentario
    tints the collapse line per-user; force it to the site border grey. ---- */
 /* The per-comment left bar (the collapse toggler / indent spacer) is tinted
-   per-user via a comentario-border-NN class that sets its BORDER colour — force
+   per-user via a comentario-border-NN class that sets its BORDER colour - force
    it to the flat neutral grey. */
 .comentario-root .comentario-card-expand-toggler,
 .comentario-root .comentario-card-expand-spacer {
@@ -981,12 +981,12 @@
 }
 
 /* Mobile: the desktop indent aligns each reply's nesting bar with the PARENT'S BODY
-   TEXT (avatar + 18px gap + 25px bleed) — wide, and it compounds with depth. On a phone
+   TEXT (avatar + 18px gap + 25px bleed) - wide, and it compounds with depth. On a phone
    that wastes width, but simply shrinking it drops the bar under the parent avatar (it
    reads as orphaned). The bar is the reply card's first flex child sitting at its
    padding-left, and the card bleeds left by the gutter, so the bar renders at
    (padding-left − bleed). Setting padding-left = parent-avatar + bleed lands the bar
-   exactly on the parent avatar's right edge — a clean gutter — while still reclaiming the
+   exactly on the parent avatar's right edge - a clean gutter - while still reclaiming the
    ~18px text gap. Both terms track the breakpoint via min(25px, --container-pad). */
 @media (max-width: 720px) {
     /* depth-1 hangs off a top-level parent (44px avatar) */
@@ -1016,7 +1016,7 @@
 /* ---------------------------------------------------------------------------
    Error / message box (e.g. linking to a deleted comment, or "domain not
    registered"). Comentario fills it with a saturated --cmntr-danger-bg at full
-   intensity — very loud. Calmer treatment (no stroke — fill contrast only): a soft
+   intensity - very loud. Calmer treatment (no stroke - fill contrast only): a soft
    warm-red tint, a warning glyph vertically centred on the message, graded red copy,
    and a neutral mono code block for the technical-details JSON.
    --------------------------------------------------------------------------- */
@@ -1025,7 +1025,7 @@
 }
 
 .comentario-root .comentario-message-box.comentario-error {
-    /* The site red (#FA233B) is a cool crimson — at a low-opacity dark tint it drifts
+    /* The site red (#FA233B) is a cool crimson - at a low-opacity dark tint it drifts
        purple, so warm it toward red-orange first and derive everything from that.
        Graded toward --text so the copy stays readable in both themes (deeper in
        light, lighter in dark). */
@@ -1118,7 +1118,7 @@
     overflow-x: auto;
 }
 
-/* Font-size on the inner pre (not code) so code keeps the box em — its margin-left
+/* Font-size on the inner pre (not code) so code keeps the box em - its margin-left
    indent above then matches the icon width instead of shrinking with the text. */
 .comentario-root .comentario-message-box.comentario-error code pre {
     margin: 0;
@@ -1129,7 +1129,7 @@
 /* ---------------------------------------------------------------------------
    "Thread locked" notice. Comentario shows a centred yellow warning where the
    compose box would be. Give it the calm panel treatment (like the error box) but
-   neutral and quiet — a subtle grey rounded box with the lock glyph, left-aligned
+   neutral and quiet - a subtle grey rounded box with the lock glyph, left-aligned
    and muted, so it informs without drawing the eye.
    --------------------------------------------------------------------------- */
 .comentario-root .comentario-page-moderation-notice {
@@ -1144,7 +1144,7 @@
     font-size: 0.95em;
 }
 
-/* Lock glyph — reuse cell 0 of the profile-bar action sprite (lock | lock-open |
+/* Lock glyph - reuse cell 0 of the profile-bar action sprite (lock | lock-open |
    settings | logout) via mask-position. */
 .comentario-root .comentario-page-moderation-notice::before {
     content: "";
@@ -1181,7 +1181,7 @@
     corner-shape: squircle;
     box-shadow: 0 10px 34px rgba(0, 0, 0, 0.14);
     max-width: 350px;
-    /* Dial back from the article body size — 1em reads a touch large in the
+    /* Dial back from the article body size - 1em reads a touch large in the
        dialog's fields and copy. */
     font-size: 0.9em;
     line-height: 1.0;
@@ -1281,7 +1281,7 @@
 
 /* Email / password / name inputs: white field, rounded, neutral border. Pinned to
    the dialog's shared 44px control height (matching the solid buttons: 12px pad ×2
-   + 20px line-height) so fields and buttons read as one system — border-box, so
+   + 20px line-height) so fields and buttons read as one system - border-box, so
    the 1px border is inside and the text centres itself. */
 .comentario-root .comentario-dialog .comentario-input {
     background: var(--bg);
@@ -1301,7 +1301,7 @@
     box-shadow: none;
 }
 
-/* Don't flag empty required fields red on open — keep the neutral, theme-aware
+/* Don't flag empty required fields red on open - keep the neutral, theme-aware
    border. Comentario's default is a hardcoded red (#f03e3e) with no dark variant,
    so use the full shorthand to pin a 1px var(--border) stroke in both modes. */
 .comentario-root .comentario-dialog .comentario-input:invalid,
@@ -1310,7 +1310,7 @@
     box-shadow: none;
 }
 
-/* Darker placeholder — reuse the comment editor's secondary placeholder colour. */
+/* Darker placeholder - reuse the comment editor's secondary placeholder colour. */
 .comentario-root .comentario-dialog .comentario-input::placeholder {
     color: var(--text-secondary);
 }
@@ -1345,7 +1345,7 @@
 }
 
 /* The login form's submit button has only the (now hidden) arrow icon, so supply
-   the visible label via ::after. Scoped to #comentario-login-form — the sign-up
+   the visible label via ::after. Scoped to #comentario-login-form - the sign-up
    dialog's button carries its own "Sign up" text and must not get this appended. */
 .comentario-root #comentario-login-form .comentario-btn-primary::after {
     content: "Sign in";
@@ -1360,7 +1360,7 @@
     content: "Post";
 }
 
-/* Hide Comentario's "Not willing to sign up?…" copy — the divider below says it. */
+/* Hide Comentario's "Not willing to sign up?…" copy - the divider below says it. */
 .comentario-root #comentario-unregistered-form .comentario-dialog-centered {
     display: none;
 }
@@ -1468,7 +1468,7 @@
     text-decoration: none;
 }
 
-/* Centred dialog copy (e.g. "Don't have an account?") — muted to secondary. */
+/* Centred dialog copy (e.g. "Don't have an account?") - muted to secondary. */
 .comentario-root .comentario-dialog .comentario-dialog-centered {
     color: var(--text-secondary);
     margin: 0px 0px 10px;
@@ -1481,7 +1481,7 @@
     margin: 0;
 }
 
-/* Sign-up "By signing up… Terms / Privacy" block — its own vertical spacing
+/* Sign-up "By signing up… Terms / Privacy" block - its own vertical spacing
    (identified by the legal links it contains). */
 .comentario-root .comentario-dialog .comentario-dialog-centered:has(a[href*="/legal/"]) {
     margin: 15px 0 18px;
@@ -1490,7 +1490,7 @@
 /* ---- Confirm dialog (e.g. "Are you sure you want to delete this comment?") ----
    Identified by its danger "OK" button. Balance the question across its lines, and lay
    the Cancel/OK row out as a centred flex pair with a gap (Cancel is now a wider ghost
-   pill — see the shared Cancel rule above). */
+   pill - see the shared Cancel rule above). */
 .comentario-root .comentario-dialog:has(.comentario-btn-danger) .comentario-dialog-centered:not(:has(.comentario-btn)) {
     text-wrap: balance;
 }
@@ -1504,7 +1504,7 @@
 
 /* Danger "OK": Comentario lightens the fill to a washed salmon on focus/hover, so the
    dialog auto-focusing OK makes it look highlighted by default. Keep the resting red
-   (#e03131) when merely focused, and darken (not lighten) on hover/active — which
+   (#e03131) when merely focused, and darken (not lighten) on hover/active - which
    reads better for a destructive action. */
 .comentario-root .comentario-dialog .comentario-btn-danger {
     --cmntr-btn-hover-bg: #c92a2a;
@@ -1517,12 +1517,12 @@
 
 /* Match the confirm Cancel to the dialog's full-size OK. The shared Cancel rule sets
    0.85em (sized for the editor footer), but dialog solid buttons are bumped to 1em to
-   offset the dialog's 0.9em downscale — so Cancel needs 1em here too. */
+   offset the dialog's 0.9em downscale - so Cancel needs 1em here too. */
 .comentario-root .comentario-dialog-centered:has(.comentario-btn-danger) .comentario-btn-link {
     font-size: 1em;
 }
 
-/* Form helper text (e.g. the password requirements) — restore a comfortable
+/* Form helper text (e.g. the password requirements) - restore a comfortable
    line-height since the dialog's tight 1.0 makes wrapped copy cramped. */
 .comentario-root .comentario-form-text {
     margin: 0px 15px 15px;
@@ -1555,7 +1555,7 @@
 }
 
 /* Theme-aware checkbox: --bg box + --border-secondary outline (both adapt to light /
-   dark). Checked is monochrome — filled with --heading (black in light, white in dark). */
+   dark). Checked is monochrome - filled with --heading (black in light, white in dark). */
 .comentario-root .comentario-dialog .comentario-checkbox-container input[type=checkbox] {
     float: none;
     flex: none;
@@ -1573,7 +1573,7 @@
     border-color: var(--heading);
 }
 
-/* Comentario's checkmark is hardcoded white — fine on the black box in light, but it
+/* Comentario's checkmark is hardcoded white - fine on the black box in light, but it
    vanishes on the white box in dark, so swap to a black checkmark there. */
 [data-color-scheme="dark"] .comentario-root .comentario-dialog .comentario-checkbox-container input[type=checkbox]:checked {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
@@ -1585,13 +1585,13 @@
 }
 
 /* More breathing room between the Website group and the Save button. (Scoped to the
-   settings form — the one with checkboxes — so the login dialog is untouched.) */
+   settings form - the one with checkboxes - so the login dialog is untouched.) */
 .comentario-root .comentario-dialog form:has(.comentario-checkbox-group) .comentario-dialog-centered:has(.comentario-btn-primary) {
     margin-top: 0.9em;
 }
 
 /* "Edit Comentario profile" row: space above (below the divider), but no bottom margin
-   so the dialog's own bottom padding is the only space below the button — keeping the
+   so the dialog's own bottom padding is the only space below the button - keeping the
    padding around it even. */
 .comentario-root .comentario-dialog form:has(.comentario-checkbox-group) .comentario-dialog-centered:has(.comentario-btn-link) {
     margin: 0.7em 0 0;
@@ -1602,7 +1602,7 @@
    as the Save button so the two read as a matching pair. */
 .comentario-root .comentario-dialog form:has(.comentario-checkbox-group) .comentario-dialog-centered .comentario-btn-link {
     width: 100%;
-    /* margin:0 to match the Save button — the base .comentario-btn doesn't set a margin
+    /* margin:0 to match the Save button - the base .comentario-btn doesn't set a margin
        so this otherwise inherits Comentario's default 5px, which (with width:100%)
        leaves it a different width/position than Save. */
     margin: 0;
@@ -1625,7 +1625,7 @@
     background: var(--control-hover);
 }
 
-/* "Forgot your password?" — centred link in the primary label colour, underlined
+/* "Forgot your password?" - centred link in the primary label colour, underlined
    on hover, no trailing external-link icon. */
 .comentario-root .comentario-dialog-centered a {
     color: var(--text);
@@ -1650,7 +1650,7 @@
 }
 
 /* Extra breathing room above and below the "Forgot your password?" row (the
-   first centred row in the form — the "Log in with…" line — is hidden). */
+   first centred row in the form - the "Log in with…" line - is hidden). */
 .comentario-root #comentario-login-form > .comentario-dialog-centered:last-child {
     margin: 16px 0;
 }
@@ -1685,7 +1685,7 @@
 /* ---- Federated login ("Log in with") provider row ----
    The provider buttons become a row of equal outlined pills with brand glyphs
    (the icons say "log in with", so the copy is dropped). Rules sit AFTER the
-   dialog's solid-button font-size rule above — several pairs tie at equal
+   dialog's solid-button font-size rule above - several pairs tie at equal
    specificity and rely on source order to win. */
 
 /* Collapse the "Log in with" bare text node (same trick as "Don't have an
@@ -1706,8 +1706,8 @@
 /* Every provider: an outlined ghost pill (the Cancel treatment) that fills on
    hover. px padding + min-height keep the shape when the label is collapsed to
    a glyph below. The 0.9rem restores a readable label (the container is
-   font-size:0) for any provider without a mapped glyph yet — e.g. the future
-   generic-OIDC ones — until it's added to the brand map below. */
+   font-size:0) for any provider without a mapped glyph yet - e.g. the future
+   generic-OIDC ones - until it's added to the brand map below. */
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn {
     flex: 1 1 22%;
     display: inline-flex;
@@ -1733,12 +1733,12 @@
 }
 
 /* Generic-OIDC providers share .comentario-btn-dark with no brand class of their
-   own — comentario-tweaks.js derives a .cmntr-idp-<name> slug from each button's
+   own - comentario-tweaks.js derives a .cmntr-idp-<name> slug from each button's
    label, so one could join the brand map below without touching the widget. None
    is configured today; such a button keeps its readable text label until a cell
    is added for it to the sprite. */
 
-/* Mapped brands: hide the text label — the masked glyph below IS the button. */
+/* Mapped brands: hide the text label - the masked glyph below IS the button. */
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-apple,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-google,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-github,
@@ -1746,15 +1746,15 @@
     font-size: 0;
 }
 
-/* (Display order lives with each brand's glyph in the brand map below —
+/* (Display order lives with each brand's glyph in the brand map below -
    Apple leads as the house speciality, then by reach. Comentario emits the
    buttons alphabetically; flex order makes it deliberate.) */
 
 /* Brand glyph: one 4-cell mask sprite (Apple | Google | Facebook | GitHub);
    --cmntr-oauth-pos selects the cell. mask-size auto 100% scales the strip to
-   the glyph height so each cell lands exactly at the box width — the same
+   the glyph height so each cell lands exactly at the box width - the same
    recipe as the profile-bar action sprite above. Tinted with the label colour,
-   so the glyphs follow the theme and the hover lift. px sizes — em would
+   so the glyphs follow the theme and the hover lift. px sizes - em would
    resolve to 0 off the zeroed host font. */
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-apple::before,
 .comentario-root .comentario-dialog .comentario-oauth-buttons .comentario-btn-google::before,
@@ -1772,7 +1772,7 @@
             mask-position: var(--cmntr-oauth-pos) 50%;
     /* No transition here: the dialog (and so this pseudo) is created fresh every
        time it opens, and WebKit botches a transition on a newly-created masked
-       pseudo — it starts from transparent and the composited mask layer never
+       pseudo - it starts from transparent and the composited mask layer never
        repaints, leaving an invisible glyph. The hover tint just snaps; the
        button's own bg fade carries the effect. */
 }
@@ -1784,7 +1784,7 @@
     background-color: var(--heading);
 }
 
-/* The brand map — sprite cell + display order per provider. Apple leads as the
+/* The brand map - sprite cell + display order per provider. Apple leads as the
    house speciality, then by reach; Comentario emits the buttons alphabetically,
    so flex order makes the sequence deliberate. The sprite's cells are laid out
    in this same order, so the percentages read down the row. */
@@ -1834,7 +1834,7 @@
     display: contents;
 }
 
-/* 1. Remove the downvote — the tool button immediately after the score.
+/* 1. Remove the downvote - the tool button immediately after the score.
    (Already tabindex=-1; display:none also drops it from the a11y tree.) */
 .comentario-root .comentario-score + .comentario-btn-tool {
     display: none;
@@ -1867,7 +1867,7 @@
     order: 2;
 }
 
-/* 4. Shared row styling — Reply, Like and the count: small (0.8em), bold,
+/* 4. Shared row styling - Reply, Like and the count: small (0.8em), bold,
    secondary label colour by default, primary label colour on hover (buttons
    only). opacity:1 overrides Comentario's .5 tool-button muffling. */
 .comentario-root .comentario-btn-tool[title="Reply"],
@@ -1884,15 +1884,15 @@
     color: var(--text);
 }
 
-/* No liked-state on the button — the red heart in the count is the sole "you
+/* No liked-state on the button - the red heart in the count is the sole "you
    liked it" cue. The shared muted colour above also matches the upvoted button
    and, loading after Comentario's default, beats its `.comentario-card
    .comentario-upvoted` colour, so a like never recolours "Like". */
 
 /* 5. Score -> non-interactive "<heart> N", shown only at >= 1 like. Hidden at 0
-   — no lonely "0"; the "Like" button carries the affordance instead.
+   - no lonely "0"; the "Like" button carries the affordance instead.
    NB: Comentario's own rule is `.comentario-root .comentario-card .comentario-score`
-   (0,3,0). These MUST carry `.comentario-card` to match+win on load order —
+   (0,3,0). These MUST carry `.comentario-card` to match+win on load order -
    `.comentario-root .comentario-score` (0,2,0) loses and the "0" stays visible. */
 .comentario-root .comentario-card .comentario-score {
     display: none;
@@ -1905,7 +1905,7 @@
     order: 4;
 }
 
-/* Filled heart count icon (right cell of the sprite); purely an indicator — this
+/* Filled heart count icon (right cell of the sprite); purely an indicator - this
    red heart is the only "liked" cue. Filled with the --heart-gradient catalog
    entry (lighter red -> darker red) rather than a flat colour; the mask clips the
    gradient to the heart shape. */
@@ -1927,7 +1927,7 @@
    hide icons, label via [title]::after, share the row styling, order after Like.
    `color` is !important to defeat Comentario's per-button colour: Delete carries
    `comentario-text-danger` (red) and the active sticky/Unpin carries
-   `comentario-is-sticky` (gold), both set with !important — we want all actions
+   `comentario-is-sticky` (gold), both set with !important - we want all actions
    to read uniformly neutral. */
 .comentario-root .comentario-card-self .comentario-toolbar-section:last-child .comentario-btn-tool {
     order: 3;
@@ -1956,7 +1956,7 @@
 
 /* ----------------------------------------------------------------------------
    Pinned (sticky) comments. Comentario flags the state with `comentario-is-sticky`
-   on the star button (its class helper prepends `comentario-` to every class —
+   on the star button (its class helper prepends `comentario-` to every class -
    like `comentario-upvoted`); there's no card-level class, so detect with :has().
    Replace the default bottom-right gold star (the non-moderator indicator) with a
    "Pinned" label above the username.
@@ -1984,7 +1984,7 @@
 
 /* ---- Mobile: editor toolbar ----
    Comentario fixes every markdown tool button at 32px, so nine of them (plus the help
-   "?") overflow a phone's narrow editor — the last icon clips and the "?" wraps to its
+   "?") overflow a phone's narrow editor - the last icon clips and the "?" wraps to its
    own line. The buttons (not the glyphs) are the constraint, so we tighten the editor's
    padding/gap first, then shrink the buttons themselves below the iPhone Air width. (The
    card's gutter bleed is clamped breakpoint-free via min() on .comentario-card, above;
@@ -2002,8 +2002,8 @@
     }
 }
 
-/* iPhone Air (420px) and smaller: shrink the fixed tap targets themselves — and the
-   glyphs to match — so all nine plus the help "?" stay on one row down to the mini
+/* iPhone Air (420px) and smaller: shrink the fixed tap targets themselves - and the
+   glyphs to match - so all nine plus the help "?" stay on one row down to the mini
    phones (~360px). */
 @media (max-width: 439.98px) {
     .comentario-root .comentario-comment-editor {
@@ -2029,7 +2029,7 @@
    the ≤389px minis don't, so give their tap targets + glyphs some size back (28px / 1.6em
    vs the minis' 26px / 1.3em). The container gutter steps from 20px to 16px at ≤389px,
    which is why that's the natural floor for the bigger size (389.02 matches the
-   site-wide 389px/389.02px breakpoint pair — see site.css). */
+   site-wide 389px/389.02px breakpoint pair - see site.css). */
 @media (min-width: 389.02px) and (max-width: 439.98px) {
     .comentario-root .comentario-comment-editor .comentario-btn-tool {
         width: 28px;

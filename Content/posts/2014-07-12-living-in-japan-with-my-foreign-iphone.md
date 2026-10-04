@@ -48,7 +48,7 @@ Finally, as a bit of a recent update to all of this, apparently the Japanese com
 
 > Finally!! Communications ministry calls for end of SIM lock &amp; Softbank CEO Son flips a table, expressing outrage <http://t.co/NtlmXybd6m>
 > 
-> — Rekishi no Tabi (@RekishinoTabi) [July 1, 2014](https://twitter.com/RekishinoTabi/statuses/483779586195349504)
+> - Rekishi no Tabi (@RekishinoTabi) [July 1, 2014](https://twitter.com/RekishinoTabi/statuses/483779586195349504)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 

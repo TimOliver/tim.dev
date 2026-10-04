@@ -1,7 +1,7 @@
 // Twitch "live now" card. Fetches https://twitch.tim.dev (JSON) and, when the
 // channel is live, fills the card's slots and reveals it. Polls every 60s while
 // the tab is visible (matches the endpoint's max-age=60) and removes the card
-// when the stream ends. Home page only — the [data-twitch-live] element is
+// when the stream ends. Home page only - the [data-twitch-live] element is
 // absent elsewhere, so this self-exits. The big play button (facade embed) is
 // wired in a separate block; see below.
 (function () {
@@ -174,7 +174,7 @@
     // no-op once playing, and clicks inside the cross-origin embed don't bubble
     // out, so the running player is never disturbed.
     media.addEventListener('click', onPlay);
-    // "Watch on Twitch" and the title both open the stream in a new tab — tear the
+    // "Watch on Twitch" and the title both open the stream in a new tab - tear the
     // inline embed down so we're not left with two players (and two audio streams).
     if (watch) watch.addEventListener('click', teardownEmbed);
     if (titleLink) titleLink.addEventListener('click', teardownEmbed);

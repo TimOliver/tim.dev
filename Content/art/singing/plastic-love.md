@@ -9,4 +9,4 @@ details: Artist=Mariya Takeuchi; Year=2024; Views=38k; Type=Studio session
 youtube: https://youtube.com/timXD
 path: /art/singing/plastic-love/
 ---
-The city-pop standard. My most-watched cover by a wide margin — the algorithm clearly still loves a bit of Mariya Takeuchi.
+The city-pop standard. My most-watched cover by a wide margin - the algorithm clearly still loves a bit of Mariya Takeuchi.

@@ -8,4 +8,4 @@ youtube:
 layout: TalkDetail
 path: /talks/building-mercaris-listing-flow/
 ---
-The "sell an item" flow is the heart of a marketplace app. What it took — technically and organizationally — to rebuild it without dropping a single seller mid-listing.
+The "sell an item" flow is the heart of a marketplace app. What it took - technically and organizationally - to rebuild it without dropping a single seller mid-listing.

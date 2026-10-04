@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
-# tim.dev — pre-commit hook
+# tim.dev - pre-commit hook
 #
 # Strips EXIF from any staged JPEG/PNG under Assets/ before the commit lands.
 # Modified files are re-staged so the commit picks up the stripped versions.
-# Scoped to Assets/ specifically — Template/img/ contains hand-vetted mockup
+# Scoped to Assets/ specifically - Template/img/ contains hand-vetted mockup
 # assets we don't want to re-process, and other dirs are out of scope.
 #
 # Installed by Scripts/install-hooks.sh (symlink into .git/hooks/).

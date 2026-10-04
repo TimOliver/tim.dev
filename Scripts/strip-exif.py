@@ -37,7 +37,7 @@ def has_metadata(img: Image.Image) -> bool:
         return True
     if hasattr(img, "_getexif") and img._getexif():
         return True
-    # PNG text/iTXt/zTXt chunks — Pillow collects them all in .text, including
+    # PNG text/iTXt/zTXt chunks - Pillow collects them all in .text, including
     # XMP (XML:com.adobe.xmp), which commonly carries GPS. The old
     # parameters/comment check missed those entirely.
     if img.format == "PNG" and getattr(img, "text", None):

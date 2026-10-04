@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -28,7 +28,7 @@ struct TalkDetail: ArticlePage {
     }
 }
 
-/// Talks detail-page markup — the `/talks/<slug>/` page. Lives in an extension
+/// Talks detail-page markup - the `/talks/<slug>/` page. Lives in an extension
 /// so `TalksRenderer` (declared in TalkModel.swift) keeps its shared helpers
 /// close to the type and its page builders apart.
 extension TalksRenderer {
@@ -49,8 +49,8 @@ extension TalksRenderer {
             // pulls in the real YouTube iframe on click, so the page stays fast.
             header += #"<lite-youtube videoid="\#(escape(id))" playlabel="Play: \#(escape(talk.title))"></lite-youtube>"#
         } else {
-            // No video id — fall back to the poster thumbnail. Same
-            // .collection-detail-shot box as CodeDetail's screenshot —
+            // No video id - fall back to the poster thumbnail. Same
+            // .collection-detail-shot box as CodeDetail's screenshot -
             // 1250px page width minus 2x35px padding = 1180px. No duration badge
             // here (the sidebar carries duration).
             header += thumb(image: talk.image, duration: "", title: talk.title, sizes: "(max-width: 720px) 100vw, 1180px")

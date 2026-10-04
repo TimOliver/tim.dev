@@ -9,7 +9,7 @@
         var sizes = img.dataset.sizes;
         if (!srcset) return;
 
-        // Cache probe: a detached <img> with the same srcset/sizes —
+        // Cache probe: a detached <img> with the same srcset/sizes -
         // if it reports `complete` synchronously, the chosen variant
         // is already in HTTP cache, so skip the blur fade.
         var probe = new Image();
@@ -60,7 +60,7 @@
     var toggle = document.querySelector('.theme-toggle');
     var trigger = document.querySelector('.theme-toggle-button');
     if (!toggle || !trigger) return;
-    // Scoped to the wrapper — the RSS menu below reuses the popover classes.
+    // Scoped to the wrapper - the RSS menu below reuses the popover classes.
     var popover = toggle.querySelector('.theme-popover');
     var options = toggle.querySelectorAll('.theme-option');
     var allowedThemes = /^(auto|light|dark)$/;
@@ -113,7 +113,7 @@
 
 // RSS feed menu: the same popover pattern as the theme toggle (shared
 // .theme-popover/.theme-option styling), but the entries are plain links and
-// the trigger is a real <a> to /feed.xml — so without JS the icon still
+// the trigger is a real <a> to /feed.xml - so without JS the icon still
 // reaches the main feed (and CSS hover-open covers pointer devices).
 (function() {
     var wrap = document.querySelector('.rss-toggle');
@@ -434,7 +434,7 @@
         // snapped card sits flush with the content column, clear of the edge fade.
         // The scroller is pulled out into the page margin (negative margin-inline
         // = --overhang), so a card aligned to the viewport's own start edge lands
-        // out in that bleed, behind the gradient — which is what made the snap
+        // out in that bleed, behind the gradient - which is what made the snap
         // positions look arbitrary. Read the resolved margin-left (a real px value)
         // and offset every snap inward by it. Reading the computed margin rather
         // than recomputing the clamp keeps this locked to the CSS --overhang no
@@ -609,12 +609,12 @@
 
 // Back-to-top: fade the button in after scrolling past a threshold; smooth-
 // scroll to top on click. The button lives inside the swappable .container, so
-// the content swap (above) replaces the node — hence we re-query it each tick
+// the content swap (above) replaces the node - hence we re-query it each tick
 // and use event delegation for the click, rather than capturing the node once.
 // No-op on pages that don't render the button.
 (function() {
     // Only the archive/art/talks indexes render the button, but the collection
-    // swap can (re)introduce it — gate on either, so the ~200 other pages skip
+    // swap can (re)introduce it - gate on either, so the ~200 other pages skip
     // the per-scroll-tick DOM query entirely.
     if (!document.querySelector('.back-to-top') &&
         !/^\/(apps|code|art|talks)\//.test(location.pathname)) return;
@@ -730,7 +730,7 @@
 })();
 
 // Instagram embeds: our legacy posts use plain /embed/ iframes (no Instagram
-// script of our own). Instagram's embed page postMessages its rendered height —
+// script of our own). Instagram's embed page postMessages its rendered height -
 // mirror what their embeds.js would do and resize the matching iframe so
 // captions aren't clipped. Origin-checked; no-op on pages without IG embeds.
 (function() {
@@ -793,9 +793,9 @@
 // check + "Copied!" confirmation, using the async Clipboard API where available
 // and a legacy execCommand textarea otherwise (so it works in non-secure
 // contexts, e.g. local LAN preview). URLs are built client-side. The Permalink
-// link carries no data-share-path — it's a plain navigation link.
+// link carries no data-share-path - it's a plain navigation link.
 (function() {
-    // Screen-reader live region for the "Copied!" confirmation — created on
+    // Screen-reader live region for the "Copied!" confirmation - created on
     // first use rather than eagerly, so the ~200 pages where nobody copies a
     // link never grow the extra node.
     var live = null;
@@ -872,7 +872,7 @@
                 title: shareBtn.getAttribute('data-share-title') || document.title,
                 url: url
             }).catch(function() {
-                // AbortError (user cancelled) or genuine failure — no-op.
+                // AbortError (user cancelled) or genuine failure - no-op.
             });
             return;
         }
@@ -880,6 +880,6 @@
     });
 })();
 
-// (Comentario-specific behaviour — comment-count badges, editor refocus, the
-// login-dialog tweaks — lives in comentario-tweaks.js, loaded only on pages
+// (Comentario-specific behaviour - comment-count badges, editor refocus, the
+// login-dialog tweaks - lives in comentario-tweaks.js, loaded only on pages
 // with Comentario elements.)

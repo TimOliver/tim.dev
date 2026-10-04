@@ -1,15 +1,15 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
 
 /// Parsed view of an app article's front matter. Custom keys are read with the
-/// exact case used in the markdown (Ignite stores keys verbatim — see
+/// exact case used in the markdown (Ignite stores keys verbatim - see
 /// CodeModel/TalkModel); the keys in Content/apps happen to be all-lowercase
 /// (`appstore:`, not `appStore:`), so reads here match that.
 struct AppInfo {
 
-    /// Display name for the app — taken straight from the article title.
+    /// Display name for the app - taken straight from the article title.
     let title: String
 
     /// One-line pitch shown beneath the name on the card and the detail header.
@@ -26,7 +26,7 @@ struct AppInfo {
 
     /// Path to the app icon image. Front-matter `icon:`, already
     /// `nonEmpty`-filtered by `init` so a present-but-blank value collapses to
-    /// nil — the renderer then shows the flat empty tile instead of a broken
+    /// nil - the renderer then shows the flat empty tile instead of a broken
     /// image path.
     let icon: String?
 
@@ -34,7 +34,7 @@ struct AppInfo {
     /// chrome is baked into each PNG by hand, so the site renders them bare.
     let shots: [String]
 
-    /// The article's own site path (e.g. `/apps/icomics`) — used to link each
+    /// The article's own site path (e.g. `/apps/icomics`) - used to link each
     /// grid card through to its detail page.
     let path: String
 
@@ -42,7 +42,7 @@ struct AppInfo {
     /// front-matter `details:` string by `CollectionRenderer.parseDetails`.
     let details: [(String, String)]
 
-    /// App Store URL — rendered as a centered "Download on the App Store" badge
+    /// App Store URL - rendered as a centered "Download on the App Store" badge
     /// on the detail page. Nil when absent.
     let appStore: String?
 
@@ -79,7 +79,7 @@ struct AppInfo {
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
 
-        // The article's own site path — used to link the grid card to its
+        // The article's own site path - used to link the grid card to its
         // detail page.
         path = a.path
 
@@ -102,7 +102,7 @@ struct AppInfo {
 @MainActor
 enum AppRenderer {
 
-    /// Year + platform chip pair (grid card only — the detail header dropped
+    /// Year + platform chip pair (grid card only - the detail header dropped
     /// its badges).
     static func badges(year: String, platform: String) -> String {
 
@@ -118,16 +118,16 @@ enum AppRenderer {
     /// lands. `Media.box` already renders the `is-empty` surface for a nil
     /// path, so this only threads the call-site-specific `sizes` (the grid
     /// card's `.app-icon` is 64px at every width; the detail header's is
-    /// 128px desktop / 80px mobile — see apps.css) rather than re-deriving the
+    /// 128px desktop / 80px mobile - see apps.css) rather than re-deriving the
     /// empty markup. `icon` is already `nonEmpty`-filtered by `AppInfo.init`.
     static func iconTile(icon: String?, sizes: String) -> String {
 
-        // Single call — all of the empty-vs-present logic lives in `Media.box`.
+        // Single call - all of the empty-vs-present logic lives in `Media.box`.
         Media.box(container: "app-icon", path: icon, alt: "", sizes: sizes)
     }
 
     /// The stage the device shots stand on. Screenshots carry their own baked-in
-    /// chrome, so they are emitted bare — no wrapper, no rounding, no clipping.
+    /// chrome, so they are emitted bare - no wrapper, no rounding, no clipping.
     /// With no shots yet the stage wears `.is-empty` and holds the space.
     static func stage(_ shots: [String], className: String, sizes: String, appName: String) -> String {
 

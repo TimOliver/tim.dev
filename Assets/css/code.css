@@ -1,11 +1,11 @@
 /* ---------- Code page (code-specific) ----------
-   Shared structure lives in collection.css — including the detail header
+   Shared structure lives in collection.css - including the detail header
    (.collection-detail-*), sidebar links (.collection-link*) and the cardless
    .code-body padding. This holds repo-card internals and the landscape
    screenshot placeholder. */
 
 /* Landscape repo screenshot. The rounding/clip + img fill are the shared
-   media-surface rules (collection.css); the border is code-specific — the grid
+   media-surface rules (collection.css); the border is code-specific - the grid
    shots hold their edge even against a near-bg screenshot. Until an image
    lands, .is-empty paints the flat surface and the aspect ratio holds the
    space. */
@@ -14,7 +14,7 @@
     border: 1px solid var(--border);
 }
 
-/* Repo line: github mark + owner/name. Wraps rather than overflowing — long,
+/* Repo line: github mark + owner/name. Wraps rather than overflowing - long,
    unbreakable repo names (e.g. TOPasswordViewController) otherwise push past the
    card on a phone and make the page look lopsided. */
 .code-repo {
@@ -27,7 +27,7 @@
     color: var(--heading);
 }
 
-/* Inline octocat (fill=currentColor) — follows the repo line's text colour in
+/* Inline octocat (fill=currentColor) - follows the repo line's text colour in
    both themes, so no per-scheme swap is needed. */
 .code-gh-mark {
     width: 18px;

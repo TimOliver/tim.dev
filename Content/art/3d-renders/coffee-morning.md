@@ -7,4 +7,4 @@ order: 3
 details: Tool=Blender; Year=2024; Subject=Still life
 path: /art/3d-renders/coffee-morning/
 ---
-A still life of the morning coffee setup — the most-rendered corner of my apartment.
+A still life of the morning coffee setup - the most-rendered corner of my apartment.

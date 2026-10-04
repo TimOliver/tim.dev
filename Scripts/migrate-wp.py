@@ -28,7 +28,7 @@ Image copy (separate pass):
     sweep. JPEG re-saved with quality='keep' so no perceptible quality loss.
     Idempotent: re-running on already-stripped images is a no-op.
 
-Drafts (_drafts) are intentionally skipped — filenames look like WP autosave
+Drafts (_drafts) are intentionally skipped - filenames look like WP autosave
 artifacts, not real drafts.
 
 Run from repo root:
@@ -123,7 +123,7 @@ def parse_frontmatter(text: str) -> tuple[dict[str, object], str]:
             value = raw.lstrip(" \t-").strip()
             value = strip_quotes(value)
             if current_array is None:
-                # array continuation without preceding 'key:' — defensive
+                # array continuation without preceding 'key:' - defensive
                 continue
             current_array.append(value)
             continue
@@ -202,7 +202,7 @@ def build_clean_frontmatter(meta: dict[str, object]) -> str:
         title = html.unescape(meta["title"])
         lines.append(f"title: {yaml_quote(title)}")
 
-    # date — normalized
+    # date - normalized
     if "date" in meta and isinstance(meta["date"], str):
         normalized = normalize_date(meta["date"])
         if normalized:
@@ -329,7 +329,7 @@ def copy_images() -> tuple[int, int]:
                     continue
                 dest_dir.mkdir(parents=True, exist_ok=True)
                 dest_file = dest_dir / src_file.name
-                # mtime is the sole idempotency signal — strip_metadata changes
+                # mtime is the sole idempotency signal - strip_metadata changes
                 # file size so size-equality can't be used, and the mtime is
                 # restored from src after the strip so a second run skips.
                 if (

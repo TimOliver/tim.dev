@@ -7,4 +7,4 @@ order: 1
 details: Tool=Blender; Year=2024; Subject=Shinkansen
 path: /art/3d-renders/shinkansen-twilight/
 ---
-A shinkansen pulling in at dusk — built from memory of a hundred platform waits.
+A shinkansen pulling in at dusk - built from memory of a hundred platform waits.

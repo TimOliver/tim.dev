@@ -1,15 +1,15 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
 
 /// Parsed view of one art item's front matter, read from an Ignite article
 /// (Content/art/<section>/<slug>.md). Custom keys are read with the exact case
-/// used in the markdown (Ignite stores keys verbatim — see AppModel/CodeModel);
+/// used in the markdown (Ignite stores keys verbatim - see AppModel/CodeModel);
 /// the keys in Content/art are all-lowercase, so the reads here match that.
 struct ArtItem {
 
-    /// Display name for the piece — taken straight from the article title.
+    /// Display name for the piece - taken straight from the article title.
     let title: String
 
     /// Optional duration label (e.g. a video run-time), rendered as an overlay
@@ -23,7 +23,7 @@ struct ArtItem {
 
     /// Path to the poster image. Front-matter `image:`, already
     /// `nonEmpty`-filtered by `init` so a present-but-blank value collapses to
-    /// nil — the renderer then shows the flat empty surface instead of a broken
+    /// nil - the renderer then shows the flat empty surface instead of a broken
     /// image path.
     let image: String?
 
@@ -31,7 +31,7 @@ struct ArtItem {
     /// Int, defaulting to 0 when the key is absent or non-numeric.
     let order: Int
 
-    /// The article's own site path (e.g. `/art/film/reel`) — used both to group
+    /// The article's own site path (e.g. `/art/film/reel`) - used both to group
     /// the item under its section (by `/art/<slug>/` prefix) and to link each
     /// grid card through to its detail page.
     let path: String
@@ -40,7 +40,7 @@ struct ArtItem {
     /// front-matter `details:` string by `CollectionRenderer.parseDetails`.
     let details: [(String, String)]
 
-    /// "Watch on YouTube" link — a channel URL (not a video id), so the detail
+    /// "Watch on YouTube" link - a channel URL (not a video id), so the detail
     /// page links out rather than embedding. Front-matter `youtube:`, already
     /// `nonEmpty`-filtered; nil when absent.
     let youtube: String?
@@ -74,11 +74,11 @@ struct ArtItem {
         // key is absent or non-numeric, so unordered items simply sort first.
         order = Int(a.metadata["order"] as? String ?? "") ?? 0
 
-        // The article's own site path — used to bucket the item into its section
+        // The article's own site path - used to bucket the item into its section
         // and to link the grid card to its detail page.
         path = a.path
 
-        // `details:` (not `stats:`) — same key name and mini-syntax as the
+        // `details:` (not `stats:`) - same key name and mini-syntax as the
         // Apps/Code front matter, one vocabulary across the collections. The
         // shared parser expands it into ordered (label, value) rows.
         details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")
@@ -94,7 +94,7 @@ struct ArtItem {
 
 /// One section, parsed from a Content/art/<slug>/_section.md file read off disk
 /// (those files are `published: false`, so Ignite never adds them to its article
-/// collection — we read + parse them ourselves).
+/// collection - we read + parse them ourselves).
 struct ArtSection {
 
     /// Section heading. Front-matter `title:` in `_section.md`; falls back to
@@ -114,7 +114,7 @@ struct ArtSection {
     /// jump-nav chip.
     let slug: String
 
-    /// The section intro paragraph — plain text (the file body after the front
+    /// The section intro paragraph - plain text (the file body after the front
     /// matter fence). Empty string when the file has no body.
     let blurb: String
 
@@ -135,7 +135,7 @@ enum ArtRenderer {
     /// Reads all Content/art/<slug>/_section.md files off disk and returns the
     /// parsed sections (without items), sorted by `order`. Items are attached by
     /// the Art page from the published `art` collection. Fails loudly if the
-    /// art content root is unreadable — a silent empty Art page must not deploy.
+    /// art content root is unreadable - a silent empty Art page must not deploy.
     static func loadSections() -> [ArtSection] {
 
         // Content/art/ is the collection root; each subfolder is one section.
@@ -144,7 +144,7 @@ enum ArtRenderer {
             .appendingPathComponent("Content")
             .appendingPathComponent("art")
 
-        // An unreadable art root is a build error, not an empty index — fail
+        // An unreadable art root is a build error, not an empty index - fail
         // loudly so a broken content tree can never ship as a blank Art page.
         guard let dirs = try? fm.contentsOfDirectory(
             at: artRoot, includingPropertiesForKeys: [.isDirectoryKey]
@@ -155,7 +155,7 @@ enum ArtRenderer {
         var sections: [ArtSection] = []
         for dir in dirs {
 
-            // Skip stray files at the art root — only real subfolders are sections.
+            // Skip stray files at the art root - only real subfolders are sections.
             let isDir = (try? dir.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory ?? false
             guard isDir else { continue }
 

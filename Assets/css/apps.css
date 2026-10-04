@@ -10,7 +10,7 @@
     margin-bottom: 20px;
 }
 
-/* App icon tile — its own 15px rounding (tighter than the shared 14px media
+/* App icon tile - its own 15px rounding (tighter than the shared 14px media
    surfaces); the img fill inside comes from the shared rule (collection.css). */
 .app-icon {
     flex: 0 0 auto;
@@ -55,7 +55,7 @@
 
 /* ---------- Screenshot stages ----------
    The stage is a flat surface the device shots stand on. Screenshots have their
-   device chrome — bezel, corner radius, drop shadow — baked into the PNG by
+   device chrome - bezel, corner radius, drop shadow - baked into the PNG by
    hand, so .app-shot gets NO border-radius, NO background and NO overflow
    clipping: any of those would eat the bezel's own corners. Size comes from the
    image's intrinsic width/height attributes, never a CSS aspect-ratio.
@@ -74,7 +74,7 @@
     padding: 24px;
 }
 
-/* No shots yet — hold the space with the flat surface. */
+/* No shots yet - hold the space with the flat surface. */
 .app-stage.is-empty,
 .app-detail-stage.is-empty {
     aspect-ratio: 16 / 10;
@@ -90,7 +90,7 @@
     /* .app-shot is a replaced element, so its flex min-width:auto default
        resolves to the intrinsic (density-corrected) image width, not the
        shrink-to-fit an empty div would give. That floors the shot at its full
-       width and defeats the shrink `flex: 0 1 auto` promises — on a grid card
+       width and defeats the shrink `flex: 0 1 auto` promises - on a grid card
        two wide shots can overflow the stage entirely. Zero it. */
     min-width: 0;
 }
@@ -127,7 +127,7 @@
 }
 
 /* Name + tagline are the shared .collection-detail-name/-tagline (collection.css).
-   Beside the icon the tagline hugs the name — the header block below provides
+   Beside the icon the tagline hugs the name - the header block below provides
    the vertical gap, so drop the shared rule's bottom margin. */
 .app-detail-headings .collection-detail-tagline {
     margin: 0.1em 0 0;
@@ -137,7 +137,7 @@
 
 /* Mobile tweaks for app-specific detail bits. */
 @media (max-width: 720px) {
-    /* Compact detail header — the desktop icon (128px) and headings dwarf a
+    /* Compact detail header - the desktop icon (128px) and headings dwarf a
        phone screen, so step them down to App-Store-detail proportions. */
     .app-detail-head {
         gap: 16px;
@@ -148,7 +148,7 @@
         height: 80px;
         border-radius: 18px;
     }
-    /* Slightly smaller than the shared 2.1em detail-name shrink — the name
+    /* Slightly smaller than the shared 2.1em detail-name shrink - the name
        shares its row with the 80px icon. */
     .app-detail-headings .collection-detail-name {
         font-size: 1.9em;
@@ -159,7 +159,7 @@
 
     /* Screenshots become a full-bleed, one-at-a-time swipe pager. Native CSS
        scroll-snap (not the Embla JS) because the app pages swap content in place
-       without re-running init — a scroll-snap pager needs no JS, so it survives
+       without re-running init - a scroll-snap pager needs no JS, so it survives
        the swap. The desktop surface is dropped; each shot snaps one per view
        (with a peek of the next), edge-to-edge across the viewport. */
     .app-detail-stage {
@@ -176,7 +176,7 @@
         scrollbar-width: none;
         /* The shared rule above centers a short static row; here the stage is a
            scroll container instead. Centering splits overflow across both edges
-           and strands shot 1 before the scroll origin — Chrome even clamps
+           and strands shot 1 before the scroll origin - Chrome even clamps
            scrollLeft there, so it becomes unreachable. Pin to the start. */
         justify-content: flex-start;
     }
@@ -185,13 +185,13 @@
     }
     .app-detail-stage .app-shot {
         flex: 0 0 74%;
-        /* min-width: 0 comes from the base .app-shot rule above — needed here
+        /* min-width: 0 comes from the base .app-shot rule above - needed here
            too, since without it this flex-basis loses to the intrinsic image
            width the same way the base rule's comment describes. */
         max-height: none;
         scroll-snap-align: start;
     }
-    /* The empty stage keeps a normal boxed surface — there's nothing to page. */
+    /* The empty stage keeps a normal boxed surface - there's nothing to page. */
     .app-detail-stage.is-empty {
         width: auto;
         margin-left: 0;
@@ -211,7 +211,7 @@
 
 /* Landscape phones: a width-based slide (% of 100vw) makes tall shots absurd,
    since 100vw is the long edge. Size the slide off viewport HEIGHT instead so
-   each screenshot is about as tall as the screen — width then derives from the
+   each screenshot is about as tall as the screen - width then derives from the
    image's own aspect ratio, and several sit across the wide viewport. */
 @media (max-width: 720px) and (orientation: landscape) {
     .app-detail-stage .app-shot {

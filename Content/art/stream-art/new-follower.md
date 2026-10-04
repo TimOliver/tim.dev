@@ -8,4 +8,4 @@ order: 4
 details: Type=Alert; Length=3s; Year=2025
 path: /art/stream-art/new-follower/
 ---
-A three-second new-follower alert — a little celebratory pop without derailing the moment.
+A three-second new-follower alert - a little celebratory pop without derailing the moment.

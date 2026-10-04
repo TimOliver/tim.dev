@@ -1,9 +1,9 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
 
-/// Inlined SVG portfolio badges — the "get it" links (App Store / YouTube /
+/// Inlined SVG portfolio badges - the "get it" links (App Store / YouTube /
 /// GitHub) shared by every collection detail page.
 ///
 /// Each badge SVG (`Assets/img/portfolio/*-badge.svg`) paints its field and its
@@ -17,7 +17,7 @@ import Ignite
 enum Badge {
 
     /// Reads and caches a portfolio SVG for inlining. Fails LOUDLY when the file
-    /// is missing — a swallowed error would ship a broken "get it" link.
+    /// is missing - a swallowed error would ship a broken "get it" link.
     private static var cache: [String: String] = [:]
     static func svg(_ file: String) -> String {
         if let hit = cache[file] { return hit }

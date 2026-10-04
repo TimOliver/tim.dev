@@ -1,9 +1,9 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
 
-/// Article template for standalone Markdown blog posts — the default article
+/// Article template for standalone Markdown blog posts - the default article
 /// layout. Posts in `Content/posts` carry no `layout:` front-matter key, so
 /// Ignite renders them through here (the collection detail pages opt out by
 /// naming their own layout, e.g. `layout: AppDetail`). Ignite instantiates one
@@ -13,8 +13,8 @@ struct PostPage: ArticlePage {
 
     /// Delegates the whole post to `ArticleShell`, which builds the `<article>`
     /// markup and returns it as an `Include`. The `.page` context selects the
-    /// standalone post-page variant — a plain (non-linked) date and title, plus
-    /// the comment-thread mount at the end — as opposed to the `.feed` variant
+    /// standalone post-page variant - a plain (non-linked) date and title, plus
+    /// the comment-thread mount at the end - as opposed to the `.feed` variant
     /// the home page uses.
     var body: some HTML {
 

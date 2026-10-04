@@ -8,4 +8,4 @@ order: 6
 details: Type=Outro; Length=12s; Year=2025
 path: /art/stream-art/thanks-outro/
 ---
-A twelve-second outro — a warm thank-you card to close out the stream.
+A twelve-second outro - a warm thank-you card to close out the stream.

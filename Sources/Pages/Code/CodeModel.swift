@@ -1,15 +1,15 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
 
 /// Parsed view of a code-repo article's front matter. Custom keys are read with
-/// the exact case used in the markdown file (Ignite stores keys verbatim — see
+/// the exact case used in the markdown file (Ignite stores keys verbatim - see
 /// AppModel/TalkModel); the keys in Content/code use camelCase where the source
 /// needs it (`langColor:`), so reads here match that casing exactly.
 struct RepoInfo {
 
-    /// Display name for the repo — taken straight from the article title, and
+    /// Display name for the repo - taken straight from the article title, and
     /// reused as the `name` half of the `owner/name` line.
     let title: String
 
@@ -37,10 +37,10 @@ struct RepoInfo {
 
     /// Landscape screenshot path, or nil until one lands. Front-matter `image:`,
     /// already `nonEmpty`-filtered by `init` so a present-but-blank value
-    /// collapses to nil — the renderer then shows the flat empty surface.
+    /// collapses to nil - the renderer then shows the flat empty surface.
     let image: String?
 
-    /// The article's own site path (e.g. `/code/bluruikit`) — used to link each
+    /// The article's own site path (e.g. `/code/bluruikit`) - used to link each
     /// grid card through to its detail page.
     let path: String
 
@@ -53,7 +53,7 @@ struct RepoInfo {
     let github: String?
 
     /// Ordered (label, url) secondary links for the detail sidebar. Assembled in
-    /// `init` from the optional `docs:` key — the `github:` URL becomes a badge.
+    /// `init` from the optional `docs:` key - the `github:` URL becomes a badge.
     let links: [(String, String)]
 
     /// Already-rendered HTML body (markdown compiled by Ignite).
@@ -78,7 +78,7 @@ struct RepoInfo {
         language = a.metadata["language"] as? String ?? ""
 
         // `nonEmpty` drops a present-but-blank `langColor:` so the `??` fallback
-        // takes over — a neutral gray dot rather than an empty `background:`.
+        // takes over - a neutral gray dot rather than an empty `background:`.
         langColor = CollectionRenderer.nonEmpty(a.metadata["langColor"] as? String) ?? "#8e8e93"
 
         // Free-form star stat; empty string when absent.
@@ -88,7 +88,7 @@ struct RepoInfo {
         // renderer shows the flat empty surface rather than a broken image path.
         image = CollectionRenderer.nonEmpty(a.metadata["image"] as? String)
 
-        // The article's own site path — used to link the grid card to its
+        // The article's own site path - used to link the grid card to its
         // detail page.
         path = a.path
 
@@ -121,7 +121,7 @@ enum CodeRenderer {
     static func githubMark() -> String {
 
         // Inline the octocat (fill=currentColor) so it follows the repo line's
-        // text colour in both themes — no per-scheme file swap. The sizing class
+        // text colour in both themes - no per-scheme file swap. The sizing class
         // is injected onto the <svg> (see .code-gh-mark in code.css).
         Badge.svg("github-logo.svg").replacingOccurrences(
             of: "<svg ", with: #"<svg class="code-gh-mark" "#)
@@ -132,7 +132,7 @@ enum CodeRenderer {
     /// detail page render this at very different widths (see call sites).
     static func shot(image: String?, name: String, sizes: String) -> String {
 
-        // Single call — `Media.box` renders the `.is-empty` surface itself when
+        // Single call - `Media.box` renders the `.is-empty` surface itself when
         // `path` is nil, so this only supplies the call-site-specific `sizes`.
         Media.box(
             container: "code-shot",

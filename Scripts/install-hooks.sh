@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Installs tim.dev's git hooks by symlinking each file in Scripts/hooks/ into
-# .git/hooks/. Re-runs are idempotent — existing symlinks pointing to the same
+# .git/hooks/. Re-runs are idempotent - existing symlinks pointing to the same
 # target are left alone; existing real files are refused unless --force is set.
 #
 # Hooks aren't tracked under .git/hooks/ (git doesn't version that directory),

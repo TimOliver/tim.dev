@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -55,7 +55,7 @@ extension AppRenderer {
 
         // Screenshot stage. The shots render bare (their device chrome is baked
         // into each PNG). On a phone this becomes a full-bleed scroll-snap
-        // pager (apps.css) — one shot per view.
+        // pager (apps.css) - one shot per view.
         header += stage(
             app.shots,
             className: "app-detail-stage",
@@ -69,7 +69,7 @@ extension AppRenderer {
 
         // Append the App Store badge only when a link is present (`appStore` is
         // already nil-filtered by AppInfo.init). The shared inlined, theme-aware
-        // badge — see Badge.swift / .store-badge in collection.css.
+        // badge - see Badge.swift / .store-badge in collection.css.
         if let appStore = app.appStore {
             sidebar += Badge.store(
                 kind: "appstore", file: "app-store-badge.svg",

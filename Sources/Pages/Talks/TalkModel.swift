@@ -1,17 +1,17 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
 
 /// Parsed view of a talk article's front matter (Content/talks/<slug>.md).
 /// Custom keys are read with the exact case used in the markdown (Ignite stores
-/// keys verbatim — see AppModel/CodeModel); the keys in Content/talks are all
+/// keys verbatim - see AppModel/CodeModel); the keys in Content/talks are all
 /// lowercase (`venue:`, `youtube:`), so the reads here match that. Uses
-/// `topics:` rather than `tags:` on purpose — `tags:` would make Ignite
+/// `topics:` rather than `tags:` on purpose - `tags:` would make Ignite
 /// generate a tag-archive page per keyword, which this collection doesn't want.
 struct TalkInfo {
 
-    /// Display title for the talk — taken straight from the article title.
+    /// Display title for the talk - taken straight from the article title.
     let title: String
 
     /// Where the talk was given, e.g. "WWDC" or "iOSDevUK". Front-matter
@@ -23,11 +23,11 @@ struct TalkInfo {
     let duration: String
 
     /// Poster image path. Front-matter `image:`, already `nonEmpty`-filtered by
-    /// `init` so a present-but-blank value collapses to nil — the renderer then
+    /// `init` so a present-but-blank value collapses to nil - the renderer then
     /// shows the flat empty surface instead of a broken image path.
     let image: String?
 
-    /// YouTube video id — drives both the detail-page embed and the "Watch on
+    /// YouTube video id - drives both the detail-page embed and the "Watch on
     /// YouTube" link. Front-matter `youtube:`, `nonEmpty`-filtered; nil omits
     /// the embed, and the poster thumbnail renders in its place instead.
     let youtube: String?
@@ -36,7 +36,7 @@ struct TalkInfo {
     /// Front-matter `slides:`, `nonEmpty`-filtered; nil when absent.
     let slides: String?
 
-    /// The article's own site path (e.g. `/talks/some-talk`) — used to link
+    /// The article's own site path (e.g. `/talks/some-talk`) - used to link
     /// each grid card through to its detail page.
     let path: String
 
@@ -45,7 +45,7 @@ struct TalkInfo {
 
     /// Topic labels from the comma-separated `topics:` key. Drive the grid's
     /// topic chips and the detail sidebar. Deliberately not `tags:` (see the
-    /// type doc) — these must not spawn Ignite tag-archive pages.
+    /// type doc) - these must not spawn Ignite tag-archive pages.
     let topics: [String]
 
     /// Release year, derived from the article date rather than a front-matter
@@ -78,7 +78,7 @@ struct TalkInfo {
         youtube = CollectionRenderer.nonEmpty(a.metadata["youtube"] as? String)
         slides = CollectionRenderer.nonEmpty(a.metadata["slides"] as? String)
 
-        // The article's own site path — used to link the grid card to its
+        // The article's own site path - used to link the grid card to its
         // detail page.
         path = a.path
 
@@ -94,7 +94,7 @@ struct TalkInfo {
             .filter { !$0.isEmpty }
 
         // Derive the year from the article date. Pin to the site's display
-        // timezone (Ignite parses front-matter dates as GMT) — Calendar.current
+        // timezone (Ignite parses front-matter dates as GMT) - Calendar.current
         // would shift a midnight-GMT date back a year on any machine west of
         // GMT.
         var cal = Calendar(identifier: .gregorian)
@@ -117,7 +117,7 @@ enum TalksRenderer {
     /// very different widths (hero ~700px, card ~460px, detail ~1180px).
     static func thumb(image: String?, duration: String, title: String, sizes: String) -> String {
 
-        // Duration overlay pill — omitted entirely when there is no duration,
+        // Duration overlay pill - omitted entirely when there is no duration,
         // so an empty string never produces a blank badge.
         let badge = duration.isEmpty
             ? ""
@@ -129,7 +129,7 @@ enum TalksRenderer {
         return Media.box(
             container: "talks-thumb",
             path: image,
-            alt: title.isEmpty ? "" : "\(title) — talk poster",
+            alt: title.isEmpty ? "" : "\(title) - talk poster",
             sizes: sizes,
             overlay: badge
         )
@@ -155,7 +155,7 @@ enum TalksRenderer {
     /// can append it unconditionally).
     static func tagsBlock(_ topics: [String]) -> String {
 
-        // Nothing to render without topics — return empty so no stray wrapper
+        // Nothing to render without topics - return empty so no stray wrapper
         // div is emitted.
         guard !topics.isEmpty else { return "" }
 

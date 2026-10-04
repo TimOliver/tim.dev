@@ -8,4 +8,4 @@ order: 1
 details: Type=Starting-soon loop; Length=20s; Year=2024
 path: /art/stream-art/starting-soon/
 ---
-A twenty-second looping 'starting soon' screen — warm, slow, easy to leave running before a stream.
+A twenty-second looping 'starting soon' screen - warm, slow, easy to leave running before a stream.

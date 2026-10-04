@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-A static file server that disables all client caching — useful for iterating on
+A static file server that disables all client caching - useful for iterating on
 CSS/JS in the Ignite build output where iOS Safari aggressively re-serves stale
 copies from `Last-Modified`-based revalidation.
 
@@ -31,7 +31,7 @@ def main() -> None:
     if not root.is_dir():
         print(f"error: {root} is not a directory", file=sys.stderr)
         sys.exit(1)
-    # Use the handler's `directory=` arg instead of chdir — `swift run` wipes
+    # Use the handler's `directory=` arg instead of chdir - `swift run` wipes
     # and recreates Build/, which would orphan a chdir'd cwd and crash every
     # request with FileNotFoundError on os.getcwd().
     handler = partial(NoCacheHandler, directory=str(root))

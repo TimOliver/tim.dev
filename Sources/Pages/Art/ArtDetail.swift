@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -46,11 +46,11 @@ extension ArtRenderer {
         }
 
         // Large poster in a bordered surface. Video items keep their
-        // "Watch on YouTube" sidebar link rather than embedding — art's
+        // "Watch on YouTube" sidebar link rather than embedding - art's
         // `youtube:` holds a channel URL, not a video id.
         header += #"<div class="collection-detail-shot">"#
         // Same detail column as Code/Talks: 1250px page width minus 2x35px
-        // padding = 1180px — nowhere near the grid card's width.
+        // padding = 1180px - nowhere near the grid card's width.
         header += Media.box(
             container: "art-shot",
             path: item.image,

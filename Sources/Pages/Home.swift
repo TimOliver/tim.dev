@@ -1,9 +1,9 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
 
-/// The site's home page — a reverse-chronological feed of the most recent blog
+/// The site's home page - a reverse-chronological feed of the most recent blog
 /// posts. Each post is rendered through the shared `ArticleShell` in its `.feed`
 /// form, so a post looks identical here and on the tag/archive listings. Where
 /// `Archive` lists everything ever written, the home page shows only the newest
@@ -11,7 +11,7 @@ import Ignite
 struct Home: StaticPage {
 
     /// Page title. Ignite feeds this to the layout for the `<title>` tag; the
-    /// home page carries no visible heading of its own — the feed speaks for it.
+    /// home page carries no visible heading of its own - the feed speaks for it.
     var title = "Home"
 
     /// The site's article loader, injected by Ignite. `.all` is every compiled
@@ -20,7 +20,7 @@ struct Home: StaticPage {
     @Environment(\.articles) private var articles
 
     /// Number of recent posts shown on the home page. A hard cap keeps the feed
-    /// short — the full history lives on the Archive page.
+    /// short - the full history lives on the Archive page.
     private static let recentPostCount = 10
 
     /// Builds the feed: the newest `recentPostCount` blog posts, each as a

@@ -46,7 +46,7 @@ Fast forward to the day of the conference. I was so incredibly nervous, but so e
 
 > Switching emcees to Tom [@TimOliverAU](https://twitter.com/TimOliverAU?ref_src=twsrc%5Etfw) and [@jollyjoester](https://twitter.com/jollyjoester?ref_src=twsrc%5Etfw) [\#tryswiftconf](https://twitter.com/hashtag/tryswiftconf?src=hash&ref_src=twsrc%5Etfw) [pic.twitter.com/ibGyjirz0c](https://t.co/ibGyjirz0c)
 > 
-> — Yasuhiro Inami (@inamiy) [March 1, 2018](https://twitter.com/inamiy/status/969015996915699712?ref_src=twsrc%5Etfw)
+> - Yasuhiro Inami (@inamiy) [March 1, 2018](https://twitter.com/inamiy/status/969015996915699712?ref_src=twsrc%5Etfw)
 
 <script async="" charset="utf-8" src="https://platform.twitter.com/widgets.js"></script>
 
@@ -57,7 +57,7 @@ For the most part, thankfully, our roles ended up being far less than I had orig
 > today’s our greatest MC are also [@jollyjoester](https://twitter.com/jollyjoester?ref_src=twsrc%5Etfw) and [@TimOliverAU](https://twitter.com/TimOliverAU?ref_src=twsrc%5Etfw) ,not Karaoke 🎤  
 > 今日も司会は [@jollyjoester](https://twitter.com/jollyjoester?ref_src=twsrc%5Etfw) と [@TimOliverAU](https://twitter.com/TimOliverAU?ref_src=twsrc%5Etfw) でお送りします！ [\#tryswiftconf](https://twitter.com/hashtag/tryswiftconf?src=hash&ref_src=twsrc%5Etfw) [pic.twitter.com/vuNBAAPcxe](https://t.co/vuNBAAPcxe)
 > 
-> — try! Swift Tokyo (@tryswiftconf) [March 2, 2018](https://twitter.com/tryswiftconf/status/969376667591368705?ref_src=twsrc%5Etfw)
+> - try! Swift Tokyo (@tryswiftconf) [March 2, 2018](https://twitter.com/tryswiftconf/status/969376667591368705?ref_src=twsrc%5Etfw)
 
 <script async="" charset="utf-8" src="https://platform.twitter.com/widgets.js"></script>
 
@@ -65,7 +65,7 @@ The quality of the speakers were absolutely unreal, with a lot of friends I’d 
 
 > Super-surprising talk by [@normanmaurer](https://twitter.com/normanmaurer?ref_src=twsrc%5Etfw) open-sourcing Netty in Swift!!! <https://t.co/1Z9AmaBQdS> [\#tryswiftconf](https://twitter.com/hashtag/tryswiftconf?src=hash&ref_src=twsrc%5Etfw) [pic.twitter.com/F4RlfatDhW](https://t.co/F4RlfatDhW)
 > 
-> — Yasuhiro Inami (@inamiy) [March 1, 2018](https://twitter.com/inamiy/status/969091026316009477?ref_src=twsrc%5Etfw)
+> - Yasuhiro Inami (@inamiy) [March 1, 2018](https://twitter.com/inamiy/status/969091026316009477?ref_src=twsrc%5Etfw)
 
 <script async="" charset="utf-8" src="https://platform.twitter.com/widgets.js"></script>
 

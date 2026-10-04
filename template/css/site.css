@@ -716,7 +716,7 @@ body > header::before {
         padding: 8px 0 33px;
     }
 
-    /* Push the solid plateau further down at this breakpoint — the
+    /* Push the solid plateau further down at this breakpoint - the
        scaled-down content still takes up a larger fraction of the
        (shorter) header, so the desktop 40% solid stop falls before
        the menu text ends. */
@@ -782,7 +782,7 @@ body > header::before {
 
 @media (max-width: 720px) {
     /* Body text drops further to 90% (14pt) once the hamburger
-       menu takes over — matches the more compact phone layout. */
+       menu takes over - matches the more compact phone layout. */
     body {
         font-size: 14pt;
     }
@@ -1230,7 +1230,7 @@ footer .container {
 }
 
 /* Small-caps section label, shared across sub-pages (About, Apps, etc.).
-   Apple-style "eyebrow" heading — tracked, muted, all-caps. */
+   Apple-style "eyebrow" heading - tracked, muted, all-caps. */
 .section-label {
     font-size: 0.78em;
     font-weight: 600;

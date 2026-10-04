@@ -4,7 +4,7 @@ One-time (idempotent) weight pass over Assets/img/posts/.
 
 The blog's article column is 950px wide (heroes cap at 750px, inline images at
 650px tall), so nothing on the site can ever display more than ~1900px of
-image — yet the WordPress import carried full-resolution originals (up to
+image - yet the WordPress import carried full-resolution originals (up to
 4032px, 4.6MB). This script:
 
 - Downscales any raster larger than 1900px on its longest side (LANCZOS,
@@ -13,7 +13,7 @@ image — yet the WordPress import carried full-resolution originals (up to
   them; preserves ICC profiles (Display-P3 photos keep their colour), strips
   everything else.
 - Converts named photographic PNGs to JPEG (PNG is the wrong container for
-  photos — 4.6MB → ~0.5MB) and rewrites their references in Content/ and
+  photos - 4.6MB → ~0.5MB) and rewrites their references in Content/ and
   Includes/_posts/. True screenshots stay PNG.
 - GIFs and SVGs are untouched.
 

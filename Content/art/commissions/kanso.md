@@ -8,4 +8,4 @@ order: 4
 details: Type=Brand loop; Length=6s; Year=2025; Client=Kanso
 path: /art/commissions/kanso/
 ---
-A looping six-second brand animation for Kanso — minimal, calm, endlessly repeatable.
+A looping six-second brand animation for Kanso - minimal, calm, endlessly repeatable.

@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -21,12 +21,12 @@ struct NotFound: ErrorPage {
 
         // Ignite's `String` element passes the markup through verbatim as raw
         // HTML. The trailing `\` on each line is a multiline-string line
-        // continuation — it swallows the following newline so the emitted HTML
+        // continuation - it swallows the following newline so the emitted HTML
         // carries no stray whitespace between the tags.
         String("""
         <div class="error-page">\
         <h1 class="page-title">404</h1>\
-        <p class="page-subtitle">This page doesn't exist — it may have moved \
+        <p class="page-subtitle">This page doesn't exist - it may have moved \
         when the site did. <a href="/">Head back home</a>, or try \
         <a href="/archive/">the archive</a>.</p>\
         </div>

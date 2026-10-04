@@ -11,6 +11,6 @@ details: Language=Swift; License=MIT; Stars=★ 186; Forks=11; Started=2023; Lat
 github: https://github.com/TimOliver/BlurUIKit
 path: /code/bluruikit/
 ---
-UIKit's blur effects are weirdly limited — you get the system materials and that's about it. BlurUIKit exposes the variable, gradient, and progressive blurs that the system frameworks use internally but never expose.
+UIKit's blur effects are weirdly limited - you get the system materials and that's about it. BlurUIKit exposes the variable, gradient, and progressive blurs that the system frameworks use internally but never expose.
 
 It's the kind of small, focused component I most enjoy making: one job, done well.

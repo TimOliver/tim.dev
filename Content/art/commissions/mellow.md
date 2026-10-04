@@ -8,4 +8,4 @@ order: 2
 details: Type=Intro sequence; Length=8s; Year=2024; Client=Mellow
 path: /art/commissions/mellow/
 ---
-An eight-second intro sequence for the Mellow podcast — soft gradients easing into the wordmark.
+An eight-second intro sequence for the Mellow podcast - soft gradients easing into the wordmark.

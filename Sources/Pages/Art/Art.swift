@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -9,7 +9,7 @@ import Ignite
 /// build rather than silently dropping off the index.
 struct Art: StaticPage {
 
-    /// Page/document title — Ignite renders it into `<title>` and the header.
+    /// Page/document title - Ignite renders it into `<title>` and the header.
     var title = "Art"
 
     /// The full published-article collection, injected by Ignite. `body` narrows
@@ -36,7 +36,7 @@ struct Art: StaticPage {
                 .sorted { $0.order < $1.order }
         }
 
-        // Fail LOUDLY on published items no section claimed — a folder missing
+        // Fail LOUDLY on published items no section claimed - a folder missing
         // a parseable _section.md, or a slug: override that no longer matches
         // its folder. A silent miss here would let the build finish with exit
         // code 0 while the pieces vanish from this index (their detail pages
@@ -68,7 +68,7 @@ extension ArtRenderer {
         // Outer collection wrapper + page heading and subtitle.
         var s = #"<div class="collection">"#
         s += #"<h1 class="page-title">Art</h1>"#
-        s += #"<p class="page-subtitle">The other things I make. Not for work, not for clients — just the stuff that ends up taking my evenings.</p>"#
+        s += #"<p class="page-subtitle">The other things I make. Not for work, not for clients - just the stuff that ends up taking my evenings.</p>"#
 
         // Jump-nav chips → each section.
         s += #"<nav class="section-chips" aria-label="Jump to section">"#
@@ -107,13 +107,13 @@ extension ArtRenderer {
         // The whole card is a link through to the item's detail page.
         var s = #"<a class="collection-card art-card" href="\#(escape(item.path))">"#
 
-        // Duration overlay is optional — an empty `duration:` yields no badge.
+        // Duration overlay is optional - an empty `duration:` yields no badge.
         let badge = item.duration.isEmpty
             ? ""
             : #"<span class="art-duration">\#(escape(item.duration))</span>"#
 
         // --art-cols varies 2-3 per section (art.css), so a vw-based guess
-        // beats one fixed px figure — close enough for sizes, not exact.
+        // beats one fixed px figure - close enough for sizes, not exact.
         s += Media.box(
             container: "art-shot",
             path: item.image,

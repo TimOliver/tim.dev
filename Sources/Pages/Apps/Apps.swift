@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -7,7 +7,7 @@ import Ignite
 /// 2-up card grid. Uses the Include-string pattern (see `AppRenderer`).
 struct Apps: StaticPage {
 
-    /// Page title — Ignite renders it into the `<title>` tag and uses it as the
+    /// Page title - Ignite renders it into the `<title>` tag and uses it as the
     /// nav/heading label. A constant here, since this is the fixed apps index.
     var title = "Apps"
 
@@ -17,7 +17,7 @@ struct Apps: StaticPage {
 
     /// Builds the grid include for `/apps/`. Loads the collection, parses each
     /// article's front matter, renders the card grid, and returns the matching
-    /// `Include` (the Include-string pattern — markup is written to a file on
+    /// `Include` (the Include-string pattern - markup is written to a file on
     /// disk and referenced by name; see `CollectionRenderer.include`).
     var body: some HTML {
 
@@ -73,7 +73,7 @@ extension AppRenderer {
 
             // Screenshot stage under the head. The shots render bare (their
             // device chrome is baked into each PNG), and an app with none yet
-            // gets the flat empty stage — both handled inside `stage`.
+            // gets the flat empty stage - both handled inside `stage`.
             s += stage(
                 app.shots,
                 className: "app-stage",

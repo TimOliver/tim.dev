@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 
@@ -15,13 +15,13 @@ import Foundation
 /// lazy-loaded iframe pointing at `https://www.instagram.com/p/<code>/embed/
 /// captioned/`. Height is auto-fitted client-side (see the Instagram resize
 /// listener in site.js) so captions aren't clipped. Bare in-prose Instagram
-/// links are left untouched — only blockquote/iframe embeds are rewritten.
+/// links are left untouched - only blockquote/iframe embeds are rewritten.
 enum InstagramEmbed {
 
     /// Entry point: rewrites every legacy Instagram embed in one article's
     /// compiled HTML and returns the cleaned string. Called once per article
     /// render from `ArticleShell.htmlString`. Each step below rewrites the
-    /// output of the previous one — the dead embed script is stripped first,
+    /// output of the previous one - the dead embed script is stripped first,
     /// then each container form (figure, align-center div, blockquote, iframe)
     /// is reduced to the post shortcode and re-emitted as one clean iframe.
     static func transform(_ html: String, forFeed: Bool = false) -> String {
@@ -61,7 +61,7 @@ enum InstagramEmbed {
 
         // Mangled blockquote embeds → clean iframe (non-Instagram quotes kept).
         // Every legacy blockquote embed opens with the same padding placeholder
-        // div the align-center form anchors on, so require it here too — an
+        // div the align-center form anchors on, so require it here too - an
         // ordinary markdown quote that merely links an Instagram post must
         // stay a quote.
         out = replace(out, #"<blockquote\b[^>]*>.*?</blockquote>"#) { block in
@@ -74,7 +74,7 @@ enum InstagramEmbed {
     /// Builds the canonical replacement markup for one post shortcode: a
     /// token-free, lazy-loaded iframe pointing at Instagram's official
     /// `/embed/captioned/` endpoint, wrapped in `.ig-embed` for sizing. The
-    /// iframe carries no fixed height — the Instagram resize listener in site.js
+    /// iframe carries no fixed height - the Instagram resize listener in site.js
     /// receives Instagram's postMessage height and grows the frame so captions
     /// aren't clipped.
     private static func embed(_ code: String) -> String {
@@ -86,7 +86,7 @@ enum InstagramEmbed {
     }
 
     /// Pulls the first Instagram post shortcode (the `/p/<code>` segment) out of
-    /// a fragment, or nil when there isn't one — used to reduce whichever legacy
+    /// a fragment, or nil when there isn't one - used to reduce whichever legacy
     /// container matched down to just its post id.
     private static func shortcode(in s: String) -> String? {
 
@@ -96,7 +96,7 @@ enum InstagramEmbed {
 
     // MARK: - Regex helpers
 
-    /// Compiled patterns, keyed by pattern string — transform runs for every
+    /// Compiled patterns, keyed by pattern string - transform runs for every
     /// article render, so compiling per call adds up. Only ever touched from
     /// ArticleShell's @MainActor rendering, so plain static state is safe. A
     /// failed compile caches as nil so a bad pattern isn't retried.
@@ -125,7 +125,7 @@ enum InstagramEmbed {
         var last = 0
 
         // Walk the matches in order, copying the untouched gap before each one,
-        // then the closure's replacement — or the original match text when the
+        // then the closure's replacement - or the original match text when the
         // closure returns nil.
         for m in re.matches(in: s, range: NSRange(location: 0, length: ns.length)) {
             let whole = ns.substring(with: m.range)
@@ -141,7 +141,7 @@ enum InstagramEmbed {
 
     /// Returns the text captured by the first capture group of the first match
     /// of `pattern` in `s`, or nil when the pattern fails to compile or match.
-    /// Unlike `replace`, this compiles fresh each call — it runs at most once
+    /// Unlike `replace`, this compiles fresh each call - it runs at most once
     /// per matched embed, rare enough not to be worth caching.
     private static func firstGroup(_ s: String, _ pattern: String) -> String? {
 

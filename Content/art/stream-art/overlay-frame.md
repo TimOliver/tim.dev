@@ -8,4 +8,4 @@ order: 5
 details: Type=Overlay; Year=2024
 path: /art/stream-art/overlay-frame/
 ---
-An animated in-game overlay frame — subtle motion at the edges that doesn't fight the gameplay.
+An animated in-game overlay frame - subtle motion at the edges that doesn't fight the gameplay.

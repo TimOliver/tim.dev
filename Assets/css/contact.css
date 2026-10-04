@@ -34,7 +34,7 @@ body:has(.contact) {
     min-width: 0;
 }
 
-/* The big email — the lead element of the left column (no eyebrow above it). */
+/* The big email - the lead element of the left column (no eyebrow above it). */
 .contact-email {
     display: inline-block;
     font-size: 2.4em;
@@ -57,7 +57,7 @@ body:has(.contact) {
     margin: 0;
 }
 
-/* Contact-details card — recreates the About "Tech Specs" card + hairline
+/* Contact-details card - recreates the About "Tech Specs" card + hairline
    table (kept independent of .about-colophon so About's markup stays decoupled). */
 .contact-card {
     padding: 30px 34px;

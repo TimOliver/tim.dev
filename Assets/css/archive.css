@@ -52,7 +52,7 @@ body:has(.archive) {
     display: none;
 }
 
-/* Year row — big year + post count on the left, a flat post list on the right.
+/* Year row - big year + post count on the left, a flat post list on the right.
    A hairline divides consecutive years (not above the first). */
 .archive-year {
     display: grid;
@@ -117,7 +117,7 @@ body:has(.archive) {
     }
 }
 
-/* Back-to-top sits just outside the Archive's (1000px) column on wide windows —
+/* Back-to-top sits just outside the Archive's (1000px) column on wide windows -
    the global rule is tuned for the 1650px collection pages. */
 body:has(.archive) .back-to-top {
     right: max(24px, calc(50vw - 555px));

@@ -26,7 +26,7 @@
     margin: 0.8em 0 1.5em;
 }
 
-/* Per-section grid — column count from the inline --art-cols var. */
+/* Per-section grid - column count from the inline --art-cols var. */
 .art-grid {
     display: grid;
     grid-template-columns: repeat(var(--art-cols, 3), 1fr);
@@ -43,7 +43,7 @@
 }
 
 /* Duration overlay (bottom-right) on the thumbnail. The "tag" overlay was
-   removed — videos no longer carry a PROFESSIONAL/KARAOKE badge. */
+   removed - videos no longer carry a PROFESSIONAL/KARAOKE badge. */
 .art-duration {
     position: absolute;
     bottom: 10px;
@@ -77,7 +77,7 @@
 }
 
 @media (max-width: 720px) {
-    /* Match the About section headers' mobile shrink (about.css) — the desktop
+    /* Match the About section headers' mobile shrink (about.css) - the desktop
        2.2em title dominates a phone screen. */
     .art-section-title {
         font-size: 2.1em;

@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -8,7 +8,7 @@ import Ignite
 /// year filtering is layered on by site.js; with JS off the full grid shows.
 struct Talks: StaticPage {
 
-    /// Page title — also the nav label and the root of the `<title>` suffix.
+    /// Page title - also the nav label and the root of the `<title>` suffix.
     var title = "Talks"
 
     /// All loaded articles, injected by Ignite; narrowed to the `talks`
@@ -33,7 +33,7 @@ struct Talks: StaticPage {
     }
 }
 
-/// Talks index-grid markup — the `/talks/` landing page. Lives in an extension
+/// Talks index-grid markup - the `/talks/` landing page. Lives in an extension
 /// so `TalksRenderer` (declared in TalkModel.swift) keeps its shared thumb /
 /// metaLine / tagsBlock helpers close to the type and its page builders apart.
 extension TalksRenderer {
@@ -65,10 +65,10 @@ extension TalksRenderer {
         s += #"<h1 class="page-title">Talks</h1>"#
         s += #"<p class="page-subtitle">Thirteen years of standing in front of iOS conference rooms.</p>"#
 
-        // Featured hero — the most-recent talk (talks are sorted desc).
+        // Featured hero - the most-recent talk (talks are sorted desc).
         if let featured = talks.first {
             s += #"<a class="talks-featured" href="\#(escape(featured.path))">"#
-            // .talks-featured .talks-thumb is `flex: 0 1 700px` — 700px is the
+            // .talks-featured .talks-thumb is `flex: 0 1 700px` - 700px is the
             // hero's actual cap, not a shared card estimate.
             s += thumb(image: featured.image, duration: featured.duration, title: featured.title, sizes: "(max-width: 720px) 90vw, 700px")
             s += #"<div class="talks-featured-text">"#
@@ -117,7 +117,7 @@ extension TalksRenderer {
         s += "</div>"  // talks-filter-row (year)
         s += "</div>"  // talks-controls
 
-        // Grid — every talk (the featured one is intentionally also a card).
+        // Grid - every talk (the featured one is intentionally also a card).
         s += #"<div class="collection-grid talks-grid">"#
         for talk in talks {
             // Per-card filter/search hooks read by site.js: `data-topics` is the
@@ -129,7 +129,7 @@ extension TalksRenderer {
             s += #"<a class="collection-card talks-card" href="\#(escape(talk.path))" data-topics="\#(escape(topicsAttr))" data-year="\#(talk.year)" data-search="\#(escape(searchAttr))">"#
             // Talks cards sit in the same .collection-grid as Code cards (no
             // talks-specific column override), so they render at the same
-            // ~460-490px — reuse that figure rather than the hero's 700px.
+            // ~460-490px - reuse that figure rather than the hero's 700px.
             s += thumb(image: talk.image, duration: talk.duration, title: talk.title, sizes: "(max-width: 720px) 90vw, 460px")
             s += #"<div class="talks-card-body">"#
             s += #"<h3 class="talks-card-title">\#(escape(talk.title))</h3>"#
@@ -140,7 +140,7 @@ extension TalksRenderer {
         }
         s += "</div>"  // collection-grid
 
-        // Empty state — shown by site.js when filters match nothing.
+        // Empty state - shown by site.js when filters match nothing.
         s += #"<p class="talks-results visually-hidden" role="status" aria-live="polite"></p>"#
         s += #"<p class="talks-empty" hidden>No talks match your filters.</p>"#
 

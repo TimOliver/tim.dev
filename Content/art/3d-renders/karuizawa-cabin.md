@@ -7,4 +7,4 @@ order: 2
 details: Tool=Blender; Year=2024; Subject=Cabin
 path: /art/3d-renders/karuizawa-cabin/
 ---
-A small cabin in the Karuizawa woods — an exercise in soft afternoon light through trees.
+A small cabin in the Karuizawa woods - an exercise in soft afternoon light through trees.

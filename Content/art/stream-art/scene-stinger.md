@@ -8,4 +8,4 @@ order: 3
 details: Type=Transition; Length=0.8s; Year=2023
 path: /art/stream-art/scene-stinger/
 ---
-A fast sub-second scene transition stinger — a wipe with just enough snap to feel intentional.
+A fast sub-second scene transition stinger - a wipe with just enough snap to feel intentional.

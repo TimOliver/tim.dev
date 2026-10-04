@@ -8,4 +8,4 @@ youtube:
 layout: TalkDetail
 path: /talks/reverse-engineering-uikit-blur/
 ---
-UIVisualEffectView is a black box. Peeling it apart to understand what it actually costs — and how to fake a convincing blur when you can't afford the real one.
+UIVisualEffectView is a black box. Peeling it apart to understand what it actually costs - and how to fake a convincing blur when you can't afford the real one.

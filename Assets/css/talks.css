@@ -7,7 +7,7 @@
    button behaviour, card internals, and topic badges.
    Tokens only; squircle; 720px collapse. */
 
-/* Poster thumbnail — shared by the hero, the cards, and the detail fallback.
+/* Poster thumbnail - shared by the hero, the cards, and the detail fallback.
    Rounding/clip + img fill come from the shared media-surface rules
    (collection.css). The duration badge sits bottom-right, over either the
    poster or (until one lands) the flat .is-empty surface. */
@@ -81,7 +81,7 @@
 }
 
 /* ----- Controls: search + Topic/Year filters -----
-   Stacked by default — search on its own line, the Topic and Year groups on the
+   Stacked by default - search on its own line, the Topic and Year groups on the
    line below. At the wide tier they all inline onto one row (see the min-width
    rule below), the search box growing to fill the space beside the filters. */
 .talks-controls {
@@ -130,7 +130,7 @@
 /* ----- Filter groups (Topic / Year) ----- */
 /* Label is a fixed-width, right-aligned column; the pills live in their own
    wrapping column, so when stacked the labels line up (pills share a left edge)
-   and pills that wrap stay inset under the first pill — never under the label. */
+   and pills that wrap stay inset under the first pill - never under the label. */
 .talks-filter-row {
     display: flex;
     align-items: baseline;

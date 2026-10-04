@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -36,7 +36,7 @@ extension CodeRenderer {
     /// body and a sidebar concatenating the details table and the links block.
     static func detailHTML(for repo: RepoInfo) -> String {
 
-        // Title + tagline (no icon — repos have no app icon), then the large
+        // Title + tagline (no icon - repos have no app icon), then the large
         // landscape screenshot in a bordered surface (falls back to the flat
         // empty surface until one lands).
         var header = #"<h1 class="collection-detail-name">\#(escape(repo.title))</h1>"#
@@ -44,7 +44,7 @@ extension CodeRenderer {
         header += #"<div class="collection-detail-shot">"#
 
         // .collection-detail-shot spans the full detail column: 1250px page
-        // width minus 2x35px padding = 1180px — nowhere near the grid card's
+        // width minus 2x35px padding = 1180px - nowhere near the grid card's
         // width, so it needs its own sizes value.
         header += shot(image: repo.image, name: repo.title, sizes: "(max-width: 720px) 100vw, 1180px")
         header += "</div>"

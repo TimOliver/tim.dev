@@ -8,4 +8,4 @@ youtube:
 layout: TalkDetail
 path: /talks/making-threads-launch-in-5-months/
 ---
-How a small team shipped Threads from zero to a hundred million sign-ups in five months — the calls we made, the corners we knowingly cut, and the ones that bit back.
+How a small team shipped Threads from zero to a hundred million sign-ups in five months - the calls we made, the corners we knowingly cut, and the ones that bit back.

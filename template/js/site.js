@@ -9,7 +9,7 @@
         var sizes = img.dataset.sizes;
         if (!srcset) return;
 
-        // Cache probe: a detached <img> with the same srcset/sizes —
+        // Cache probe: a detached <img> with the same srcset/sizes -
         // if it reports `complete` synchronously, the chosen variant
         // is already in HTTP cache, so skip the blur fade.
         var probe = new Image();

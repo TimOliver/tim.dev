@@ -6,7 +6,7 @@
     max-width: 1100px;
 }
 
-/* Body text on About sits at the secondary muted colour — Apple's pattern
+/* Body text on About sits at the secondary muted colour - Apple's pattern
    for marketing/about-style pages. Headings (via global h1-h6 rule),
    the tagline and emphasized labels keep the brighter --text. */
 .about {
@@ -29,7 +29,7 @@
     color: var(--text);
 }
 
-/* Hero — page title, tagline and blurb stacked in the left column with the
+/* Hero - page title, tagline and blurb stacked in the left column with the
    portrait pinned on the right. */
 
 .about-intro {
@@ -90,13 +90,13 @@
     line-height: 1.4;
 }
 
-/* Sections — heading + optional subtitle, separated by a hairline */
+/* Sections - heading + optional subtitle, separated by a hairline */
 
 .about-section {
     margin: 0 0 4em;
 }
 
-/* "Card" variant — separates meta content (About this site) from the
+/* "Card" variant - separates meta content (About this site) from the
    bio sections above with a hairline above and extra top breathing room. */
 .about-section--card {
     border-top: 1px solid var(--border);
@@ -130,13 +130,13 @@
     gap: 2.5em;
 }
 
-/* Narrow first column variant — for "A brief history" the timeline only
+/* Narrow first column variant - for "A brief history" the timeline only
    needs about a quarter of the row; the prose gets the remaining 3/4. */
 .about-cols--narrow {
     grid-template-columns: 1fr 3fr;
 }
 
-/* Wide-left variant — 60/40 split. Used by "Work" where the Currently
+/* Wide-left variant - 60/40 split. Used by "Work" where the Currently
    column gets the spotlight and the Previously list stays compact. */
 .about-cols--wide-left {
     grid-template-columns: 3fr 2fr;
@@ -154,7 +154,7 @@
     margin: 0 0 1em;
 }
 
-/* Timeline (A brief history) — vertical hairline with a black/white dot
+/* Timeline (A brief history) - vertical hairline with a black/white dot
    per entry. Each entry has a small grey label (category or date) above
    the heading and a short grey description below. Line and dot are both
    centered on the same x via translateX(-50%) so they sit on the same
@@ -213,7 +213,7 @@
     margin: 0.2em 0 0;
 }
 
-/* Small grey eyebrow label used across About — timeline entries, column
+/* Small grey eyebrow label used across About - timeline entries, column
    headers ("Currently"/"Previously"), and sub-labels inside job entries. */
 .about-label {
     display: block;
@@ -228,7 +228,7 @@
     margin: 0 0 0.15em;
 }
 
-/* Column headers ("Currently"/"Previously") — a bolder, slightly larger take
+/* Column headers ("Currently"/"Previously") - a bolder, slightly larger take
    on the eyebrow that reads as a section divider. Kept muted-grey and below the
    1em company names in size so it never competes with the bold job titles below
    it. Colour inherits (--text-secondary). */
@@ -254,7 +254,7 @@
     margin-bottom: 0;
 }
 
-/* Featured variant — used in "Currently" column with a big-h3 heading
+/* Featured variant - used in "Currently" column with a big-h3 heading
    over a meta line and a bright description. */
 .about-job--featured {
     margin-bottom: 2.5em;

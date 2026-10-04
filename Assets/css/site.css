@@ -8,7 +8,7 @@
     --heading: #000;
     --link: #D51B32;
     --link-hover: #D51B32;
-    /* Filled-heart gradient for the comments "like" indicator — a dedicated
+    /* Filled-heart gradient for the comments "like" indicator - a dedicated
        catalog entry so the icon isn't hardwired to the flat --link red. Lighter
        red (top) -> darker red (bottom). */
     --heart-gradient: linear-gradient(to bottom, #FF4C5F, #DE0E2B);
@@ -27,7 +27,7 @@
     --control-hover: rgba(120, 120, 128, 0.18);
     --control-active: rgba(120, 120, 128, 0.10);
     /* Diagonal hatch overlay for placeholder/photo surfaces (layered over a
-       tint or --bg-tertiary). Same in dark mode — the surface underneath is
+       tint or --bg-tertiary). Same in dark mode - the surface underneath is
        what changes. art.css uses a one-off darker 0.06 variant. */
     --hatch: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px);
     /* Shared page gutter (overridden per breakpoint below) so the article
@@ -35,7 +35,7 @@
        width; plus the readable measure article body copy centres within. */
     --container-pad: 35px;
     --text-measure: 740px;
-    /* Width for post hero images (and the Twitch live card) — a touch narrower than
+    /* Width for post hero images (and the Twitch live card) - a touch narrower than
        the content column, and clearly wider than --text-measure so the hero reads
        as a deliberate break-out rather than a near-miss on the text edges. */
     --media-width: 840px;
@@ -71,7 +71,7 @@
     --capsule-border: rgba(255, 255, 255, 0.08);
 }
 
-/* Dark mode: grayscale (not subpixel) smoothing — renders SF lighter/thinner;
+/* Dark mode: grayscale (not subpixel) smoothing - renders SF lighter/thinner;
    light text on the dark surface looks too heavy with the default smoothing. */
 [data-color-scheme="dark"] body {
     -webkit-font-smoothing: antialiased;
@@ -80,7 +80,7 @@
 
 /* Wide-gamut (P3) displays get a richer red than sRGB can express; the hex
    values above are the sRGB fallback. Same components, but P3's wider primaries
-   render them more saturated — so the link "pops" on iPad/modern screens without
+   render them more saturated - so the link "pops" on iPad/modern screens without
    over-blowing on sRGB. */
 @supports (color: color(display-p3 1 1 1)) {
     [data-color-scheme="dark"] {
@@ -131,7 +131,7 @@ p {
     /* ~one line-height of space between paragraphs. em (not rem) so it
        scales with the responsive body size instead of staying a fixed 40px. */
     margin: 0 auto 1.5em;
-    /* Body text wraps normally — deliberately NOT `text-wrap: pretty`. Safari
+    /* Body text wraps normally - deliberately NOT `text-wrap: pretty`. Safari
        implements `pretty` by evening the rag across the whole paragraph, so it
        breaks every line early and leaves a wide gap on the right, worst in
        narrow columns (it needed per-page opt-outs before being dropped in
@@ -145,7 +145,7 @@ hr {
     border-top: 1px solid var(--border);
 }
 
-/* In-article section break — a plain solid hairline in --border-secondary.
+/* In-article section break - a plain solid hairline in --border-secondary.
    Deliberately NOT the fading gradient: that rule is reserved for the boundary
    BETWEEN posts on the home feed (article + article::before), so a reader can
    tell "new section" from "new post" at a glance. Scoped to the post-content
@@ -159,7 +159,7 @@ article > section:not(.post-comments) hr {
     margin: 2rem auto;
 }
 
-/* Gap between the post header's badge row and the hero image below it —
+/* Gap between the post header's badge row and the hero image below it -
    shared with .post-badges + img.hero so the header/hero rhythm stays in step
    with the feed spacing breakpoints. */
 /* One vertical rhythm for the feed: the same --post-gap separates the header
@@ -178,7 +178,7 @@ article {
     margin-bottom: var(--post-gap);
 }
 
-/* Home feed: stacked posts are separated by whitespace alone — generous
+/* Home feed: stacked posts are separated by whitespace alone - generous
    enough that the gap does most of the separating; a fading gradient rule
    (below) marks the boundary. Two other separators were tried and removed: a
    full-width solid hairline (2026-07) fought the floating title block, and a
@@ -187,7 +187,7 @@ article {
    <article>). */
 /* A post with no comments yet ends on the collapsed "Add a comment" bar; the
    full --post-gap below that lone bar read as a hole above the footer. Tuck
-   the footer up while Comentario's comment list is empty — the rule stops
+   the footer up while Comentario's comment list is empty - the rule stops
    matching the moment a comment exists, restoring the normal gap. */
 article:has(.comentario-comments:empty) {
     margin-bottom: min(var(--post-gap), 3rem);
@@ -198,7 +198,7 @@ article + article {
     position: relative;
 }
 
-/* Post boundary: a fading gradient rule — used ONLY here, so it always means
+/* Post boundary: a fading gradient rule - used ONLY here, so it always means
    "new post" (in-article <hr>s are solid hairlines). It fades into the page
    at both ends, so unlike the two rejected separators (a solid hairline, a
    short centred rule) there's no hard edge under the next title block and
@@ -238,7 +238,7 @@ article + article::before {
     }
 }
 
-/* Article header type scale — exactly three tiers: desktop (base) / tablet / phone.
+/* Article header type scale - exactly three tiers: desktop (base) / tablet / phone.
    This is the TABLET tier (<=1000px); the phone tier (<=720px, further down) wins
    below 720. Base desktop sizes: title 2.4em (h1), date 1.25em, subtitle 1.5em. */
 @media (max-width: 1000px) {
@@ -275,10 +275,10 @@ article img.post-image {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Hero image — fills the content column, with height capped by the base
+/* Hero image - fills the content column, with height capped by the base
    `article img` max-height (650px). When the cap bites (tall/square source
    images), the box is no longer the image's natural ratio, so object-fit is
-   REQUIRED to crop instead of stretch — it is not inert here. Margins come
+   REQUIRED to crop instead of stretch - it is not inert here. Margins come
    from the .post-badges + img.hero rule (the badge row always precedes the
    hero). */
 article img.hero {
@@ -290,7 +290,7 @@ article img.hero {
 }
 
 /* Thumbnail grid for runs of consecutive article images (grouped by
-   ArticleShell.groupImageGrids). Cropped 4:3 thumbs at the content width —
+   ArticleShell.groupImageGrids). Cropped 4:3 thumbs at the content width -
    3-up normally, 2-up for short runs (--gallery-cols set inline). Clicking a
    thumb opens the run as a lightbox3 gallery with captions. Same border +
    squircle vocabulary as standalone article images. */
@@ -314,7 +314,7 @@ article img.hero {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Neutralise the standalone `article img` chrome — the anchor carries the
+/* Neutralise the standalone `article img` chrome - the anchor carries the
    border/rounding, and the thumb crops to a uniform 4:3 cell. */
 .post-gallery img,
 .post-gallery img.post-image {
@@ -329,7 +329,7 @@ article img.hero {
     transition: transform 0.6s var(--hover-spring);
 }
 
-/* Gentle zoom on hover — the site's standard interactive-surface cue. */
+/* Gentle zoom on hover - the site's standard interactive-surface cue. */
 @media (hover: hover) {
     .post-gallery a:hover img {
         transform: scale(1.04);
@@ -379,7 +379,7 @@ article iframe[src*="youtube"] {
     corner-shape: squircle;
 }
 
-/* Instagram embeds — token-free /embed/ iframe, centered at Instagram's natural
+/* Instagram embeds - token-free /embed/ iframe, centered at Instagram's natural
    width. Height starts as a placeholder and is auto-fitted to the post's real
    height by the resize listener in site.js. */
 .ig-embed {
@@ -493,7 +493,7 @@ body > header::before {
     position: absolute;
     /* Extend the scrim well above the header. iOS Safari's translucent toolbar
        (compact tab bar, Stage Manager) shows the page layer that has scrolled
-       past the top of the viewport, blurred — with the scrim stopping at the
+       past the top of the viewport, blurred - with the scrim stopping at the
        header's top edge, that's post text peeking through the chrome above
        the capsule. Painting --bg 200px further up puts plain background there
        instead. Off-screen everywhere else, so it costs nothing.
@@ -604,7 +604,7 @@ body > header::before {
     }
 }
 
-/* Shared with .theme-toggle-icon below — the 25px header glyph kinds. The RSS
+/* Shared with .theme-toggle-icon below - the 25px header glyph kinds. The RSS
    trigger's img needs naming explicitly: it sits inside .rss-toggle's wrapper
    div, so the direct-child chain no longer reaches it. */
 #menu > li > a > img,
@@ -633,7 +633,7 @@ body > header::before {
     }
 }
 
-/* Theme toggle (the RSS feed menu shares the whole popover system — same
+/* Theme toggle (the RSS feed menu shares the whole popover system - same
    wrapper behaviour, panel and row styling; see the .rss-toggle markup in
    Includes/header.html). */
 .theme-toggle,
@@ -778,7 +778,7 @@ body > header::before {
 }
 
 /* The RSS menu hangs off the LAST icon in the header, so it right-aligns at
-   every width — the centred default pushes half its 260px past the trigger,
+   every width - the centred default pushes half its 260px past the trigger,
    which overflows the right screen edge on phones. (The theme popover only
    needs this in the narrow band above; these mirror those state overrides.) */
 .rss-popover {
@@ -832,7 +832,7 @@ body > header::before {
     background: var(--control-hover);
 }
 
-/* The RSS menu's rows are <a>s reusing .theme-option — unlike the theme
+/* The RSS menu's rows are <a>s reusing .theme-option - unlike the theme
    popover's <button>s they're caught by the header's anchor rules (`#menu a`
    sets display:inline-block at ID specificity, and the hover scale), so the
    row layout is restored behind the same ID. (The hover transform is already
@@ -847,7 +847,7 @@ body > header::before {
     min-width: 260px;
 }
 
-/* Section labels — bold and muted, sentence case (no small all-caps headers
+/* Section labels - bold and muted, sentence case (no small all-caps headers
    in this design system), indented to the rows' text edge. */
 .rss-popover-label {
     padding: 6px 16px 2px;
@@ -875,7 +875,7 @@ body > header::before {
 
 /* The one deliberate non-monochrome element: the classic RSS logo tile
    (rss-logo.svg ships its own orange gradient + rounded corners), constant
-   across themes — it identifies a third-party convention, not site palette. */
+   across themes - it identifies a third-party convention, not site palette. */
 .rss-featured-icon {
     flex: none;
     width: 40px;
@@ -902,7 +902,7 @@ body > header::before {
     line-height: 1.3;
 }
 
-/* Divider between the featured feed and the category list — inset to the
+/* Divider between the featured feed and the category list - inset to the
    rows' text edge, subtle enough for the --bg-secondary panel. */
 .rss-popover-divider {
     height: 1px;
@@ -921,7 +921,7 @@ body > header::before {
     filter: var(--icon-filter);
 }
 
-/* The RSS category rows use sprite <use> glyphs instead of imgs — they inherit
+/* The RSS category rows use sprite <use> glyphs instead of imgs - they inherit
    the row's currentColor, so no filter dance is needed. */
 .theme-option svg {
     height: 24px;
@@ -999,7 +999,7 @@ body > header::before {
 /* Tablet band: page content stays at the 18px base. The body drops to 17px
    here (next rule) only so the full nav fits above the hamburger breakpoint;
    letting the reading text shrink too left tablet with the smallest type above
-   phone size inside the same 740px measure as desktop — up to ~91 characters
+   phone size inside the same 740px measure as desktop - up to ~91 characters
    a line. Header and footer sit outside <main>, so they keep the 17px. */
 @media (min-width: 720.02px) and (max-width: 1000px) {
     main {
@@ -1011,7 +1011,7 @@ body > header::before {
     /* Mid-width (tablet) scale-down: body + header drop a notch so the full nav
        isn't cramped above the 720px hamburger breakpoint (e.g. iPad mini
        portrait). Slightly below the 18px base. Page content is put back to
-       18px just below (tablet band only) — the drop is for the nav's sake. */
+       18px just below (tablet band only) - the drop is for the nav's sake. */
     body {
         font-size: 17px;
     }
@@ -1047,7 +1047,7 @@ body > header::before {
 
 @media (max-width: 720px) {
     /* Body text steps down to 16px on phones once the hamburger menu takes
-       over — a touch under the 17px tablet size for the narrow column. */
+       over - a touch under the 17px tablet size for the narrow column. */
     body {
         font-size: 16px;
     }
@@ -1242,7 +1242,7 @@ body > header::before {
         font-size: 2.0em;
     }
 
-    /* Article header type scale — PHONE tier (<=720px). */
+    /* Article header type scale - PHONE tier (<=720px). */
     .title {
         font-size: 1.9em;
     }
@@ -1272,7 +1272,7 @@ body > header::before {
     margin: clamp(30px, 4dvh, 56px) auto 30px;
     /* Content-column width; article body text caps narrower via --text-measure.
        Pages that need a wider column set --page-width on <body> via a
-       body:has(.page-root) rule in their own stylesheet — the footer's
+       body:has(.page-root) rule in their own stylesheet - the footer's
        .container picks up the same value, so they stay edge-aligned for free. */
     max-width: var(--page-width, 950px);
     /* Gutter driven by --container-pad (set on :root, overridden per breakpoint)
@@ -1283,12 +1283,12 @@ body > header::before {
 }
 
 /* Top gap for article-bearing pages (home feed + posts + tag/archive). With no
-   live card showing, the first post sits --post-gap below the header — the same
+   live card showing, the first post sits --post-gap below the header - the same
    gap that separates the posts from each other, so the feed's rhythm starts at
    the top. When the live card IS showing, it keeps its tighter tuck: on desktop
    just enough to clear the sticky header's fade gradient (which hazes the top
    of the dark card); the header and its gradient shrink on smaller screens, so
-   the tuck tightens too — 50 desktop / 35 tablet / 5 iPhone. Scoped to main's
+   the tuck tightens too - 50 desktop / 35 tablet / 5 iPhone. Scoped to main's
    .container (the footer also uses .container). */
 body:has(article) main .container {
     margin-top: var(--post-gap);
@@ -1298,7 +1298,7 @@ body:has(article) main .container:has(.twitch-live:not([hidden])) {
     margin-top: 50px;
 }
 
-/* Tablet band: pull the feed/post content 25px closer to the header — at
+/* Tablet band: pull the feed/post content 25px closer to the header - at
    these widths the header sits taller under Safari's own chrome and the full
    --post-gap read as too much dead space above the first title. */
 @media (min-width: 720.02px) and (max-width: 1000px) {
@@ -1322,10 +1322,10 @@ body:has(article) main .container:has(.twitch-live:not([hidden])) {
 }
 
 /* The body section (and permalink row) caps at the readable measure and centres.
-   Narrowing the whole SECTION — not individual elements — is deliberate: markdown
+   Narrowing the whole SECTION - not individual elements - is deliberate: markdown
    leaves text unwrapped (bare text nodes) after block-level embeds like YouTube,
    and only a section-level cap reins those in too. The hero breaks out wider
-   below. Applies to every article — single posts and the home feed (same
+   below. Applies to every article - single posts and the home feed (same
    structure); other pages don't use <article>. */
 article > section:not(.post-comments),
 article > .post-links {
@@ -1353,7 +1353,7 @@ article > img.hero {
 .date {
     display: block;
     color: var(--text-secondary);
-    /* Deliberately large — the date is part of the title block's look, not a
+    /* Deliberately large - the date is part of the title block's look, not a
        small label. Tried at ~17px (2026-09) and reverted. */
     font-size: 1.25em;
     font-weight: 500;
@@ -1372,14 +1372,14 @@ article > img.hero {
 }
 
 /* (article's own margins live with the feed rhythm rules near the top of the
-   file — they collapse with the inter-post gap, so they're tuned together.) */
+   file - they collapse with the inter-post gap, so they're tuned together.) */
 
 article section {
     margin-top: 1rem;
 }
 
 /* No hero: the body follows the badge row directly, so give it the same gap
-   the hero gets (--post-header-gap) instead of the 1rem section default —
+   the hero gets (--post-header-gap) instead of the 1rem section default -
    a short image-less post otherwise sits visibly tighter under its pills. */
 article > .post-badges + section {
     margin-top: var(--post-header-gap);
@@ -1573,7 +1573,7 @@ footer .container {
 
 /* Text-colored link: blends in with body text, underlines on hover. Use
    outside article prose where the default red link color would feel
-   intrusive (archive rows, lists, future sub-pages). Only recolors — the
+   intrusive (archive rows, lists, future sub-pages). Only recolors - the
    no-underline base and hover underline come from the `a` rules above. */
 .text-link,
 .text-link:hover {
@@ -1581,7 +1581,7 @@ footer .container {
 }
 
 /* Shared "no results" empty state for filterable listings (archive search,
-   talks filters — both toggled by site.js). */
+   talks filters - both toggled by site.js). */
 .archive-empty,
 .talks-empty {
     text-align: center;
@@ -1590,15 +1590,15 @@ footer .container {
     margin: 0;
 }
 
-/* Tech-Specs-style hairline key/value list — used by the collection detail
+/* Tech-Specs-style hairline key/value list - used by the collection detail
    sidebars (Apps/Code/Art/Talks) and the About colophon. The Contact card's
-   list is deliberately decoupled (larger type/looser rows — see contact.css). */
+   list is deliberately decoupled (larger type/looser rows - see contact.css). */
 .spec-list {
     display: grid;
     grid-template-columns: max-content 1fr;
     /* No column-gap: a real gap would break the row hairline between the two
        cells. The label/value spacing is recreated as dt padding-right below,
-       which the border-top spans — so the line reads as one continuous rule. */
+       which the border-top spans - so the line reads as one continuous rule. */
     column-gap: 0;
     row-gap: 0.45em;
     margin: 0;
@@ -1639,7 +1639,7 @@ footer .container {
     }
 }
 
-/* Back-to-top — a fixed button that fades in after scrolling down, scrolls to
+/* Back-to-top - a fixed button that fades in after scrolling down, scrolls to
    the top on click. Shown/hidden by the .visible class (toggled in site.js).
    Reusable on any long page that renders the button. */
 .back-to-top {
@@ -1693,13 +1693,13 @@ footer .container {
 }
 
 /* Feed hero (preceded by the badge row). Top gap is the shared header-frame
-   token — see --post-header-gap where the feed spacing is defined. */
+   token - see --post-header-gap where the feed spacing is defined. */
 .post-badges + img.hero {
     /* auto inline margins keep the capped (max-width:750px) hero centred. */
     margin: var(--post-header-gap) auto 1.8em;
 }
 
-/* Dim capsule badge, 30px tall — reads as a clickable control. */
+/* Dim capsule badge, 30px tall - reads as a clickable control. */
 .post-badge {
     display: inline-flex;
     align-items: center;
@@ -1736,7 +1736,7 @@ footer .container {
 }
 
 /* Comentario keeps the count element present even at zero, so :empty can't tell
-   whether a number is shown — site.js adds .has-count when one actually is.
+   whether a number is shown - site.js adds .has-count when one actually is.
    Hidden otherwise, so the bubble stays centred on posts with no comments. */
 .post-badge comentario-count {
     display: none;
@@ -1771,7 +1771,7 @@ footer .container {
 }
 
 /* Feed title links to the post. On hover the (possibly wrapped) title is
-   enclosed in a rounded surface that fades in — the same effect as the
+   enclosed in a rounded surface that fades in - the same effect as the
    Apps/Code cards. Constant padding + rounding are always present so the
    surface fades in with no layout shift. */
 .post-title-link {
@@ -1806,7 +1806,7 @@ footer .container {
 }
 
 /* Reduced motion: keep the surface fade, drop the zoom (mirrors the cards).
-   Must sit AFTER the transition + hover rules above — same specificity, so
+   Must sit AFTER the transition + hover rules above - same specificity, so
    source order is what lets these win. */
 @media (prefers-reduced-motion: reduce) {
     .post-title-link .title {
@@ -1818,7 +1818,7 @@ footer .container {
     }
 }
 
-/* Phones: drop the title's hover surface entirely — a mouseover affordance
+/* Phones: drop the title's hover surface entirely - a mouseover affordance
    makes no sense on touch screens, and its padding wastes width. Width-based
    (not hover-based) so it also holds in responsive previews. (After the rules
    above so it wins on source order.) */
@@ -1899,11 +1899,11 @@ footer .container {
 
 /* Vertical breathing room around the Comentario widget. Styled here in the
    page CSS (not the css-override file, which only reaches the widget internals)
-   and display:block so the vertical padding applies — the custom element is
+   and display:block so the vertical padding applies - the custom element is
    inline by default. */
 comentario-comments {
     display: block;
-    /* Top only — the article's 60px bottom margin already spaces the end. */
+    /* Top only - the article's 60px bottom margin already spaces the end. */
     padding: 1.2em 0 0;
 }
 
@@ -1915,7 +1915,7 @@ comentario-comments {
     font-weight: 700;
 }
 
-/* Comment count in the heading — revealed by site.js once Comentario loads it (the
+/* Comment count in the heading - revealed by site.js once Comentario loads it (the
    element stays empty until then). */
 .post-comments-count {
     display: none;

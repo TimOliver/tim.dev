@@ -1,11 +1,11 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
 
 /// The Contact page. Like `About`, its content is hand-authored HTML in
 /// `Includes/contact-page.html` rather than Swift markup, following the
-/// verbatim-port convention — bake existing template designs in as static
+/// verbatim-port convention - bake existing template designs in as static
 /// includes rather than rebuild them with Ignite components.
 struct Contact: StaticPage {
 

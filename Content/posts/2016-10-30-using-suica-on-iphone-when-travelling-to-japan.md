@@ -44,7 +44,7 @@ An awesome iOS developer living in Japan, Toto Tvalavadze was able to test this 
 
 > Hah! Managed to load Suica card to Watch S2 without iPhone 7 (via Suica App). Now, off to nearest wending machine. +[@TimOliverAU](https://twitter.com/TimOliverAU) [pic.twitter.com/nDneVQhFVu](https://t.co/nDneVQhFVu)
 > 
-> — Toto Tvalavadze (@totocaster) [October 27, 2016](https://twitter.com/totocaster/status/791567068785106944)
+> - Toto Tvalavadze (@totocaster) [October 27, 2016](https://twitter.com/totocaster/status/791567068785106944)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 

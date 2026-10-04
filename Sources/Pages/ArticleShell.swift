@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -17,7 +17,7 @@ enum ArticleShell {
     /// The migration script writes dates as the original local wall-clock time
     /// with the timezone offset stripped (e.g., '2021-12-31T17:04:21+08:00' →
     /// '2021-12-31 17:04:21'). Ignite then parses that as GMT, so to display
-    /// the original wall-clock day we have to render in GMT — anything else
+    /// the original wall-clock day we have to render in GMT - anything else
     /// (including the actual GMT+8) shifts the day forward.
     static let displayTimeZone = TimeZone.gmt
 
@@ -36,12 +36,12 @@ enum ArticleShell {
     /// Sprite icon from /img/site/ui-icons.svg (Tabler outline, currentColor stroke).
     private static func spriteIcon(_ id: String) -> String {
 
-        // A `<use>` reference into the shared sprite sheet — one HTTP request
+        // A `<use>` reference into the shared sprite sheet - one HTTP request
         // serves every glyph, and `currentColor` lets CSS recolour the stroke.
         #"<svg class="post-icon-glyph" viewBox="0 0 24 24" aria-hidden="true"><use href="/img/site/ui-icons.svg#\#(id)"/></svg>"#
     }
 
-    /// Link badge — navigates to the post page, a visible cue that the feed
+    /// Link badge - navigates to the post page, a visible cue that the feed
     /// item and its article are linked. `path` is already HTML-escaped.
     private static func linkBadge(path: String) -> String {
 
@@ -50,7 +50,7 @@ enum ArticleShell {
     }
 
     /// Share badge (always shown). Uses the native share sheet where the Web
-    /// Share API exists, and otherwise falls back to copying the post link —
+    /// Share API exists, and otherwise falls back to copying the post link -
     /// both handled in site.js. `path` and `title` are already HTML-escaped.
     private static func shareBadge(path: String, title: String) -> String {
 
@@ -83,7 +83,7 @@ enum ArticleShell {
     }
 
     /// End-of-article links: permalink (links to the post), share, and a comment
-    /// count — small secondary text links sharing the badge icons. `path` and
+    /// count - small secondary text links sharing the badge icons. `path` and
     /// `title` are already HTML-escaped.
     private static func endLinks(path: String, title: String) -> String {
 
@@ -132,12 +132,12 @@ enum ArticleShell {
     /// links its date/title through to that page instead.
     static func htmlString(for article: Article, context: Context, eagerHero: Bool = false) -> String {
 
-        // Escape the path once — it is reused across the header link, badge
+        // Escape the path once - it is reused across the header link, badge
         // row, and footer links below.
         let href = escape(article.path)
         var s = "<article>"
 
-        // Header — plain date, then the title (a link to the post in the feed).
+        // Header - plain date, then the title (a link to the post in the feed).
         // The badge row sits between the title and the hero (see below), not here.
         switch context {
         case .feed:
@@ -152,10 +152,10 @@ enum ArticleShell {
         if let subtitle = article.subtitle, !subtitle.isEmpty {
             s += "<p class=\"subtitle\">\(escape(subtitle))</p>"
         }
-        // Badge row (link · comments · share) above the hero — feed and page.
+        // Badge row (link · comments · share) above the hero - feed and page.
         s += badgeRow(path: href, title: escape(article.title))
 
-        // Optional hero image (alt="" — it's decorative; the title carries the
+        // Optional hero image (alt="" - it's decorative; the title carries the
         // meaning). Emitted OUTSIDE the <section> below so the
         // `.post-badges + img.hero` adjacency selector still matches.
         if let image = article.image, !image.isEmpty {
@@ -165,7 +165,7 @@ enum ArticleShell {
         // Body transform pipeline, innermost call first: expand Instagram
         // embeds, rescue Markdown images that leaked as literal text, group
         // consecutive images into lightbox galleries, then wrap the remaining
-        // single images in lightbox anchors and adds responsive metadata. Order matters — grids must run
+        // single images in lightbox anchors and adds responsive metadata. Order matters - grids must run
         // before the single-image wrap so runs aren't wrapped one image at a time.
         let body = ArticleImages.enhance(
             groupImageGrids(
@@ -175,7 +175,7 @@ enum ArticleShell {
         )
         s += "<section>\(body)</section>"
 
-        // Footer — every article ends with the same links row (feed and post
+        // Footer - every article ends with the same links row (feed and post
         // page match). The post page additionally renders the comment thread
         // below; its "comments" link then just scrolls to it.
         s += endLinks(path: href, title: escape(article.title))
@@ -197,7 +197,7 @@ enum ArticleShell {
         return s
     }
 
-    /// Shared formatters, configured once — DateFormatter construction is
+    /// Shared formatters, configured once - DateFormatter construction is
     /// expensive, and these run for every article on every surface.
     private static let displayDateFormatter: DateFormatter = {
         let f = DateFormatter()
@@ -233,7 +233,7 @@ enum ArticleShell {
     /// thumbnail grid (.post-gallery, styled in site.css). Matches both fresh
     /// markdown output (`<p><img></p>` paragraphs) and legacy WordPress blocks
     /// (`<figure class="wp-block-image"><img>[<figcaption>]</figure>`). Each
-    /// image becomes an `<a data-lightbox="…">` thumb — lightbox3 (loaded on
+    /// image becomes an `<a data-lightbox="…">` thumb - lightbox3 (loaded on
     /// home + post pages) groups anchors sharing a data-lightbox value into a
     /// navigable gallery and shows data-caption under each. The caption comes
     /// from the figcaption where present, else the image's alt text. Single

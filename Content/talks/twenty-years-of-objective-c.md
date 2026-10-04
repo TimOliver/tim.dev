@@ -8,4 +8,4 @@ youtube:
 layout: TalkDetail
 path: /talks/twenty-years-of-objective-c/
 ---
-A fond, slightly irreverent history of the language that built the platform — the bracket wars, the runtime tricks, and why a little of it is still worth knowing.
+A fond, slightly irreverent history of the language that built the platform - the bracket wars, the runtime tricks, and why a little of it is still worth knowing.

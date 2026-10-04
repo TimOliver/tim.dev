@@ -8,7 +8,7 @@ For each source this emits <stem>@<width>w<ext> variants beside it, computes a
 ~20px-wide base64 blur placeholder, and records the intrinsic dimensions (so
 cards reserve space and never shift as images load).
 
-The manifest is a BUILD INPUT, not site output — it lives at the repo root
+The manifest is a BUILD INPUT, not site output - it lives at the repo root
 rather than under Assets/, because everything under Assets/ is copied verbatim
 into Build/ and shipped.
 
@@ -42,7 +42,7 @@ VARIANT_WIDTHS = (400, 800, 1200, 1600)
 LQIP_WIDTH = 20
 SOURCE_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif"}
 
-# Matches only this script's own <stem>@<width>w<ext> suffix — NOT any "@" in
+# Matches only this script's own <stem>@<width>w<ext> suffix - NOT any "@" in
 # the stem. A looser "@" in path.stem check (the old behaviour) also matches
 # a hand-authored icon@2x.png, silently treating it as a generated variant
 # and skipping it forever. validate_source() below turns that collision into
@@ -61,8 +61,8 @@ def validate_source(path: Path) -> None:
 
     srcset is a comma-and-whitespace-delimited list of "<url> <width>w"
     candidates. A space or comma in the filename splits mid-URL, so the
-    browser can't parse ANY candidate and falls back to `src` — the 20px
-    LQIP blur — with no build error and no JS error. The likeliest real input
+    browser can't parse ANY candidate and falls back to `src` - the 20px
+    LQIP blur - with no build error and no JS error. The likeliest real input
     is something like "Simulator Screen Shot - iPhone 15 Pro.png".
 
     "@" is reserved for this script's own <stem>@<width>w suffix (see
@@ -105,7 +105,7 @@ def build_variants(
 ) -> list[tuple[int, str]]:
     """Emit downscaled variants; never upscale. Returns [(width, site_path)].
 
-    Every variant path this source currently needs is added to `expected` —
+    Every variant path this source currently needs is added to `expected` -
     reused by prune_orphaned_variants() to delete generated files that no
     source asks for anymore (a replaced or renamed source otherwise leaves
     its old variants behind as dead bytes that still ship into Build/).
@@ -116,7 +116,7 @@ def build_variants(
     if src.suffix.lower() == ".gif" or getattr(im, "is_animated", False):
         return [(im.width, site_path(src))]
 
-    # Screenshots with baked-in device chrome are transparent PNGs — keep PNG.
+    # Screenshots with baked-in device chrome are transparent PNGs - keep PNG.
     # Re-containering them as JPEG would fill the bezel's transparency black.
     is_png = src.suffix.lower() == ".png"
     out: list[tuple[int, str]] = []
@@ -160,7 +160,7 @@ def prune_orphaned_variants(expected: set[Path]) -> None:
     """Delete generated variants no current source+width still asks for.
 
     This script rewrites the manifest from scratch every run but, without
-    this pass, never touched the variant files themselves — replace a
+    this pass, never touched the variant files themselves - replace a
     2400px source with an 800px one, or rename it, and its old
     <stem>@1600w<ext> stays on disk, gets copied into Build/, and deploys as
     dead bytes nothing references.

@@ -8,4 +8,4 @@ order: 3
 details: Type=Launch teaser; Length=12s; Year=2023; Client=Finch
 path: /art/commissions/finch/
 ---
-A twelve-second launch teaser for the Finch app — UI elements assembling into the home screen.
+A twelve-second launch teaser for the Finch app - UI elements assembling into the home screen.

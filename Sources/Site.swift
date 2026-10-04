@@ -1,4 +1,4 @@
-// tim.dev — released into the public domain. No rights reserved.
+// tim.dev - released into the public domain. No rights reserved.
 
 import Foundation
 import Ignite
@@ -12,11 +12,11 @@ import Ignite
 struct IgniteWebsite {
 
     /// Builds the entire site, then runs the two post-publish passes. Marked
-    /// `async` only because Ignite's `publish()` is async — this is a one-shot
+    /// `async` only because Ignite's `publish()` is async - this is a one-shot
     /// build that runs to completion and exits, not a long-lived server.
     static func main() async {
 
-        // The single source of truth for the build — see TimDevSite below.
+        // The single source of truth for the build - see TimDevSite below.
         var site = TimDevSite()
 
         do {
@@ -28,7 +28,7 @@ struct IgniteWebsite {
             try stripIgniteCore()
         } catch {
             // Fail loud: a zero exit here would let a deploy script ship a
-            // stale or partial Build/. Print the full error — Ignite errors
+            // stale or partial Build/. Print the full error - Ignite errors
             // often stringify to nothing useful via localizedDescription.
             print("Publish failed: \(error)")
             exit(1)
@@ -44,7 +44,7 @@ struct IgniteWebsite {
     }
 
     /// Ignite emits js/ignite-core.js (plus a <script> tag on every page) and
-    /// css/ignite-core.min.css, but nothing on this site uses their hooks —
+    /// css/ignite-core.min.css, but nothing on this site uses their hooks -
     /// theme switching is theme.js's job, and no page uses protected links,
     /// click animations, Bootstrap data attributes or table filters. Until an
     /// upstream override-guard lands (see project memory), strip both files
@@ -52,7 +52,7 @@ struct IgniteWebsite {
     static func stripIgniteCore() throws {
 
         // Delete the two emitted files. `try?` because a build that didn't emit
-        // them (or a re-run over an already-stripped Build/) is not an error —
+        // them (or a re-run over an already-stripped Build/) is not an error -
         // all that matters is that they are gone afterwards.
         let fm = FileManager.default
         let build = packageRoot.appending(path: "Build")
@@ -84,7 +84,7 @@ struct IgniteWebsite {
     /// The category feeds. Each filters the blog items by the `<category>`
     /// elements Ignite emits from post tags; feed.xml itself carries every
     /// blog post. Advertised via <link rel="alternate"> in MainLayout and the
-    /// header's RSS popover — keep all three lists in sync.
+    /// header's RSS popover - keep all three lists in sync.
     static let categoryFeeds: [(file: String, title: String, tags: [String])] = [
         ("feed-dev.xml", "Development", ["development", "tech"]),
         ("feed-icomics.xml", "iComics", ["icomics"]),
@@ -109,7 +109,7 @@ struct IgniteWebsite {
         // there is nothing to scope, so leave the feed exactly as Ignite wrote it.
         guard let firstItem = xml.range(of: "<item>"),
               let channelEnd = xml.range(of: "</channel>") else {
-            print("Feed build: no items found — leaving feed untouched")
+            print("Feed build: no items found - leaving feed untouched")
             return
         }
         let header = String(xml[..<firstItem.lowerBound])
@@ -145,14 +145,14 @@ struct IgniteWebsite {
                 // Retitle the channel and point its self-link at this feed.
                 head = head.replacingOccurrences(
                     of: "<title>[tim.dev]</title>",
-                    with: "<title>[tim.dev] — \(title)</title>")
+                    with: "<title>[tim.dev] - \(title)</title>")
                     .replacingOccurrences(of: "/feed.xml", with: "/\(file)")
             }
             try (head + feedItems.prefix(maxItems).joined() + tail)
                 .write(to: packageRoot.appending(path: "Build/\(file)"), atomically: true, encoding: .utf8)
         }
 
-        // The main feed: every blog post, untitled — it keeps the plain channel
+        // The main feed: every blog post, untitled - it keeps the plain channel
         // title and the /feed.xml self-link.
         try write("feed.xml", title: nil, blogItems)
 
@@ -192,7 +192,7 @@ struct TimDevSite: Site {
     /// compile-time-validated URL literal, so a malformed value won't build.
     var url = URL(static: "https://tim.dev")
 
-    /// Opt out of Ignite's bundled Bootstrap CSS/JS CDN links — this site ships
+    /// Opt out of Ignite's bundled Bootstrap CSS/JS CDN links - this site ships
     /// its own hand-authored stylesheets and uses no Bootstrap components.
     var useDefaultBootstrapURLs = BootstrapOptions.none
 
@@ -205,7 +205,7 @@ struct TimDevSite: Site {
     var author = "Tim Oliver"
 
     /// Used by the RSS channel header and (via the layout) meta descriptions.
-    var description: String? = "The personal blog of Tim Oliver — a Western Australian in Tokyo making software for iPhone and Mac."
+    var description: String? = "The personal blog of Tim Oliver - a Western Australian in Tokyo making software for iPhone and Mac."
 
     /// Ignite's prettifier (SwiftSoup) lowercases SVG attribute names like
     /// viewBox → viewbox, which breaks <use>-referenced sprites. Ship raw.
@@ -225,7 +225,7 @@ struct TimDevSite: Site {
     var errorPage = NotFound()
 
     /// The site-wide page wrapper (nav bar, content slot, footer) applied to
-    /// every page — see MainLayout.
+    /// every page - see MainLayout.
     var layout = MainLayout()
 
     /// Article (markdown) templates, one per content collection: blog posts
@@ -237,7 +237,7 @@ struct TimDevSite: Site {
     /// index page and the blog archive.
     var staticPages: [any StaticPage] = [About(), Archive(), Apps(), Code(), Art(), Contact(), Talks()]
 
-    /// Markdown renderer for Content/ — keeps every body heading instead of
+    /// Markdown renderer for Content/ - keeps every body heading instead of
     /// letting Ignite drop the first one as a presumed duplicate title.
     /// See ArticleMarkdownRenderer.
     var articleRenderer: ArticleMarkdownRenderer.Type { ArticleMarkdownRenderer.self }

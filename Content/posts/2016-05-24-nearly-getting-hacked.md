@@ -34,7 +34,7 @@ Still somewhat confused as to what was happening at the time, I fired off a twee
 
 > Holy freaking crap. Someone located in Russia hacked my TeamViewer account and briefly gained screen control of my Media PC. O\_o
 > 
-> — Tim Oliver (@TimOliverAU) [May 24, 2016](https://twitter.com/TimOliverAU/status/735057876532658176)
+> - Tim Oliver (@TimOliverAU) [May 24, 2016](https://twitter.com/TimOliverAU/status/735057876532658176)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 
@@ -42,7 +42,7 @@ Nearly straight away, my good college Sam Ritchie tweeted back with a very plaus
 
 > [@TimOliverAU](https://twitter.com/TimOliverAU) did you have the same password as your LinkedIn account? ?
 > 
-> — Sam Ritchie (@FakeSamRitchie) [May 24, 2016](https://twitter.com/FakeSamRitchie/status/735062689488068608)
+> - Sam Ritchie (@FakeSamRitchie) [May 24, 2016](https://twitter.com/FakeSamRitchie/status/735062689488068608)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
 

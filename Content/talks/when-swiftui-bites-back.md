@@ -8,4 +8,4 @@ youtube:
 layout: TalkDetail
 path: /talks/when-swiftui-bites-back/
 ---
-SwiftUI is wonderful until it isn't. A field guide to the failure modes that only appear in production — and the UIKit escape hatches that quietly save the day.
+SwiftUI is wonderful until it isn't. A field guide to the failure modes that only appear in production - and the UIKit escape hatches that quietly save the day.

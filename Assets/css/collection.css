@@ -15,7 +15,7 @@ body:has(.collection) {
 /* Detail pages read a touch wider than the 1100px base (the prose + sidebar
    want a little more room). They're excluded from the grid's wide tier below,
    so this is their fixed width at all sizes. (Same specificity as the rule
-   above — being later in the file is what makes it win.) */
+   above - being later in the file is what makes it win.) */
 body:has(.collection-detail) {
     --page-width: 1250px;
     /* Ceiling for the detail hero media's height: full viewport minus the room the
@@ -31,12 +31,12 @@ body:has(.collection-detail) {
 }
 
 /* On short viewports the whole detail column narrows (centred) so its aspect-ratio
-   hero fits vertically with the header and a peek of prose still on screen — the
+   hero fits vertically with the header and a peek of prose still on screen - the
    column moves as one, not just the media. Width is driven off the hero's ratio
    (16:10 for an empty app stage, 16:9 for the shot everywhere else); on tall
    screens --detail-media-max-h is large, so neither term binds and the column
    keeps its full width. The 850px floor stops the two-column body from collapsing
-   when the window gets very short — past that the hero just overflows and scrolls. */
+   when the window gets very short - past that the hero just overflows and scrolls. */
 .collection-detail:has(.collection-detail-shot) {
     max-width: min(100%, max(850px, calc(var(--detail-media-max-h) * 16 / 9)));
     margin-inline: auto;
@@ -65,12 +65,12 @@ body:has(.collection-detail) {
 }
 
 /* When jump-nav chips follow the tagline (Art page), pull them up close to it
-   — the full 3em gap reads as dead space between them. */
+   - the full 3em gap reads as dead space between them. */
 .collection .page-subtitle:has(+ .section-chips) {
     margin-bottom: 1em;
 }
 
-/* Card grid — fluid columns: 2 default, 3 at the wide tier, 1 on mobile.
+/* Card grid - fluid columns: 2 default, 3 at the wide tier, 1 on mobile.
    Generous gap so the cardless tiles breathe; the card padding (below) adds
    further inset, and the hover surface fits within it. */
 .collection-grid {
@@ -79,7 +79,7 @@ body:has(.collection-detail) {
     gap: 10px;
 }
 
-/* Cardless at rest — transparent surface, so only the imagery (rounded) shows
+/* Cardless at rest - transparent surface, so only the imagery (rounded) shows
    against the page. Constant padding + rounding are always present so the card
    surface can fade IN on hover with no layout shift: the rounded rectangle
    quickly appears behind the content as the hover state. */
@@ -96,7 +96,7 @@ body:has(.collection-detail) {
     will-change: transform;
 }
 
-/* Whole-surface links (cards + the Talks featured hero) — never inherit the
+/* Whole-surface links (cards + the Talks featured hero) - never inherit the
    content-link red/underline on hover (the global a:hover would otherwise
    out-specify text-decoration: none). */
 .collection-card:hover,
@@ -152,7 +152,7 @@ body:has(.collection-detail) {
     margin: 0 0 1.25em;
 }
 
-/* Sidebar section header — matches the About "Tech Specs" title. The tight
+/* Sidebar section header - matches the About "Tech Specs" title. The tight
    bottom margin tucks the first row up under the heading, which does the
    grouping on its own (a heading hairline was tried and dropped). */
 .collection-eyebrow {
@@ -167,7 +167,7 @@ body:has(.collection-detail) {
     margin-top: 2em;
 }
 
-/* ----- Detail header — shared by App/Code/Art/Talk detail pages. -----
+/* ----- Detail header - shared by App/Code/Art/Talk detail pages. -----
    (The key/value details table beside it is .spec-list in site.css.) */
 .collection-detail-name {
     font-size: 2.7em;
@@ -248,7 +248,7 @@ body:has(.collection-detail) {
 .store-badge-youtube { --pill: #212121; }
 [data-color-scheme="dark"] .store-badge-youtube { --pill: #fff; --ink: #212121; }
 
-/* Cardless card body — text sits flush-left beneath standalone imagery
+/* Cardless card body - text sits flush-left beneath standalone imagery
    (no card surface or side padding). Talks adds its own 2px-inset variant. */
 .code-body,
 .art-body {
@@ -261,7 +261,7 @@ body:has(.collection-detail) {
     }
 }
 
-/* Swap transition — applied by the JS content swap only (via .collection-swapped),
+/* Swap transition - applied by the JS content swap only (via .collection-swapped),
    so it fires on in-place navigation but NOT on a fresh page load. */
 @media (prefers-reduced-motion: no-preference) {
     .collection-swapped {
@@ -274,7 +274,7 @@ body:has(.collection-detail) {
     to { opacity: 1; }
 }
 
-/* Mobile — single column. */
+/* Mobile - single column. */
 /* Tablet band: at iPad-portrait widths the fixed 300px sidebar plus the 3em
    gap left the prose barely wider than the Details table. Narrow both so the
    prose clearly leads. */
@@ -287,7 +287,7 @@ body:has(.collection-detail) {
     }
     /* 260px keeps every Details row on one line at 18px (longest value today:
        "Senior iOS Engineer"). Recheck all detail pages if a longer value is
-       added — the table has no room to wrap gracefully. */
+       added - the table has no room to wrap gracefully. */
     .collection-detail-body {
         grid-template-columns: minmax(0, 1fr) 260px;
         gap: 2em;
@@ -304,7 +304,7 @@ body:has(.collection-detail) {
     }
 }
 
-/* Landscape phones have the width for two cards per row — which shrinks each
+/* Landscape phones have the width for two cards per row - which shrinks each
    card (and its imagery) down to a sensible size. Portrait stays single-column. */
 @media (max-width: 720px) and (orientation: landscape) {
     .collection-grid {
@@ -313,11 +313,11 @@ body:has(.collection-detail) {
 }
 
 /* Wide tier → 3 columns. Threshold == the container's 3-col cap (1650px), so
-   3 columns only appear once there's room for full-size cards — never shrunk.
+   3 columns only appear once there's room for full-size cards - never shrunk.
    Below 1650px it's 2 columns shrinking fluidly down to the mobile 1-col break;
    the snap from 3→2 happens exactly as the cards would start to shrink. */
 @media (min-width: 1650px) {
-    /* Only the GRID pages widen — detail pages (.collection-detail) keep
+    /* Only the GRID pages widen - detail pages (.collection-detail) keep
        their reading width, so they don't go comically wide. */
     body:has(.collection:not(.collection-detail)) {
         --page-width: 1650px;
@@ -327,7 +327,7 @@ body:has(.collection-detail) {
     }
 }
 
-/* Jump-nav chips (shared) — a row of pill links to in-page sections, reusing
+/* Jump-nav chips (shared) - a row of pill links to in-page sections, reusing
    the Archive chip look. Used by the Art page; available to any long page.
    The Talks filter pills share the same capsule recipe (talks.css adds the
    button resets and the .is-active state). */
@@ -360,7 +360,7 @@ body:has(.collection-detail) {
 
 /* ---------- Media slots with no image yet ----------
    A flat neutral surface holding the space until the real image lands. No
-   gradient and no fake device chrome — the image simply hasn't arrived. Each
+   gradient and no fake device chrome - the image simply hasn't arrived. Each
    media container (.app-icon, .code-shot, .talks-thumb, .art-shot, .app-stage)
    brings its own aspect ratio; this only paints the fill. */
 .is-empty {
@@ -368,8 +368,8 @@ body:has(.collection-detail) {
 }
 
 /* ---------- Shared media-surface treatment ----------
-   Every collection's image container — Code's repo screenshot, Talks' poster,
-   Art's poster — wears the same 14px squircle clip ("only images rounded"),
+   Every collection's image container - Code's repo screenshot, Talks' poster,
+   Art's poster - wears the same 14px squircle clip ("only images rounded"),
    so it's one design decision stated once. Aspect ratios, overlay positioning
    and Code's border stay with each page's own file; Apps' .app-icon keeps its
    own tighter 15px rounding in apps.css. NOT .app-shot: device chrome is baked

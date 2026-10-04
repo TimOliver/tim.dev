@@ -7,7 +7,7 @@ body:has(.about) {
     --page-width: 1100px;
 }
 
-/* Body text on About sits at the secondary muted colour — Apple's pattern
+/* Body text on About sits at the secondary muted colour - Apple's pattern
    for marketing/about-style pages. Headings (via global h1-h6 rule),
    the tagline and emphasized labels keep the brighter --text. */
 .about {
@@ -31,7 +31,7 @@ body:has(.about) {
     color: var(--text);
 }
 
-/* Hero — page title, tagline and blurb stacked in the left column with the
+/* Hero - page title, tagline and blurb stacked in the left column with the
    portrait pinned on the right. */
 
 .about-intro {
@@ -92,7 +92,7 @@ body:has(.about) {
     line-height: 1.4;
 }
 
-/* Sections — heading + optional subtitle, separated by a hairline */
+/* Sections - heading + optional subtitle, separated by a hairline */
 
 .about-section {
     margin: 0 0 5em;
@@ -125,7 +125,7 @@ body:has(.about) {
 }
 
 /* "About This Site": stack the prose + Tech Specs columns once the left column
-   would fall below ~450px — keyed off the SECTION's own width (a container
+   would fall below ~450px - keyed off the SECTION's own width (a container
    query), not the viewport, so it tracks the actual column size. With a 2.5em
    (~37px) gap and equal columns, the left column hits 450px at a section width
    of ~937px; round to 940px. */
@@ -139,7 +139,7 @@ body:has(.about) {
     }
 }
 
-/* Narrow first column variant — for "A brief history" the timeline only
+/* Narrow first column variant - for "A brief history" the timeline only
    needs about a quarter of the row; the prose gets the remaining 3/4. */
 .about-cols--narrow {
     grid-template-columns: 1fr 3fr;
@@ -160,7 +160,7 @@ body:has(.about) {
     margin: 0 0 1em;
 }
 
-/* Timeline (A brief history) — vertical hairline with a black/white dot
+/* Timeline (A brief history) - vertical hairline with a black/white dot
    per entry. Each entry has a small grey label (category or date) above
    the heading and a short grey description below. Line and dot are both
    centered on the same x via translateX(-50%) so they sit on the same
@@ -172,7 +172,7 @@ body:has(.about) {
     margin: 0;
     padding-left: 28px;
     position: relative;
-    /* Size to the entries, not the grid row — otherwise the list stretches to
+    /* Size to the entries, not the grid row - otherwise the list stretches to
        the prose column's height and its vertical line (::before) runs on past
        the last entry into empty space. */
     align-self: start;
@@ -200,7 +200,7 @@ body:has(.about) {
 }
 
 /* The list is a grid item, so the last caption's paragraph margin can't
-   collapse out of it — drop it so the list (and its line) ends at the text. */
+   collapse out of it - drop it so the list (and its line) ends at the text. */
 .about-timeline li:last-child > :last-child {
     margin-bottom: 0;
 }
@@ -236,7 +236,7 @@ body:has(.about) {
     margin: 0.2em 0 0;
 }
 
-/* Small grey eyebrow label used across About — timeline entries, column
+/* Small grey eyebrow label used across About - timeline entries, column
    headers ("Currently"/"Previously"), and sub-labels inside job entries. */
 .about-label {
     display: block;
@@ -251,7 +251,7 @@ body:has(.about) {
     margin: 0 0 0.15em;
 }
 
-/* Column headers ("Currently"/"Previously") — a bolder, slightly larger take
+/* Column headers ("Currently"/"Previously") - a bolder, slightly larger take
    on the eyebrow that reads as a section divider. Kept muted-grey and below the
    1em company names in size so it never competes with the bold job titles below
    it. Colour inherits (--text-secondary). */
@@ -279,7 +279,7 @@ body:has(.about) {
     margin-bottom: 0;
 }
 
-/* Featured variant — used in "Currently" column with a big-h3 heading
+/* Featured variant - used in "Currently" column with a big-h3 heading
    over a meta line and a bright description. */
 .about-job--featured {
     margin-bottom: 2.5em;
@@ -291,7 +291,7 @@ body:has(.about) {
     margin: 0 0 0.2em;
 }
 
-/* Card header row — title left, meta right, sharing a baseline (hobby cards). */
+/* Card header row - title left, meta right, sharing a baseline (hobby cards). */
 .hobby-head {
     display: flex;
     align-items: baseline;
@@ -300,14 +300,14 @@ body:has(.about) {
 }
 
 /* Previously entries: company on its own line, then role · years as an
-   .about-meta line beneath — the same shape as the Currently entries. (Years
+   .about-meta line beneath - the same shape as the Currently entries. (Years
    were right-pinned once; they looked detached, worst on phones.) */
 
 .about-job p {
     margin: 0;
 }
 
-/* Hobby cards (Off the clock) — a two-column grid of photo-topped cards, each
+/* Hobby cards (Off the clock) - a two-column grid of photo-topped cards, each
    a tinted placeholder surface until a real image is dropped into .hobby-photo
    as a background-image. The tints are fixed across themes since they stand in
    for photos. */
@@ -341,7 +341,7 @@ body:has(.about) {
     aspect-ratio: 16 / 10;
 }
 
-/* Shared tinted-photo surface — hatch weave over the per-card tint. Used by
+/* Shared tinted-photo surface - hatch weave over the per-card tint. Used by
    the hobby mosaic and the gallery scroller cards. */
 .hobby-photo,
 .gallery-card-photo {
@@ -352,7 +352,7 @@ body:has(.about) {
     background-position: center;
 }
 
-/* Photo overlay text — same treatment on hobby and gallery cards: small-caps
+/* Photo overlay text - same treatment on hobby and gallery cards: small-caps
    label top-left, caption bottom-left, inset 18px each side. */
 .hobby-photo-label,
 .hobby-photo-caption {
@@ -404,7 +404,7 @@ body:has(.about) {
     position: relative;
 }
 
-/* Prev/next controls — floated just below the strip (out of flow) and right-
+/* Prev/next controls - floated just below the strip (out of flow) and right-
    aligned, so their height doesn't add to the section's whitespace. Native
    trackpad/touch scroll still works; these give mouse/keyboard a click target.
    Hidden on touch widths (see media query). */
@@ -445,13 +445,13 @@ body:has(.about) {
     display: block;
 }
 
-/* Embla viewport — pulled past the column on each side (negative margin-inline)
+/* Embla viewport - pulled past the column on each side (negative margin-inline)
    so cards bleed into the page margins. The edge fades are colour-matched
    box-shadow strips, not a mask (see the ::before/::after block below). */
 .gallery-scroller {
     /* --overhang: how far the cards bleed past the column into the page margin
        (capped at the available gutter so it never forces a scrollbar). The
-       first/last cards rest at the content edge regardless of this — overhang
+       first/last cards rest at the content edge regardless of this - overhang
        only sets how far cards slide out under the fades as you scroll.
        --fade: width of the solid edge strip. Its inner edge sits (overhang -
        fade) = 85px out in the margin, and the box-shadow below blooms inward
@@ -466,7 +466,7 @@ body:has(.about) {
     margin-inline: calc(var(--overhang) * -1);
 }
 
-/* Edge fade — same trick as the header scrim: a solid var(--bg) strip sits over
+/* Edge fade - same trick as the header scrim: a solid var(--bg) strip sits over
    the bleeding cards in each overhang, and a colour-matched box-shadow blooms
    inward from it. The shadow's Gaussian, browser-dithered falloff avoids the
    banding a mask gradient shows. The strip is a fixed --fade wide, pinned to
@@ -495,11 +495,11 @@ body:has(.about) {
 }
 
 /* Under 1330px the carousel is narrow enough that the bleed + edge fades stop
-   earning their keep — drop them so cards sit edge-to-edge, clipping at the
+   earning their keep - drop them so cards sit edge-to-edge, clipping at the
    viewport edge rather than the column edge. Zeroing --overhang removes the
    negative margin bleed (and the derived track padding / edge spacer); the fade
    strips are hidden. The scroller goes overflow:visible so off-screen cards
-   spill past the column toward the screen edge — but then `main` clips them at
+   spill past the column toward the screen edge - but then `main` clips them at
    the viewport so they don't widen the page (the bug `overflow: visible` alone
    caused). `clip` (not `hidden`) creates no scroll container, so it can't
    affect the sticky header (which lives outside `main` anyway). */
@@ -513,7 +513,7 @@ body:has(.about) {
         display: none;
     }
     /* The body is padded by the safe-area insets (notch / rounded corners in
-       landscape), so `main` — and with it this clip — would stop at the
+       landscape), so `main` - and with it this clip - would stop at the
        safe-area line and slice the cards there. Stretch main's box out to the
        physical screen edges with a negative margin, and pad it back by the
        same amount so nothing inside moves: only the clip edge changes, and
@@ -527,7 +527,7 @@ body:has(.about) {
     }
 }
 
-/* Embla container — the flex track Embla translates on drag / arrow press.
+/* Embla container - the flex track Embla translates on drag / arrow press.
    Left padding insets the first card to the column edge. A trailing
    .gallery-edge spacer does the same for the last card: Embla measures the
    scroll extent from the last slide, so the spacer (a real slide) is what
@@ -545,14 +545,14 @@ body:has(.about) {
     margin: 0;
 }
 
-/* Empty trailing slide — width is the overhang minus the flex gap that
+/* Empty trailing slide - width is the overhang minus the flex gap that
    precedes it, so the last card lands at the column's right edge. */
 .gallery-edge {
     flex: 0 0 max(0px, calc(var(--overhang) - 18px));
 }
 
 /* Tint/hatch background + the label/caption overlays are shared with
-   .hobby-photo — see the hobby card rules above. */
+   .hobby-photo - see the hobby card rules above. */
 .gallery-card-photo {
     position: relative;
     aspect-ratio: 4 / 3;
@@ -581,14 +581,14 @@ body:has(.about) {
     align-self: start;
 }
 
-/* "Tech Specs" title — larger + bold, brighter than the rows below it. */
+/* "Tech Specs" title - larger + bold, brighter than the rows below it. */
 .about-colophon .about-label {
     font-size: 1.2em;
     font-weight: 700;
     color: var(--heading);
 }
 
-/* The <dl> itself is the shared .spec-list component (site.css) — it only
+/* The <dl> itself is the shared .spec-list component (site.css) - it only
    needs breathing room under the "Tech Specs" title here. */
 .about-colophon .spec-list {
     margin-top: 1em;
@@ -609,7 +609,7 @@ body:has(.about) {
         aspect-ratio: 350 / 424;
     }
 
-    /* Tighten the column gutter — at this width the 2.5em gap between Currently
+    /* Tighten the column gutter - at this width the 2.5em gap between Currently
        and Previously reads as too much dead space. */
     .about-cols {
         gap: 1.5em;
@@ -618,8 +618,8 @@ body:has(.about) {
     /* Tablet portrait (iPad mini is 744px): the 35px page gutter leaves the
        prose stopping well short of the edge, and a 1fr timeline column (~160px)
        wraps "Web development" onto two lines. Pull the gutter in to the phone
-       value and give the timeline a fixed 190px — enough for the longest h3 on
-       one line — so the prose keeps its measure and slides into the freed
+       value and give the timeline a fixed 190px - enough for the longest h3 on
+       one line - so the prose keeps its measure and slides into the freed
        margin instead of shrinking. The footer follows via --container-pad. */
     body:has(.about) {
         --container-pad: 20px;

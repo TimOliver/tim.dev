@@ -15,16 +15,16 @@
  *
  * 3. Anonymous-commenting status + sign-out. After commenting anonymously, Comentario
  *    quietly enters "unregistered commenting" mode (comentario_settings) and posts
- *    further comments with the same name and no dialog — with no visual cue and no
+ *    further comments with the same name and no dialog - with no visual cue and no
  *    way out. When in that mode we replace the profile-bar "Sign in" button with the
  *    name + a "Sign out" control that clears the mode.
  *
  * 4. Collapsed-editor refocus: after Cancel the collapsed host keeps focus, so
- *    clicking it again fires no focus event and it won't re-expand — blur+refocus
+ *    clicking it again fires no focus event and it won't re-expand - blur+refocus
  *    to re-fire it.
  *
  * 5. Login dialog (created on demand): relabel the email field's placeholder to
- *    "Email". (The sign-up button needs no relabel — comentario.css hides its text
+ *    "Email". (The sign-up button needs no relabel - comentario.css hides its text
  *    and supplies the "Create an account" pill label via ::after.) Also slug-tag
  *    each OAuth provider button with cmntr-idp-<name> (from its label): built-in
  *    providers carry a brand class (.comentario-btn-google) but generic-OIDC ones
@@ -35,7 +35,7 @@
  *    only calls window.open() two async hops after the provider button is clicked
  *    (after the dialog's close animation, then a token fetch). Chrome's transient
  *    activation tolerates that; Safari doesn't, blocks the window, and Comentario
- *    falls into its "Popup blocked" / Retry dialog — whose Retry reuses the same
+ *    falls into its "Popup blocked" / Retry dialog - whose Retry reuses the same
  *    one-time token and fails with "Token is missing or invalid" once the user has
  *    allowed the blocked window and signed in through it. We open a blank popup
  *    synchronously in the click instead and hand it to Comentario when it asks.
@@ -79,7 +79,7 @@
     });
   })();
 
-  // Everything below operates on the live comments widget — bail on pages that
+  // Everything below operates on the live comments widget - bail on pages that
   // only have count badges (the home feed) so no listeners/observers/polls are
   // left running against a widget that can never appear.
   var widget = document.querySelector('comentario-comments');
@@ -119,7 +119,7 @@
   var DRAFT_KEY = 'comentario_editor';
 
   // Comentario keys drafts by a server-assigned page id (from the page-load response),
-  // NOT the URL path — so we can't match by path. Instead delete the draft whose
+  // NOT the URL path - so we can't match by path. Instead delete the draft whose
   // stored text equals what was just submitted: that's exactly the entry Comentario
   // writes back on a successful post (the bug we're papering over). Matching on content
   // also works whether the page had a prior draft or not.
@@ -136,12 +136,12 @@
         if ((data.drafts[k] || '').trim() === target) { delete data.drafts[k]; changed = true; }
       });
       if (changed) localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
-    } catch (e) { /* localStorage unavailable or malformed — leave it alone */ }
+    } catch (e) { /* localStorage unavailable or malformed - leave it alone */ }
   }
 
   // On a successful post Comentario empties or removes the editor's textarea; on a
   // validation/network failure the text stays put. Poll to tell them apart, then clear
-  // the draft (twice — the second pass beats Comentario's debounced re-save).
+  // the draft (twice - the second pass beats Comentario's debounced re-save).
   function clearDraftOnSuccess(form, submitted) {
     var tries = 0;
     var iv = setInterval(function () {
@@ -239,7 +239,7 @@
 
   /* ---- 4. Collapsed-editor refocus ----
      Comentario's "Add a comment" host expands on focus, but after Cancel it stays
-     focused while collapsed — so clicking it again fires no focus event and won't
+     focused while collapsed - so clicking it again fires no focus event and won't
      re-open (only clicking away then back does). If the collapsed host is clicked
      while it's already the focused element, blur+refocus it to re-fire the focus
      event so it re-opens. (Detected by the placeholder being present = collapsed.) */
@@ -274,7 +274,7 @@
       }
     }
 
-    // Observe the widget root, not the whole document — the dialog always
+    // Observe the widget root, not the whole document - the dialog always
     // mounts inside .comentario-root (every dialog override in comentario.css
     // is scoped through it), and a document-wide subtree observer would fire
     // for lightbox insertions, the share live-region, and every other page

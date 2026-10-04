@@ -26,7 +26,7 @@ Working at Realm has allowed me to meet a lot of amazing, brilliant people, trav
 
 > Say hi to some [@realm](https://twitter.com/realm) folks who’ve been running the [@AltConference](https://twitter.com/AltConference) stream! [@morqon](https://twitter.com/morqon) [@Anderson760](https://twitter.com/Anderson760) [@TimOliverAU](https://twitter.com/TimOliverAU) Mengting [pic.twitter.com/GlhPGdNVR4](http://t.co/GlhPGdNVR4)
 > 
-> — JP Simard (@simjp) [June 12, 2015](https://twitter.com/simjp/status/609159765239926784)
+> - JP Simard (@simjp) [June 12, 2015](https://twitter.com/simjp/status/609159765239926784)
 
 <script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>That all being said, I still feel I still have much to learn. I think I’ve only recently started to settle into a good routine for working remotely, and as I’m moving more and more to the OS X/Swift side of things, I’ve discovered there’s still a lot of code styles/practices that I need to study!
 
