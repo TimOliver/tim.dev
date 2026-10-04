@@ -513,17 +513,22 @@
                 return;
             }
             // triggerEl is guaranteed here - the isTextLink guard above returns early without one
-            const thumbRect = this.getThumbRect(triggerEl);
+            const cached = this.preloadCache.get(src);
+            const fullResReady = cached?.complete && cached.naturalWidth > 0;
+            // tim.dev: a data-crop region only applies once the full-res image is on
+            // screen; until then the thumbnail stands in at its own shape.
+            const thumbRect = this.getThumbRect(triggerEl, fullResReady);
             this.thumbBorderRadius = this.getThumbBorderRadius(triggerEl);
-            this.createOverlay(thumbSrc || src);
+            // With a data-crop region the morph is shaped for the full image, so show
+            // it from the first frame (the thumbnail would be stretched into it).
+            const useDataCrop = fullResReady && !!this.getDataCrop(triggerEl);
+            this.createOverlay(useDataCrop ? src : (thumbSrc || src));
             this.createChrome();
             this.computeChromeDrift(thumbRect.x + thumbRect.width / 2, thumbRect.y + thumbRect.height / 2);
             document.addEventListener('keydown', this.handleKeydown);
             this.setThumbVisibility(false);
             const thumbNatW = thumbImg.naturalWidth || thumbRect.width;
             const thumbNatH = thumbImg.naturalHeight || thumbRect.height;
-            const cached = this.preloadCache.get(src);
-            const fullResReady = cached?.complete && cached.naturalWidth > 0;
             const natW = fullResReady ? cached.naturalWidth : thumbNatW;
             const natH = fullResReady ? cached.naturalHeight : thumbNatH;
             // When full-res dimensions are unknown, use thumbnail aspect ratio to fill
@@ -2888,11 +2893,42 @@
             const img = el.querySelector('img');
             return img ? parseFloat(getComputedStyle(img).borderTopLeftRadius) || 0 : 0;
         }
-        getThumbRect(el) {
+        /**
+         * tim.dev addition. `data-crop="x y w h"` on a trigger says which region of
+         * the full-res image its thumbnail shows (fractions of the full image's
+         * width/height), for thumbnails that are a separately cropped file. The
+         * morph then expands from / shrinks to that exact region instead of
+         * assuming a centred crop.
+         */
+        getDataCrop(el) {
+            const raw = el?.getAttribute?.('data-crop');
+            if (!raw)
+                return null;
+            const [x, y, w, h] = raw.trim().split(/[\s,]+/).map(Number);
+            if (![x, y, w, h].every(Number.isFinite) || w <= 0 || h <= 0)
+                return null;
+            return { x, y, w, h };
+        }
+        /** True while the lightbox image is showing the full-res file (not the
+         *  thumbnail stand-in), which is when a data-crop region applies. */
+        isShowingFullRes() {
+            if (!this.imgEl || !this.state.currentSrc)
+                return false;
+            return this.imgEl.src === new URL(this.state.currentSrc, document.baseURI).href;
+        }
+        getThumbRect(el, allowDataCrop = this.isShowingFullRes()) {
             const img = el.querySelector('img');
             if (!img)
                 return el.getBoundingClientRect();
             const elRect = img.getBoundingClientRect();
+            // tim.dev: the thumbnail shows a known region of the full image, so the
+            // full image's virtual rect extends past the thumbnail by that region.
+            const dataCrop = allowDataCrop ? this.getDataCrop(el) : null;
+            if (dataCrop) {
+                const w = elRect.width / dataCrop.w;
+                const h = elRect.height / dataCrop.h;
+                return new DOMRect(elRect.x - dataCrop.x * w, elRect.y - dataCrop.y * h, w, h);
+            }
             const objectFit = getComputedStyle(img).objectFit;
             if (objectFit !== 'cover' || !img.naturalWidth || !img.naturalHeight) {
                 return elRect;
@@ -2925,7 +2961,7 @@
         computeCropInsets(el, virtualRect, targetRect) {
             const zero = { top: 0, right: 0, bottom: 0, left: 0 };
             const img = el.querySelector('img');
-            if (!img || getComputedStyle(img).objectFit !== 'cover')
+            if (!img || (getComputedStyle(img).objectFit !== 'cover' && !this.getDataCrop(el)))
                 return zero;
             const elRect = img.getBoundingClientRect();
             // Fraction of the virtual rect that is cropped on each side
