@@ -26,10 +26,6 @@
     --menu-ease: cubic-bezier(0.32, 0.72, 0, 1);
     --control-hover: rgba(120, 120, 128, 0.18);
     --control-active: rgba(120, 120, 128, 0.10);
-    /* Diagonal hatch overlay for placeholder/photo surfaces (layered over a
-       tint or --bg-tertiary). Same in dark mode - the surface underneath is
-       what changes. art.css uses a one-off darker 0.06 variant. */
-    --hatch: repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0 1px, transparent 1px 14px);
     /* Shared page gutter (overridden per breakpoint below) so the article
        container, comment dividers and footer separator all sit at one content
        width; plus the readable measure article body copy centres within. */

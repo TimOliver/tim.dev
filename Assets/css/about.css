@@ -1,10 +1,13 @@
 /* ---------- About page ---------- */
 
 /* The About page is mostly sub-column layouts, so widen the content column
-   (and the footer, via the shared --page-width mechanism in site.css) well
-   past the default reading width. */
+   (and the footer, via the shared --page-width mechanism in site.css) to the
+   header's own box: max-width 1200px with the header's 48px side padding, so
+   the content's edges line up with the logo and the RSS icon. The tablet band
+   below matches the header's 24px there. */
 body:has(.about) {
-    --page-width: 1100px;
+    --page-width: 1200px;
+    --container-pad: 48px;
 }
 
 /* Body text on About sits at the secondary muted colour - Apple's pattern
@@ -403,10 +406,10 @@ body:has(.about) {
     margin-bottom: 0.3em;
 }
 
-/* Hobby cards (Off the clock) - a two-column grid of photo-topped cards, each
-   a tinted placeholder surface until a real image is dropped into .hobby-photo
-   as a background-image. The tints are fixed across themes since they stand in
-   for photos. */
+/* Hobby cards (In my free time) - a two-column grid of photo-topped cards.
+   Each photo opens in the lightbox. The photo surface is a plain theme fill
+   (shared with the gallery cards below): the old per-card pastel tints showed
+   through while the lightbox animated an image out of its card. */
 
 /* Two equal columns. This was a staggered bento (7/12 · 5/12, alternating),
    but unequal widths wrapped each card's description to a different number of
@@ -422,7 +425,7 @@ body:has(.about) {
     display: flex;
     flex-direction: column;
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 24px;
     corner-shape: squircle;
     overflow: hidden;
     background: var(--bg);
@@ -437,38 +440,22 @@ body:has(.about) {
     aspect-ratio: 16 / 10;
 }
 
-/* Shared tinted-photo surface - hatch weave over the per-card tint. Used by
-   the hobby mosaic and the gallery scroller cards. */
+.hobby-photo a {
+    display: block;
+    height: 100%;
+    cursor: zoom-in;
+}
+
+.hobby-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .hobby-photo,
 .gallery-card-photo {
-    background:
-        var(--hatch),
-        var(--photo-tint, var(--bg-tertiary));
-    background-size: cover;
-    background-position: center;
-}
-
-/* Photo overlay text - same treatment on hobby and gallery cards: small-caps
-   label top-left, caption bottom-left, inset 18px each side. */
-.hobby-photo-label,
-.hobby-photo-caption {
-    position: absolute;
-    left: 18px;
-    right: 18px;
-    font-size: 0.72em;
-}
-
-.hobby-photo-label {
-    top: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.5);
-}
-
-.hobby-photo-caption {
-    bottom: 16px;
-    color: rgba(0, 0, 0, 0.62);
+    background: var(--bg-secondary);
 }
 
 .hobby-body {
@@ -555,7 +542,7 @@ body:has(.about) {
        the resting card. Raise the 85px to pull the fade further out (more
        clearance); lower it to creep onto the card. Retune if the shadow's
        reach changes. */
-    --overhang: clamp(0px, calc((100vw - 1100px) / 2), 220px);
+    --overhang: clamp(0px, calc((100vw - var(--page-width, 1200px)) / 2), 220px);
     --fade: calc(var(--overhang) - 85px);
     overflow: hidden;
     position: relative;
@@ -590,7 +577,7 @@ body:has(.about) {
     box-shadow: -15px -15px 30px 25px var(--bg);
 }
 
-/* Under 1330px the carousel is narrow enough that the bleed + edge fades stop
+/* Under 1430px the carousel is narrow enough that the bleed + edge fades stop
    earning their keep - drop them so cards sit edge-to-edge, clipping at the
    viewport edge rather than the column edge. Zeroing --overhang removes the
    negative margin bleed (and the derived track padding / edge spacer); the fade
@@ -599,7 +586,7 @@ body:has(.about) {
    the viewport so they don't widen the page (the bug `overflow: visible` alone
    caused). `clip` (not `hidden`) creates no scroll container, so it can't
    affect the sticky header (which lives outside `main` anyway). */
-@media (max-width: 1329.98px) {
+@media (max-width: 1429.98px) {
     .gallery-scroller {
         --overhang: 0px;
         overflow: visible;
@@ -647,8 +634,6 @@ body:has(.about) {
     flex: 0 0 max(0px, calc(var(--overhang) - 18px));
 }
 
-/* Tint/hatch background + the label/caption overlays are shared with
-   .hobby-photo - see the hobby card rules above. */
 .gallery-card-photo {
     position: relative;
     /* 3:2 — the shape most of the photos already are, so few get cropped. */
@@ -658,8 +643,7 @@ body:has(.about) {
     overflow: hidden;
 }
 
-/* The photo fills the card and crops to it; the tint behind shows while it
-   loads. Per-image object-position (inline) keeps the subject in frame where
+/* The photo fills the card and crops to it. Per-image object-position (inline) keeps the subject in frame where
    the source isn't 3:2. Dragging the carousel must not start a native image
    drag, hence user-drag/select off (and draggable="false" in the markup). */
 /* Each photo is a lightbox link (full-size original, grouped as one gallery
@@ -740,12 +724,12 @@ body:has(.about) {
 
     /* Tablet portrait (iPad mini is 744px): the 35px page gutter leaves the
        prose stopping well short of the edge, and a 1fr timeline column (~160px)
-       wraps "Web development" onto two lines. Pull the gutter in to the phone
-       value and give the timeline a fixed 190px - enough for the longest h3 on
+       wraps "Web development" onto two lines. Pull the gutter in to 24px (the
+       header's own padding at this width) and give the timeline a fixed 190px - enough for the longest h3 on
        one line - so the prose keeps its measure and slides into the freed
-       margin instead of shrinking. The footer follows via --container-pad. */
+       margin instead of shrinking. (The footer keeps its own 20px padding.) */
     body:has(.about) {
-        --container-pad: 20px;
+        --container-pad: 24px;
     }
     .about-cols--narrow {
         grid-template-columns: 190px 1fr;
