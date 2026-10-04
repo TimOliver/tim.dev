@@ -35,7 +35,7 @@ from PIL import Image, ImageOps
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ASSETS = REPO_ROOT / "Assets"
-COLLECTIONS = ("posts", "apps", "code", "art", "talks")
+COLLECTIONS = ("posts", "apps", "code", "art", "talks", "about")
 MANIFEST = REPO_ROOT / "media-manifest.json"
 
 VARIANT_WIDTHS = (400, 800, 1200, 1600)

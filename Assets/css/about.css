@@ -272,7 +272,7 @@ body:has(.about) {
 }
 
 .about-job {
-    margin: 0 0 1.6em;
+    margin: 0 0 2.2em;
 }
 
 .about-job:last-child {
@@ -282,7 +282,13 @@ body:has(.about) {
 /* Featured variant - used in "Currently" column with a big-h3 heading
    over a meta line and a bright description. */
 .about-job--featured {
-    margin-bottom: 2.5em;
+    margin-bottom: 3em;
+}
+
+/* Work: a wider gutter between Currently and Previously than the other
+   two-column blocks, now that the entries themselves are compact. */
+.about-cols--work {
+    column-gap: 4.5em;
 }
 
 .about-job--featured h3 {
@@ -305,6 +311,13 @@ body:has(.about) {
 
 .about-job p {
     margin: 0;
+}
+
+/* The role · years line sits tight against the description below it, so the
+   only clear gaps in Work are between entries (and between paragraphs of a
+   multi-paragraph entry). Out-specifies the broad `.about p` bottom margin. */
+.about .about-job p.about-meta {
+    margin-bottom: 0.3em;
 }
 
 /* Hobby cards (Off the clock) - a two-column grid of photo-topped cards, each
@@ -555,10 +568,34 @@ body:has(.about) {
    .hobby-photo - see the hobby card rules above. */
 .gallery-card-photo {
     position: relative;
-    aspect-ratio: 4 / 3;
+    /* 3:2 — the shape most of the photos already are, so few get cropped. */
+    aspect-ratio: 3 / 2;
     border-radius: 14px;
     corner-shape: squircle;
     overflow: hidden;
+}
+
+/* The photo fills the card and crops to it; the tint behind shows while it
+   loads. Per-image object-position (inline) keeps the subject in frame where
+   the source isn't 3:2. Dragging the carousel must not start a native image
+   drag, hence user-drag/select off (and draggable="false" in the markup). */
+/* Each photo is a lightbox link (full-size original, grouped as one gallery
+   so the viewer's next/prev walk the carousel). The anchor must fill the card
+   or the image's height:100% has nothing to resolve against. */
+.gallery-card-photo a {
+    display: block;
+    height: 100%;
+    cursor: zoom-in;
+    -webkit-user-drag: none;
+}
+
+.gallery-card-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
 .gallery-card-meta {
@@ -613,6 +650,9 @@ body:has(.about) {
        and Previously reads as too much dead space. */
     .about-cols {
         gap: 1.5em;
+    }
+    .about-cols--work {
+        column-gap: 2.5em;
     }
 
     /* Tablet portrait (iPad mini is 744px): the 35px page gutter leaves the

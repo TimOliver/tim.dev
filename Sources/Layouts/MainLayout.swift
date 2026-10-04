@@ -98,6 +98,10 @@ struct MainLayout: Layout {
     /// lite-youtube powers article video embeds and talk detail videos.
     private var wantsLiteYouTube: Bool { hasArticleContent || section == "talks" }
 
+    /// Pages whose images open in the full-screen viewer: posts and the home
+    /// feed (article images), plus About (the history photo carousel).
+    private var wantsLightbox: Bool { hasArticleContent || section == "about" }
+
     /// The document Ignite renders for every page: a `<head>` of metadata and
     /// asset links followed by a `<body>` of header, page content, footer, and
     /// scripts. The page's `content` is slotted into the `<main>` element.
@@ -167,7 +171,7 @@ struct MainLayout: Layout {
             // Assets/ (like embla) - a render-blocking cross-origin stylesheet
             // in <head> put jsdelivr's DNS+TLS on the critical path of every
             // article page. Bump versions by re-downloading, not by hand-editing.
-            if hasArticleContent {
+            if wantsLightbox {
                 MetaLink(href: "/css/lightbox3.css", rel: .stylesheet)
             }
             if wantsLiteYouTube {
@@ -189,8 +193,9 @@ struct MainLayout: Layout {
                 content.class("container")
             }
             Include("footer.html")
-            if hasArticleContent {
-                // Full-screen viewer for article images (binds [data-lightbox]).
+            if wantsLightbox {
+                // Full-screen viewer for article images and the About photo
+                // carousel (binds [data-lightbox]).
                 Script(file: "/js/lightbox3.umd.js")
             }
             if wantsLiteYouTube {
