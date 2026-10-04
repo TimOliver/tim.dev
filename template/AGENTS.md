@@ -14,7 +14,7 @@ Template/
 │   ├── brand-icons.svg     SVG symbol sprite — outline Tabler-style icons used in the footer (LinkedIn, GitHub, YouTube, Twitch, Bluesky, Mastodon)
 │   ├── appearance/         Theme picker icons (auto/sun/moon)
 │   └── (sample images)
-└── CLAUDE.md               This file
+└── AGENTS.md               This file
 ```
 
 Both icon sets live in SVG sprite files (`img/social-logos.svg` for filled embed logos, `img/brand-icons.svg` for outline footer icons). Each sprite is a single `<svg style="display: none">` containing multiple `<symbol>` definitions; markup references them via `<svg viewBox="..."><use href="img/brand-icons.svg#linkedin"/></svg>`. This preserves `fill`/`stroke="currentColor"` for theme-aware coloring (the footer drops the old `filter: var(--icon-filter)` hack in favor of `color: var(--text)` on the wrapping svg).
