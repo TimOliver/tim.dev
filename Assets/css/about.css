@@ -305,6 +305,81 @@ body:has(.about) {
     margin: 0 0 0.2em;
 }
 
+/* Linked job titles: wrap a title's text in <a href> (inside the featured h3
+   or .about-job-co) and it keeps the title's colour and weight and gains a
+   small up-right arrow (Tabler "arrow-up-right", same set as ui-icons.svg).
+   Hover fades in a soft rounded surface behind the title and grows the whole
+   title slightly, like the home feed's post titles. Unlinked titles are
+   untouched. */
+.about-job h3 a,
+.about-job-co a {
+    position: relative;
+    isolation: isolate;          /* keep the ::before surface behind the text but above the page */
+    display: inline-block;       /* inline boxes can't be transformed */
+    color: inherit;
+    text-decoration: none;
+    /* Same grow as the home feed's post titles (.post-title-link .title):
+       the whole title — text, arrow and surface — scales up a touch. Origin
+       on the left so the title's left edge stays aligned with its column. */
+    transform-origin: left center;
+    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.about-job h3 a:hover,
+.about-job-co a:hover {
+    color: inherit;
+    text-decoration: none;       /* beats the global a:hover underline */
+}
+.about-job h3 a::before,
+.about-job-co a::before {
+    content: '';
+    position: absolute;
+    inset: -0.12em -0.4em;
+    z-index: -1;
+    border-radius: 0.45em;
+    corner-shape: squircle;
+    background: var(--bg-secondary);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+@media (hover: hover) {
+    .about-job h3 a:hover,
+    .about-job-co a:hover {
+        transform: scale(1.03);
+    }
+    .about-job h3 a:hover::before,
+    .about-job-co a:hover::before {
+        opacity: 1;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .about-job h3 a,
+    .about-job-co a {
+        transition: none;
+    }
+    .about-job h3 a:hover,
+    .about-job-co a:hover {
+        transform: none;
+    }
+}
+/* The arrow is a mask tinted with currentColor, so it follows the text. No
+   transition on this masked pseudo (WebKit can leave masked glyphs invisible
+   mid-transition) — the hover motion lives on ::before instead. */
+.about-job h3 a::after,
+.about-job-co a::after {
+    --arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 7l-10 10'/%3E%3Cpath d='M8 7l9 0l0 9'/%3E%3C/svg%3E");
+    content: '';
+    display: inline-block;
+    width: 0.6em;
+    height: 0.6em;
+    margin-left: 0.02em;
+    vertical-align: 0.12em;
+    background: currentColor;
+    opacity: 0.55;
+    -webkit-mask: var(--arrow) center / contain no-repeat;
+            mask: var(--arrow) center / contain no-repeat;
+}
+
 /* Card header row - title left, meta right, sharing a baseline (hobby cards). */
 .hobby-head {
     display: flex;
