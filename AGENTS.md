@@ -113,7 +113,8 @@ media-manifest.json            build INPUT written by build-media.py (dimensions
 - Reading measure 740px; heroes 840px; body 18px; `--post-gap` is the one vertical rhythm on the
   feed; in-article `<hr>` is a solid hairline, the fading gradient rule is ONLY between feed posts.
 - **No `text-wrap: pretty` on body text** — Safari re-rags the whole paragraph and leaves wide gaps in
-  narrow columns. Headings keep `balance`.
+  narrow columns. Headings keep `balance`. One deliberate exception: the About page's Work section
+  (`.about-cols--work p`), where Tim prefers the evened rag.
 - Stylesheets load per page (MainLayout). A component used on several pages must live in a sheet
   every one of them links. `collection.css` loads before each section's own file so the section can
   override it.

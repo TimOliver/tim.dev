@@ -272,7 +272,7 @@ body:has(.about) {
 }
 
 .about-job {
-    margin: 0 0 2.2em;
+    margin: 0 0 2.6em;
 }
 
 .about-job:last-child {
@@ -282,13 +282,21 @@ body:has(.about) {
 /* Featured variant - used in "Currently" column with a big-h3 heading
    over a meta line and a bright description. */
 .about-job--featured {
-    margin-bottom: 3em;
+    margin-bottom: 3.5em;
 }
 
 /* Work: a wider gutter between Currently and Previously than the other
    two-column blocks, now that the entries themselves are compact. */
 .about-cols--work {
-    column-gap: 4.5em;
+    column-gap: 5.5em;
+}
+
+/* A deliberate exception to the site-wide "no text-wrap: pretty on body text"
+   rule (see site.css): in these short job descriptions the evened rag reads
+   better, and the columns are wide enough that Safari's whole-paragraph
+   re-ragging doesn't leave big gaps. */
+.about-cols--work p {
+    text-wrap: pretty;
 }
 
 .about-job--featured h3 {
@@ -652,7 +660,7 @@ body:has(.about) {
         gap: 1.5em;
     }
     .about-cols--work {
-        column-gap: 2.5em;
+        column-gap: 3em;
     }
 
     /* Tablet portrait (iPad mini is 744px): the 35px page gutter leaves the
