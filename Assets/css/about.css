@@ -355,17 +355,14 @@ body:has(.about) {
 /* Photo overlay text — same treatment on hobby and gallery cards: small-caps
    label top-left, caption bottom-left, inset 18px each side. */
 .hobby-photo-label,
-.hobby-photo-caption,
-.gallery-card-label,
-.gallery-card-caption {
+.hobby-photo-caption {
     position: absolute;
     left: 18px;
     right: 18px;
     font-size: 0.72em;
 }
 
-.hobby-photo-label,
-.gallery-card-label {
+.hobby-photo-label {
     top: 16px;
     text-transform: uppercase;
     letter-spacing: 0.12em;
@@ -373,8 +370,7 @@ body:has(.about) {
     color: rgba(0, 0, 0, 0.5);
 }
 
-.hobby-photo-caption,
-.gallery-card-caption {
+.hobby-photo-caption {
     bottom: 16px;
     color: rgba(0, 0, 0, 0.62);
 }
