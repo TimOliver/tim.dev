@@ -51,7 +51,7 @@ enum ArchivePage {
 
         // Header - page title plus the subtitle.
         s += #"<h1 class="page-title">Archive</h1>"#
-        s += #"<p class="page-subtitle">A trip down memory lane. All the posts are here.</p>"#
+        s += #"<p class="page-subtitle">A trip down memory lane, from the very first post.</p>"#
 
         // Search (client-side title filter; wired in site.js).
         s += #"<div class="archive-search-wrap">"#
