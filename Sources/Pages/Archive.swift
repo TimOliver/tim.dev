@@ -43,23 +43,20 @@ enum ArchivePage {
     /// ships verbatim; `Archive.body` wraps it back into an Ignite include.
     static func htmlString(for all: [Article]) -> String {
 
-        // Sort newest-first, bucket into years, and pull out the year numbers
-        // for the summary line's "across N years" count.
+        // Sort newest-first and bucket into years.
         let posts = all.sorted { $0.date > $1.date }
         let grouped = group(posts)
-        let years = grouped.map(\.year)
 
         var s = #"<div class="archive">"#
 
-        // Header - page title plus the pluralised summary line.
+        // Header - page title plus the subtitle.
         s += #"<h1 class="page-title">Archive</h1>"#
-        s += #"<p class="page-subtitle">\#(summaryText(postCount: posts.count, yearCount: years.count))</p>"#
+        s += #"<p class="page-subtitle">A trip down memory lane. All the posts are here.</p>"#
 
-        // Search (client-side title filter; wired in site.js). The post count is
-        // baked into the placeholder so the box advertises how much it searches.
+        // Search (client-side title filter; wired in site.js).
         s += #"<div class="archive-search-wrap">"#
         s += CollectionRenderer.searchIcon(className: "archive-search-icon")
-        s += #"<input class="archive-search" type="search" aria-label="Search posts by title" placeholder="Search \#(posts.count) posts by title…">"#
+        s += #"<input class="archive-search" type="search" aria-label="Search posts by title" placeholder="Search posts by title…">"#
         s += "</div>"
 
         // Year sections - year + post count on the left, a flat list of posts
@@ -129,16 +126,6 @@ enum ArchivePage {
             byYear[year, default: []].append(a)
         }
         return byYear.keys.sorted(by: >).map { YearGroup(year: $0, posts: byYear[$0] ?? []) }
-    }
-
-    /// The page subtitle, e.g. "42 posts across 5 years. Or close enough." -
-    /// pluralised for both counts, with a self-deprecating tail because the
-    /// year math is approximate.
-    private static func summaryText(postCount: Int, yearCount: Int) -> String {
-
-        let postWord = postCount == 1 ? "post" : "posts"
-        let yearWord = yearCount == 1 ? "year" : "years"
-        return "\(postCount) \(postWord) across \(yearCount) \(yearWord). Or close enough."
     }
 
     /// A Gregorian calendar pinned to the site's display time zone, so year

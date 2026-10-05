@@ -41,9 +41,6 @@ extension TalksRenderer {
     /// Builds the full index: featured hero + search + filter bar + grid.
     static func gridHTML(for talks: [TalkInfo]) -> String {
 
-        // Drives the search-field placeholder ("Search N talks…").
-        let total = talks.count
-
         // Sorted, de-duplicated topic list for the topic chips (display case
         // preserved; comparison case-insensitive).
         //
@@ -85,7 +82,7 @@ extension TalksRenderer {
         s += #"<div class="talks-controls">"#
         s += #"<div class="talks-search-wrap">"#
         s += CollectionRenderer.searchIcon(className: "talks-search-icon")
-        s += #"<input type="search" class="talks-search" aria-label="Search talks" placeholder="Search \#(total) talks by title, venue, or topic…">"#
+        s += #"<input type="search" class="talks-search" aria-label="Search talks" placeholder="Search talks by title, venue, or topic…">"#
         s += "</div>"
 
         // Topic filter row: an always-present "All" chip, then one chip per
