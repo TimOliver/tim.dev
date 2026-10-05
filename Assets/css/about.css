@@ -45,8 +45,13 @@ body:has(.about) {
 .about-job:has(> .about-co-icon) > .about-job-head {
     line-height: 1.08;
     margin-bottom: 0;
-    /* Nudge the name 2px closer to the role line without moving the role
-       (relative offset doesn't touch layout). */
+    /* Visual nudges (relative offsets don't touch layout): the name sits 2px
+       closer to the role line, and the pair sits 2px lower against the
+       icon - so name +4px, role +2px. */
+    position: relative;
+    top: 4px;
+}
+.about .about-job:has(> .about-co-icon) p.about-meta {
     position: relative;
     top: 2px;
 }
@@ -59,6 +64,9 @@ body:has(.about) {
 .about-job:has(> .about-co-icon) > .about-co-icon {
     grid-column: 1;
     grid-row: 1 / span 2;
+    /* Pin to the top: when the name or role wraps (narrow columns), the icon
+       stays level with the first line instead of centring on the block. */
+    align-self: start;
 }
 .about-co-icon {
     display: block;
