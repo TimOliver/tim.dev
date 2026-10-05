@@ -205,9 +205,12 @@ body:has(.about) {
    rest rather than equal halves - so the pair stays side by side down to iPad
    landscape. Side by side, no spec value wraps ("Swift, HTML, CSS,
    JavaScript" is the longest, ~415px of card); the 460px cap leaves room for
-   Safari's slightly wider SF Pro. Stack once the prose would fall below
-   ~375px: 460 + 36 gap + 375 = 871px, rounded up to 880px of SECTION width
-   (a container query, so it tracks the real column size, not the viewport).
+   Safari's slightly wider SF Pro. On desktop (above the 1000px tablet tier,
+   and not an iPad - landscape iPads are wider than that but keep the compact
+   card) the label column gets an extra 64px of air (~479px card, 524px cap). Stack
+   once the prose would fall below ~375px: 460 + 36 gap + 375 = 871px, rounded
+   up to 880px of SECTION width (a container query, so it tracks the real
+   column size, not the viewport).
    Stacked, values wrap as normal on narrow phones. */
 .about-section--site {
     container-type: inline-size;
@@ -215,6 +218,11 @@ body:has(.about) {
 
 .about-section--site .about-cols {
     grid-template-columns: minmax(0, 1fr) fit-content(460px);
+}
+@media (min-width: 1000.02px) {
+    html:not(.is-ipad) .about-section--site .about-cols {
+        grid-template-columns: minmax(0, 1fr) fit-content(524px);
+    }
 }
 
 @container (max-width: 880px) {
@@ -226,6 +234,11 @@ body:has(.about) {
 @container (min-width: 880.02px) {
     .about-section--site .about-colophon dd {
         white-space: nowrap;
+    }
+}
+@media (min-width: 1000.02px) {
+    html:not(.is-ipad) .about-section--site .about-colophon .spec-list dt {
+        padding-right: calc(1.5em + 64px);
     }
 }
 
