@@ -25,6 +25,72 @@ body:has(.about) {
 .about-job-co {
     color: var(--text);
     font-weight: 700;
+    font-size: 1.14em;
+}
+
+/* Company icon beside each Work entry: an app-icon tile spanning the name and
+   role lines, like a list row. Each job becomes a two-column grid - icon, then
+   the name over the role - and the description paragraphs run full width
+   beneath. Squircled like every rounded element. Decorative (alt=""); the
+   name carries the meaning. */
+.about-job:has(> .about-co-icon) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.55em;
+    align-items: center;
+}
+/* Tighter name/role pair beside the icon: trim the title's leading and its
+   bottom margin so the two lines read as one block. */
+.about-job:has(> .about-co-icon) > h3,
+.about-job:has(> .about-co-icon) > .about-job-head {
+    line-height: 1.08;
+    margin-bottom: 0;
+    /* Nudge the name 2px closer to the role line without moving the role
+       (relative offset doesn't touch layout). */
+    position: relative;
+    top: 2px;
+}
+.about-job:has(> .about-co-icon) > * {
+    grid-column: 2;
+}
+.about-job:has(> .about-co-icon) > p:not(.about-meta) {
+    grid-column: 1 / -1;
+}
+.about-job:has(> .about-co-icon) > .about-co-icon {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+}
+.about-co-icon {
+    display: block;
+    width: 2.9em;
+    height: 2.9em;
+    /* 32%, tuned by eye on device. Squircled where supported, like every
+       rounded element. */
+    border-radius: 32%;
+    corner-shape: squircle;
+    /* A barely-there inner stroke so the white tiles still read on the white
+       page in light mode (it vanishes against dark). An inset box-shadow
+       would paint under the image, so it's an outline pulled inside. */
+    outline: 1px solid rgba(0, 0, 0, 0.05);
+    outline-offset: -1px;
+}
+.about-job--featured .about-co-icon {
+    width: 3.4em;
+    height: 3.4em;
+}
+/* Keeps "2026 - present · Tokyo" together when the role line wraps beside
+   an icon on phones, instead of stranding "· Tokyo" (or breaking after the
+   hyphen) on a line of its own. */
+.about-meta-keep {
+    white-space: nowrap;
+}
+/* With the icon beside it, the role line's gap to the description moves off
+   the meta (which now sits in the icon's row) onto the first paragraph. */
+.about .about-job:has(> .about-co-icon) p.about-meta {
+    margin-bottom: 0;
+}
+.about .about-job:has(> .about-co-icon) p.about-meta + p {
+    margin-top: 0.75em;
 }
 
 /* Body prose inside .about-cols (the "A brief history" right column AND
