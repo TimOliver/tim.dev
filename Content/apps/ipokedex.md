@@ -2,8 +2,8 @@
 title: iPokédex
 tagline: A comprehensive Pokédex
 layout: AppDetail
-date: 2010-01-01 00:00:00
-year: 2010
+date: 2011-06-01 00:00:00
+year: 2011
 platform: iPhone
 details: Role=Solo developer
 path: /apps/ipokedex/

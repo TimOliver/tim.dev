@@ -2,8 +2,8 @@
 title: osu!stream
 tagline: Rhythm game from the creator of osu!
 layout: AppDetail
-date: 2011-08-01 00:00:00
-year: 2011
+date: 2019-06-01 00:00:00
+year: 2019
 platform: iPhone
 appstore: https://apps.apple.com/app/osu-stream/id436952197
 details: Role=[TBC]; Company=ppy

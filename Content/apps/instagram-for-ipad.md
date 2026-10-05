@@ -2,8 +2,8 @@
 title: Instagram for iPad
 tagline: Instagram, built for the big screen
 layout: AppDetail
-date: 2024-09-01 00:00:00
-year: 2024
+date: 2025-06-01 00:00:00
+year: 2025
 platform: iPad
 appstore: https://apps.apple.com/app/instagram/id389801252
 details: Role=Senior iOS Engineer; Company=Meta
