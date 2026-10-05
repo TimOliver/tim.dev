@@ -737,6 +737,15 @@ body:has(.about) {
 }
 
 @media (max-width: 720px) {
+    /* The 48px desktop gutter above would otherwise carry down to phones. */
+    body:has(.about) {
+        --container-pad: 16px;
+    }
+    /* At 28px the label column plus the longest value (the repo URL, which can
+       only break at its <wbr>s) outgrew the column and pushed past the gutter. */
+    .about-colophon {
+        padding: 20px;
+    }
     .about-intro {
         grid-template-columns: 1fr;
         gap: 1.25em;
