@@ -211,5 +211,7 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
   downscaled and EXIF-stripped on device into `Assets/img/posts/YYYY/MM/`.
 - Auto-filled metadata: YouTube thumbnails/titles for talks, GitHub stats for code; App Store lookup
   only as a one-time import (some apps are delisted).
-- Content placeholders still in `Includes/about-page.html` (job role, taglines, sixth hobby) and
-  empty `youtube:` on all talks are deliberate, awaiting Tim's own content pass.
+- Empty `youtube:` on all talks is deliberate, awaiting Tim's own content pass. (The About page's
+  placeholders were all filled in October 2026.)
+- Claude is credited only in the About page's Tech specs card ("Design tools", "Code agents"), by
+  Tim's choice; the prose doesn't repeat it.

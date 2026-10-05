@@ -127,16 +127,21 @@ body:has(.about) {
     gap: 2.5em;
 }
 
-/* "About This Site": stack the prose + Tech Specs columns once the left column
-   would fall below ~450px - keyed off the SECTION's own width (a container
-   query), not the viewport, so it tracks the actual column size. With a 2.5em
-   (~37px) gap and equal columns, the left column hits 450px at a section width
-   of ~937px; round to 940px. */
+/* "About this site": the Tech specs card hugs its rows, capped at 400px (the
+   Code row and the repo URL wrap; everything else fits on one line), and the
+   prose takes the rest rather than equal halves - so the pair stays side by
+   side down to iPad landscape. Stack once the prose would fall below ~375px:
+   400 + 45 gap + 375 = 820px of SECTION width (a container query, so it tracks
+   the real column size, not the viewport). */
 .about-section--site {
     container-type: inline-size;
 }
 
-@container (max-width: 940px) {
+.about-section--site .about-cols {
+    grid-template-columns: minmax(0, 1fr) fit-content(400px);
+}
+
+@container (max-width: 820px) {
     .about-section--site .about-cols {
         grid-template-columns: 1fr;
     }

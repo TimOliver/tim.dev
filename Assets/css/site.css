@@ -98,6 +98,13 @@ html {
     scroll-padding-top: 100px;
 }
 
+/* Programmatic focus targets (tabindex="-1"), e.g. the new page's h1 that the
+   collection JS swap focuses for screen readers. They aren't interactive, so
+   no focus ring - Safari otherwise outlines the title after a click. */
+[tabindex="-1"]:focus {
+    outline: none;
+}
+
 body {
     font-family: var(--font-text);
     font-size: 18px;
@@ -1620,6 +1627,10 @@ footer .container {
     /* Stands in for the removed column-gap, but sits inside the cell so the
        hairline runs unbroken across to the value column. */
     padding-right: 1.5em;
+    /* Labels are a word or two. Safari sizes the max-content column a hair
+       short and wraps multi-word labels ("Original name") despite free room;
+       the value column does the wrapping instead. */
+    white-space: nowrap;
 }
 
 .spec-list dd {
