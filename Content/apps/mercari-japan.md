@@ -2,12 +2,11 @@
 title: Mercari Japan
 tagline: C2C marketplace
 layout: AppDetail
-date: 2020-01-01 00:00:00
-year: 2020
+date: 2018-06-01 00:00:00
+year: 2018
 platform: iPhone
-details: Role=iOS Engineer; Team=Mercari - Listing; Tenure=2 years
+details: Role=iOS Tech Lead; Company=Mercari; Tenure=2018 - 2020
 path: /apps/mercari-japan/
 ---
-At Mercari I rebuilt the listing flow twice. The first time taught me about scope; the second time actually shipped.
 
-The work was equal parts UI and performance - making it fast and forgiving to list an item in a few taps, on the wide range of devices the Japanese market still runs.
+[Placeholder - what I built on Mercari Japan, in a sentence or two.]
