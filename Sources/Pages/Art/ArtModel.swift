@@ -40,10 +40,21 @@ struct ArtItem {
     /// front-matter `details:` string by `CollectionRenderer.parseDetails`.
     let details: [(String, String)]
 
-    /// "Watch on YouTube" link - a channel URL (not a video id), so the detail
-    /// page links out rather than embedding. Front-matter `youtube:`, already
+    /// "Watch on YouTube" link - a full YouTube URL (watch or youtu.be). The
+    /// detail page embeds the video when the URL names one (see `youtubeID`)
+    /// and always keeps the link-out badge. Front-matter `youtube:`, already
     /// `nonEmpty`-filtered; nil when absent.
     let youtube: String?
+
+    /// The video id inside `youtube` (`watch?v=ID` or `youtu.be/ID`), or nil
+    /// for a channel URL - only a real video gets the inline player.
+    var youtubeID: String? {
+        guard let youtube, let url = URLComponents(string: youtube) else { return nil }
+        if url.host?.hasSuffix("youtu.be") == true {
+            return url.path.split(separator: "/").first.map(String.init)
+        }
+        return url.queryItems?.first { $0.name == "v" }?.value
+    }
 
     /// "Like this shot on Dribbble" badge linking to the shot's page. Front-matter `dribbble:`,
     /// already `nonEmpty`-filtered; nil when absent.

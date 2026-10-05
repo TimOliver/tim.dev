@@ -404,6 +404,15 @@ body:has(.collection-detail) {
     border-radius: 0;
 }
 
+/* Detail video (Talks and Art): the lite-youtube facade fills the bordered
+   16:9 frame. lite-yt-embed.css caps the element at 720px, so lift that. */
+.collection-detail-shot lite-youtube {
+    display: block;
+    width: 100%;
+    max-width: none;
+    border-radius: 0;
+}
+
 /* Art detail keeps each image's own ratio (`--ar`, set inline from the media
    manifest) so nothing is cropped. The frame narrows and centres to stay within
    the same viewport-height budget as the 16:9 heroes, with a floor so short

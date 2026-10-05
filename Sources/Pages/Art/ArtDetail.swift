@@ -45,9 +45,18 @@ extension ArtRenderer {
             header += #"<p class="collection-detail-tagline">\#(escape(item.meta))</p>"#
         }
 
-        // Large poster in a bordered surface. Video items keep their
-        // "Watch on YouTube" sidebar link rather than embedding - art's
-        // `youtube:` holds a channel URL, not a video id.
+        // Video pieces play in place: the same lite-youtube facade as Talks
+        // (poster + play button; the real iframe loads only on click) in the
+        // standard 16:9 frame, always from the beginning. The "Watch on
+        // YouTube" badge stays in the sidebar.
+        if let id = item.youtubeID {
+            header += #"<div class="collection-detail-shot">"#
+            header += #"<lite-youtube videoid="\#(escape(id))" playlabel="Play: \#(escape(item.title))"></lite-youtube>"#
+            header += "</div>"
+            return detailShell(header: header, item: item)
+        }
+
+        // Large poster in a bordered surface.
         // Unlike the other collections' 16:9 frame, art keeps the image's own
         // shape (4:3 renders, square-ish logos aren't cropped): the manifest's
         // width / height rides along as `--ar` for collection.css.
@@ -66,8 +75,13 @@ extension ArtRenderer {
         )
         header += "</div>"
 
-        // Sidebar: the Details table, then the optional "Watch on YouTube" /
-        // "Like this shot on Dribbble" badges (each only when its URL is present).
+        return detailShell(header: header, item: item)
+    }
+
+    /// The sidebar (Details table, then the optional "Watch on YouTube" /
+    /// "Like this shot on Dribbble" badges, each only when its URL is present)
+    /// and the shared detail skeleton around the given header.
+    private static func detailShell(header: String, item: ArtItem) -> String {
         var sidebar = CollectionRenderer.detailsBlock(item.details)
         if let youtube = item.youtube {
             sidebar += Badge.store(

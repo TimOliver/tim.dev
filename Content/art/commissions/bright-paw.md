@@ -7,7 +7,7 @@ meta: Game soundtrack · 2020
 order: 2
 image: /img/art/commissions/bright-paw.jpg
 details: Type=Game soundtrack; Artist=Will Bedford; Label=Boss Battle Records; Year=2020
-youtube: https://www.youtube.com/watch?v=vR1PHx1j-tU&t=658s
+youtube: https://www.youtube.com/watch?v=vR1PHx1j-tU
 path: /art/commissions/bright-paw/
 ---
 

@@ -95,8 +95,9 @@ struct MainLayout: Layout {
         }
     }
 
-    /// lite-youtube powers article video embeds and talk detail videos.
-    private var wantsLiteYouTube: Bool { hasArticleContent || section == "talks" }
+    /// lite-youtube powers article video embeds and the talk and art detail
+    /// videos.
+    private var wantsLiteYouTube: Bool { hasArticleContent || section == "talks" || section == "art" }
 
     /// Pages whose images open in the full-screen viewer: posts and the home
     /// feed (article images), plus About (the history photo carousel).

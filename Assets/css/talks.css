@@ -217,16 +217,6 @@
 .talks-card.hidden,
 .talks-grid.hidden { display: none; }
 
-/* ----- Detail video surface: the bordered wrapper is the shared
-   .collection-detail-shot, and the thumb's un-rounding inside it is the shared
-   neutralizer (collection.css). Only the embed itself is talks-specific. ----- */
-
-.collection-detail-shot lite-youtube {
-    display: block;
-    width: 100%;
-    border-radius: 0;
-}
-
 /* ----- Mobile ----- */
 @media (max-width: 720px) {
     .talks-featured {
