@@ -198,26 +198,34 @@ body:has(.about) {
 .about-cols {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2.5em;
+    gap: 2em;
 }
 
-/* "About this site": the Tech specs card hugs its rows, capped at 400px (the
-   Code row and the repo URL wrap; everything else fits on one line), and the
-   prose takes the rest rather than equal halves - so the pair stays side by
-   side down to iPad landscape. Stack once the prose would fall below ~375px:
-   400 + 45 gap + 375 = 820px of SECTION width (a container query, so it tracks
-   the real column size, not the viewport). */
+/* "About this site": the Tech specs card hugs its rows and the prose takes the
+   rest rather than equal halves - so the pair stays side by side down to iPad
+   landscape. Side by side, no spec value wraps ("Swift, HTML, CSS,
+   JavaScript" is the longest, ~415px of card); the 460px cap leaves room for
+   Safari's slightly wider SF Pro. Stack once the prose would fall below
+   ~375px: 460 + 36 gap + 375 = 871px, rounded up to 880px of SECTION width
+   (a container query, so it tracks the real column size, not the viewport).
+   Stacked, values wrap as normal on narrow phones. */
 .about-section--site {
     container-type: inline-size;
 }
 
 .about-section--site .about-cols {
-    grid-template-columns: minmax(0, 1fr) fit-content(400px);
+    grid-template-columns: minmax(0, 1fr) fit-content(460px);
 }
 
-@container (max-width: 820px) {
+@container (max-width: 880px) {
     .about-section--site .about-cols {
         grid-template-columns: 1fr;
+    }
+}
+
+@container (min-width: 880.02px) {
+    .about-section--site .about-colophon dd {
+        white-space: nowrap;
     }
 }
 
@@ -374,10 +382,12 @@ body:has(.about) {
 }
 
 /* A deliberate exception to the site-wide "no text-wrap: pretty on body text"
-   rule (see site.css): in these short job descriptions the evened rag reads
-   better, and the columns are wide enough that Safari's whole-paragraph
-   re-ragging doesn't leave big gaps. */
-.about-cols--work p {
+   rule (see site.css): in the short Work descriptions, and in the "About this
+   site" prose beside the Tech specs card, the evened rag reads better next to
+   the neighbouring column's edge, and the columns are wide enough that
+   Safari's whole-paragraph re-ragging doesn't leave big gaps. */
+.about-cols--work p,
+.about-section--site .about-cols p {
     text-wrap: pretty;
 }
 
