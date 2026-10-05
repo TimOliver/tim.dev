@@ -149,6 +149,12 @@
     "srcset": "/img/art/commissions/bright-paw@400w.jpg 400w, /img/art/commissions/bright-paw.jpg 640w",
     "width": 640
   },
+  "/img/art/commissions/fx13.jpg": {
+    "height": 720,
+    "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAB+ElEQVR42i3RS27TUBiG4e+/2HHsOHbctIV2UAkQQmyACTthwAgh9sYUiU10yAikVNBSgZOSi+3EOT7nZwA7ePW8pKqAAQCIGZA8P51OwrbdHHZH70NAMB2NolFKRMf9zg/eAIKBSAEzAwAiMyRpmU9st121bSAAIhznRTE/T7McROvlr9XdwsyYRZhERAEwE0EkLYp02D9s1wfPDI1HWXmWlfN8WhgRM8soYeXy9CyYBe+FiPA/OkmLLAndth2gUVac5CeP0ryMVF1/cH0/HHtwiF88m7x+Ffp9Xy9FIyUigkk8mc6LLIqOiHWUgDH4vmvXDoMUeTIrtSzGT66ev33z4d375uJxXf9WC2ZmxBwIru+a5k/XeBB8GCQZXzx9mZYVz6pw2CMEC9Tc3t3c3z3UtauXSgQiNpiFEAIAC4ODMIL5rnv4cdOuahscs0oUTarZLo4+flssPn86fr8VVTEzwOBNk3RWJITISxyPs6ys0mmZFYUBYEomebPZnhMtr69XiwWDSUSIiUAAomx+fjmN+0NnWTJOnXO9c6yaTaei0fGw//n1S79viIhZmJlUlf6JmQFxWlVXl3MdaLlpmratqpOjcy4MwbBZ3ru+E1WAgg9EJMz87xYRE7x5iqZnhE44klHuDo1zbuj37bo2cywKg5kxs8H+AgO8/5k3G/MmAAAAAElFTkSuQmCC",
+    "srcset": "/img/art/commissions/fx13@400w.jpg 400w, /img/art/commissions/fx13@800w.jpg 800w, /img/art/commissions/fx13.jpg 1280w",
+    "width": 1280
+  },
   "/img/art/commissions/necrobarista.jpg": {
     "height": 720,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACY0lEQVR42gXBSU9TQRwA8PnPzJu3dHmvi7SlpQZSZUkQRMQYYuLNg8YFNUhiMMSbX8Ojn8E7xpjIzYPxQDxJghitEQxrK0Uodnl9vHVm/P2gP5G6O//YsqzjxmFt61dte5dHEcFIIzKmEUtnM6Xc8+kKAI4lYiweJ5kyLeUwkdWvm/TJ0iJC0fvl5ZRBJgatgjFQ3TlWAccMBiDGS+b05FRx7mkkgaQs0HWEI8F7SBV6c4dOzVzVmFIql/uLRUYhRVHX4yGXTrfN4onkwYbFNDR8ngQt2fwtPYGsJLLSCCe0whBttVqWZSkYO7YjYjGuxakWcT/AikKYsrl/eintI7YlNQtLDYFEZgGxQQRWajhLu3ancVD7+O5N1xdTkyNz848afxocQdJKnx01mGhNPLyH9MvcVk7qwrdds08xh3WEPT0ZwYVCYWRsLAxDpqsaj8452xNZ+alBDts8juHF/f7bL29KNnb6ef/tq5XrD+7QgI4uLEJCCH+Vhq737cta2jAKueTuaW/fczSX8h4SHnKw0j6qdVZem/nYxgf4eUJv0B9rq93KNVsbaOLOOhTjFkVgEprOaDXHp26UVEBlIDBIDBkFRmM4o4pqRx4GMstCD9T5aTHe5wqX0DCSEoVDuURIwOv6pkY8LiIPEQwuly6ggzY4QbSw9OzWyEUhBTMMHfBeY7febFGgyPb9dq/tAC3HMQMZEAgAPIf3AqQSYEQyQoYqlSuzswCgMNV17L8pM1pfo7bLMajf//EI8byuUIYjLs8IFiFSMMoaSHDEz/xOvb5Xre7VaoGQ+XyflKJlO/8BG+Md2/Qf++AAAAAASUVORK5CYII=",
@@ -163,8 +169,14 @@
   },
   "/img/art/commissions/waicon-2014.jpg": {
     "height": 720,
-    "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACPElEQVR42gXBTWsTQRgA4Hdm3p3ZJJOPJqlN01aipYgHEQp6KXgRijdBBH+LP8qD6EnxUlS8+IkKDYU01dbmo/nabHZnZ/Ydn4fli3NebgMARbl/8ykb9TOBOTNyXQadak6J8B5MgkvPJFEWzRcYDSWZMJAcYXLmQw2ThI4Hvlq3w2kyH6lrCktFsAhcQ2jNYGznoBihMiXhbJWZJdqxRXYxBtP305j9G8wHTq5t1CVQkHj0PrWiqMgYHwu3SDEk5pznxEBzJrjiCG2E5YSpgN+oNfLf0fA8a93W5ap3qZXMRzYgtZywilmpZgABomoaoxMDhTWOUNEwH0BCn9/+fH0020lHB+4V33+It7aa7fKFic+6vX7v+E5bY8bSQsnAymV6f2vXrwxCLFMf9t6/7Oq9j9v7o/n43s7X5ocXz7/IWKaVqvw7vfrV7z+9/8D3C4PU/ji9OOh0rj8S67yMYE1QKXeePWkHosviywFtHx5kIR0aZTiHAK940to8A1XPokwtZ49v7t3dbSFLCqFi9uQIKBGKGOJolJRIzMTmSVoqR660hFq96tqaDaez027dLcIiIaxyTT7LA0K2+vYOiwQsAvABgzzP5xHG58LnYLnWshw069F0VnOxrjInEhYQI5/8GUHIMR6KQoOrail3CwOZJ9IhyZp1iQRDXKKZjMXlMrfcF5vc+Syee2u0WosXC56uhHNBRkgEPgfgSAzEeiNsb8idBg99AIYhxs76RYYrTb1k9r2fgytstf4D50tGRZujDWgAAAAASUVORK5CYII=",
+    "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACcElEQVR42gXBy04TURgA4P+cmWnLDL1MO6VAW1NCKJdQrJEuDIkJxBu4MdGt7+MLGDfuSDTGlSxUEl0QFkYCKAQDAm2x1raUmdLLXM/MnOP3IcYYADDDgrbGkgiJHBsQ1NCZT5jrcpOZwf5R7cNWu9NJlwpTT5ZpkCKEkSSDbfAAAMAY2GB4EAky5EDzCnTsO0Hf5Cqf35/s7k3PT+bHZVEUUR9xySgERHptMZ3wjPoIY5BCcMOjmo9MARNGYwj3/b9b2x831udSaV3TTBMNW3X7Uj0//o0wLYhhScKYUQ8AYQjh4SAfJ5zveUqGi8jIUTv6xezS4v2VIlw14/GkPKqozaYimUkY4FwaJSM8cB6jAvWcw42Nzc169rp5TzRpqdhwrsLpiNDHn86rR11tnhGolmm4FXCGoE9zU0u20eURsolh1tbfnLvpLa9UZ7189ufYy1cvGFEFxIcCPYtUW+ojACUpNvv8wf5OMT9XWFxREjzPqM7xfHZtbczCDfu4OiATz4qeevawrpmUtLSuoyQK2dxEOlPRNMOyp2YXVMK1bHs0lUG+dQiUwyTgdYgz5AmDWt+GZkgJXvbowYlz+s+ezo3M3czEYt+2d/h8LCqx1+++Li0sP30ww5OeK0QRxQYXcSUx1q9z1Hej5Qvq6FaQd8Oo9/1XY7ciPF69c2uaCI6UkJ+vOronQFjhfQ8LDkOBoI85TK5DScSdqrHUkJAY9U2jbLWcH3/Oztq92VJAlcF3tEhnr1WWYyNUQrwUZszvA0XMsFGIMNZ1GAuMpwfH9ctKLXX3No7HI293zEq3afVczlPDSJ6Z7Opto/LlP4SxU/+69dO7AAAAAElFTkSuQmCC",
     "srcset": "/img/art/commissions/waicon-2014@400w.jpg 400w, /img/art/commissions/waicon-2014@800w.jpg 800w, /img/art/commissions/waicon-2014.jpg 1280w",
+    "width": 1280
+  },
+  "/img/art/commissions/welcome-to-the-cosmos.jpg": {
+    "height": 720,
+    "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAB7UlEQVR42lWST08TURTF773vvZk3085U/ogQFEiNJIpoCF/AsFX3xj17E7+bJn4KFy5MMIglEFFaaGmZzpt373VBSfBszup3FucctNaKCBG1bOpsAkRJkgKiM8aRqUJdTasm1g3HyMwqcEcGEQHAGePJEpG1NrVuriy3Hj17srzprK2a68gRQBSU5X94ZsamWWkpS127KO9vr+582P/4fv9dN988+XnSHw0AkoYZERRBRRARES0AIFEd6pdv3j7fe309GPlWe0WLi90XR2se9149Pbs4/Xxx3PuGEiAGRcBbGSJCIoeolZxdmj+Hh4PTvxywd/Dr6Hv/uNe77J8NQ5wyi8ujbUmsVSIZo6ozmGO05UY1nsKwz+wm/UE+3wWVNM3j9SjZ2G2oMJ2tbHV7cn7A0+ENTCKiogIgae4tuMQWRZG0HcN4vTunGXCnZAneOydXTqS10AVVYZm1rQoAimGcLG4ikXNZ1lmYK2npQdFyYX39Xvfx/PzaDuPi6Pz098EXCWMiAgC8mQqJErJt6xLfVmMSl05iHWNYWV5dWn5IWRagU4f88Ouny/4PQLqBcBaACIDepYVvKZG3rmnqSV2101xYhpOrILUCAIIigSoizgq73VxZRIRVJTD7NPM+R2MEUQkEQRFV9e5J/gGDpPOFrpMW1AAAAABJRU5ErkJggg==",
+    "srcset": "/img/art/commissions/welcome-to-the-cosmos@400w.jpg 400w, /img/art/commissions/welcome-to-the-cosmos@800w.jpg 800w, /img/art/commissions/welcome-to-the-cosmos.jpg 1280w",
     "width": 1280
   },
   "/img/art/design/apple-frameworks-logo.jpg": {
