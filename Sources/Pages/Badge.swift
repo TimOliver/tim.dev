@@ -3,7 +3,7 @@
 import Foundation
 import Ignite
 
-/// Inlined SVG portfolio badges - the "get it" links (App Store / YouTube /
+/// Inlined SVG portfolio badges - the "get it" links (App Store / YouTube / Dribbble /
 /// GitHub) shared by every collection detail page.
 ///
 /// Each badge SVG (`Assets/img/portfolio/*-badge.svg`) paints its field and its

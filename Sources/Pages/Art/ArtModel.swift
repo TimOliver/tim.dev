@@ -45,6 +45,10 @@ struct ArtItem {
     /// `nonEmpty`-filtered; nil when absent.
     let youtube: String?
 
+    /// "Like this shot on Dribbble" badge linking to the shot's page. Front-matter `dribbble:`,
+    /// already `nonEmpty`-filtered; nil when absent.
+    let dribbble: String?
+
     /// Already-rendered HTML body (markdown compiled by Ignite).
     let bodyHTML: String
 
@@ -86,6 +90,7 @@ struct ArtItem {
         // Same `nonEmpty` treatment as `image`: a blank `youtube:` becomes nil,
         // so the "Watch on YouTube" sidebar link is simply omitted.
         youtube = CollectionRenderer.nonEmpty(a.metadata["youtube"] as? String)
+        dribbble = CollectionRenderer.nonEmpty(a.metadata["dribbble"] as? String)
 
         // Ignite has already compiled the markdown body to HTML; store it as-is.
         bodyHTML = a.text

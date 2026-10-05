@@ -59,13 +59,18 @@ extension ArtRenderer {
         )
         header += "</div>"
 
-        // Sidebar: the Details table, then the optional "Watch on YouTube" badge
-        // (only when the item carries a `youtube:` URL).
+        // Sidebar: the Details table, then the optional "Watch on YouTube" /
+        // "Like this shot on Dribbble" badges (each only when its URL is present).
         var sidebar = CollectionRenderer.detailsBlock(item.details)
         if let youtube = item.youtube {
             sidebar += Badge.store(
                 kind: "youtube", file: "youtube-badge.svg",
                 href: youtube, label: "Watch \(item.title) on YouTube")
+        }
+        if let dribbble = item.dribbble {
+            sidebar += Badge.store(
+                kind: "dribbble", file: "dribbble-badge.svg",
+                href: dribbble, label: "See \(item.title) on Dribbble")
         }
 
         // Pour the header + prose body + sidebar into the shared detail skeleton.
