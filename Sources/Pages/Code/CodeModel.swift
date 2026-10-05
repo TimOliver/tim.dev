@@ -146,8 +146,11 @@ enum CodeRenderer {
     static func repoLine(owner: String, name: String) -> String {
 
         // Mark, then `owner/` and the repo name in separate spans so CSS can
-        // weight them differently. Both fields escaped for the HTML context.
-        #"<span class="code-repo">\#(githubMark())<span class="code-owner">\#(escape(owner))/</span><span class="code-name">\#(escape(name))</span></span>"#
+        // weight them differently. The pair shares one `.code-path` wrapper so
+        // the flex gap only separates it from the mark (no space after the
+        // slash); `<wbr>` lets a long name wrap after the slash. Both fields
+        // escaped for the HTML context.
+        #"<span class="code-repo">\#(githubMark())<span class="code-path"><span class="code-owner">\#(escape(owner))/</span><wbr><span class="code-name">\#(escape(name))</span></span></span>"#
     }
 
     /// The language dot + label + stars stat row.

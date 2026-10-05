@@ -1008,6 +1008,11 @@ body > header::before {
     main {
         font-size: 18px;
     }
+    /* Match the header's 24px inner padding (max-width 1000px below), so
+       content lines up with the logo - e.g. iPhone landscape and iPad. */
+    :root {
+        --container-pad: 24px;
+    }
 }
 
 @media (max-width: 1000px) {

@@ -1,16 +1,16 @@
 ---
 title: BlurUIKit
-tagline: A collection of dynamic, customizable blur views for UIKit.
+tagline: An App Store safe framework for tapping into more of the dynamic blur capabilities of UIKit.
 layout: CodeDetail
-date: 2023-01-01 00:00:00
+date: 2024-06-16 00:00:00
+order: 8
 owner: TimOliver
 language: Swift
 langColor: #F05138
-stars: ★ 186
-details: Language=Swift; License=MIT; Stars=★ 186; Forks=11; Started=2023; Latest=v0.4.0
+stars: ★ 365
+details: Language=Swift; License=MIT; Stars=★ 365; Forks=13; Started=2024; Latest=1.5.0
 github: https://github.com/TimOliver/BlurUIKit
 path: /code/bluruikit/
 ---
-UIKit's blur effects are weirdly limited - you get the system materials and that's about it. BlurUIKit exposes the variable, gradient, and progressive blurs that the system frameworks use internally but never expose.
 
-It's the kind of small, focused component I most enjoy making: one job, done well.
+[Placeholder - what BlurUIKit is and my part in it, in a sentence or two.]

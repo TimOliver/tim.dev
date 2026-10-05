@@ -21,10 +21,21 @@ struct Code: StaticPage {
     /// to the shared include writer (which persists it under `Includes/_code/`).
     var body: some HTML {
 
-        // Pull the `code` collection, sort newest-first by date, and project
-        // each raw Article into the parsed `RepoInfo` view the renderer wants.
+        // Pull the `code` collection and project each raw Article into the
+        // parsed `RepoInfo` view the renderer wants. A front-matter `order:`
+        // (1 = first) curates the grid by importance; entries without one
+        // follow, newest-first by date.
         let repos = articles.typed("code")
-            .sorted { $0.date > $1.date }
+            .sorted { a, b in
+                let oa = Int(a.metadata["order"] as? String ?? "")
+                let ob = Int(b.metadata["order"] as? String ?? "")
+                switch (oa, ob) {
+                case let (x?, y?): return x < y
+                case (.some, nil): return true
+                case (nil, .some): return false
+                case (nil, nil): return a.date > b.date
+                }
+            }
             .map(RepoInfo.init)
 
         // Build the card-grid markup, then write it out through the shared
@@ -46,7 +57,7 @@ extension CodeRenderer {
         // Open the shared collection wrapper and the page heading block.
         var s = #"<div class="collection">"#
         s += #"<h1 class="page-title">Code</h1>"#
-        s += #"<p class="page-subtitle">Open source UIKit components I've built and maintained over the years.</p>"#
+        s += #"<p class="page-subtitle">My own open source libraries, plus a few bigger projects I've been lucky enough to contribute to.</p>"#
 
         // The responsive card grid; one anchor card per repo follows.
         s += #"<div class="collection-grid">"#

@@ -35,6 +35,12 @@
     flex: 0 0 auto;
 }
 
+/* owner/ + name as one flex item, so they sit flush against the slash. */
+.code-path {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
 .code-owner {
     color: var(--text-secondary);
     font-weight: 400;
@@ -42,8 +48,6 @@
 
 .code-name {
     color: var(--heading);
-    min-width: 0;
-    overflow-wrap: anywhere;
 }
 
 .code-tagline {

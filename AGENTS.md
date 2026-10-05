@@ -88,6 +88,9 @@ media-manifest.json            build INPUT written by build-media.py (dimensions
   slug/blurb and is read off disk by `ArtRenderer`. Item `path:` must start `/art/<section-slug>/`;
   an item no section claims is a `fatalError`. Art `youtube:` is a channel/video URL that links out;
   Talks `youtube:` is a video ID that embeds via lite-youtube — don't conflate them.
+- **Code** is curated, not chronological: `order:` (1 = first) sets the grid order; entries without
+  it follow newest-first by `date:` (the repo's creation date). Stats (`stars:`, `details:`) are
+  hand-copied from GitHub until the planned auto-fill lands, so refresh them before trusting them.
 - **Talks** use `topics:` not `tags:` so Ignite doesn't generate tag pages or feed categories. The
   featured hero is always the newest talk and also appears in the grid. Year buckets are hard-coded
   in BOTH `Talks.swift` (`buckets`) and `site.js` (`YEAR_BUCKETS`); the newest is `2023-26`, so add a
