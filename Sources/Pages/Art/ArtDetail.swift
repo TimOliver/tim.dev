@@ -48,7 +48,14 @@ extension ArtRenderer {
         // Large poster in a bordered surface. Video items keep their
         // "Watch on YouTube" sidebar link rather than embedding - art's
         // `youtube:` holds a channel URL, not a video id.
-        header += #"<div class="collection-detail-shot">"#
+        // Unlike the other collections' 16:9 frame, art keeps the image's own
+        // shape (4:3 renders, square-ish logos aren't cropped): the manifest's
+        // width / height rides along as `--ar` for collection.css.
+        if let path = item.image, let entry = Media.manifest[path] {
+            header += #"<div class="collection-detail-shot collection-detail-shot--natural" style="--ar: \#(entry.width) / \#(entry.height)">"#
+        } else {
+            header += #"<div class="collection-detail-shot">"#
+        }
         // Same detail column as Code/Talks: 1250px page width minus 2x35px
         // padding = 1180px - nowhere near the grid card's width.
         header += Media.box(

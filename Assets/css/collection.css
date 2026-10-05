@@ -403,3 +403,15 @@ body:has(.collection-detail) {
     aspect-ratio: 16 / 9;
     border-radius: 0;
 }
+
+/* Art detail keeps each image's own ratio (`--ar`, set inline from the media
+   manifest) so nothing is cropped. The frame narrows and centres to stay within
+   the same viewport-height budget as the 16:9 heroes, with a floor so short
+   landscape screens don't shrink it to a postage stamp. */
+.collection-detail-shot--natural {
+    width: min(100%, max(480px, calc(var(--detail-media-max-h) * var(--ar))));
+    margin-inline: auto;
+}
+.collection-detail-shot--natural .art-shot {
+    aspect-ratio: var(--ar);
+}
