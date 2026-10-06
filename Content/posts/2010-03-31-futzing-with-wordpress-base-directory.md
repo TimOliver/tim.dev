@@ -22,11 +22,11 @@ Now, herein lay the dilemma:
 So the solution seemed pretty simple. I wrote a custom .htaccess file that would soft redirect any server requests through to the ‘/blog’ directory like so:
 
 ```
-<pre class="brush: plain; title: ; notranslate" title="">Options +FollowSymLinks
+Options +FollowSymLinks
 # Enable rewrite rules
 RewriteEngine On
 RewriteBase /
-#Default: Tim-Oliver Blog</code>
+#Default: Tim-Oliver Blog
 RewriteRule ^(.*)$ /blog/$1 [QSA,L]
 ```
 
@@ -37,7 +37,7 @@ Erm…. unfortunately, it started interfering with the Regex-Tester.com subdomai
 So the natural solution to this was to edit the .htaccess code and get it to make exceptions for specific domain names (ie Regex-Tester.com) and then delegate the remainder back to default:
 
 ```
-<pre class="brush: plain; title: ; notranslate" title="">#Regex-Tester Site
+#Regex-Tester Site
 RewriteCond %{HTTP_HOST} ^(www\.)?regex-tester\.com
 RewriteRule .* - [L]
 ```
@@ -53,7 +53,7 @@ After furthur digging around in the WordPress source code, I eventually discover
 So my final solution to this was to just write a quick WP plugin and get it to modify the $\_SERVER variables before WordPress actually began execution:
 
 ```
-<pre class="brush: php; title: ; notranslate" title="">//remove '/blog' from the URI values to ensure correct URLS
+//remove '/blog' from the URI values to ensure correct URLS
 //(/blog is needed by Apache, but should be invisible to the PHP)
 function SantizeServerURIs($str)
 {

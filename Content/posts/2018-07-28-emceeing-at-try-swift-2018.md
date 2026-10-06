@@ -92,14 +92,3 @@ P.S Oh yeah. And there was more karaoke again. 😀
 
 <iframe allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/Ak6Q7aqQfOY" width="560"></iframe>
 
-<div id="safarikai-popup" style="display: none;">- <div class="kana">す</div><div class="kanji">巣</div><div class="translation"><div class="romaji">[su]</div>nest; rookery; breeding place; hive; den; haunt; (spider’s) web
-    
-    </div>
-- <div class="kana">す</div><div class="kanji">栖</div><div class="translation"><div class="romaji">[su]</div>nest; rookery; breeding place; hive; den; haunt; (spider’s) web
-    
-    </div>
-- <div class="kana">す</div><div class="kanji">酢</div><div class="translation"><div class="romaji">[su]</div>vinegar
-    
-    </div>
-
-</div>
