@@ -2,8 +2,8 @@
 
 import Foundation
 
-/// Rewrites legacy Instagram embeds in compiled article HTML into clean, modern
-/// iframes.
+/// Rewrites legacy Instagram embeds in compiled article HTML into static
+/// social cards.
 ///
 /// Old posts carry two broken forms:
 ///  - A mangled `<blockquote>` (its `instagram-media` class + permalink attrs
@@ -11,11 +11,13 @@ import Foundation
 ///    `//platform.instagram.com/en_US/embeds.js`.
 ///  - Older protocol-relative `<iframe src="//instagram.com/p/<code>/embed/">`.
 ///
-/// Both are reduced to the post shortcode and re-emitted as a token-free,
-/// lazy-loaded iframe pointing at `https://www.instagram.com/p/<code>/embed/
-/// captioned/`. Height is auto-fitted client-side (see the Instagram resize
-/// listener in site.js) so captions aren't clipped. Bare in-prose Instagram
-/// links are left untouched - only blockquote/iframe embeds are rewritten.
+/// Both are reduced to the post shortcode and re-emitted as the same
+/// `.embed_social` card the migrated tweets use (social-embeds.css), built
+/// from `instagram-posts.json` at the repo root: a one-time snapshot of each
+/// post's account, caption and date, with its photo saved under
+/// `Assets/img/posts/instagram/`. Nothing loads from Instagram. Bare in-prose
+/// Instagram links are left untouched - only blockquote/iframe embeds are
+/// rewritten.
 enum InstagramEmbed {
 
     /// Entry point: rewrites every legacy Instagram embed in one article's
@@ -23,14 +25,10 @@ enum InstagramEmbed {
     /// render from `ArticleShell.htmlString`. Each step below rewrites the
     /// output of the previous one - the dead embed script is stripped first,
     /// then each container form (figure, align-center div, blockquote, iframe)
-    /// is reduced to the post shortcode and re-emitted as one clean iframe.
+    /// is reduced to the post shortcode and re-emitted as one static card
+    /// (the same card in feeds - it is plain HTML).
     static func transform(_ html: String, forFeed: Bool = false) -> String {
-
-        // Feed readers cannot run the iframe sizing script. Keep every post
-        // accessible with a plain permalink in that context.
-        let render: (String) -> String = { code in
-            forFeed ? #"<p><a href="https://www.instagram.com/p/\#(code)/">View this post on Instagram</a></p>"# : embed(code)
-        }
+        let render: (String) -> String = { code in embed(code, forFeed: forFeed) }
 
         // Rewritten in place; each `replace` folds its result back into `out`
         // so the passes compose.
@@ -77,12 +75,99 @@ enum InstagramEmbed {
     /// iframe carries no fixed height - the Instagram resize listener in site.js
     /// receives Instagram's postMessage height and grows the frame so captions
     /// aren't clipped.
-    private static func embed(_ code: String) -> String {
+    private static func embed(_ code: String, forFeed: Bool) -> String {
+        let permalink = "https://www.instagram.com/p/\(code)/"
+        // Not snapshotted yet: still a card, just a link, and say so loudly.
+        guard let post = posts[code] else {
+            print("warning: Instagram post \(code) is not in instagram-posts.json; rendering a link")
+            return #"<blockquote class="embed_social" data-platform="instagram">"#
+                + #"<p class="meta"><a href="\#(permalink)">View this post on Instagram</a></p></blockquote>"#
+        }
+        let date = displayDate(post.date)
 
-        // The interpolated `\#(code)` is the post shortcode; everything else is
-        // fixed. `captioned` keeps the post's caption, and `loading="lazy"`
-        // defers the fetch until the embed nears the viewport.
-        #"<div class="ig-embed"><iframe src="https://www.instagram.com/p/\#(code)/embed/captioned/" loading="lazy" scrolling="no" allowtransparency="true" frameborder="0" title="Instagram post"></iframe></div>"#
+        // A post deleted since it was embedded: keep the date and the link.
+        guard let user = post.user, let image = post.image else {
+            return #"<blockquote class="embed_social" data-platform="instagram">"#
+                + #"<p class="text">This post is no longer on Instagram.</p>"#
+                + #"<p class="meta"><a href="\#(permalink)">\#(date)</a></p></blockquote>"#
+        }
+
+        var s = #"<blockquote class="embed_social" data-platform="instagram">"#
+        s += #"<div class="header"><a class="name_header" href="https://www.instagram.com/\#(user)/">"#
+        s += #"<img class="avatar" src="/img/site/avatars/\#(user).jpg" alt="" width="46" height="46">"#
+        s += #"<div class="name"><span class="display_name">\#(displayNames[user] ?? user)</span>"#
+        s += #"<span class="account_name">@\#(user)</span></div></a>"#
+        s += #"<svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#instagram"/></svg></div>"#
+
+        // The photo opens in the lightbox like any other post image.
+        let plain = post.caption.replacingOccurrences(of: "<br>", with: " ")
+            .replacingOccurrences(of: #"<[^>]+>"#, with: "", options: .regularExpression)
+        let variants = manifest[image]
+        s += #"<div class="media"><a href="\#(image)" data-lightbox data-caption="\#(plain.replacingOccurrences(of: "\"", with: "&quot;"))">"#
+        s += #"<img src="\#(image)""#
+        // Feeds get a plain src: readers ignore srcset and the feed pass only
+        // absolutizes src/href.
+        if let v = variants, !forFeed {
+            s += #" srcset="\#(v.srcset)" sizes="(max-width: 720px) calc(100vw - 82px), 550px" width="\#(v.width)" height="\#(v.height)""#
+        }
+        s += #" alt="" loading="lazy" decoding="async"></a></div>"#
+
+        if !post.caption.isEmpty { s += #"<p class="text">\#(post.caption)</p>"# }
+        s += #"<p class="meta"><a href="\#(permalink)">\#(date)</a></p></blockquote>"#
+        return s
+    }
+
+    /// One post's snapshot from instagram-posts.json. `user`/`image` are nil
+    /// for a post deleted before the snapshot was taken.
+    private struct Post: Decodable {
+        let user: String?
+        let date: String
+        let caption: String
+        let image: String?
+        enum CodingKeys: String, CodingKey { case user, date, caption, image }
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            user = try c.decodeIfPresent(String.self, forKey: .user)
+            date = try c.decode(String.self, forKey: .date)
+            caption = try c.decodeIfPresent(String.self, forKey: .caption) ?? ""
+            image = try c.decodeIfPresent(String.self, forKey: .image)
+        }
+    }
+
+    private static let displayNames = ["timoliver": "Tim Oliver", "icomicsapp": "iComics"]
+
+    private static let root = URL(fileURLWithPath: #filePath)
+        .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+
+    private static let posts: [String: Post] = {
+        let url = root.appending(path: "instagram-posts.json")
+        guard let data = try? Data(contentsOf: url),
+              let posts = try? JSONDecoder().decode([String: Post].self, from: data) else {
+            fatalError("Could not read \(url.path)")
+        }
+        return posts
+    }()
+
+    /// The srcset/size entries the card's photo needs, from media-manifest.json.
+    private static let manifest: [String: (srcset: String, width: Int, height: Int)] = {
+        guard let data = try? Data(contentsOf: root.appending(path: "media-manifest.json")),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: [String: Any]] else { return [:] }
+        var out: [String: (String, Int, Int)] = [:]
+        for (path, entry) in json where path.hasPrefix("/img/posts/instagram/") {
+            if let srcset = entry["srcset"] as? String, let w = entry["width"] as? Int, let h = entry["height"] as? Int {
+                out[path] = (srcset, w, h)
+            }
+        }
+        return out
+    }()
+
+    /// "2017-03-08" → `<time datetime="2017-03-08">8 March 2017</time>`.
+    private static func displayDate(_ iso: String) -> String {
+        let parts = iso.split(separator: "-").compactMap { Int($0) }
+        guard parts.count == 3 else { return iso }
+        let months = ["January", "February", "March", "April", "May", "June", "July",
+                      "August", "September", "October", "November", "December"]
+        return #"<time datetime="\#(iso)">\#(parts[2]) \#(months[parts[1] - 1]) \#(parts[0])</time>"#
     }
 
     /// Pulls the first Instagram post shortcode (the `/p/<code>` segment) out of

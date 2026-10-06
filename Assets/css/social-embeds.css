@@ -12,13 +12,15 @@ article .embed_social {
     --embed-text: var(--text);
     --embed-text-secondary: var(--text-secondary);
     background: var(--embed-bg);
-    border-radius: 8px;
+    border-radius: 22px;
     corner-shape: squircle;
     border: 1px solid var(--embed-border);
     min-width: 270px;
-    max-width: 508px;
-    padding: 16px;
-    margin: 0 auto 1.75em;
+    max-width: 600px;
+    padding: 20px 24px;
+    /* Top margin for cards that follow bare text (migrated posts often have
+       text outside a <p>); after a paragraph the margins collapse. */
+    margin: 1.25em auto 1.75em;
 }
 
 article .embed_social::before {
@@ -47,6 +49,22 @@ article .embed_social[data-platform="bluesky"] {
     --embed-border: #D4DBE2;
     --embed-text: #0B0F19;
     --embed-text-secondary: #42576C;
+}
+
+article .embed_social[data-platform="instagram"] {
+    --accent: #E1306C;
+    --embed-bg: #FFFFFF;
+    --embed-border: #DBDBDB;
+    --embed-text: #000000;
+    --embed-text-secondary: #737373;
+}
+
+[data-color-scheme="dark"] article .embed_social[data-platform="instagram"] {
+    --accent: #F56A92;
+    --embed-bg: #000000;
+    --embed-border: #363636;
+    --embed-text: #F5F5F5;
+    --embed-text-secondary: #A8A8A8;
 }
 
 [data-color-scheme="dark"] article .embed_social[data-platform="mastodon"] {
@@ -90,6 +108,7 @@ article .embed_social[data-platform="bluesky"] {
 }
 
 .embed_social[data-platform="twitter"] .avatar,
+.embed_social[data-platform="instagram"] .avatar,
 .embed_social[data-platform="bluesky"] .avatar {
     border-radius: 50%;
     /* These are circular; reset the squircle inherited from the base
@@ -135,14 +154,17 @@ article .embed_social[data-platform="bluesky"] {
     height: auto;
     color: var(--accent);
 }
-/* The bird is a solid glyph that reads heavier than the other logos. */
-.embed_social[data-platform="twitter"] .embed_logo {
+/* The bird and the Instagram camera are solid glyphs that read heavier than
+   the other logos. */
+.embed_social[data-platform="twitter"] .embed_logo,
+.embed_social[data-platform="instagram"] .embed_logo {
     width: 30px;
     justify-self: end;
-    /* Top-aligned, then nudged up to offset the glyph's inset in its viewBox,
-       so the bird sits as far from the card's top edge as from its right. */
+    /* Top-aligned and dropped so the glyph sits as far from the card's top
+       edge as from its right (the 20px top padding is less than the 24px
+       sides). */
     align-self: start;
-    margin-top: -1.5px;
+    margin-top: 2px;
 }
 
 .embed_social .text {
@@ -200,4 +222,35 @@ article .embed_social[data-platform="bluesky"] {
     border-radius: 8px;
     corner-shape: squircle;
     margin: 0;
+}
+
+/* Instagram leads with the photo, so the caption sits below it. */
+.embed_social[data-platform="instagram"] .media {
+    margin: 0 0 12px;
+}
+
+/* Instagram's glyph is plain black on the light card and white on the dark
+   one, like the app's own chrome (the pink accent stays on caption links). */
+.embed_social[data-platform="instagram"] .embed_logo {
+    color: #000;
+    /* The camera fills its viewBox edge to edge (the bird doesn't), so it
+       drops further for the same even corner. */
+    margin-top: 4px;
+}
+[data-color-scheme="dark"] .embed_social[data-platform="instagram"] .embed_logo {
+    color: #fff;
+}
+
+/* A bigger name sitting tighter over the handle. */
+.embed_social[data-platform="instagram"] .name .display_name {
+    font-size: 17px;
+    line-height: 20px;
+}
+.embed_social[data-platform="instagram"] .name .account_name {
+    line-height: 18px;
+}
+
+/* Name and handle tucked a little closer to the avatar. */
+.embed_social[data-platform="instagram"] a.name_header {
+    gap: 7px;
 }

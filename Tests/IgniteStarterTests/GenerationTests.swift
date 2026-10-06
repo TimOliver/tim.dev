@@ -29,7 +29,8 @@ final class GenerationTests: XCTestCase {
 
         let instagram = #"<blockquote><div style="padding:8px;">[Old caption](https://www.instagram.com/p/abc_123/)</div></blockquote><script src="//platform.instagram.com/en_US/embeds.js"></script>"#
         let instagramPage = ArticleContent.normalizedHTML(instagram)
-        XCTAssertTrue(instagramPage.components(separatedBy: #"class="ig-embed""#).count == 2, "Instagram embeds have one wrapper")
+        XCTAssertTrue(instagramPage.components(separatedBy: #"data-platform="instagram""#).count == 2, "Instagram embeds become one static card")
+        XCTAssertFalse(instagramPage.contains("<iframe"), "Instagram embeds load nothing from Instagram")
         let base = URL(string: "https://tim.dev/2021/01/01/post/")!
         let feed = ArticleContent.feedHTML(raw + instagram + ##"<p><a href="#section">Jump</a><img src='//cdn.example.org/image.jpg'><a href="../other/">Next</a></p>"##, relativeTo: base)
         XCTAssertTrue(feed.contains(#"src="https://tim.dev/img/photo.jpg""#), "repaired feed images have absolute URLs")

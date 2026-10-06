@@ -731,31 +731,6 @@
     });
 })();
 
-// Instagram embeds: our legacy posts use plain /embed/ iframes (no Instagram
-// script of our own). Instagram's embed page postMessages its rendered height -
-// mirror what their embeds.js would do and resize the matching iframe so
-// captions aren't clipped. Origin-checked; no-op on pages without IG embeds.
-(function() {
-    if (!document.querySelector('.ig-embed')) return;
-    window.addEventListener('message', function(e) {
-        var host;
-        try { host = new URL(e.origin).hostname; } catch (err) { return; }
-        if (host !== 'www.instagram.com' && host !== 'instagram.com') return;
-        var data = e.data;
-        if (typeof data === 'string') {
-            try { data = JSON.parse(data); } catch (err) { return; }
-        }
-        if (!data || data.type !== 'MEASURE' || !data.details || !data.details.height) return;
-        var frames = document.querySelectorAll('.ig-embed iframe');
-        for (var i = 0; i < frames.length; i++) {
-            if (frames[i].contentWindow === e.source) {
-                frames[i].style.height = data.details.height + 'px';
-                break;
-            }
-        }
-    });
-})();
-
 // Archive: client-side title filter. Hides rows whose title doesn't match,
 // collapses year sections that empty out, keeps the per-year count live, and
 // toggles a no-results message. No-op on pages without the archive search box.

@@ -40,6 +40,7 @@ Assets/                        copied verbatim into Build/ (css, js, img, fonts)
 Template/                      the original hand-coded mockup — design source of truth (Template/AGENTS.md)
 Scripts/                       build-media, check-site, dev-server, strip-exif, hooks, tests
 media-manifest.json            build INPUT written by build-media.py (dimensions, LQIP, variants)
+instagram-posts.json           build INPUT: snapshot of every embedded Instagram post (see below)
 ```
 
 ## How the site is built
@@ -170,6 +171,13 @@ media-manifest.json            build INPUT written by build-media.py (dimensions
   links are text with a chevron/arrow ("‹ Back to…", sidebar ↗ links); primary actions are the
   store-style badges; linked names/titles keep heading colour with the soft hover surface (About
   company names, post titles). Pick the matching row; don't invent a new style per page.
+- **Social embeds are static cards** (`.embed_social`, social-embeds.css): no platform script or
+  iframe ever loads. Migrated tweets are written into the posts as HTML; Instagram embeds are
+  rewritten at build time by `InstagramEmbed` from `instagram-posts.json` (account, caption, date
+  decoded from the shortcode) with photos in `Assets/img/posts/instagram/<shortcode>.jpg`. A new
+  Instagram embed needs an entry there (without one it renders a bare link card and the build
+  logs a warning). Avatars live in
+  `Assets/img/site/avatars/<handle>`.
 - **Store badges** (`Assets/img/portfolio/<name>-badge-light.svg` / `-dark.svg`) are pre-coloured
   pairs emitted as two `<img>`s; collection.css shows the one matching `data-color-scheme`. Edit
   both files together. Path coordinates are kept to 2 decimals (invisible even at 6x).
