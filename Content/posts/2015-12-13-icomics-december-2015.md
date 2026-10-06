@@ -21,7 +21,12 @@ Having NEVER EVER seen this on any of my own devices, I was at an absolute loss 
 After a few hours of testing, [this was the crash log I ended up with](https://twitter.com/TimOliverAU/status/655290149517955072).
 
 After scratching my head for several hours, I finally managed to trace the issue down to this block of code:  
-<script src="https://gist.github.com/TimOliver/2fe067f614097bbac763.js"></script>
+```objc
+EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+[EAGLContext setCurrentContext:context];
+glGetIntegerv(GL_MAX_TEXTURE_SIZE, &amp;ICMaxTextureSize);
+[EAGLContext setCurrentContext:nil]; //THIS LINE OF CODE IS ABSOLUTELY ESSENTIAL!!!!!!!!!
+```
 
 In a nutshell, iComics uses an OpenGL API to work out what the maximum supported image size of the GPU for that particular device is.
 

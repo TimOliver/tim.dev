@@ -18,7 +18,9 @@ It would seem to make sense that as a result of Timer Coalescing, the timers tha
 
 In any case, apparently there is a console command that lets you disable Timer Coalescing across the system:
 
-<script src="https://gist.github.com/TimOliver/8612227.js" type="text/javascript"></script>
+```
+sudo sysctl -w kern.timer.coalescing_enabled=0
+```
 
 I tested it on my Mavericks Retina MacBook Pro and I can confirm that it works, and the iOS 6 Simulator works perfectly again!
 

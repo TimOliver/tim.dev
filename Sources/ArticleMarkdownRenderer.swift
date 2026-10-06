@@ -79,7 +79,10 @@ struct ArticleMarkdownRenderer: ArticleRenderer, MarkupVisitor {
     }
 
     mutating func visitCodeBlock(_ codeBlock: Markdown.CodeBlock) -> String {
-        let code = Self.text(codeBlock.code)
+        // C-family fences get build-time syntax colouring (CodeHighlighter).
+        let code = codeBlock.language.map(CodeHighlighter.supports) == true
+            ? CodeHighlighter.highlight(codeBlock.code)
+            : Self.text(codeBlock.code)
         if let language = codeBlock.language {
             return #"<pre><code class="language-\#(Self.attribute(language.lowercased()))">\#(code)</code></pre>"#
         }

@@ -1402,6 +1402,54 @@ article li::marker {
     font-size: 0.8em;
 }
 
+/* Code in posts (migrated gists, config snippets): a scrolling card on the
+   secondary surface, so long lines scroll inside it instead of widening the
+   page. Monospace is the one exception to the no-monospace rule - code needs
+   aligned columns - in the same stack the Comentario code blocks use. */
+article pre {
+    /* Code breaks out of the reading column (up to 980px) so more of each
+       line is visible, staying inside the page gutters on narrow screens. */
+    width: min(980px, 100vw - 2 * var(--container-pad));
+    margin: 0 0 1.5em 50%;
+    transform: translateX(-50%);
+    padding: 1em 1.25em;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    corner-shape: squircle;
+    overflow-x: auto;
+    font-size: 0.78em;
+    line-height: 1.55;
+    tab-size: 4;
+}
+
+article pre code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Syntax colours (CodeHighlighter.swift) - Xcode's default palettes. */
+:root {
+    --hl-keyword: #9B2393;
+    --hl-string: #C41A16;
+    --hl-comment: #5D6C79;
+    --hl-number: #1C00CF;
+    --hl-type: #3900A0;
+    --hl-pre: #643820;
+}
+[data-color-scheme="dark"] {
+    --hl-keyword: #FC5FA3;
+    --hl-string: #FC6A5D;
+    --hl-comment: #6C7986;
+    --hl-number: #D0BF69;
+    --hl-type: #A167E6;
+    --hl-pre: #FD8F3F;
+}
+.hl-keyword { color: var(--hl-keyword); font-weight: 600; }
+.hl-string { color: var(--hl-string); }
+.hl-comment { color: var(--hl-comment); }
+.hl-number { color: var(--hl-number); }
+.hl-type { color: var(--hl-type); }
+.hl-pre { color: var(--hl-pre); }
+
 blockquote {
     /*font-style: italic;*/
     color: color-mix(in srgb, var(--text-secondary) 50%, var(--text));
