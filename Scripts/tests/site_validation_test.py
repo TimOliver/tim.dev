@@ -66,6 +66,15 @@ class SiteValidationTests(unittest.TestCase):
         self.assertIn("missing CSS asset: ../img/background.svg", result.stderr)
         self.assertIn("1 error(s)", result.stdout)
 
+    def test_sitemap_url_without_trailing_slash_fails(self):
+        sitemap = self.root / "sitemap.xml"
+        bare = POST_URL.rstrip("/")
+        sitemap.write_text(sitemap.read_text().replace(POST_URL, bare))
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(f"sitemap URL lacks the canonical trailing slash: {bare}", result.stderr)
+        self.assertIn("1 error(s)", result.stdout)
+
     def test_dotfile_in_build_fails(self):
         (self.root / "img/.DS_Store").write_bytes(b"\x00")
         result = self.validate()

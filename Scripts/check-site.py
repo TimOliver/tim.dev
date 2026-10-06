@@ -192,6 +192,8 @@ def main() -> int:
                 target = local_target(element.text or "", SITE + "/")
                 if not target or not target[0].is_file():
                     fail(sitemap, f"missing sitemap destination: {element.text}")
+                elif not urlsplit(element.text or "").path.endswith(("/", ".html")):
+                    fail(sitemap, f"sitemap URL lacks the canonical trailing slash: {element.text}")
     except (OSError, ET.ParseError) as error:
         errors.add(f"sitemap.xml: {error}")
 

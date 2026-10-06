@@ -27,6 +27,7 @@ struct IgniteWebsite {
             try await site.publish()
             try buildFeeds(siteURL: site.url)
             try stripIgniteCore()
+            try normalizeSitemap()
             try removeDotfiles()
         } catch {
             // Fail loud: a zero exit here would let a deploy script ship a
@@ -43,6 +44,23 @@ struct IgniteWebsite {
         URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()  // Sources/
             .deletingLastPathComponent()  // repo root
+    }
+
+    /// Ignite writes each static page's sitemap <loc> from its bare path
+    /// (`/about`), while the page's canonical URL has a trailing slash.
+    /// Rewrite every <loc> through SiteURL so the two always agree.
+    static func normalizeSitemap() throws {
+        let url = packageRoot.appending(path: "Build/sitemap.xml")
+        let xml = try String(contentsOf: url, encoding: .utf8)
+        let regex = try NSRegularExpression(pattern: "<loc>([^<]+)</loc>")
+        let result = NSMutableString(string: xml)
+        // Back to front, so each replacement leaves earlier ranges valid.
+        for match in regex.matches(in: xml, range: NSRange(location: 0, length: result.length)).reversed() {
+            let range = match.range(at: 1)
+            guard let loc = URL(string: result.substring(with: range)) else { continue }
+            result.replaceCharacters(in: range, with: SiteURL.canonicalPage(loc))
+        }
+        if result as String != xml { try (result as String).write(to: url, atomically: true, encoding: .utf8) }
     }
 
     /// Ignite copies Assets/ into Build/ verbatim, including Finder's
