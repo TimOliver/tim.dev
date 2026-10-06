@@ -25,6 +25,7 @@ struct IgniteWebsite {
             // read and rewrite the files it just produced. buildFeeds scopes
             // and splits the RSS; stripIgniteCore removes the unused bundle;
             // removeDotfiles drops Finder litter copied over from Assets/.
+            try clearGeneratedIncludes()
             try await site.publish()
             try buildFeeds(siteURL: site.url)
             try stripIgniteCore()
@@ -193,6 +194,18 @@ struct IgniteWebsite {
             result.replaceCharacters(in: range, with: SiteURL.canonicalPage(loc))
         }
         if result as String != xml { try (result as String).write(to: url, atomically: true, encoding: .utf8) }
+    }
+
+    /// Pages write their HTML into Includes/_<dir>/<key>.html during publish
+    /// (see CollectionRenderer.include), and nothing ever removed a fragment
+    /// whose page had been renamed or deleted. Every live page rewrites its
+    /// fragment on each build, so start from empty folders.
+    static func clearGeneratedIncludes() throws {
+        let fm = FileManager.default
+        let includes = packageRoot.appending(path: "Includes")
+        for name in try fm.contentsOfDirectory(atPath: includes.path) where name.hasPrefix("_") {
+            try fm.removeItem(at: includes.appending(path: name))
+        }
     }
 
     /// Ignite copies Assets/ into Build/ verbatim, including Finder's

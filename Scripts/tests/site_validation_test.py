@@ -21,7 +21,8 @@ class SiteValidationTests(unittest.TestCase):
             page = self.root / relative
             page.parent.mkdir(parents=True, exist_ok=True)
             page.write_text(
-                f'<html><head><link rel="canonical" href="{canonical}">'
+                f'<html lang="en"><head><title>Example</title><meta name="description" content="Example">'
+                f'<link rel="canonical" href="{canonical}">'
                 f'<meta property="og:url" content="{canonical}">'
                 '<link rel="stylesheet" href="/css/site.css"></head><body>Example</body></html>'
             )
@@ -83,6 +84,18 @@ class SiteValidationTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("uses data-lightbox but does not load /js/lightbox3.umd.js", result.stderr)
         self.assertIn("1 error(s)", result.stdout)
+
+    def test_page_without_title_lang_or_description_fails(self):
+        page = self.root / "2024/01/01/example/index.html"
+        page.write_text(page.read_text()
+                        .replace('<html lang="en">', "<html>")
+                        .replace("<title>Example</title>", "")
+                        .replace('<meta name="description" content="Example">', ""))
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("missing <html lang>", result.stderr)
+        self.assertIn("needs exactly one non-empty <title>", result.stderr)
+        self.assertIn("needs exactly one non-empty meta description", result.stderr)
 
     def test_dotfile_in_build_fails(self):
         (self.root / "img/.DS_Store").write_bytes(b"\x00")

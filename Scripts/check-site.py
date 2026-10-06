@@ -28,6 +28,10 @@ class Page(HTMLParser):
         self.canonicals: list[str] = []
         self.og_urls: list[str] = []
         self.robots: list[str] = []
+        self.lang = ""
+        self.titles: list[str] = []
+        self.descriptions: list[str] = []
+        self.in_title = False
         self.text: list[str] = []
         self.code_depth = 0
         self.anchor_depth = 0
@@ -43,6 +47,13 @@ class Page(HTMLParser):
             self.anchor_depth += 1
         if attrs.get("id"):
             self.ids.append(attrs["id"])
+        if tag == "html":
+            self.lang = attrs.get("lang", "") or ""
+        if tag == "title":
+            self.in_title = True
+            self.titles.append("")
+        if tag == "meta" and attrs.get("name") == "description":
+            self.descriptions.append(attrs.get("content", "") or "")
         if tag == "link" and attrs.get("rel") == "canonical":
             self.canonicals.append(attrs.get("href", ""))
         if tag == "meta" and attrs.get("property") == "og:url":
@@ -60,12 +71,16 @@ class Page(HTMLParser):
                     self.references.append((key, candidate.strip().split()[0]))
 
     def handle_endtag(self, tag):
+        if tag == "title":
+            self.in_title = False
         if tag in {"pre", "code", "script", "style"}:
             self.code_depth = max(0, self.code_depth - 1)
         if tag == "a":
             self.anchor_depth = max(0, self.anchor_depth - 1)
 
     def handle_data(self, text):
+        if self.in_title:
+            self.titles[-1] += text
         if not self.code_depth:
             self.text.append(text)
 
@@ -210,6 +225,16 @@ def main() -> int:
             loaded = re.search(rf'src="{re.escape(stem)}(\.[0-9a-f]{{8}})?\.{extension}"', html)
             if marker in html and not loaded:
                 fail(path, f"uses {marker} but does not load {script}")
+
+    # Every page needs a language, one non-empty <title> and one non-empty
+    # meta description (search results and link previews use them).
+    for path, page in pages.items():
+        if not page.lang.strip():
+            fail(path, "missing <html lang>")
+        if len(page.titles) != 1 or not page.titles[0].strip():
+            fail(path, "needs exactly one non-empty <title>")
+        if len(page.descriptions) != 1 or not page.descriptions[0].strip():
+            fail(path, "needs exactly one non-empty meta description")
 
     # Dotfiles (.DS_Store and the like) must never deploy; Site.swift deletes
     # them after publishing, so one here means that pass broke.

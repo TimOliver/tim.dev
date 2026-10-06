@@ -341,10 +341,12 @@ a.about-co .about-co-icon {
     margin: 0;
 }
 
-.about-timeline p {
+/* Muted captions: .about-cols scoping matches the specificity of the body-prose
+   colour rule above, which would otherwise win. */
+.about-cols .about-timeline p {
     font-size: 0.85em;
     color: var(--text-secondary);
-    margin: 0.2em 0 0;
+    margin-top: 0.2em;
 }
 
 /* Small grey eyebrow label used across About - timeline entries, column
