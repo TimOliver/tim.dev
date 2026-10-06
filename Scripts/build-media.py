@@ -101,7 +101,7 @@ def lqip_data_uri(im: Image.Image) -> str:
 
 
 def build_variants(
-    src: Path, im: Image.Image, expected: set[Path]
+    src: Path, im: Image.Image, expected: set[Path], previous: dict | None = None
 ) -> list[tuple[int, str]]:
     """Emit downscaled variants; never upscale. Returns [(width, site_path)].
 
@@ -118,42 +118,95 @@ def build_variants(
 
     # Screenshots with baked-in device chrome are transparent PNGs - keep PNG.
     # Re-containering them as JPEG would fill the bezel's transparency black.
+    # An OPAQUE PNG (a photo or screenshot saved as PNG) may encode far smaller
+    # as JPEG; each width uses whichever format is smaller by a clear margin.
     is_png = src.suffix.lower() == ".png"
+    has_alpha = is_png and ("transparency" in im.info or "A" in im.getbands())
+    jpeg_ok = not has_alpha and not (is_png and src.with_suffix(".jpg").exists())
     out: list[tuple[int, str]] = []
+    newest_input = max(src.stat().st_mtime, Path(__file__).stat().st_mtime)
 
-    for width in VARIANT_WIDTHS:
-        if width >= im.width * 0.9:
-            continue  # never upscale or emit a near-duplicate of the original
-        dst = src.with_name(f"{src.stem}@{width}w{src.suffix}")
-        newest_input = max(src.stat().st_mtime, Path(__file__).stat().st_mtime)
-        if not dst.exists() or dst.stat().st_mtime < newest_input:
-            height = max(1, round(im.height * width / im.width))
-            mode = "RGBA" if is_png and ("transparency" in im.info or "A" in im.getbands()) else "RGB"
-            resized = im.convert(mode).resize((width, height), Image.Resampling.LANCZOS)
-            icc_profile = im.info.get("icc_profile")
-            resized.info.clear()
-            with tempfile.NamedTemporaryFile(dir=dst.parent, prefix=".media-", delete=False) as tmp:
-                temporary = Path(tmp.name)
-            try:
-                if is_png:
-                    resized.save(temporary, format="PNG", optimize=True, icc_profile=icc_profile)
-                else:
-                    resized.save(temporary, format="JPEG", quality=80, progressive=True,
-                                 optimize=True, icc_profile=icc_profile)
-                temporary.chmod(0o644)
-                temporary.replace(dst)
-            finally:
-                temporary.unlink(missing_ok=True)
-        # Antialiasing a tiny flat-colour PNG can increase its byte size. Keep
-        # the original as the candidate instead of offering a costlier derivative.
-        if dst.stat().st_size >= src.stat().st_size:
+    # Downscaled widths, plus a re-encode at the source's own width: some
+    # originals (high-quality renders, PNG photos) are several times heavier
+    # per pixel than a quality-80 JPEG, and the largest candidate is what
+    # 2x/3x screens fetch. The untouched original stays the lightbox target.
+    widths = [w for w in VARIANT_WIDTHS if w < im.width * 0.9] + [im.width]
+    # A rejected full-width re-encode is deleted, so remember the verdict:
+    # when the last manifest (written after this source last changed) kept
+    # the original on top, don't re-encode it on every run.
+    if (previous and previous.get("srcset", "").endswith(f"{site_path(src)} {im.width}w")
+            and MANIFEST.exists() and MANIFEST.stat().st_mtime >= newest_input):
+        widths.pop()
+    for width in widths:
+        variant = encode_variant(src, im, width, is_png, has_alpha, jpeg_ok, newest_input)
+        if variant is None:
             continue
-        expected.add(dst)
-        out.append((width, site_path(dst)))
+        # Keep a variant only when it beats the original by enough to matter;
+        # otherwise the original itself is the better candidate. (Antialiasing
+        # a tiny flat-colour PNG can even make a downscale bigger.)
+        size, original = variant.stat().st_size, src.stat().st_size
+        if width == im.width:
+            worthwhile = size <= original * 0.8 and original - size >= 10_000
+        else:
+            worthwhile = size < original
+        if not worthwhile:
+            continue
+        expected.add(variant)
+        out.append((width, site_path(variant)))
 
-    # The source is always the largest candidate.
-    out.append((im.width, site_path(src)))
+    # The source is the largest candidate unless a full-width re-encode won.
+    if not out or out[-1][0] != im.width:
+        out.append((im.width, site_path(src)))
     return out
+
+
+def encode_variant(src: Path, im: Image.Image, width: int, is_png: bool, has_alpha: bool,
+                   jpeg_ok: bool, newest_input: float) -> Path | None:
+    """Write (or reuse) <stem>@<width>w as PNG or JPEG; returns its path."""
+    as_png = src.with_name(f"{src.stem}@{width}w.png") if is_png else None
+    as_jpg = src.with_name(f"{src.stem}@{width}w{'.jpg' if is_png else src.suffix}") if jpeg_ok else None
+    # Reuse whichever format a previous run chose, while it is still fresh.
+    for existing in (as_png, as_jpg):
+        if existing and existing.exists() and existing.stat().st_mtime >= newest_input:
+            return existing
+
+    height = max(1, round(im.height * width / im.width))
+    mode = "RGBA" if has_alpha else "RGB"
+    resized = im.convert(mode)
+    if width != im.width:
+        resized = resized.resize((width, height), Image.Resampling.LANCZOS)
+    icc_profile = im.info.get("icc_profile")
+    resized.info.clear()
+
+    encoded: dict[Path, bytes] = {}
+    if as_png:
+        buffer = io.BytesIO()
+        resized.save(buffer, format="PNG", optimize=True, icc_profile=icc_profile)
+        encoded[as_png] = buffer.getvalue()
+    if as_jpg:
+        buffer = io.BytesIO()
+        # Converted PNGs are often screenshots with text: a little more quality.
+        resized.save(buffer, format="JPEG", quality=85 if is_png else 80, progressive=True,
+                     optimize=True, icc_profile=icc_profile)
+        encoded[as_jpg] = buffer.getvalue()
+    if as_png and as_jpg and len(encoded[as_jpg]) > len(encoded[as_png]) * 0.75:
+        del encoded[as_jpg]  # PNG wins unless JPEG is clearly smaller
+    elif as_png and as_jpg:
+        del encoded[as_png]
+    (dst, data), = encoded.items()
+
+    for other in (as_png, as_jpg):
+        if other and other != dst:
+            other.unlink(missing_ok=True)
+    with tempfile.NamedTemporaryFile(dir=dst.parent, prefix=".media-", delete=False) as tmp:
+        temporary = Path(tmp.name)
+        tmp.write(data)
+    try:
+        temporary.chmod(0o644)
+        temporary.replace(dst)
+    finally:
+        temporary.unlink(missing_ok=True)
+    return dst
 
 
 def prune_orphaned_variants(expected: set[Path]) -> None:
@@ -177,6 +230,10 @@ def prune_orphaned_variants(expected: set[Path]) -> None:
 
 def main() -> None:
     manifest: dict[str, dict] = {}
+    try:
+        previous_manifest = json.loads(MANIFEST.read_text())
+    except (OSError, ValueError):
+        previous_manifest = {}
     expected_variants: set[Path] = set()
 
     for collection in COLLECTIONS:
@@ -195,7 +252,8 @@ def main() -> None:
                 # modifying them. Metadata stripping remains a separate step.
                 animated = getattr(original, "is_animated", False)
                 im = original if animated else ImageOps.exif_transpose(original)
-                variants = build_variants(src, im, expected_variants)
+                variants = build_variants(src, im, expected_variants,
+                                          previous_manifest.get(site_path(src)))
                 manifest[site_path(src)] = {
                     "width": im.width,
                     "height": im.height,

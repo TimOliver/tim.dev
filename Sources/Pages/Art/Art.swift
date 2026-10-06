@@ -89,7 +89,7 @@ extension ArtRenderer {
             }
             s += #"<div class="art-grid" style="--art-cols: \#(sec.columns);">"#
             for item in sec.items {
-                s += card(item)
+                s += card(item, columns: sec.columns)
             }
             s += "</div>"  // art-grid
             s += "</section>"
@@ -100,9 +100,26 @@ extension ArtRenderer {
         return s
     }
 
+    /// The `sizes` for a card in a grid of `columns`, matching the layout in
+    /// art.css/collection.css: one column to 600px, two to 900px, then the
+    /// section's own count across the page column (1100px wide, 1650px from a
+    /// 1650px viewport; 35px gutters each side, 24px below 1000px; 10px between
+    /// cards). Each card
+    /// has 16px padding either side, so the image is 32px narrower.
+    static func cardSizes(columns: Int) -> String {
+        let cols = max(columns, 1)
+        let gaps = 10 * (cols - 1)
+        func card(_ content: Int) -> Int { (content - gaps) / cols - 32 }
+        return "(max-width: 600px) calc(100vw - 72px), "
+            + "(max-width: 900px) calc(50vw - 61px), "
+            + "(max-width: 1000px) calc((100vw - \(48 + gaps)px) / \(cols) - 32px), "
+            + "(max-width: 1170px) calc((100vw - \(70 + gaps)px) / \(cols) - 32px), "
+            + "(max-width: 1649px) \(card(1030))px, \(card(1580))px"
+    }
+
     /// One art card: poster thumb with a duration overlay, then a caption +
     /// meta line. Reuses the cardless .collection-card shell.
-    static func card(_ item: ArtItem) -> String {
+    static func card(_ item: ArtItem, columns: Int) -> String {
 
         // The whole card is a link through to the item's detail page.
         var s = #"<a class="collection-card art-card" href="\#(escape(item.path))">"#
@@ -112,13 +129,11 @@ extension ArtRenderer {
             ? ""
             : #"<span class="art-duration">\#(escape(item.duration))</span>"#
 
-        // --art-cols varies 2-3 per section (art.css), so a vw-based guess
-        // beats one fixed px figure - close enough for sizes, not exact.
         s += Media.box(
             container: "art-shot",
             path: item.image,
             alt: item.title,
-            sizes: "(max-width: 600px) 90vw, (max-width: 900px) 45vw, 30vw",
+            sizes: cardSizes(columns: columns),
             overlay: badge
         )
 

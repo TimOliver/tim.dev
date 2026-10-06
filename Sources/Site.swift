@@ -28,6 +28,7 @@ struct IgniteWebsite {
             try buildFeeds(siteURL: site.url)
             try stripIgniteCore()
             try stripUnusedLoaders()
+            try pruneUnusedVariants()
             try normalizeSitemap()
             try removeDotfiles()
         } catch {
@@ -88,6 +89,48 @@ struct IgniteWebsite {
             if html != original { try html.write(to: url, atomically: true, encoding: .utf8) }
         }
         print("Dropped \(removed) unused loader tags from \(pages.count) article pages")
+    }
+
+    /// build-media.py makes `@<width>w` variants for every source image, but
+    /// some sources are only ever a lightbox link target (a WordPress-era
+    /// thumbnail linking to its full-size original), so their variants are
+    /// never requested. Delete every variant in Build/img that no built page,
+    /// stylesheet, script or feed mentions. (Assets/ keeps them; this only
+    /// trims what deploys.)
+    static func pruneUnusedVariants() throws {
+        let fm = FileManager.default
+        let build = packageRoot.appending(path: "Build")
+        let textTypes: Set<String> = ["html", "css", "js", "xml", "svg", "json"]
+        let variant = try NSRegularExpression(pattern: #"@\d+w\.[A-Za-z]+$"#)
+        let reference = try NSRegularExpression(pattern: #"/img/[^\s"'(),<>]+@\d+w\.[A-Za-z]+"#)
+
+        var referenced = Set<String>()
+        var candidates: [URL] = []
+        let enumerator = fm.enumerator(at: build, includingPropertiesForKeys: nil)
+        while let url = enumerator?.nextObject() as? URL {
+            let name = url.lastPathComponent
+            if url.path.contains("/img/"),
+               variant.firstMatch(in: name, range: NSRange(name.startIndex..., in: name)) != nil {
+                candidates.append(url)
+            }
+            guard textTypes.contains(url.pathExtension),
+                  let text = try? String(contentsOf: url, encoding: .utf8) else { continue }
+            for match in reference.matches(in: text, range: NSRange(text.startIndex..., in: text)) {
+                guard let range = Range(match.range, in: text) else { continue }
+                let path = String(text[range])
+                referenced.insert(path.removingPercentEncoding ?? path)
+            }
+        }
+
+        var removed = 0
+        for url in candidates {
+            let path = String(url.path.dropFirst(build.path.count))
+            if !referenced.contains(path) {
+                try fm.removeItem(at: url)
+                removed += 1
+            }
+        }
+        print("Pruned \(removed) unreferenced image variants")
     }
 
     /// Ignite writes each static page's sitemap <loc> from its bare path

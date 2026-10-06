@@ -13,7 +13,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from PIL import Image, ImageCms, PngImagePlugin
+from PIL import Image, ImageCms, ImageOps, PngImagePlugin
 
 
 SCRIPTS = Path(__file__).resolve().parents[1]
@@ -116,8 +116,35 @@ class MediaPipelineTests(unittest.TestCase):
         before = digest(source)
         entry = self.build()["/img/posts/portrait.jpg"]
         self.assertEqual((entry["width"], entry["height"]), (600, 1000))
-        self.assertTrue(entry["srcset"].endswith("portrait.jpg 600w"))
+        top, width = entry["srcset"].split(", ")[-1].split()
+        self.assertEqual(width, "600w")
+        with Image.open(self.media.ASSETS / top.lstrip("/")) as candidate:
+            self.assertEqual(ImageOps.exif_transpose(candidate).size, (600, 1000))
         self.assertEqual(digest(source), before)
+
+    def test_heavy_original_gets_a_full_width_reencode(self):
+        source = self.posts / "render.jpg"
+        Image.effect_noise((1032, 600), 60).convert("RGB").save(source, quality=100, subsampling=0)
+        before = digest(source)
+        entry = self.build()["/img/posts/render.jpg"]
+        top, width = entry["srcset"].split(", ")[-1].split()
+        self.assertEqual((top, width), ("/img/posts/render@1032w.jpg", "1032w"))
+        self.assertLess((self.posts / "render@1032w.jpg").stat().st_size, source.stat().st_size * 0.8)
+        self.assertEqual(digest(source), before)
+
+    def test_opaque_png_photo_gets_jpeg_variants_but_flat_png_stays_png(self):
+        photo = self.posts / "photo.png"
+        Image.effect_noise((900, 500), 60).convert("RGB").save(photo)
+        flat = self.posts / "flat.png"
+        image = Image.new("RGB", (900, 500), "white")
+        for x in range(0, 900, 60):
+            image.paste("black", (x, 0, x + 2, 500))
+        image.save(flat)
+        manifest = self.build()
+        self.assertIn("/img/posts/photo@400w.jpg 400w", manifest["/img/posts/photo.png"]["srcset"])
+        self.assertFalse((self.posts / "photo@400w.png").exists())
+        self.assertIn("/img/posts/flat@400w.png 400w", manifest["/img/posts/flat.png"]["srcset"])
+        self.assertFalse((self.posts / "flat@400w.jpg").exists())
 
     def test_corrupt_source_does_not_replace_previous_manifest(self):
         self.media.MANIFEST.write_text('{"previous": true}\n')
