@@ -217,7 +217,7 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
   downscaled and EXIF-stripped on device into `Assets/img/posts/YYYY/MM/`.
 - Auto-filled metadata: YouTube thumbnails/titles for talks, GitHub stats for code; App Store lookup
   only as a one-time import (some apps are delisted).
-- Talks are real as of October 2026: 31 recordings, 2011–2026, from Tim's @timXD channel and the
+- Talks are real as of October 2026: 35 recordings, 2011–2026, from Tim's @timXD channel and the
   conferences' own channels (each talk's `youtube:` is the video ID). Bodies are condensed from the
   YouTube descriptions; a few with no description are minimal. (The About page's placeholders were
   also filled in October 2026.)

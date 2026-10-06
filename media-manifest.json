@@ -167,6 +167,12 @@
     "srcset": "/img/art/commissions/necrobarista@400w.jpg 400w, /img/art/commissions/necrobarista@800w.jpg 800w, /img/art/commissions/necrobarista.jpg 1280w",
     "width": 1280
   },
+  "/img/art/commissions/waicon-2012.jpg": {
+    "height": 720,
+    "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACfklEQVR42gXBSU8TUQAA4Hlv3syUbtiWSjdaE8BQqmyJCYoxeDHxSDx49OCFX+DBP+HVf2BMNN64GAwCsgiC1iKttnSDMp1O2+mbpZ2l7/l9wNzcZSNhZmaKIZQiFuRzTOESchz18zSdYDwuK18kl5rL6zLUTuOoUKP8yqt17aJqfP7Gvny8yhMipJIUAlbD0B7CNibWgPIcwgaMhLnIzaHTV77uDM8KpEeOT8v7Xw7dlE2momwmPs5REp2fA4QoHz62srlu3xDyuX6teNVoO8VqY+cHPsoRWe8ZPFbN4HgI1zAuS7P30ui0lAcj7BKEl6XC4fF3t4pCXnBtMx2LTAVMtVqDhNFsWu4xsqKsrSZExr0cRNsHzdLJOVq9c3d6cRG6Paxj9Vmy7IcVqm/0mh7WO9oJeyCwKKgq1p+6Mjbt054vZVyRs7cbVwPpomYDpy1BQXAEd6dc0a7rfoAGXUXptquSRMyhixLZ7EFpqBPWTIWEGJwXAp/ebAGvaYR0QHSD4fhWdhvn3nHpBzx0qxYH/ZMTsSTr4gnVd36939utqm0nmYyfb/1eSdwKjwYYaqk8RtpeFotZUTA7qWe9ct2ycCZhRf5mdbzmCqGD1tlJDtfFrjOAEd6umT0C6q/X1yYic4xlsk/ur4i4NcbJk74bAQBmQn5Blip1Ikq4XarSoPRPNGJjMLMQtpGXJezP/Xz1+irmOGxLRVSAhIvu5uQF5Wg2hUpZu9Aiff9E3AcZwLfK+uHm6Yunj0YEN+Og9Gy0VWvGo3FZauJ/DSR4vNxweHvpoazhvUrd8qSCIYGx+4RQBiEsEjJgPPYokFHxIg9HCB+EMykfp3M6JP8B2ldorxwy7IQAAAAASUVORK5CYII=",
+    "srcset": "/img/art/commissions/waicon-2012@400w.jpg 400w, /img/art/commissions/waicon-2012@800w.jpg 800w, /img/art/commissions/waicon-2012.jpg 1280w",
+    "width": 1280
+  },
   "/img/art/commissions/waicon-2013-intro.jpg": {
     "height": 720,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAABfUlEQVR42qVSzUpbYRA9Z778aG7SJBowIU1CGzVQRGpNF1m5Ucmi0EVpEfsuscVFuxV3PoOIax/AjVQQBBelrQ2URkUMidqS3PtNF/lpAuKincXMYZg5Z5gZksS/mnQju559IL0kMMQ/gNlRVoUI1FIBY8R6qlCCxgdr1VoaAYWqqh6UttctJBh/5CcMR+BkAYAhRKYRTAHAxLNAMPlXLfwYNF1VHwAF6Ed0ylsuvUykY4X07INU4MwcnJ3WE7+KP+K7ucBSu+a4v2U8nrCjzXeV9auLBiBGKCAyc87mxoel+bcL8+Wxh8GfzcOV4vts7AljN+268zS1CJUXq8+3dj7O5kvX0S+fP9WoJEkKwkkzkymFIsFWq1Wtfr+sn+fSk+Vy+fWrN2ohfuu2vb39beMw7susVdYuaw0R9hemw1cgoPl8vlAo3Nxeh0Yd13VDIxHr6vHJ0bfTr50u9gJI6RNZtULxPO/u8wo7WrznSUiKiKoO1lhr+2Pyfz7sDyCygbeLMDXHAAAAAElFTkSuQmCC",
@@ -2153,6 +2159,12 @@
     "srcset": "/img/posts/2022/05/iComics2-Sampling@400w.jpg 400w, /img/posts/2022/05/iComics2-Sampling.jpg 602w",
     "width": 602
   },
+  "/img/talks/bitrise-tips.jpg": {
+    "height": 720,
+    "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACU0lEQVR42iXLz0sUURwA8Pdz5s3OTrvqluuKpGRGh1AkugQSQZe6lF0ygjx071hE0Z/gxVsESYeCKIII+nGwsA5Sh8rACFMsS3HVdsfZnTfz3vt+O/S5f+jk0SlKqAO7m+0UC1QythPnuYUsN804DXzpSSFJhIgOAAABABEBERGZkn7oh47qVz+mz12Kr17jv+njl0tTzeLz81di1jf7fn1GeowzwSnjlDHKKGWUUEoo831PKV9JHnVXArOv/HE5ZIz6YmDw8PVjIyOVyCsGgjP2f1HKOLVte2RyqDpa4WND44wRS3WqVl3vaPB1edUaWqlEtYNbSzbbWNsqd5fbA4RwREQkiEg4jX8myUYq6q1fsyszTx49DaIzmZSVaOLZrRuLD+8VS9X5Q6f3929M7I0+vPZtahljiAjIGCd6WyMhQnrMCX3n/rQUnnM5F+LT4sJw38laa8j7vr7c6uSL1miLQBDQ5s4hAIJ1QAgRBaV8P5ibe8tcHrdza4CK/HjP5ZH+E1t/66FC3sHKXbqV6KSZVvvL7URnmS1VCruNVHjS5yhCEfpe8eBAabBW2m42QtYFLFMlFigK2qUp96zYIwpBKKNOVV+PW7HOtBEdfs/F4ZsEkaK/CfOm/m587NSb3ar7bNUFv1FN6V2QhquClL5q7erAEwi48q3uKS4QqeIhAEou7Wbty5+kVF7SSU97zSQv0qzX4ALksbXg8txYZ61xSEnvgajVNPT22QeEEEIIAHDmNdo7aaYDLOaYm5bNtcmYtc6a3FlnnQMHzlrgklgD/wDoHEwehvdomwAAAABJRU5ErkJggg==",
+    "srcset": "/img/talks/bitrise-tips@400w.jpg 400w, /img/talks/bitrise-tips@800w.jpg 800w, /img/talks/bitrise-tips.jpg 1280w",
+    "width": 1280
+  },
   "/img/talks/buildkite.jpg": {
     "height": 720,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAAnUlEQVR42sWSwQ6DMAxDnaSlUAQS//+f0EKJd9ikoWmncZjvz7GtiIjgZ/0Mi4jihsKHWc7Z3c0MwHEcqgqgtdb3Pcl1Xd39O0wypRRjVNUQQq01pbRtm5md59lau5IA9Np8HEd3JzlNUyllWRYzM7NhGAB0XTfP83UmERGSrxghAIgxkiyl5Jz3fSf5DALA3Wut73t/W/sWLHc+7AEmQEL4J9ig5wAAAABJRU5ErkJggg==",
@@ -2175,6 +2187,12 @@
     "height": 720,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAA4ElEQVR42q2RO07DYBCEv1lbjokBhYiCEokGCToqrsRRaOEkXCN3SEeHIJFjx7Hz/0vhRDwEUlCYZqXVzD5mYA9od15PdfDPYunHERuOb6pt5eHPmy+MAgTPzosjcEiLYT4YHiDrT3BQCIoePPSdrl2XVX1X3FwnJ4W6p+XkvqkNAqTj0fHodJwfHsmSTnJhq9agXSzATMzm87KqH/OHZHB7FpvL5gqmjkFMX2dlXTcxxq/mSMjBpFW7BjKWmXtOpQ+/dv45S89NReIhi9O32H5z23/LyN33zRlsy47Of+Ad2nJUUSTkBO0AAAAASUVORK5CYII=",
     "srcset": "/img/talks/crafting-delight@400w.jpg 400w, /img/talks/crafting-delight@800w.jpg 800w, /img/talks/crafting-delight.jpg 1280w",
+    "width": 1280
+  },
+  "/img/talks/dev-chats.jpg": {
+    "height": 720,
+    "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAABoElEQVR42o2RO2tUYRCG33fOt4khbvZycJMQFU2hiIWKNxAhIPgTLP0FlnaiIOQH2IlFLLw00cJCG4X8BLESS4m6ajAo7iXuOd83MxbHYldT+DTDwDzwzgwp4mY3762dvHBx2O+TggoSAAGHu2qjld+9fePV0/UsC6qpGglVqTdbrX3zc3tnQ5aZIyPN3QEHhPhVlPVWPr1nBpP8kS0lTTHGCPcpyreibIRMSHV3oWrSlNx9dxkkyZF6EKx//bKxvX2wUb++fChG1ajuIIl/kPGGQEYmUov0+fnbjcevy2EZMqFjVyZkIXZSurJ/8Vp9/mzXum+6P7b6oZZVeUlShGOEcdkBA3ZG5dEjC7WrZyxp53C7GMUqcorRzZLZ3zu7maoG+EwQB8zt+IlFknGUGDjQmGKca7c7S0sePWnilMSfPVZ/vvPsxblLl4tBb7pWc3cHzByACAmUZmqQYpA3Z2P00qwM/m71FkHC/dip0808jylNnq9aBZmIA8sLndX7a8NBr6C8fPDw45NHxH9zIM/Pr6xsbb7/3ut/2vwwBfwGPNzSltwUT5QAAAAASUVORK5CYII=",
+    "srcset": "/img/talks/dev-chats@400w.jpg 400w, /img/talks/dev-chats@800w.jpg 800w, /img/talks/dev-chats.jpg 1280w",
     "width": 1280
   },
   "/img/talks/fastlane-swift.jpg": {
@@ -2283,6 +2301,12 @@
     "height": 720,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACk0lEQVR42gXB2U/TYAAA8H79vq5d13Vbdw8Ig40bMSgaQIzIoYkaRRJ5lJD44oP+P5qQyJvxIESjgijGiEQXA3JMxn3u4OgYrN3Rr4e/HxB4BkLKwBpBILM/RIXDMgfw3k4hFjVkyWSCJspkGCoAcPDps0BpVfY0w9hKAEHmpAJiKIiVosXrcjdexGU1eZYReLOnq1Pf2ZX+RPaji9nDI5IkKmou+APVa0vTk++HLbzQ13uFo1Sk66qvOtQxdK9A2f9mQMDnVxXF7bBbXO76a51EobD4c2b8xfOG5h7WBrREpJw4206k5+eMW+31CLB2LlAqxk8Sqc0zis9l0lYNLyo6VpWonGNtdvX4mEFkuO1B1lyJi4gG0MEgH0FAQKJQVVX/jduLy//8gL7k9TCMZT2R4BEySJgBwKTiD2Oj4VCNNx/Rkzs05wA6Zij6fNAHOReqKS8h8lk7IhweH23jTrOy3yVgTUUI2XnuYHM3VO7tujlI2yok1o09IQUYFjOISsWguQm5HM60eJzJiOvLq5TLqUJdAwRWdFIqRCa+6Ko20F3dELR+nhqLRKZw7rTWyR1K+emP085fMdh5tb33ekfAyclyOp46JGkTL1gLsjQ/+Y0hwaO7lR53iXyaHHn1VsVFlQDxbJGxWmwWs5jOwIWF2eSB2NrSVF1e0lgRsFFgaS628iNSyBWfDNRF1w7KWodmlze2t7YFBw8NTdeNuqDbylJJ8Qz6nGx0Ofbp64wgeC63NLO06fXLsWPx7PH9uo19MSG7+trDw28mdQ3zDJSLRUPX91InO6k0AAbkzMjC0ipWJr//jqeORt9NbO0e9HcGBSscGd9+eKdtPhqbi6501wZ6fOZVUZawds7JZhQVq/p/sdA4EocBXRcAAAAASUVORK5CYII=",
     "srcset": "/img/talks/promotion@400w.jpg 400w, /img/talks/promotion@800w.jpg 800w, /img/talks/promotion.jpg 1280w",
+    "width": 1280
+  },
+  "/img/talks/razer-core.jpg": {
+    "height": 720,
+    "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACbElEQVR42gXBTU/TYAAA4Pdt37f0e+0+gG1ujGVuoIABIYbg59WjBwwn/oO/wvgLvOqJuxcOJkY9mJigGFxgwQm4wsa6lm5t14+9bX0e+H77ZW4yoeNJQkGdJDHGmbEHMZ+SVHmpDi1j0DfG04XCcOhxNOF4eRIagW+OPYQ5FD97YpfLwdCmQNL5dVi6vz4CwOx2IzJRS6W/TTe1slhbWzu8vnZdL1+Y1RyHF6UL7R+jGfDN050KdgATQ0wzcXKDIPEc6MMCl5p/+BjTcfjnLOIVOS8Bkffc0O53AZPiUkWrbSJTXlTnudqL52FIxLRSBKFjmBBj8eN+I5MD00q/a34dmiNDIyx9bpg3li2x6u5qOWEUFN9c9JY316tzvh9qJ83zVnPcOV2tYuIMdHQrcyfbbqG3n7+3zf6EEApClhfTQN8s6iVBRUuieNn+/WXv3UXrAIzOb3H2iuhn2Q3LMwIJJKIIMnJMBYORQQGAEMbMFAFYYKiigFBD5iLKco73Kt5ALbEi5Vg+zrnJ1u4OYeVB7/LSdBt3FwYQjsc2iSMcY5pQsiKI+Twahs58pRyqDcgggjgqpSCvU61F8r1HCeIDq7/8wFfq9e2djNa5Ovzx80rrSayQrVQDXYfGq9c+VuRsiavVQE6mFIWwVhgc85lZqM74eo/YNpWr8JkZEAGiOwOtT7W1VKvZP/qG0lsbgGVjzAORgwUVpnESCtEFOdn/kK8v+NYoZtVs/jaJYwgAYqnZSQCicTRXVmYqMP50AEQOSAJkmYTGUBDGrg2MoylER8GEhoiW1OuIzs01KHOUDL0khgCz0CXB6dl/jrkufUEGmdoAAAAASUVORK5CYII=",
+    "srcset": "/img/talks/razer-core@400w.jpg 400w, /img/talks/razer-core@800w.jpg 800w, /img/talks/razer-core.jpg 1280w",
     "width": 1280
   },
   "/img/talks/realm-ios-conf-sg.jpg": {
