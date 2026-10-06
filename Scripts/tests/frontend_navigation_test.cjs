@@ -7,7 +7,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
 const source = fs.readFileSync(path.join(__dirname, '../../Assets/js/site.js'), 'utf8');
-const navigation = source.slice(source.indexOf('// Collection pages:'), source.indexOf('// Back-to-top:'));
+const navigation = source.slice(source.indexOf('// Collection URL shapes'), source.indexOf('// Back-to-top:'));
 const flush = () => new Promise(resolve => setImmediate(resolve));
 
 function surface() {

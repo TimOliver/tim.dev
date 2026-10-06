@@ -55,6 +55,29 @@
     document.addEventListener('collection:swapped', initialize);
 })();
 
+// Header popovers (theme picker, RSS feeds): a trigger toggles its panel;
+// clicking outside or pressing Escape closes it. Returns the open/close setter.
+function bindPopover(wrap, trigger, popover, onTriggerClick) {
+    function setOpen(open) {
+        popover.classList.toggle('open', open);
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    trigger.addEventListener('click', function(e) {
+        if (onTriggerClick) onTriggerClick(e);
+        e.stopPropagation();
+        setOpen(!popover.classList.contains('open'));
+    });
+    document.addEventListener('click', function(e) {
+        if (!wrap.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Escape') return;
+        setOpen(false);
+        trigger.blur();
+    });
+    return setOpen;
+}
+
 (function() {
     var root = document.documentElement;
     var toggle = document.querySelector('.theme-toggle');
@@ -66,10 +89,7 @@
     var allowedThemes = /^(auto|light|dark)$/;
     if (!popover || !options.length) return;
 
-    function setPopoverOpen(open) {
-        popover.classList.toggle('open', open);
-        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
+    var setPopoverOpen = bindPopover(toggle, trigger, popover);
 
     function markActive(value) {
         options.forEach(function(btn) {
@@ -81,11 +101,6 @@
 
     var activeTheme = root.getAttribute('data-theme') || 'auto';
     markActive(allowedThemes.test(activeTheme) ? activeTheme : 'auto');
-
-    trigger.addEventListener('click', function(e) {
-        e.stopPropagation();
-        setPopoverOpen(!popover.classList.contains('open'));
-    });
 
     options.forEach(function(btn) {
         btn.addEventListener('click', function() {
@@ -99,16 +114,6 @@
             setPopoverOpen(false);
         });
     });
-
-    document.addEventListener('click', function(e) {
-        if (!toggle.contains(e.target)) setPopoverOpen(false);
-    });
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key !== 'Escape') return;
-        setPopoverOpen(false);
-        trigger.blur();
-    });
 })();
 
 // RSS feed menu: the same popover pattern as the theme toggle (shared
@@ -120,27 +125,8 @@
     var trigger = document.querySelector('.rss-toggle-link');
     var popover = wrap ? wrap.querySelector('.theme-popover') : null;
     if (!wrap || !trigger || !popover) return;
-
-    function setOpen(open) {
-        popover.classList.toggle('open', open);
-        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
-
-    trigger.addEventListener('click', function(e) {
-        e.preventDefault(); // the href is the no-JS fallback
-        e.stopPropagation();
-        setOpen(!popover.classList.contains('open'));
-    });
-
-    document.addEventListener('click', function(e) {
-        if (!wrap.contains(e.target)) setOpen(false);
-    });
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key !== 'Escape') return;
-        setOpen(false);
-        trigger.blur();
-    });
+    // The href is the no-JS fallback.
+    bindPopover(wrap, trigger, popover, function(e) { e.preventDefault(); });
 })();
 
 // Hamburger menu open/close animation
@@ -455,6 +441,13 @@
     });
 })();
 
+// Collection URL shapes, shared by the in-section swap and back-to-top:
+// a section index (/talks/) or a detail page (/talks/x/, /art/section/x/ -
+// art URLs are one level deeper).
+var COLLECTION_INDEX = /^\/(apps|code|art|talks)\/$/;
+var COLLECTION_DETAIL = /^\/(?:(apps|code|talks)\/[^/]+|(art)\/[^/]+\/[^/]+)\/$/;
+var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+
 // Collection pages: preserve in-section content fades and real permalinks.
 // Different sections use normal navigation so their assets load together.
 (function() {
@@ -462,15 +455,13 @@
     if (!container || !window.history || !window.fetch || !window.DOMParser) return;
 
     function collectionSection(path) {
-        var match = path.match(/^\/(apps|code|art|talks)\//);
-        if (!match) return null;
-        return /^\/(apps|code|art|talks)\/$/.test(path)
-            || /^\/(apps|code|talks)\/[^/]+\/$/.test(path)
-            || /^\/art\/[^/]+\/[^/]+\/$/.test(path) ? match[1] : null;
+        var index = path.match(COLLECTION_INDEX);
+        if (index) return index[1];
+        var detail = path.match(COLLECTION_DETAIL);
+        return detail ? (detail[1] || detail[2]) : null;
     }
     function isDetailPath(path) {
-        return /^\/(apps|code|talks)\/[^/]+\/$/.test(path)
-            || /^\/art\/[^/]+\/[^/]+\/$/.test(path);
+        return COLLECTION_DETAIL.test(path);
     }
     var section = collectionSection(location.pathname);
     if (!section) return;
@@ -512,7 +503,7 @@
         var request = ++sequence;
         if (controller) controller.abort();
         controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-        var options = { headers: { 'X-Requested-With': 'fetch' } };
+        var options = {};
         if (controller) options.signal = controller.signal;
         return fetch(url, options)
             .then(function(resp) {
@@ -582,9 +573,16 @@
             var target = hashTarget(a.hash);
             if (!target) return;
             e.preventDefault();
-            var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            target.scrollIntoView({ behavior: reduce ? 'instant' : 'smooth', block: 'start' });
+            target.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
             history.replaceState(currentEntry, '', a.href);
+            return;
+        }
+        // A link to the page already showing (e.g. "Talks" in the header while
+        // on Talks): scroll back to the top rather than refetching it and
+        // stacking a duplicate history entry.
+        if (a.pathname === location.pathname && a.search === location.search) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
             return;
         }
         if (href.charAt(0) === '#' || collectionSection(a.pathname) !== section) return;
@@ -614,13 +612,10 @@
 // No-op on pages that don't render the button.
 (function() {
     // Only the archive/art/talks indexes render the button, but the collection
-    // swap can (re)introduce it - gate on either, so the ~200 other pages skip
-    // the per-scroll-tick DOM query entirely.
+    // swap can bring it in on Art and Talks detail pages - gate on either, so
+    // every other page skips the per-scroll-tick DOM query entirely.
     if (!document.querySelector('.back-to-top') &&
-        !/^\/(apps|code|art|talks)\//.test(location.pathname)) return;
-
-    var reduce = window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        !/^\/(art|talks)\//.test(location.pathname)) return;
 
     function update() {
         var btn = document.querySelector('.back-to-top');
@@ -643,7 +638,7 @@
     // Delegated click survives the .container innerHTML swap.
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.back-to-top')) return;
-        window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+        window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
     });
 })();
 

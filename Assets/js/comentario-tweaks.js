@@ -43,38 +43,27 @@
 (function () {
   'use strict';
 
-  /* ---- 1. Comment-count badges (home feed + article heading) ----
-     Comentario keeps the <comentario-count> element in place even at zero, so
-     read the rendered text and toggle .has-count as it changes. */
+  /* ---- 1. Comment counts (home feed badges, end-of-article links, post heading) ----
+     Comentario keeps each <comentario-count> in place even at zero and fills it
+     in later, so one observer per count: badges and the heading toggle
+     .has-count once a number shows; the end-of-article links use a fixed
+     " comments" suffix, so a single comment's "1 comments" becomes "1 comment". */
   (function () {
-    var counts = document.querySelectorAll('.post-badge comentario-count, .post-comments-count');
+    var counts = document.querySelectorAll('comentario-count');
     if (!counts.length) return;
 
     function sync(el) {
-      el.classList.toggle('has-count', (el.textContent || '').trim() !== '');
+      var text = (el.textContent || '').trim();
+      if (el.closest('.post-link')) {
+        if (text === '1 comments') el.textContent = '1 comment';
+      } else {
+        el.classList.toggle('has-count', text !== '');
+      }
     }
 
     Array.prototype.forEach.call(counts, function (el) {
       sync(el);  // in case the count resolved before this script ran
-      new MutationObserver(function () {
-        sync(el);
-      }).observe(el, { childList: true, characterData: true, subtree: true });
-    });
-  })();
-
-  /* ---- 1b. Singular comment count on the end-of-article links ----
-     Those links use a fixed " comments" suffix, so a single comment renders
-     "1 comments"; rewrite it to "1 comment". (The badge and heading counts show a
-     bare number, so they need no fix.) */
-  (function () {
-    var links = document.querySelectorAll('.post-link comentario-count');
-    if (!links.length) return;
-    function fix(el) {
-      if ((el.textContent || '').trim() === '1 comments') el.textContent = '1 comment';
-    }
-    Array.prototype.forEach.call(links, function (el) {
-      fix(el);  // in case the count resolved before this script ran
-      new MutationObserver(function () { fix(el); })
+      new MutationObserver(function () { sync(el); })
         .observe(el, { childList: true, characterData: true, subtree: true });
     });
   })();
