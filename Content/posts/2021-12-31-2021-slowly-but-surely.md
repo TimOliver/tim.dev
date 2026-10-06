@@ -2,7 +2,7 @@
 title: 2021. Slowly. But surely.
 date: 2021-12-31 17:04:21
 author: Tim Oliver
-image: /img/posts/2021/12/2022-New-Year.png
+image: /img/posts/2021/12/2022-New-Year.jpg
 tags: personal
 path: /2021/12/31/2021-slowly-but-surely/
 ---

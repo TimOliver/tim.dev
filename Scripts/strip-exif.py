@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-Strip ALL EXIF / metadata from images under Assets/img/posts/.
+Strip ALL EXIF / metadata from images under Assets/img/.
 
 - JPEG: applies orientation before stripping, retaining quantization tables,
-  chroma sampling, ICC profile and progressive encoding.
+  chroma sampling, ICC profile and progressive encoding. Removes EXIF, XMP,
+  comments and Photoshop/IPTC (APP13) blocks - photos saved from Facebook or
+  Instagram carry their upload IDs in IPTC.
 - PNG:  re-saved with no text/iTXt/zTXt chunks.
 - GIF:  not touched (no standard privacy metadata).
 
@@ -14,7 +16,9 @@ rewrites still recompress pixels; an already-clean image is never rewritten.
 Idempotent: re-running on already-stripped images is a no-op (no EXIF found).
 
 Usage:
-    python3 Scripts/strip-exif.py             # walks Assets/img/posts/
+    python3 Scripts/strip-exif.py             # walks Assets/img/ (originals
+                                              # only; @NNNw variants are
+                                              # regenerated from them)
     python3 Scripts/strip-exif.py <path>...   # processes specific files
                                               # (used by the pre-commit hook)
 """
@@ -24,16 +28,18 @@ from __future__ import annotations
 import sys
 import shutil
 import tempfile
+import re
 from pathlib import Path
 
 from PIL import Image, ImageOps, JpegImagePlugin
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-TARGET = REPO_ROOT / "Assets/img/posts"
+TARGET = REPO_ROOT / "Assets/img"
+VARIANT = re.compile(r"@\d+w\.[^.]+$")
 
 
 def has_metadata(img: Image.Image) -> bool:
-    if any(key in img.info for key in ("exif", "xmp", "comment", "XML:com.adobe.xmp")):
+    if any(key in img.info for key in ("exif", "xmp", "comment", "photoshop", "XML:com.adobe.xmp")):
         return True
     if hasattr(img, "_getexif") and img._getexif():
         return True
@@ -91,7 +97,7 @@ def main() -> int:
         if not TARGET.exists():
             print(f"error: {TARGET} not found", file=sys.stderr)
             return 1
-        files = sorted(p for p in TARGET.rglob("*") if p.is_file())
+        files = sorted(p for p in TARGET.rglob("*") if p.is_file() and not VARIANT.search(p.name))
         base = TARGET
 
     stripped = []

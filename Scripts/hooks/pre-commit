@@ -2,7 +2,8 @@
 #
 # tim.dev - pre-commit hook
 #
-# Strips EXIF from any staged JPEG/PNG under Assets/ before the commit lands.
+# Strips EXIF from any staged JPEG/PNG under Assets/ before the commit lands
+# (added, copied, modified or renamed - a renamed photo is still a new file).
 # Modified files are re-staged so the commit picks up the stripped versions.
 # Scoped to Assets/ specifically - Template/img/ contains hand-vetted mockup
 # assets we don't want to re-process, and other dirs are out of scope.
@@ -19,7 +20,7 @@ while IFS= read -r -d '' path; do
         Assets/*.[jJ][pP][gG]|Assets/*.[jJ][pP][eE][gG]|Assets/*.[pP][nN][gG])
             staged+=("$path") ;;
     esac
-done < <(git diff --cached --name-only --diff-filter=AM -z)
+done < <(git diff --cached --name-only --diff-filter=ACMR -z)
 
 if [[ ${#staged[@]} -eq 0 ]]; then
     exit 0

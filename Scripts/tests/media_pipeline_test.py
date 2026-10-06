@@ -174,6 +174,28 @@ class StripExifTests(unittest.TestCase):
             self.assertEqual(after.info["icc_profile"], ICC)
             self.assertEqual(after.convert("RGBA").getpixel((0, 0))[3], 0)
 
+    def test_jpeg_strips_photoshop_iptc_block(self):
+        source = self.root / "from-instagram.jpg"
+        Image.new("RGB", (40, 40), "red").save(source)
+        # Splice an APP13 Photoshop/IPTC segment (as Facebook/Instagram
+        # downloads carry) in after SOI.
+        iptc = b"\x1c\x02\x67\x00\x0bFBMD-private"
+        irb = b"8BIM\x04\x04\x00\x00" + len(iptc).to_bytes(4, "big") + iptc + b"\x00"
+        payload = b"Photoshop 3.0\x00" + irb
+        data = source.read_bytes()
+        source.write_bytes(data[:2] + b"\xff\xed" + (len(payload) + 2).to_bytes(2, "big") + payload + data[2:])
+        with Image.open(source) as before:
+            self.assertIn("photoshop", before.info)
+        self.assertTrue(self.strip.strip(source))
+        with Image.open(source) as after:
+            self.assertNotIn("photoshop", after.info)
+        self.assertNotIn(b"FBMD", source.read_bytes())
+
+    def test_sweep_skips_generated_variants(self):
+        self.assertTrue(self.strip.VARIANT.search("photo@800w.jpg"))
+        self.assertFalse(self.strip.VARIANT.search("photo.jpg"))
+        self.assertFalse(self.strip.VARIANT.search("me@home.jpg"))
+
     def test_failed_save_leaves_original_unchanged(self):
         source = self.root / "photo.jpg"
         image = Image.new("RGB", (80, 40), "red")
@@ -209,6 +231,31 @@ class StripExifTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn(b"stripping EXIF from 1 staged image", result.stdout)
         self.assertIn(b"error processing", result.stderr)
+
+    def test_hook_strips_renamed_and_modified_image(self):
+        subprocess.run(["git", "init", "-q", str(self.root)], check=True)
+        git = lambda *a: subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=self.root, check=True, capture_output=True)
+        (self.root / "Scripts").mkdir()
+        shutil.copy(SCRIPTS / "strip-exif.py", self.root / "Scripts")
+        old = self.root / "Assets/old.jpg"
+        old.parent.mkdir()
+        Image.new("RGB", (64, 64), "red").save(old, quality=95)
+        git("add", "Assets")
+        git("commit", "-q", "-m", "clean", "--no-verify")
+        new = self.root / "Assets/new.jpg"
+        old.rename(new)
+        image = Image.new("RGB", (64, 64), "red")
+        image.putpixel((0, 0), (250, 0, 0))
+        exif = image.getexif()
+        exif[270] = "private metadata"
+        image.save(new, exif=exif, quality=95)
+        git("add", "-A", "Assets")
+        status = subprocess.run(["git", "diff", "--cached", "--name-status", "-M"], cwd=self.root, capture_output=True, text=True).stdout
+        self.assertTrue(status.startswith("R"), status)
+        result = subprocess.run(["bash", str(SCRIPTS / "hooks/pre-commit")], cwd=self.root, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        with Image.open(new) as after:
+            self.assertFalse(after.getexif())
 
 
 if __name__ == "__main__":
