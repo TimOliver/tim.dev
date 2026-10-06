@@ -33,7 +33,7 @@ body:has(.about) {
    the name over the role - and the description paragraphs run full width
    beneath. Squircled like every rounded element. Decorative (alt=""); the
    name carries the meaning. */
-.about-job:has(> .about-co-icon) {
+.about-job:has(> .about-co) {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     column-gap: 0.55em;
@@ -41,8 +41,8 @@ body:has(.about) {
 }
 /* Tighter name/role pair beside the icon: trim the title's leading and its
    bottom margin so the two lines read as one block. */
-.about-job:has(> .about-co-icon) > h3,
-.about-job:has(> .about-co-icon) > .about-job-head {
+.about-job:has(> .about-co) > h3,
+.about-job:has(> .about-co) > .about-job-head {
     line-height: 1.08;
     margin-bottom: 0;
     /* Visual nudges (relative offsets don't touch layout): the name sits 2px
@@ -51,17 +51,17 @@ body:has(.about) {
     position: relative;
     top: 4px;
 }
-.about .about-job:has(> .about-co-icon) p.about-meta {
+.about .about-job:has(> .about-co) p.about-meta {
     position: relative;
     top: 2px;
 }
-.about-job:has(> .about-co-icon) > * {
+.about-job:has(> .about-co) > * {
     grid-column: 2;
 }
-.about-job:has(> .about-co-icon) > p:not(.about-meta) {
+.about-job:has(> .about-co) > p:not(.about-meta) {
     grid-column: 1 / -1;
 }
-.about-job:has(> .about-co-icon) > .about-co-icon {
+.about-job:has(> .about-co) > .about-co {
     grid-column: 1;
     grid-row: 1 / span 2;
     /* Pin to the top: when the name or role wraps (narrow columns), the icon
@@ -72,15 +72,41 @@ body:has(.about) {
     display: block;
     width: 2.9em;
     height: 2.9em;
-    /* 32%, tuned by eye on device. Squircled where supported, like every
-       rounded element. */
-    border-radius: 32%;
+    /* 25%, tuned by eye on a desktop monitor. corner-shape gives the squircle
+       in browsers that support it; elsewhere it's a plain 25% round corner. */
+    border-radius: 25%;
     corner-shape: squircle;
     /* A barely-there inner stroke so the white tiles still read on the white
        page in light mode (it vanishes against dark). An inset box-shadow
        would paint under the image, so it's an outline pulled inside. */
     outline: 1px solid rgba(0, 0, 0, 0.05);
     outline-offset: -1px;
+}
+/* Icons link to the same place as the company name (a duplicate link, so
+   it's out of the tab order and hidden from screen readers in the markup). On
+   hover they grow like the titles do and pick up a soft glow - a shadow in
+   light mode, a faint light halo in dark. */
+.about-co {
+    display: block;
+    --co-glow: rgba(0, 0, 0, 0.22);
+}
+[data-color-scheme="dark"] .about-co {
+    --co-glow: rgba(255, 255, 255, 0.18);
+}
+a.about-co .about-co-icon {
+    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                box-shadow 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+@media (hover: hover) {
+    a.about-co:hover .about-co-icon {
+        transform: scale(1.06);
+        box-shadow: 0 4px 18px var(--co-glow);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    a.about-co:hover .about-co-icon {
+        transform: none;
+    }
 }
 .about-job--featured .about-co-icon {
     width: 3.4em;
@@ -94,10 +120,10 @@ body:has(.about) {
 }
 /* With the icon beside it, the role line's gap to the description moves off
    the meta (which now sits in the icon's row) onto the first paragraph. */
-.about .about-job:has(> .about-co-icon) p.about-meta {
+.about .about-job:has(> .about-co) p.about-meta {
     margin-bottom: 0;
 }
-.about .about-job:has(> .about-co-icon) p.about-meta + p {
+.about .about-job:has(> .about-co) p.about-meta + p {
     margin-top: 0.75em;
 }
 
@@ -446,6 +472,13 @@ body:has(.about) {
     opacity: 0;
     transition: opacity 0.2s ease;
     pointer-events: none;
+}
+/* Beside a company icon the gap is only ~10px, so the hover surface's side
+   reach drops to 0.2em (it would otherwise overlap the icon on the large
+   Currently titles). */
+.about-job:has(> .about-co) h3 a::before,
+.about-job:has(> .about-co) .about-job-co a::before {
+    inset: -0.12em -0.2em;
 }
 @media (hover: hover) {
     .about-job h3 a:hover,
