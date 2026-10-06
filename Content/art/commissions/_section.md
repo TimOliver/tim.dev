@@ -1,6 +1,6 @@
 ---
 title: Commissions
-columns: 2
+columns: 3
 order: 2
 slug: commissions
 published: false

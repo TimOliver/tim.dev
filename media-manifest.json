@@ -143,6 +143,12 @@
     "srcset": "/img/art/3d-renders/uss-voyager@400w.jpg 400w, /img/art/3d-renders/uss-voyager@800w.jpg 800w, /img/art/3d-renders/uss-voyager.jpg 1032w",
     "width": 1032
   },
+  "/img/art/commissions/alien-computer-screen.jpg": {
+    "height": 360,
+    "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAD60lEQVR42jWUS28bVRhAv/uY57XHbzuOnSZpEhoIakqDxI6HBCoPwRIQf6G/DrFiw6pSUQG1C6o2fYTWSdzxK7bH45m5c+fej0Xh7M/yHHL37l0hhDEGCKG5TDnX1w+joJHbgon6YjiEIu52Os4ktF49ddMILQeBACAAUHgLIUZm8eZ2/esfb377U1PB7MFfpWgd3/9tr9DH+x8Etz+GO9+vDm6bogDUbyX+1kSZsHfvHH/+WVOs64X+/emTarUh43Wv2fnhu2+WuekCnZbLYXBn4u+WTn8FrRCAIyIHuIiL+PnD94+2Mtv95c+Hkaj13jsOX76otTtCBDUv12W3nmRC5lc1f4B+X88p55yikaWGc/hJfnn+870HgOBWmxtHJ/FiOj17rCuV+4NQUFSFXhfm9eVw8ebNTCo9mx30u+zDk5M3rpsaxYjWkLauHXLHWYavFmfPHYsXxhSWbdxKGKfTOFnM5vEojKZDceumO5nw0WL+6I97RgEB3Ts+KRZSa00tLupV6pdMlofnl2upHc/NMrUcni8Hp/HgzDvaHlPCyrWK4TwazXp7B36zj8o4vu+3NkSn3+z0RaPJbHs9CRfDi/X4YhUOZLwkqqC2w1t1Vq7XnWql2m2LetUqtZntebVapdO9sb//6Ts7t7ba1BdLA4EQq0mIujBaF1kGjLrXujzob5YajWg6Qd8vMmUFPrNcV5SPu82PNgOGuu7Z0yh5Nh5z28/0FXNs23cxlUgIr/R6lu0Sm7ub/fXZgjsOELBcj1MA1Eioa1GgRCMiAW7ZqCE1mlFGCWEu4PR84IhyqdHI4txyHGLbwC1HBIHrKkOfTaO/L0bLcKSyFUcTBMHsfGCVhNdr86AkRlmi0RgtCdF5klp+ms5mj568GM6uhOeNF8vpKEQts9USpVzNJ8Qgb1RYKnm31ZmPh/HV1YZ9kEyH9laQxREiVzJfjUPKLQAjV4t0NQfUSibZaskYL+3vuoMB32x3Vpa1kCodx9yy08XU8svUAKpUMsYJNYhFmqgsVelaxjEHkoFKXp7tAeWMsb1m+/6Tl/N8TH1epJkxWMiEcdsW5UQXJpeoCpQyK3LLdvL1MpHpzmTm9Tu80LpRCQ63e49fXfoKwKsqlRNCUMs8TRmnaAC01rnhjKWzoQLrWquzu9kqtOaEEKXNTq3sbXz5dDoEPaTjRGepsSxCKeYaGEOJaJTygO3euN483JEvAM1/PRMAjbCRD/z97YHspltZdHpKogh0XiAFSpxGl290hC+uV4Pa+B80BRL6/wwACCGFMeXLZ0flStTann/x1TLOEKhKpQhKDsOyWtdml3zwWlNOyH//+RfcyzrdAtAUtgAAAABJRU5ErkJggg==",
+    "srcset": "/img/art/commissions/alien-computer-screen.jpg 360w",
+    "width": 360
+  },
   "/img/art/commissions/bright-paw.jpg": {
     "height": 360,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACbklEQVR42gXBSU8TUQAA4LfN1pnpMN2gLS1lkUVU4oIxRsRIYjx4MOFi4v/x4A/wZMJNDUdD4sWoCRcTSFRIBYUgpRTK1inTebO+N+P3Qb0wUh6sciAiWQv0SrE8SDkBumlURmOv6+J0Jq2JgWM3/uw1Difz5MXj6Vev3/iOZV2cYiyqsqLHAPpnbYHHxanZMHTNgUpOl0YGy9VSoZjX6MW5GwlRt1O63CoX884ltS4slzqYAdS1qUM9gXOx15E0Izd6vVaplWWsRY5AuwYhRNQOj8+6q++MOFrfrPPQR127JEkEcQZJhAFL4pjyxGk3CsNTdO/nZc+OvQ6RVCyrWDNFq50AtLm778aBE/gS5FlJIiBOkihMkBglGGEswSQ62uW6HvkOC8PQ6aU0nfcsmVIsih4CCCIiAD8I3IBhURQZ4xhCiJCqqDxwO4kgTN3joTdWMBIit+R8s2O3NlZF5vdol4UuZ2EekYwgkbFq6eC4wzlQEACM9cnKUK0qpSUV9GUZk9MyT+nZ2L1MG82jfSXyIAoJwlNa7prZTxZvze259P2nFU2WIt+zKDUPdmoEEEVZrf/N9efyhnZ+dh4jSG0rjeO5atlMF+4Wb44u3Ie9f62lpbdLy8sW9andQyQFkJg1B0RZBygBnMEgcBzb9TopwB6WhxbvzBUHRiefP2khCrc/fzMUtXnS3t7Z+vJ9bX2j3jw5ZRwiIqMEAhALMDElMlMqPpiZXXj6bHB8EmUM5gU7H1bgy9q0kjMfzc+bmcwBzmZiuvH7R9eLJVUdHhtpN5oCj29Pjl+tTRQnrig3KsGxdbpW//Xxa+jZ/wHFlDf6SB2BIAAAAABJRU5ErkJggg==",
@@ -159,6 +165,12 @@
     "height": 720,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACY0lEQVR42gXBSU9TQRwA8PnPzJu3dHmvi7SlpQZSZUkQRMQYYuLNg8YFNUhiMMSbX8Ojn8E7xpjIzYPxQDxJghitEQxrK0Uodnl9vHVm/P2gP5G6O//YsqzjxmFt61dte5dHEcFIIzKmEUtnM6Xc8+kKAI4lYiweJ5kyLeUwkdWvm/TJ0iJC0fvl5ZRBJgatgjFQ3TlWAccMBiDGS+b05FRx7mkkgaQs0HWEI8F7SBV6c4dOzVzVmFIql/uLRUYhRVHX4yGXTrfN4onkwYbFNDR8ngQt2fwtPYGsJLLSCCe0whBttVqWZSkYO7YjYjGuxakWcT/AikKYsrl/eintI7YlNQtLDYFEZgGxQQRWajhLu3ancVD7+O5N1xdTkyNz848afxocQdJKnx01mGhNPLyH9MvcVk7qwrdds08xh3WEPT0ZwYVCYWRsLAxDpqsaj8452xNZ+alBDts8juHF/f7bL29KNnb6ef/tq5XrD+7QgI4uLEJCCH+Vhq737cta2jAKueTuaW/fczSX8h4SHnKw0j6qdVZem/nYxgf4eUJv0B9rq93KNVsbaOLOOhTjFkVgEprOaDXHp26UVEBlIDBIDBkFRmM4o4pqRx4GMstCD9T5aTHe5wqX0DCSEoVDuURIwOv6pkY8LiIPEQwuly6ggzY4QbSw9OzWyEUhBTMMHfBeY7febFGgyPb9dq/tAC3HMQMZEAgAPIf3AqQSYEQyQoYqlSuzswCgMNV17L8pM1pfo7bLMajf//EI8byuUIYjLs8IFiFSMMoaSHDEz/xOvb5Xre7VaoGQ+XyflKJlO/8BG+Md2/Qf++AAAAAASUVORK5CYII=",
     "srcset": "/img/art/commissions/necrobarista@400w.jpg 400w, /img/art/commissions/necrobarista@800w.jpg 800w, /img/art/commissions/necrobarista.jpg 1280w",
+    "width": 1280
+  },
+  "/img/art/commissions/waicon-2013-intro.jpg": {
+    "height": 720,
+    "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAABfUlEQVR42qVSzUpbYRA9Z778aG7SJBowIU1CGzVQRGpNF1m5Ucmi0EVpEfsuscVFuxV3PoOIax/AjVQQBBelrQ2URkUMidqS3PtNF/lpAuKincXMYZg5Z5gZksS/mnQju559IL0kMMQ/gNlRVoUI1FIBY8R6qlCCxgdr1VoaAYWqqh6UttctJBh/5CcMR+BkAYAhRKYRTAHAxLNAMPlXLfwYNF1VHwAF6Ed0ylsuvUykY4X07INU4MwcnJ3WE7+KP+K7ucBSu+a4v2U8nrCjzXeV9auLBiBGKCAyc87mxoel+bcL8+Wxh8GfzcOV4vts7AljN+268zS1CJUXq8+3dj7O5kvX0S+fP9WoJEkKwkkzkymFIsFWq1Wtfr+sn+fSk+Vy+fWrN2ohfuu2vb39beMw7susVdYuaw0R9hemw1cgoPl8vlAo3Nxeh0Yd13VDIxHr6vHJ0bfTr50u9gJI6RNZtULxPO/u8wo7WrznSUiKiKoO1lhr+2Pyfz7sDyCygbeLMDXHAAAAAElFTkSuQmCC",
+    "srcset": "/img/art/commissions/waicon-2013-intro@400w.jpg 400w, /img/art/commissions/waicon-2013-intro@800w.jpg 800w, /img/art/commissions/waicon-2013-intro.jpg 1280w",
     "width": 1280
   },
   "/img/art/commissions/waicon-2013.jpg": {
