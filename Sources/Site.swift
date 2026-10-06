@@ -64,7 +64,8 @@ struct IgniteWebsite {
                                #"<script src="/js/lightbox3.umd.js"></script>"#]),
             ("<lite-youtube", [#"<link href="/css/lite-yt-embed.css" rel="stylesheet" />"#,
                                #"<script src="/js/lite-yt-embed.js"></script>"#]),
-            ("embed_social", [#"<link href="/css/social-embeds.css" rel="stylesheet" />"#]),
+            ("embed_social", [#"<link href="/css/social-embeds.css" rel="stylesheet" />"#,
+                              #"<link as="image" type="image/svg+xml" href="/img/site/social-logos.svg" rel="preload" />"#]),
         ]
         let fm = FileManager.default
         let build = packageRoot.appending(path: "Build")

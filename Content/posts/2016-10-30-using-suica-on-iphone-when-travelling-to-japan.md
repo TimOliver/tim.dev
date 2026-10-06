@@ -42,11 +42,7 @@ All you need to do is download [the Suica app](https://itunes.apple.com/jp/app/s
 
 An awesome iOS developer living in Japan, Toto Tvalavadze was able to test this personally and confirmed that it worked:
 
-> Hah! Managed to load Suica card to Watch S2 without iPhone 7 (via Suica App). Now, off to nearest wending machine. +[@TimOliverAU](https://twitter.com/TimOliverAU) [pic.twitter.com/nDneVQhFVu](https://t.co/nDneVQhFVu)
-> 
-> - Toto Tvalavadze (@totocaster) [October 27, 2016](https://twitter.com/totocaster/status/791567068785106944)
-
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/totocaster"><img class="avatar" src="/img/site/avatars/totocaster.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">Toto Tvalavadze</span><span class="account_name">@totocaster</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">Hah! Managed to load Suica card to Watch S2 without iPhone 7 (via Suica App). Now, off to nearest wending machine. +<a href="https://twitter.com/TimOliverAU">@TimOliverAU</a> <a href="https://t.co/nDneVQhFVu">pic.twitter.com/nDneVQhFVu</a></p><p class="meta"><a href="https://twitter.com/totocaster/status/791567068785106944"><time datetime="2016-10-27">27 October 2016</time></a></p></blockquote>
 
 I’d love to extend a massive shoutout to Toto for testing it out, and sharing his results online. 🙂
 

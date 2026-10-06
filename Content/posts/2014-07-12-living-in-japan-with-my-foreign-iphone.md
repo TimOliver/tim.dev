@@ -46,10 +46,6 @@ As a quick disclaimer, this may not be the absolute BEST solution; just the one 
 
 Finally, as a bit of a recent update to all of this, apparently the Japanese communications ministry have started considering enacting a law to force the Japanese phone companies to start allowing carrier unlocking on their handsets.
 
-> Finally!! Communications ministry calls for end of SIM lock &amp; Softbank CEO Son flips a table, expressing outrage <http://t.co/NtlmXybd6m>
-> 
-> - Rekishi no Tabi (@RekishinoTabi) [July 1, 2014](https://twitter.com/RekishinoTabi/statuses/483779586195349504)
-
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/RekishinoTabi"><img class="avatar" src="/img/site/avatars/RekishinoTabi.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">Rekishi no Tabi</span><span class="account_name">@RekishinoTabi</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">Finally!! Communications ministry calls for end of SIM lock &amp; Softbank CEO Son flips a table, expressing outrage <a href="http://t.co/NtlmXybd6m">http://t.co/NtlmXybd6m</a></p><p class="meta"><a href="https://twitter.com/RekishinoTabi/status/483779586195349504"><time datetime="2014-07-01">1 July 2014</time></a></p></blockquote>
 
 If that actually happens, that would be so, SO much nicer for all of us!

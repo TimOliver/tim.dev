@@ -32,19 +32,11 @@ Very swiftly, I killed that session (That’s what that spinner in the screensho
 
 Still somewhat confused as to what was happening at the time, I fired off a tweet:
 
-> Holy freaking crap. Someone located in Russia hacked my TeamViewer account and briefly gained screen control of my Media PC. O\_o
-> 
-> - Tim Oliver (@TimOliverAU) [May 24, 2016](https://twitter.com/TimOliverAU/status/735057876532658176)
-
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/TimOliverAU"><img class="avatar" src="/img/site/avatars/TimOliverAU.jpg" alt="" width="46" height="46"><div class="name"><span class="display_name">Tim Oliver</span><span class="account_name">@TimOliverAU</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">Holy freaking crap. Someone located in Russia hacked my TeamViewer account and briefly gained screen control of my Media PC. O\_o</p><p class="meta"><a href="https://twitter.com/TimOliverAU/status/735057876532658176"><time datetime="2016-05-24">24 May 2016</time></a></p></blockquote>
 
 Nearly straight away, my good college Sam Ritchie tweeted back with a very plausible, if not chilling explanation:
 
-> [@TimOliverAU](https://twitter.com/TimOliverAU) did you have the same password as your LinkedIn account? ?
-> 
-> - Sam Ritchie (@FakeSamRitchie) [May 24, 2016](https://twitter.com/FakeSamRitchie/status/735062689488068608)
-
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/FakeSamRitchie"><img class="avatar" src="/img/site/avatars/FakeSamRitchie.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">Sam Ritchie</span><span class="account_name">@FakeSamRitchie</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text"><a href="https://twitter.com/TimOliverAU">@TimOliverAU</a> did you have the same password as your LinkedIn account? ?</p><p class="meta"><a href="https://twitter.com/FakeSamRitchie/status/735062689488068608"><time datetime="2016-05-24">24 May 2016</time></a></p></blockquote>
 
 Uh-oh. UH-OH. Yes… yes I was. Before I switched to 1Password, I was re-using the same crappy password for most of the accounts I had. And I was STILL using the same email address and password combination for my LinkedIn account and TeamViewer accounts (Dating back to 2012!). So with the recent news that the LinkedIn data breach from 2012 [recently hit the black market](http://motherboard.vice.com/read/another-day-another-hack-117-million-linkedin-emails-and-password), it would seem very plausible that hackers were able to get my email and password combination and gain access to my TeamViewer account.
 

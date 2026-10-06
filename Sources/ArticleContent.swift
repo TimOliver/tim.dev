@@ -35,6 +35,10 @@ enum ArticleContent {
     static func feedHTML(_ html: String, relativeTo articleURL: URL) -> String {
         var out = normalizedHTML(html, forFeed: true)
         out = replace(out, #"(?is)<script\b[^>]*>.*?</script>"#) { _, _ in "" }
+        // Social-card logos are <use> references into an external sprite,
+        // which feed readers neither load nor style; the card reads fine
+        // without them.
+        out = replace(out, #"(?is)<svg class="embed_logo"[^>]*>.*?</svg>"#) { _, _ in "" }
         return outsideCode(out) { fragment in
             replace(fragment, #"(?s)<[A-Za-z][^>]*>"#) { tag, text in
                 replace(text.substring(with: tag.range), #"(?i)(\s(?:href|src|poster)\s*=\s*)(["'])(.*?)\2"#) { match, attributes in

@@ -24,11 +24,9 @@ At first, I was really unsure whether joining this sort of company remotely woul
 
 Working at Realm has allowed me to meet a lot of amazing, brilliant people, travel to other parts of the world, be directly involved in several prominent tech events, and above all, learn so, SO many more things than I was expecting (not just software, but business, culture and so much more!). And above all, it’s been incredibly rewarding and exhilarating to be contributing towards something that’s servicing [literally millions of users](https://realm.io/news/9-months/) now.
 
-> Say hi to some [@realm](https://twitter.com/realm) folks who’ve been running the [@AltConference](https://twitter.com/AltConference) stream! [@morqon](https://twitter.com/morqon) [@Anderson760](https://twitter.com/Anderson760) [@TimOliverAU](https://twitter.com/TimOliverAU) Mengting [pic.twitter.com/GlhPGdNVR4](http://t.co/GlhPGdNVR4)
-> 
-> - JP Simard (@simjp) [June 12, 2015](https://twitter.com/simjp/status/609159765239926784)
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/simjp"><img class="avatar" src="/img/site/avatars/simjp.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">JP Simard</span><span class="account_name">@simjp</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">Say hi to some <a href="https://twitter.com/realm">@realm</a> folks who’ve been running the <a href="https://twitter.com/AltConference">@AltConference</a> stream! <a href="https://twitter.com/morqon">@morqon</a> <a href="https://twitter.com/Anderson760">@Anderson760</a> <a href="https://twitter.com/TimOliverAU">@TimOliverAU</a> Mengting <a href="http://t.co/GlhPGdNVR4">pic.twitter.com/GlhPGdNVR4</a></p><p class="meta"><a href="https://twitter.com/simjp/status/609159765239926784"><time datetime="2015-06-12">12 June 2015</time></a></p></blockquote>
 
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>That all being said, I still feel I still have much to learn. I think I’ve only recently started to settle into a good routine for working remotely, and as I’m moving more and more to the OS X/Swift side of things, I’ve discovered there’s still a lot of code styles/practices that I need to study!
+That all being said, I still feel I still have much to learn. I think I’ve only recently started to settle into a good routine for working remotely, and as I’m moving more and more to the OS X/Swift side of things, I’ve discovered there’s still a lot of code styles/practices that I need to study!
 
 ## Travel
 

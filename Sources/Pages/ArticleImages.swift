@@ -33,6 +33,10 @@ enum ArticleImages {
                 if ancestors.contains(where: { ["noscript", "template"].contains($0.tagName()) }) {
                     continue
                 }
+                // Social embed cards carry their own avatar markup.
+                if ancestors.contains(where: { $0.hasClass("embed_social") }) {
+                    continue
+                }
                 let source = try image.attr("src")
                 guard !source.isEmpty, !source.hasPrefix("data:") else { continue }
                 if eagerFirst && !promoted {

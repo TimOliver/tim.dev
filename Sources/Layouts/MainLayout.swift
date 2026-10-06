@@ -151,9 +151,7 @@ struct MainLayout: Layout {
             // data-color-scheme on <html> before first paint, preventing FOUC.
             Script(file: "/js/theme.js")
             // Preload sprites - works around Safari sometimes failing to render
-            // external <use href> references on cold cache. (social-logos.svg is
-            // not preloaded: nothing references it until the first post with a
-            // social embed ships - see Assets/css/social-embeds.css.)
+            // external <use href> references on cold cache.
             // Chromium never matches an `as=image` preload to a <use> fetch, so
             // it warns "preloaded but not used" and downloads each sprite twice
             // on a cold cache (~2 KB gzipped). Accepted: dropping the preloads
@@ -164,6 +162,13 @@ struct MainLayout: Layout {
             MetaLink(href: "/img/site/ui-icons.svg", rel: "preload")
                 .customAttribute(name: "as", value: "image")
                 .customAttribute(name: "type", value: "image/svg+xml")
+            // The social-embed card logos (Site.stripUnusedLoaders drops this
+            // from article pages with no card).
+            if hasArticleContent {
+                MetaLink(href: "/img/site/social-logos.svg", rel: "preload")
+                    .customAttribute(name: "as", value: "image")
+                    .customAttribute(name: "type", value: "image/svg+xml")
+            }
             MetaLink(href: "/css/site.css", rel: .stylesheet)
             for stylesheet in pageStylesheets {
                 MetaLink(href: stylesheet, rel: .stylesheet)

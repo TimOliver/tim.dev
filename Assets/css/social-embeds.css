@@ -1,13 +1,9 @@
-/* Social embed cards - authoring vocabulary for quoting Mastodon / Twitter /
-   Bluesky posts inside article content (see Template/CLAUDE.md, "social embed
-   facade"). No published post uses this markup yet; the styles are kept ready
-   so embeds Just Work when first authored. Loaded only on the home feed and
-   post pages (MainLayout.swift).
-
-   NOTE: when the first embed ships, restore the /img/site/social-logos.svg preload
-   in MainLayout's <head> - Safari can fail to render external <use href>
-   sprite references on a cold cache without it. The preload was removed while
-   nothing referenced the sprite. */
+/* Social embed cards - static, build-time facades for quoting Mastodon /
+   Twitter / Bluesky posts inside article content (see Template/AGENTS.md,
+   "Social Embeds"). No platform script loads. Migrated tweets use the twitter
+   variant; avatars live in /img/site/avatars/. Loaded (with the
+   social-logos.svg preload) only on pages that contain a card - see
+   Site.stripUnusedLoaders. */
 
 article .embed_social {
     --accent: var(--link);
@@ -138,6 +134,15 @@ article .embed_social[data-platform="bluesky"] {
     width: 40px;
     height: auto;
     color: var(--accent);
+}
+/* The bird is a solid glyph that reads heavier than the other logos. */
+.embed_social[data-platform="twitter"] .embed_logo {
+    width: 30px;
+    justify-self: end;
+    /* Top-aligned, then nudged up to offset the glyph's inset in its viewBox,
+       so the bird sits as far from the card's top edge as from its right. */
+    align-self: start;
+    margin-top: -1.5px;
 }
 
 .embed_social .text {

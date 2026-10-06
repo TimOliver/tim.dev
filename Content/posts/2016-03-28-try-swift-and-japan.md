@@ -148,11 +148,7 @@ The talks were all fascniating, all including a variety of topics, not just enco
 
 In the middle of the day, I met and hung out with a few of my Twitter heroes. 😀
 
-> Lunch with these iOS experts = magical [@allonsykraken](https://twitter.com/allonsykraken) [@ayanonagon](https://twitter.com/ayanonagon) [@purpleyay](https://twitter.com/purpleyay) [@chriseidhof](https://twitter.com/chriseidhof) [@TimOliverAU](https://twitter.com/TimOliverAU) [@nerdonica](https://twitter.com/nerdonica) [pic.twitter.com/5FAxDB6rK8](https://t.co/5FAxDB6rK8)
-> 
-> - Novall Khan (@novallkhan) [March 3, 2016](https://twitter.com/novallkhan/status/705307608832278528)
-
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/novallkhan"><img class="avatar" src="/img/site/avatars/novallkhan.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">Novall Khan</span><span class="account_name">@novallkhan</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">Lunch with these iOS experts = magical <a href="https://twitter.com/allonsykraken">@allonsykraken</a> <a href="https://twitter.com/ayanonagon">@ayanonagon</a> <a href="https://twitter.com/purpleyay">@purpleyay</a> <a href="https://twitter.com/chriseidhof">@chriseidhof</a> <a href="https://twitter.com/TimOliverAU">@TimOliverAU</a> <a href="https://twitter.com/nerdonica">@nerdonica</a> <a href="https://t.co/5FAxDB6rK8">pic.twitter.com/5FAxDB6rK8</a></p><p class="meta"><a href="https://twitter.com/novallkhan/status/705307608832278528"><time datetime="2016-03-03">3 March 2016</time></a></p></blockquote>
 
 The rest of the first day was a blur for me. I was going to present my talk in the middle of the afternoon. While I’ve done quite a few presentations before (Including several in Japanese in the past), this was easily the most nervous I’d ever been, on account of both the complexity of the content and the number of people I was talking to. To say I was nervous as hell was an understatment.
 
@@ -168,45 +164,19 @@ The process for presenting from the backstage perspective was very interesting. 
 
 In any case, I went out there and delivered my presentation in Japanese as best as I could, and hoped like hell it would actually make sense. Most thankfully, the response was overwhelmingly positive. Twitter lit up with people talking about all of the new things they learned from my talk, and many people also tweeted at me asking additional questions.
 
-> Awesome talk by [@TimOliverAU](https://twitter.com/TimOliverAU) on advanced hacks with Core Animation!
-> 
-> Currently reverse engineering the lock screen! [pic.twitter.com/4FVup8NvYZ](https://t.co/4FVup8NvYZ)
-> 
-> - Adam Bell (@b3ll) [March 2, 2016](https://twitter.com/b3ll/status/704937373331791872)
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/b3ll"><img class="avatar" src="/img/site/avatars/b3ll.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">Adam Bell</span><span class="account_name">@b3ll</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">Awesome talk by <a href="https://twitter.com/TimOliverAU">@TimOliverAU</a> on advanced hacks with Core Animation!<br><br>Currently reverse engineering the lock screen! <a href="https://t.co/4FVup8NvYZ">pic.twitter.com/4FVup8NvYZ</a></p><p class="meta"><a href="https://twitter.com/b3ll/status/704937373331791872"><time datetime="2016-03-02">2 March 2016</time></a></p></blockquote>
 
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/natashasgodwin"><img class="avatar" src="/img/site/avatars/natashasgodwin.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">Natasha Godwin</span><span class="account_name">@natashasgodwin</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">1st talk I attended was, naturally, animation-related. ?'d talk from <a href="https://twitter.com/TimOliverAU">@TimOliverAU</a> on Core Animation! <a href="https://twitter.com/hashtag/tryswiftconf">\#tryswiftconf</a> <a href="https://t.co/SmvEIB3iuq">pic.twitter.com/SmvEIB3iuq</a></p><p class="meta"><a href="https://twitter.com/natashasgodwin/status/704949242750771200"><time datetime="2016-03-02">2 March 2016</time></a></p></blockquote>
 
-> 1st talk I attended was, naturally, animation-related. ?'d talk from [@TimOliverAU](https://twitter.com/TimOliverAU) on Core Animation! [\#tryswiftconf](https://twitter.com/hashtag/tryswiftconf?src=hash) [pic.twitter.com/SmvEIB3iuq](https://t.co/SmvEIB3iuq)
-> 
-> - Natasha Godwin (@natashasgodwin) [March 2, 2016](https://twitter.com/natashasgodwin/status/704949242750771200)
-
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
-
-> My colleague [@TimOliverAU](https://twitter.com/TimOliverAU) is killing it with his presentation on Core Animation at [@tryswiftconf](https://twitter.com/tryswiftconf)… in Japanese! [pic.twitter.com/9LrlcCLGVD](https://t.co/9LrlcCLGVD)
-> 
-> - JP Simard (@simjp) [March 2, 2016](https://twitter.com/simjp/status/704933491478302720)
-
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/simjp"><img class="avatar" src="/img/site/avatars/simjp.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">JP Simard</span><span class="account_name">@simjp</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">My colleague <a href="https://twitter.com/TimOliverAU">@TimOliverAU</a> is killing it with his presentation on Core Animation at <a href="https://twitter.com/tryswiftconf">@tryswiftconf</a>… in Japanese! <a href="https://t.co/9LrlcCLGVD">pic.twitter.com/9LrlcCLGVD</a></p><p class="meta"><a href="https://twitter.com/simjp/status/704933491478302720"><time datetime="2016-03-02">2 March 2016</time></a></p></blockquote>
 
 Also judging from the tweets, the ‘spectacle’ of a caucasian person speaking Japanese was apparently VERY entertaining. XD
 
-> Why do I have a translator in my ears to listen to [@TimOliverAU](https://twitter.com/TimOliverAU) give his CA talk? He's Aussie? He's talking Japanese! [\#tryswiftconf](https://twitter.com/hashtag/tryswiftconf?src=hash)
-> 
-> - Phill Farrugia (@phillfarrugia) [March 2, 2016](https://twitter.com/phillfarrugia/status/704932725090852864)
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/phillfarrugia"><img class="avatar" src="/img/site/avatars/phillfarrugia.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">Phill Farrugia</span><span class="account_name">@phillfarrugia</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">Why do I have a translator in my ears to listen to <a href="https://twitter.com/TimOliverAU">@TimOliverAU</a> give his CA talk? He's Aussie? He's talking Japanese! <a href="https://twitter.com/hashtag/tryswiftconf">\#tryswiftconf</a></p><p class="meta"><a href="https://twitter.com/phillfarrugia/status/704932725090852864"><time datetime="2016-03-02">2 March 2016</time></a></p></blockquote>
 
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/NatashaTheRobot"><img class="avatar" src="/img/site/avatars/NatashaTheRobot.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">NatashaTheRobot</span><span class="account_name">@NatashaTheRobot</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">So <a href="https://twitter.com/TimOliverAU">@TimOliverAU</a> is doing his <a href="https://twitter.com/hashtag/tryswiftconf">\#tryswiftconf</a> talk in fluent Japanese while I'm listening to live English translation <a href="https://t.co/FvqZAN8f4w">pic.twitter.com/FvqZAN8f4w</a></p><p class="meta"><a href="https://twitter.com/NatashaTheRobot/status/704935218793353216"><time datetime="2016-03-02">2 March 2016</time></a></p></blockquote>
 
-> So [@TimOliverAU](https://twitter.com/TimOliverAU) is doing his [\#tryswiftconf](https://twitter.com/hashtag/tryswiftconf?src=hash) talk in fluent Japanese while I'm listening to live English translation [pic.twitter.com/FvqZAN8f4w](https://t.co/FvqZAN8f4w)
-> 
-> - NatashaTheRobot (@NatashaTheRobot) [March 2, 2016](https://twitter.com/NatashaTheRobot/status/704935218793353216)
-
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
-
-> [@TimOliverAU](https://twitter.com/TimOliverAU) I think she’s having trouble understanding you 😉
-> 
-> - Sean Woodhouse (@seanwoodhouse) [March 2, 2016](https://twitter.com/seanwoodhouse/status/704932948718579713)
-
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/seanwoodhouse"><img class="avatar" src="/img/site/avatars/seanwoodhouse.svg" alt="" width="46" height="46"><div class="name"><span class="display_name">Sean Woodhouse</span><span class="account_name">@seanwoodhouse</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text"><a href="https://twitter.com/TimOliverAU">@TimOliverAU</a> I think she’s having trouble understanding you 😉</p><p class="meta"><a href="https://twitter.com/seanwoodhouse/status/704932948718579713"><time datetime="2016-03-02">2 March 2016</time></a></p></blockquote>
 
 In any case, I’m really REALLY happy that the talk went down well and I heard from so many people that they learned something new out of it. ^\_^
 
@@ -222,11 +192,7 @@ With my talk out of the way, I enjoyed the hell out of the rest of try! Swift. T
 
 One of the other major ‘highlights’ was that one of the other presenters referenced my talk in their own presentation, but forgot my name and called me Tom instead. And that somehow stuck and became a meme for the rest of the time. XD
 
-> Guys…. [pic.twitter.com/s8HVrYToAg](https://t.co/s8HVrYToAg)
-> 
-> - Tim Oliver (@TimOliverAU) [March 3, 2016](https://twitter.com/TimOliverAU/status/705348001313587200)
-
-<script async="" charset="utf-8" src="//platform.twitter.com/widgets.js"></script>
+<blockquote class="embed_social" data-platform="twitter"><div class="header"><a class="name_header" href="https://twitter.com/TimOliverAU"><img class="avatar" src="/img/site/avatars/TimOliverAU.jpg" alt="" width="46" height="46"><div class="name"><span class="display_name">Tim Oliver</span><span class="account_name">@TimOliverAU</span></div></a><svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#twitter"/></svg></div><p class="text">Guys…. <a href="https://t.co/s8HVrYToAg">pic.twitter.com/s8HVrYToAg</a></p><p class="meta"><a href="https://twitter.com/TimOliverAU/status/705348001313587200"><time datetime="2016-03-03">3 March 2016</time></a></p></blockquote>
 
 On the second night, I attended a joint dinner between the sponsors and the presenters.
 
