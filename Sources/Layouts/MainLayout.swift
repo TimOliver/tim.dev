@@ -154,6 +154,10 @@ struct MainLayout: Layout {
             // external <use href> references on cold cache. (social-logos.svg is
             // not preloaded: nothing references it until the first post with a
             // social embed ships - see Assets/css/social-embeds.css.)
+            // Chromium never matches an `as=image` preload to a <use> fetch, so
+            // it warns "preloaded but not used" and downloads each sprite twice
+            // on a cold cache (~2 KB gzipped). Accepted: dropping the preloads
+            // brings back blank icons in Safari.
             MetaLink(href: "/img/site/brand-icons.svg", rel: "preload")
                 .customAttribute(name: "as", value: "image")
                 .customAttribute(name: "type", value: "image/svg+xml")

@@ -109,11 +109,14 @@
         }
     }
 
+    // Only a real answer changes the card. A failed request or an error
+    // response keeps the current state, so one dropped poll can't tear down
+    // the player mid-stream; the next poll tries again.
     function refresh() {
         fetch(ENDPOINT, { headers: { Accept: 'application/json' } })
             .then(function (res) { return res.ok ? res.json() : null; })
-            .then(function (data) { apply(data); })
-            .catch(function () { hide(); });
+            .then(function (data) { if (data) apply(data); })
+            .catch(function () {});
     }
 
     function startPolling() {
