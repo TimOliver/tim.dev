@@ -2,7 +2,7 @@
 title: Hello World!
 date: 2008-11-16 13:01:08
 author: Tim Oliver
-image: /img/posts/2008/11/hello_world1.jpg
+image: /img/posts/2008/11/hello_world.jpg
 tags: personal
 path: /2008/11/16/hello-world/
 ---

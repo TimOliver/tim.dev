@@ -2,7 +2,7 @@
 title: Ode to Taka’s Kitchen
 date: 2008-11-18 00:22:49
 author: Tim Oliver
-image: /img/posts/2008/11/image.jpg
+image: /img/posts/2008/11/katsudon.jpg
 tags: personal
 path: /2008/11/18/ode-to-takas-kitchen/
 ---
