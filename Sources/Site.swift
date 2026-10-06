@@ -1,5 +1,6 @@
 // tim.dev - released into the public domain. No rights reserved.
 
+import CryptoKit
 import Foundation
 import Ignite
 
@@ -31,6 +32,7 @@ struct IgniteWebsite {
             try pruneUnusedVariants()
             try normalizeSitemap()
             try removeDotfiles()
+            try fingerprintAssets()
         } catch {
             // Fail loud: a zero exit here would let a deploy script ship a
             // stale or partial Build/. Print the full error - Ignite errors
@@ -131,6 +133,48 @@ struct IgniteWebsite {
             }
         }
         print("Pruned \(removed) unreferenced image variants")
+    }
+
+    /// Cache busting. Every stylesheet and script gets a content-hashed copy
+    /// beside it (`site.css` → `site.3f2a9c1e.css`) and every page links the
+    /// hashed name, so the CDN and browsers can cache CSS/JS forever while a
+    /// change still reaches visitors on the next page load. The unhashed
+    /// files stay too, for anything still pointing at the old names. Runs
+    /// last: earlier passes match the plain tags.
+    static func fingerprintAssets() throws {
+        let fm = FileManager.default
+        let build = packageRoot.appending(path: "Build")
+        var renames: [(from: String, to: String)] = []
+        for dir in ["css", "js"] {
+            let folder = build.appending(path: dir)
+            for name in try fm.contentsOfDirectory(atPath: folder.path).sorted()
+            where name.hasSuffix(".\(dir)") {
+                let url = folder.appending(path: name)
+                let digest = SHA256.hash(data: try Data(contentsOf: url))
+                let hash = digest.map { String(format: "%02x", $0) }.joined().prefix(8)
+                let stem = String(name.dropLast(dir.count + 1))
+                let hashed = "\(stem).\(hash).\(dir)"
+                let target = folder.appending(path: hashed)
+                if !fm.fileExists(atPath: target.path) { try fm.copyItem(at: url, to: target) }
+                renames.append(("\"/\(dir)/\(name)\"", "\"/\(dir)/\(hashed)\""))
+            }
+        }
+
+        var pages = 0
+        let enumerator = fm.enumerator(at: build, includingPropertiesForKeys: nil)
+        while let url = enumerator?.nextObject() as? URL {
+            guard url.pathExtension == "html" else { continue }
+            var html = try String(contentsOf: url, encoding: .utf8)
+            let original = html
+            for rename in renames where html.contains(rename.from) {
+                html = html.replacingOccurrences(of: rename.from, with: rename.to)
+            }
+            if html != original {
+                try html.write(to: url, atomically: true, encoding: .utf8)
+                pages += 1
+            }
+        }
+        print("Fingerprinted \(renames.count) CSS/JS files across \(pages) pages")
     }
 
     /// Ignite writes each static page's sitemap <loc> from its bare path

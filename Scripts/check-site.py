@@ -206,7 +206,9 @@ def main() -> int:
     for path in paths:
         html = path.read_text()
         for marker, script in feature_loaders.items():
-            if marker in html and f'src="{script}"' not in html:
+            stem, extension = script.rsplit(".", 1)
+            loaded = re.search(rf'src="{re.escape(stem)}(\.[0-9a-f]{{8}})?\.{extension}"', html)
+            if marker in html and not loaded:
                 fail(path, f"uses {marker} but does not load {script}")
 
     # Dotfiles (.DS_Store and the like) must never deploy; Site.swift deletes

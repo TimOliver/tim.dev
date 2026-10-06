@@ -17,7 +17,8 @@ bash Scripts/install-hooks.sh              # once per clone: pre-commit EXIF str
 ```
 
 Needs macOS with Xcode/Swift and Python 3.10+ with Pillow. Deploy `Build/` only after
-`Scripts/build.sh` succeeds. There is no deploy automation yet (see Roadmap).
+`Scripts/build.sh` succeeds. There is no deploy automation yet (see Roadmap). When it lands, cache
+`/css/*.<hash>.css` and `/js/*.<hash>.js` as immutable (a year), and HTML briefly.
 
 ## Layout
 
@@ -48,10 +49,15 @@ media-manifest.json            build INPUT written by build-media.py (dimensions
   lowercases SVG `viewBox`). Pages write HTML strings into `Includes/_<dir>/<key>.html` and return
   `Include(...)` because Ignite's raw-HTML initialisers are internal. Two renderings of one item need
   two files (the feed writes `<key>.feed.html`).
-- **Post-publish passes in `Site.swift`**: `buildFeeds` cuts `feed.xml` down to blog posts (`/YYYY/…`)
-  and derives the per-category feeds; `stripIgniteCore` deletes the unused `ignite-core` bundle and its
-  script tag. The `<link rel=alternate>` list in MainLayout, the header RSS popover and
-  `categoryFeeds` must stay in sync.
+- **Post-publish passes in `Site.swift`**, in order: `buildFeeds` cuts `feed.xml` down to blog posts
+  (`/YYYY/…`) and derives the per-category feeds; `stripIgniteCore` deletes the unused `ignite-core`
+  bundle and its script tag; `stripUnusedLoaders` drops lightbox/lite-youtube/social-embeds tags from
+  home/post pages that don't use them (MainLayout can't see post bodies); `pruneUnusedVariants`
+  deletes image variants no page references; `normalizeSitemap` gives every `<loc>` the canonical
+  trailing slash; `removeDotfiles` drops `.DS_Store` etc.; `fingerprintAssets` (last - the earlier
+  passes match plain tags) copies every CSS/JS file to `name.<8-hex>.ext` and points all HTML at it,
+  so the CDN can cache CSS/JS as immutable while changes still land. The `<link rel=alternate>` list in
+  MainLayout, the header RSS popover and `categoryFeeds` must stay in sync.
 - **Article routing.** Posts have no `layout:`, so Ignite uses the FIRST entry of `articlePages` —
   `PostPage()` must stay first. Collection items opt in with `layout: AppDetail|CodeDetail|ArtDetail|
   TalkDetail`; an unknown layout name is a `fatalError`.
