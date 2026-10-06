@@ -125,6 +125,14 @@ enum ArticleShell {
         )
     }
 
+    /// The `src` of the first `<img>` in a rendered body, or nil.
+    private static func firstImageSource(in html: String) -> String? {
+        guard let tag = html.range(of: "<img\\b[^>]*>", options: .regularExpression),
+              let src = html[tag].range(of: #"src="[^"]*""#, options: .regularExpression)
+        else { return nil }
+        return String(html[tag][src].dropFirst(5).dropLast())
+    }
+
     /// Builds the full `<article>` HTML for a post: header (date + title, plus
     /// an optional subtitle), the badge row, an optional hero image, the
     /// transformed body, and the end-of-article links. The standalone post page
@@ -155,13 +163,6 @@ enum ArticleShell {
         // Badge row (link · comments · share) above the hero - feed and page.
         s += badgeRow(path: href, title: escape(article.title))
 
-        // Optional hero image (alt="" - it's decorative; the title carries the
-        // meaning). Emitted OUTSIDE the <section> below so the
-        // `.post-badges + img.hero` adjacency selector still matches.
-        if let image = article.image, !image.isEmpty {
-            s += ArticleImages.hero(image, eager: context == .page || eagerHero)
-        }
-
         // Body transform pipeline, innermost call first: expand Instagram
         // embeds, rescue Markdown images that leaked as literal text, group
         // consecutive images into lightbox galleries, then wrap the remaining
@@ -173,6 +174,16 @@ enum ArticleShell {
                 galleryPrefix: CollectionRenderer.key(for: article.path, dir: "posts")
             )
         )
+
+        // Optional hero image (alt="" - it's decorative; the title carries the
+        // meaning). Emitted OUTSIDE the <section> below so the
+        // `.post-badges + img.hero` adjacency selector still matches.
+        // Skipped when the body opens with the same picture: migrated posts
+        // set `image:` (which also feeds og:image) to their first inline
+        // image, and the page would otherwise show it twice in a row.
+        if let image = article.image, !image.isEmpty, firstImageSource(in: body) != image {
+            s += ArticleImages.hero(image, eager: context == .page || eagerHero)
+        }
         s += "<section>\(body)</section>"
 
         // Footer - every article ends with the same links row (feed and post
