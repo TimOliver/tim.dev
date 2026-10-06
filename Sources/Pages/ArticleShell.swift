@@ -169,7 +169,7 @@ enum ArticleShell {
         // single images in lightbox anchors and adds responsive metadata. Order matters - grids must run
         // before the single-image wrap so runs aren't wrapped one image at a time.
         let grouped = groupImageGrids(
-            ArticleContent.normalizedHTML(article.text),
+            splitMixedImageParagraphs(ArticleContent.normalizedHTML(article.text)),
             galleryPrefix: CollectionRenderer.key(for: article.path, dir: "posts")
         )
 
@@ -253,6 +253,44 @@ enum ArticleShell {
     /// navigable gallery and shows data-caption under each. The caption comes
     /// from the figcaption where present, else the image's alt text. Single
     /// images are left exactly as they were.
+    /// Gives every post image its own paragraph. WordPress-era posts often put
+    /// an image and text in one `<p>` - image first (it used to float beside
+    /// the text; the float was lost in the migration) or text, `<br>`, image -
+    /// so the text butted straight against the picture with no gap. Each such
+    /// paragraph is split into text and image paragraphs, dropping `<br>`s at
+    /// the seams. Only local post images (`/img/…`, optionally wrapped in a
+    /// link) count; inline icons are left alone.
+    private static func splitMixedImageParagraphs(_ html: String) -> String {
+        let image = #"(?:<a\b[^>]*>\s*)?<img\b[^>]*\bsrc="/img/[^"]*"[^>]*>(?:\s*</a>)?"#
+        return replaceRegex(html, #"(?s)<p>((?:(?!</?p\b).)*?<img\b(?:(?!</?p\b).)*?)</p>"#) { m, ns in
+            let whole = ns.substring(with: m.range)
+            let inner = ns.substring(with: m.range(at: 1)) as NSString
+            guard let regex = try? NSRegularExpression(pattern: image) else { return whole }
+            let units = regex.matches(in: inner as String, range: NSRange(location: 0, length: inner.length))
+            guard !units.isEmpty else { return whole }
+
+            // Text between and around the images, minus <br>s at the seams.
+            func text(_ range: NSRange) -> String {
+                inner.substring(with: range)
+                    .replacingOccurrences(of: #"^(?:\s|<br\s*/?>)+|(?:\s|<br\s*/?>)+$"#, with: "", options: .regularExpression)
+            }
+            var parts: [String] = []
+            var cursor = 0
+            for unit in units {
+                let before = text(NSRange(location: cursor, length: unit.range.location - cursor))
+                if !before.isEmpty { parts.append("<p>\(before)</p>") }
+                parts.append("<p>\(inner.substring(with: unit.range))</p>")
+                cursor = unit.range.location + unit.range.length
+            }
+            let after = text(NSRange(location: cursor, length: inner.length - cursor))
+            if !after.isEmpty { parts.append("<p>\(after)</p>") }
+
+            // A paragraph that was already just an image stays as it was.
+            let hasText = parts.contains { !$0.contains("<img") }
+            return hasText ? parts.joined(separator: "\n") : whole
+        }
+    }
+
     private static func groupImageGrids(_ html: String, galleryPrefix: String) -> String {
 
         // A single grid-eligible item: a markdown image paragraph OR a WP image
