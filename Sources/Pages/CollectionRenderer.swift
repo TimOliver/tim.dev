@@ -122,13 +122,15 @@ enum CollectionRenderer {
         // Nothing to show → emit nothing, so the caller renders no stray block.
         guard !rows.isEmpty else { return "" }
 
-        // Eyebrow label, then a <dl> of escaped label/value pairs.
-        var s = #"<span class="collection-eyebrow">Details</span>"#
+        // Eyebrow label, then a <dl> of escaped label/value pairs, on the same
+        // rounded card as the About page's Tech specs and the Contact details.
+        var s = #"<div class="collection-details-card">"#
+        s += #"<span class="collection-eyebrow">Details</span>"#
         s += #"<dl class="spec-list">"#
         for (label, value) in rows {
             s += #"<dt>\#(escape(label))</dt><dd>\#(escape(value))</dd>"#
         }
-        s += "</dl>"
+        s += "</dl></div>"
         return s
     }
 
