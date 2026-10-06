@@ -17,7 +17,9 @@ enum ArticleImages {
     /// Normalize every image node, including images sharing paragraphs with
     /// text. Existing links keep their destinations; local media and standalone
     /// external photos get lightbox anchors, while inline external icons do not.
-    static func enhance(_ html: String) -> String {
+    /// `eagerFirst` makes the first image load eagerly at high priority - for
+    /// a post with no hero, where that image is the largest thing on screen.
+    static func enhance(_ html: String, eagerFirst: Bool = false) -> String {
         guard html.contains("<img") else { return html }
         do {
             let parser = Parser.htmlParser().settings(ParseSettings.preserveCase)
@@ -25,6 +27,7 @@ enum ArticleImages {
             document.outputSettings().prettyPrint(pretty: false)
             guard let body = document.body() else { return html }
 
+            var promoted = false
             for image in try body.select("img").array() {
                 let ancestors = image.parents().array()
                 if ancestors.contains(where: { ["noscript", "template"].contains($0.tagName()) }) {
@@ -32,7 +35,13 @@ enum ArticleImages {
                 }
                 let source = try image.attr("src")
                 guard !source.isEmpty, !source.hasPrefix("data:") else { continue }
-                try image.attr("loading", "lazy")
+                if eagerFirst && !promoted {
+                    try image.attr("loading", "eager")
+                    try image.attr("fetchpriority", "high")
+                    promoted = true
+                } else {
+                    try image.attr("loading", "lazy")
+                }
                 try image.attr("decoding", "async")
 
                 let entry = metadata(for: source)

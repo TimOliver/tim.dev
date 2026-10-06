@@ -137,7 +137,7 @@ enum TalksRenderer {
     /// overlays both the real poster and the flat empty surface. `sizes` is
     /// threaded in rather than fixed here: the three call sites render this at
     /// very different widths (hero ~700px, card ~460px, detail ~1180px).
-    static func thumb(image: String?, duration: String, title: String, sizes: String) -> String {
+    static func thumb(image: String?, duration: String, title: String, sizes: String, eager: Bool = false) -> String {
 
         // Duration overlay pill - omitted entirely when there is no duration,
         // so an empty string never produces a blank badge.
@@ -153,7 +153,8 @@ enum TalksRenderer {
             path: image,
             alt: title.isEmpty ? "" : "\(title) - talk poster",
             sizes: sizes,
-            overlay: badge
+            overlay: badge,
+            eager: eager
         )
     }
 

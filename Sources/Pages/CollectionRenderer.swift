@@ -324,9 +324,14 @@ enum Media {
     /// carrying the real image (noscript-lqip.html hides the placeholder when
     /// JS is off, so without the sibling a JS-less visitor sees nothing).
     ///
+    /// `eager` is for the page's main image (the Talks featured poster, an Art
+    /// piece): it skips the blur-up and ships real srcset/sizes with high
+    /// fetch priority, so the browser starts it straight away instead of
+    /// waiting for site.js to promote it.
+    ///
     /// Fails LOUDLY on an unknown path: an image referenced in front matter but
     /// missing from disk must not deploy as a silent hole in the page.
-    static func image(_ path: String, alt: String, sizes: String, className: String) -> String {
+    static func image(_ path: String, alt: String, sizes: String, className: String, eager: Bool = false) -> String {
 
         // An unknown path means front matter references an image the manifest
         // never recorded - fail rather than emit an <img> that 404s.
@@ -336,6 +341,15 @@ enum Media {
                 media-manifest.json. Add the file at Assets\(path), then run \
                 python3 Scripts/build-media.py
                 """)
+        }
+
+        if eager {
+            var s = "<img"
+            if !className.isEmpty { s += #" class="\#(className)""# }
+            s += #" src="\#(escape(path))" srcset="\#(escape(entry.srcset))" sizes="\#(escape(sizes))""#
+            s += #" width="\#(entry.width)" height="\#(entry.height)""#
+            s += #" alt="\#(escape(alt))" fetchpriority="high" decoding="async">"#
+            return s
         }
 
         // Always carry the base `lqip` class; append the caller's class if any.
@@ -366,7 +380,8 @@ enum Media {
         path: String?,
         alt: String,
         sizes: String,
-        overlay: String = ""
+        overlay: String = "",
+        eager: Bool = false
     ) -> String {
 
         // No image yet → the flat `.is-empty` surface, still carrying the
@@ -377,7 +392,7 @@ enum Media {
 
         // Real image path → wrap the LQIP <img> (bare, no extra class) and the
         // overlay together inside the container.
-        let img = image(path, alt: alt, sizes: sizes, className: "")
+        let img = image(path, alt: alt, sizes: sizes, className: "", eager: eager)
         return #"<div class="\#(container)">\#(img)\#(overlay)</div>"#
     }
 }

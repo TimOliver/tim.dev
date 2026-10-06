@@ -67,7 +67,7 @@ extension TalksRenderer {
             s += #"<a class="talks-featured" href="\#(escape(featured.path))">"#
             // .talks-featured .talks-thumb is `flex: 0 1 700px` - 700px is the
             // hero's actual cap, not a shared card estimate.
-            s += thumb(image: featured.image, duration: featured.duration, title: featured.title, sizes: "(max-width: 720px) 90vw, 700px")
+            s += thumb(image: featured.image, duration: featured.duration, title: featured.title, sizes: "(max-width: 720px) 90vw, 700px", eager: true)
             s += #"<div class="talks-featured-text">"#
             s += #"<span class="talks-eyebrow">Featured</span>"#
             s += #"<h2 class="talks-featured-title">\#(escape(featured.title))</h2>"#

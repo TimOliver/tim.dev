@@ -168,11 +168,9 @@ enum ArticleShell {
         // consecutive images into lightbox galleries, then wrap the remaining
         // single images in lightbox anchors and adds responsive metadata. Order matters - grids must run
         // before the single-image wrap so runs aren't wrapped one image at a time.
-        let body = ArticleImages.enhance(
-            groupImageGrids(
-                ArticleContent.normalizedHTML(article.text),
-                galleryPrefix: CollectionRenderer.key(for: article.path, dir: "posts")
-            )
+        let grouped = groupImageGrids(
+            ArticleContent.normalizedHTML(article.text),
+            galleryPrefix: CollectionRenderer.key(for: article.path, dir: "posts")
         )
 
         // Optional hero image (alt="" - it's decorative; the title carries the
@@ -181,9 +179,15 @@ enum ArticleShell {
         // Skipped when the body opens with the same picture: migrated posts
         // set `image:` (which also feeds og:image) to their first inline
         // image, and the page would otherwise show it twice in a row.
-        if let image = article.image, !image.isEmpty, firstImageSource(in: body) != image {
-            s += ArticleImages.hero(image, eager: context == .page || eagerHero)
+        // Enhancing never changes an image's src, so `grouped` answers that.
+        let eager = context == .page || eagerHero
+        let showHero = article.image.map { !$0.isEmpty && firstImageSource(in: grouped) != $0 } ?? false
+        if showHero, let image = article.image {
+            s += ArticleImages.hero(image, eager: eager)
         }
+
+        // Without a hero, the first body image is the one to load first.
+        let body = ArticleImages.enhance(grouped, eagerFirst: eager && !showHero)
         s += "<section>\(body)</section>"
 
         // Footer - every article ends with the same links row (feed and post

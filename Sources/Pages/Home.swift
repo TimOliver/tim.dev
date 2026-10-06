@@ -42,8 +42,12 @@ struct Home: StaticPage {
 
         // Render each surviving post through the shared shell in feed context,
         // so a card here matches the same post on the tag/archive listings.
+        // The first post that has any image gets the eager, high-priority
+        // load: it is the first picture a visitor sees, even when the newest
+        // post is text only.
+        let firstWithImage = recent.first { !($0.image ?? "").isEmpty || $0.text.contains("<img") }?.path
         ForEach(Array(recent)) { article in
-            ArticleShell.include(for: article, context: .feed, eagerHero: article.path == recent.first?.path)
+            ArticleShell.include(for: article, context: .feed, eagerHero: article.path == firstWithImage)
         }
     }
 }

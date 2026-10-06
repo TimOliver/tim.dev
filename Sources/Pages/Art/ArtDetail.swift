@@ -71,7 +71,8 @@ extension ArtRenderer {
             container: "art-shot",
             path: item.image,
             alt: item.title,
-            sizes: "(max-width: 720px) 100vw, 1180px"
+            sizes: "(max-width: 720px) 100vw, 1180px",
+            eager: true
         )
         header += "</div>"
 
