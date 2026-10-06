@@ -444,7 +444,6 @@ body:has(.collection-detail) {
     display: block;
     width: 100%;
     max-width: none;
-    border-radius: 0;
 }
 
 /* Art detail keeps each image's own ratio (`--ar`, set inline from the media

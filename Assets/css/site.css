@@ -532,7 +532,6 @@ body > header::before {
     width: 100%;
     padding: 0 48px;
     display: flex;
-    box-sizing: border-box;
 }
 
 #header-content nav {
@@ -542,7 +541,6 @@ body > header::before {
 
 #logo {
     display: flex;
-    vertical-align: middle;
 }
 
 #logo img {
@@ -607,10 +605,7 @@ body > header::before {
     }
 }
 
-/* Shared with .theme-toggle-icon below - the 25px header glyph kinds. The RSS
-   trigger's img needs naming explicitly: it sits inside .rss-toggle's wrapper
-   div, so the direct-child chain no longer reaches it. */
-#menu > li > a > img,
+/* The 25px header glyphs: the RSS trigger's img and the theme toggle's. */
 .rss-toggle-link > img,
 .theme-toggle-icon {
     height: 25px;
@@ -629,7 +624,6 @@ body > header::before {
 /* Tablet/phone: normalise all header glyphs to a single 20px height so the sun,
    moon, and RSS icons match each other and sit close to the nav text size. */
 @media (max-width: 1000px) {
-    #menu > li > a > img,
     .rss-toggle-link > img,
     .theme-toggle-icon {
         height: 20px;
@@ -1066,7 +1060,6 @@ body > header::before {
 
     body > header {
         padding: 12px 16px;
-        box-sizing: border-box;
         min-height: 76px;
     }
 
@@ -1102,7 +1095,6 @@ body > header::before {
 
     #menu {
         justify-content: flex-end;
-        font-size: 1em;
         gap: 20px;
     }
 
@@ -1164,7 +1156,6 @@ body > header::before {
         line-height: 1.5;
         width: 100%;
         padding-right: 20px;
-        box-sizing: border-box;
     }
 
     #header-content:has(.menu-toggle-input:checked) #menu > li {
@@ -1208,8 +1199,7 @@ body > header::before {
     }
 
     #header-content:has(.menu-toggle-input:checked) .menu-row-icons .theme-toggle-icon,
-    #header-content:has(.menu-toggle-input:checked) .menu-row-icons .rss-toggle-link > img,
-    #header-content:has(.menu-toggle-input:checked) .menu-row-icons > a > img {
+    #header-content:has(.menu-toggle-input:checked) .menu-row-icons .rss-toggle-link > img {
         height: 26px;
         opacity: 0.8;
     }
@@ -1287,7 +1277,6 @@ body > header::before {
        so the footer separator and comment dividers line up with the content. */
     padding: 0 var(--container-pad);
     position: relative;
-    display: block;
 }
 
 /* Top gap for article-bearing pages (home feed + posts + tag/archive). With no

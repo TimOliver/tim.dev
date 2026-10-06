@@ -83,9 +83,8 @@
 /* ----- Detail page ----- */
 
 /* Inside the detail wrapper the shared rules (collection.css) flatten the
-   rounding and set the 16:9 detail ratio; the border and any hover transition
-   are code-specific, so they're reset here. */
+   rounding and set the 16:9 detail ratio; the border is code-specific, so
+   it's reset here. */
 .collection-detail-shot .code-shot {
     border: none;
-    transition: none;
 }

@@ -36,7 +36,6 @@ body:has(.archive) {
     font: inherit;
     font-size: 0.9em;
     margin: 0;
-    box-sizing: border-box;
 }
 
 .archive-search:focus {
@@ -65,9 +64,6 @@ body:has(.archive) {
     border-top: 1px solid var(--border);
 }
 
-.archive-year:first-child {
-    padding-top: 0;
-}
 
 .archive-year-aside h2 {
     font-size: 2.6em;
@@ -110,7 +106,6 @@ body:has(.archive) {
     .archive-year {
         grid-template-columns: 1fr;
         row-gap: 1.2em;
-        padding: 2em 0;
     }
     .archive-year-aside h2 {
         font-size: 2.1em;

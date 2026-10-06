@@ -51,10 +51,6 @@ body:has(.about) {
     position: relative;
     top: 4px;
 }
-.about .about-job:has(> .about-co) p.about-meta {
-    position: relative;
-    top: 2px;
-}
 .about-job:has(> .about-co) > * {
     grid-column: 2;
 }
@@ -122,6 +118,9 @@ a.about-co .about-co-icon {
    the meta (which now sits in the icon's row) onto the first paragraph. */
 .about .about-job:has(> .about-co) p.about-meta {
     margin-bottom: 0;
+    /* Nudge the role line 2px lower against the icon (see the name above). */
+    position: relative;
+    top: 2px;
 }
 .about .about-job:has(> .about-co) p.about-meta + p {
     margin-top: 0.75em;
@@ -149,8 +148,6 @@ a.about-co .about-co-icon {
 
 .about-intro .page-title {
     text-align: left;
-    font-size: 2.7em;
-    font-weight: 800;
     margin: 0 0 0.1em;
 }
 
@@ -187,12 +184,6 @@ a.about-co .about-co-icon {
     margin: 0 auto 0.6em;
     display: block;
     object-fit: cover;
-}
-
-.about-portrait figcaption {
-    font-size: 0.85em;
-    color: var(--text-secondary);
-    line-height: 1.4;
 }
 
 /* Sections - heading + optional subtitle, separated by a hairline */
@@ -272,15 +263,6 @@ a.about-co .about-co-icon {
    needs about a quarter of the row; the prose gets the remaining 3/4. */
 .about-cols--narrow {
     grid-template-columns: 1fr 3fr;
-}
-
-/* Pin the timeline to the narrow LEFT column regardless of source order. */
-.about-cols--narrow > .about-timeline { order: -1; }
-
-.about-cols h3 {
-    font-size: 1.25em;
-    font-weight: 700;
-    margin: 0 0 0.6em;
 }
 
 .about-meta {
@@ -374,12 +356,6 @@ a.about-co .about-co-icon {
     margin: 0 0 1em;
 }
 
-/* Tighter margin when nested inside an individual entry. */
-.about-job .about-label,
-.about-timeline .about-label {
-    margin: 0 0 0.15em;
-}
-
 /* Column headers ("Currently"/"Previously") - a bolder, slightly larger take
    on the eyebrow that reads as a section divider. Kept muted-grey and below the
    1em company names in size so it never competes with the bold job titles below
@@ -433,7 +409,7 @@ a.about-co .about-co-icon {
 .about-job--featured h3 {
     font-size: 1.7em;
     font-weight: 700;
-    margin: 0 0 0.2em;
+    margin: 0;
 }
 
 /* Linked job titles: wrap a title's text in <a href> (inside the featured h3
@@ -532,13 +508,6 @@ a.about-co .about-co-icon {
 
 .about-job p {
     margin: 0;
-}
-
-/* The role · years line sits tight against the description below it, so the
-   only clear gaps in Work are between entries (and between paragraphs of a
-   multi-paragraph entry). Out-specifies the broad `.about p` bottom margin. */
-.about .about-job p.about-meta {
-    margin-bottom: 0.3em;
 }
 
 /* Hobby cards (In my free time) - a two-column grid of photo-topped cards.
