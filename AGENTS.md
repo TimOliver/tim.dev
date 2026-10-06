@@ -160,6 +160,9 @@ media-manifest.json            build INPUT written by build-media.py (dimensions
   links are text with a chevron/arrow ("‹ Back to…", sidebar ↗ links); primary actions are the
   store-style badges; linked names/titles keep heading colour with the soft hover surface (About
   company names, post titles). Pick the matching row; don't invent a new style per page.
+- **Store badges** (`Assets/img/portfolio/<name>-badge-light.svg` / `-dark.svg`) are pre-coloured
+  pairs emitted as two `<img>`s; collection.css shows the one matching `data-color-scheme`. Edit
+  both files together. Path coordinates are kept to 2 decimals (invisible even at 6x).
 - Copy voice: plain one-sentence facts in Tim's voice. If a layout slot would need filler, drop the
   slot rather than fill it.
 

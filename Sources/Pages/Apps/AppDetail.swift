@@ -72,7 +72,7 @@ extension AppRenderer {
         // badge - see Badge.swift / .store-badge in collection.css.
         if let appStore = app.appStore {
             sidebar += Badge.store(
-                kind: "appstore", file: "app-store-badge.svg",
+                file: "app-store-badge",
                 href: appStore, label: "Download \(app.title) on the App Store")
         }
 

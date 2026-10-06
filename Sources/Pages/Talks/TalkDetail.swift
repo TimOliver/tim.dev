@@ -63,7 +63,7 @@ extension TalksRenderer {
         var badge = ""
         if let id = talk.youtube {
             badge = Badge.store(
-                kind: "youtube", file: "youtube-badge.svg",
+                file: "youtube-badge",
                 href: "https://www.youtube.com/watch?v=\(id)",
                 label: "Watch \(talk.title) on YouTube")
         }

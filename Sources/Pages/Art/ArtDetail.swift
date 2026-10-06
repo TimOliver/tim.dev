@@ -85,12 +85,12 @@ extension ArtRenderer {
         var sidebar = CollectionRenderer.detailsBlock(item.details)
         if let youtube = item.youtube {
             sidebar += Badge.store(
-                kind: "youtube", file: "youtube-badge.svg",
+                file: "youtube-badge",
                 href: youtube, label: "Watch \(item.title) on YouTube")
         }
         if let dribbble = item.dribbble {
             sidebar += Badge.store(
-                kind: "dribbble", file: "dribbble-badge.svg",
+                file: "dribbble-badge",
                 href: dribbble, label: "See \(item.title) on Dribbble")
         }
 

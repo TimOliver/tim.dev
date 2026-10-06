@@ -133,8 +133,6 @@
     margin: 0.1em 0 0;
 }
 
-/* The App Store badge now uses the shared .store-badge component (collection.css). */
-
 /* Mobile tweaks for app-specific detail bits. */
 @media (max-width: 720px) {
     /* Compact detail header - the desktop icon (128px) and headings dwarf a

@@ -3,21 +3,20 @@
 import Foundation
 import Ignite
 
-/// Inlined SVG portfolio badges - the "get it" links (App Store / YouTube / Dribbble /
-/// GitHub) shared by every collection detail page.
+/// Portfolio badges - the "get it" links (App Store / YouTube / Dribbble /
+/// GitHub) shared by every collection detail page, plus the inlined GitHub mark.
 ///
-/// Each badge SVG (`Assets/img/portfolio/*-badge.svg`) paints its field and its
-/// logo/text from two CSS custom properties, `--pill` and `--ink`, that the page
-/// flips per `data-color-scheme` (see `.store-badge` in collection.css). That is
-/// why the SVGs are INLINED rather than referenced with `<img src>`: an
-/// `<img>`-loaded SVG is an isolated document that can only see the OS
-/// `prefers-color-scheme`, so it would ignore the site's manual theme toggle.
-/// Inlining lets the page's custom properties reach into the SVG.
+/// Each badge has a pre-coloured light and dark file
+/// (`Assets/img/portfolio/<name>-light.svg` / `-dark.svg`), and both are
+/// emitted as plain <img>s; collection.css shows the one matching the page's
+/// `data-color-scheme`, so the badge follows the manual theme toggle. An
+/// <img> keeps the badge's ~4 KB of paths out of every page's HTML and lets
+/// the browser cache it across all the pages that use it.
 @MainActor
 enum Badge {
 
-    /// Reads and caches a portfolio SVG for inlining. Fails LOUDLY when the file
-    /// is missing - a swallowed error would ship a broken "get it" link.
+    /// Reads and caches a portfolio SVG. Fails LOUDLY when the file is
+    /// missing - a swallowed error would ship a broken "get it" link.
     private static var cache: [String: String] = [:]
     static func svg(_ file: String) -> String {
         if let hit = cache[file] { return hit }
@@ -30,9 +29,21 @@ enum Badge {
         return s
     }
 
-    /// A store badge: the inlined theme-variable SVG wrapped in a new-tab link.
-    /// `kind` scopes the per-store colour overrides in the CSS (`store-badge-<kind>`).
-    static func store(kind: String, file: String, href: String, label: String) -> String {
-        #"<a class="store-badge store-badge-\#(kind)" href="\#(escape(href))" target="_blank" rel="noopener" aria-label="\#(escape(label))">\#(svg(file))</a>"#
+    /// A store badge: the light and dark <img>s wrapped in a new-tab link. The
+    /// link carries the accessible name, so the images are decorative. Width
+    /// and height come from the SVG itself, so the badge never shifts layout.
+    static func store(file: String, href: String, label: String) -> String {
+        let root = svg("\(file)-light.svg")
+        func attr(_ name: String) -> String {
+            guard let r = root.range(of: #"\#(name)="[^"]*""#, options: .regularExpression) else { return "" }
+            return " " + root[r]
+        }
+        var s = #"<a class="store-badge" href="\#(escape(href))" target="_blank" rel="noopener" aria-label="\#(escape(label))">"#
+        for scheme in ["light", "dark"] {
+            // Read each file once so a missing variant fails the build.
+            _ = svg("\(file)-\(scheme).svg")
+            s += #"<img class="store-badge-\#(scheme)" src="/img/portfolio/\#(file)-\#(scheme).svg" alt=""\#(attr("width"))\#(attr("height")) decoding="async">"#
+        }
+        return s + "</a>"
     }
 }

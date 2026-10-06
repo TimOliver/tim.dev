@@ -54,7 +54,7 @@ extension CodeRenderer {
         var sidebar = CollectionRenderer.detailsBlock(repo.details)
         if let github = repo.github {
             sidebar += Badge.store(
-                kind: "github", file: "github-badge.svg",
+                file: "github-badge",
                 href: github, label: "Get \(repo.title) on GitHub")
         }
         sidebar += CollectionRenderer.linksBlock(repo.links)
