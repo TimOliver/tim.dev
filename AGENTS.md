@@ -233,7 +233,9 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
   reloads: when a fix "doesn't work" on a device, reload with a throwaway `?v=…` query first.
 - Over Tailscale the Mac is `<your-mac>.ts.net`; the LAN IP changes.
 - Real WebKit rendering: the `verify` skill in `.claude/skills/verify/` (WKWebView snapshotter,
-  pixel diff, JS probes).
+  pixel diff, JS probes). It and `.claude/launch.json` (the dev-server config for the Claude app's
+  preview pane) are local-only Claude tooling: gitignored, not part of the site, and absent from a
+  fresh clone - copy them over by hand on a new machine.
 - No-JS check in Safari (Develop → Disable JavaScript): collection cards navigate, "Back to…" works,
   Talks grid is unfiltered.
 - For a markup/CSS refactor that must not change output, diff a class-stripped fingerprint of
@@ -266,3 +268,15 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
   also filled in October 2026.)
 - Claude is credited only in the About page's Tech specs card ("Design tools", "Code agents"), by
   Tim's choice; the prose doesn't repeat it.
+
+### Before making the repo public (open decisions, from the October 2026 audit)
+
+- **Publish a fresh copy, not this repo.** The plan is to open-source a copy with the entire
+  history squashed to one commit. History holds deleted planning docs with the plain contact
+  address and `~/...` paths (no credentials).
+- **Licensing is undecided.** LICENSE declares the tree public domain, but the vendored
+  `Assets/js/lightbox3.umd.js` (and lite-yt-embed, embla) are MIT and carry no notice of that here.
+  Decide how third-party code is labelled (a notice in each file, a THIRD-PARTY list, or a narrower
+  LICENSE) before publishing.
+- **Scrub personal infrastructure from the docs.** The Tailscale MagicDNS hostname in the
+  Verification section above is private; replace it with a generic description before launch.
