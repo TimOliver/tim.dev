@@ -1,5 +1,5 @@
 ---
-title: "iPokédex: Copyright Notice from TPCI"
+title: iPokédex: Copyright Notice from TPCI
 date: 2011-07-11 00:13:01
 author: Tim Oliver
 tags: development

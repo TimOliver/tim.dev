@@ -1,5 +1,5 @@
 ---
-title: "iPokédex: entering the final stretch!"
+title: iPokédex: entering the final stretch!
 date: 2011-03-25 14:17:24
 author: Tim Oliver
 image: /img/posts/2011/03/iPokedex.jpg

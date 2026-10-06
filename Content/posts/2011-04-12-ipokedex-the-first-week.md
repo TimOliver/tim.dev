@@ -1,5 +1,5 @@
 ---
-title: "iPokédex: The First Week"
+title: iPokédex: The First Week
 date: 2011-04-12 13:28:12
 author: Tim Oliver
 image: /img/posts/2011/04/ipokedex_appfigures.jpg

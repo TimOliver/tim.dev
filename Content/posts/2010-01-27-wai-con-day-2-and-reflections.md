@@ -1,5 +1,5 @@
 ---
-title: "Wai-Con Day #2 and Reflections"
+title: Wai-Con Day #2 and Reflections
 date: 2010-01-27 23:52:57
 author: Tim Oliver
 image: /img/posts/2010/01/waicon_gaems.jpg

@@ -1,5 +1,5 @@
 ---
-title: "iQuit: Thanks for everything Steve!"
+title: iQuit: Thanks for everything Steve!
 date: 2011-08-25 12:39:58
 author: Tim Oliver
 image: /img/posts/2011/08/steve_jobs_apple.jpg

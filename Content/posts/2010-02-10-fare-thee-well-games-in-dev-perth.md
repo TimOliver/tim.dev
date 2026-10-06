@@ -1,5 +1,5 @@
 ---
-title: "Fare-thee-well Games Dev in Perth :("
+title: Fare-thee-well Games Dev in Perth :(
 date: 2010-02-10 21:45:46
 author: Tim Oliver
 image: /img/posts/2010/02/perth_no_games.png

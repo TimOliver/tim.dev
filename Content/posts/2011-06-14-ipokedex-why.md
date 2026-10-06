@@ -1,5 +1,5 @@
 ---
-title: "iPokédex: Why??"
+title: iPokédex: Why??
 date: 2011-06-14 21:37:06
 author: Tim Oliver
 image: /img/posts/2011/06/ipokedex_icon.png
