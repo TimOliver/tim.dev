@@ -1,6 +1,9 @@
 ---
 title: Server-side Swift with Kitura
-venue: /dev/world/2019
+event: /dev/world/2019
+location: Melbourne
+format: Talk
+language: English
 date: 2019-09-02 00:00:00
 duration: 23:19
 topics: Engineering

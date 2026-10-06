@@ -38,9 +38,21 @@ struct AppInfo {
     /// grid card through to its detail page.
     let path: String
 
-    /// Ordered (label, value) rows for the detail sidebar table. Parsed from the
-    /// front-matter `details:` string by `CollectionRenderer.parseDetails`.
+    /// Ordered (label, value) rows for the detail sidebar table, built from
+    /// the fixed `stats` schema below.
     let details: [(String, String)]
+
+    /// The Details rows every app shows, in order. `platform:` doubles as the
+    /// grid-card badge; `years:` is Tim's time on the app, not its release
+    /// year (that's `year:`, the card badge).
+    static let stats: [CollectionRenderer.Stat] = [
+        .init(label: "Role", key: "role"),
+        .init(label: "Company", key: "company"),
+        .init(label: "Platforms", key: "platform"),
+        .init(label: "Built with", key: "stack"),
+        .init(label: "Status", key: "status"),
+        .init(label: "Years", key: "years"),
+    ]
 
     /// App Store URL - rendered as a centered "Download on the App Store" badge
     /// on the detail page. Nil when absent.
@@ -83,9 +95,8 @@ struct AppInfo {
         // detail page.
         path = a.path
 
-        // `details:` is a compact string the shared parser expands into ordered
-        // (label, value) rows for the sidebar table.
-        details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")
+        // The sidebar's Details rows, in the fixed collection order.
+        details = CollectionRenderer.statRows(a, Self.stats)
 
         // Same `nonEmpty` treatment as `icon`: a blank `appstore:` becomes nil,
         // so the download badge is simply omitted.

@@ -1,6 +1,9 @@
 ---
 title: Realm
-venue: Perth iOS Meetup
+event: Perth iOS Meetup
+location: Perth
+format: Talk
+language: English
 date: 2014-11-20 00:00:00
 duration: 1:03:28
 topics: Engineering

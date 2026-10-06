@@ -1,6 +1,9 @@
 ---
 title: Open source is awesome: how it makes us all better developers
-venue: iOS Conf SG
+event: iOS Conf SG
+location: Singapore
+format: Talk
+language: English
 date: 2017-10-19 00:00:00
 duration: 33:56
 topics: Community

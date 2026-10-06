@@ -6,7 +6,9 @@ duration: 27s
 meta: Logo animation · 2012
 order: 6
 image: /img/art/commissions/waicon-2012.jpg
-details: Type=Logo animation; Client=WAI-CON; Tools=After Effects; Year=2012
+kind: Logo animation
+client: WAI-CON
+tools: After Effects
 youtube: https://www.youtube.com/watch?v=GnCFLZD8UPo
 path: /art/commissions/waicon-2012/
 ---

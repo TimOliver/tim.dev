@@ -8,7 +8,10 @@ owner: TimOliver
 language: Swift
 langColor: #F05138
 stars: ★ 65
-details: Language=Swift; Stars=★ 65; Forks=2; Started=2021; Latest=1.0.1
+role: Author
+platforms: iOS, macOS, tvOS
+license: MIT
+latest: 1.0.1
 github: https://github.com/TimOliver/Beeline
 path: /code/beeline/
 ---

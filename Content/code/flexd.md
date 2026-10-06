@@ -8,7 +8,10 @@ owner: TimOliver
 language: Objective-C
 langColor: #438EFF
 stars: ★ 14
-details: Language=Objective-C; Stars=★ 14; Forks=1; Started=2026; Latest=6.2.0
+role: Maintainer
+platforms: iOS
+license: BSD
+latest: 6.2.0
 github: https://github.com/TimOliver/fleXD
 path: /code/flexd/
 ---

@@ -1,6 +1,9 @@
 ---
 title: Tech in Japan
-venue: JETAAWA Japan Careers Seminar
+event: JETAAWA Japan Careers Seminar
+location: Perth
+format: Talk
+language: English
 date: 2017-09-14 00:00:00
 duration: 11:01
 topics: Community

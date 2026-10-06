@@ -1,6 +1,9 @@
 ---
 title: WWDC22: what's new in UI & graphics
-venue: CocoaHeads Myanmar
+event: CocoaHeads Myanmar
+location: Online
+format: Talk
+language: English
 date: 2022-07-01 00:00:00
 duration: 32:21
 topics: UI & Graphics

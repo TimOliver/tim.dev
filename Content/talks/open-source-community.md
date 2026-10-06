@@ -1,6 +1,9 @@
 ---
 title: Making your mark in the iOS/Mac open source community
-venue: /dev/world/2017
+event: /dev/world/2017
+location: Melbourne
+format: Talk
+language: English
 date: 2017-09-01 00:00:00
 duration: 27:07
 topics: Community

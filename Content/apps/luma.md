@@ -5,7 +5,6 @@ layout: AppDetail
 date: 2026-06-01 00:00:00
 year: 2026
 platform: iPhone
-details: Role=[TBC]
 path: /apps/luma/
 ---
 

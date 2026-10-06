@@ -44,9 +44,22 @@ struct RepoInfo {
     /// grid card through to its detail page.
     let path: String
 
-    /// Ordered (label, value) rows for the detail sidebar table. Parsed from the
-    /// front-matter `details:` string by `CollectionRenderer.parseDetails`.
+    /// Ordered (label, value) rows for the detail sidebar table, built from
+    /// the fixed `stats` schema below.
     let details: [(String, String)]
+
+    /// The Details rows every repo shows, in order. `language:` and `stars:`
+    /// also feed the grid card; the year comes from `date:` (the repo's
+    /// creation date), and `latest:` is dropped for repos with no releases.
+    static let stats: [CollectionRenderer.Stat] = [
+        .init(label: "Role", key: "role"),
+        .init(label: "Language", key: "language"),
+        .init(label: "Platforms", key: "platforms"),
+        .init(label: "License", key: "license"),
+        .init(label: "Latest", key: "latest", required: false),
+        .init(label: "Stars", key: "stars"),
+        .init(label: "Year", key: "year"),
+    ]
 
     /// The repo's GitHub URL (front-matter `github:`), or nil. Drives the
     /// "Get it on GitHub" badge on the detail page.
@@ -92,9 +105,9 @@ struct RepoInfo {
         // detail page.
         path = a.path
 
-        // `details:` is a compact string the shared parser expands into ordered
-        // (label, value) rows for the sidebar table.
-        details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")
+        // The sidebar's Details rows, in the fixed collection order.
+        details = CollectionRenderer.statRows(a, Self.stats,
+            derived: ["year": String(CollectionRenderer.year(of: a))])
 
         // `github:` becomes the "Get it on GitHub" badge (rendered separately in
         // CodeDetail); `docs:` stays a secondary text link. Each is set only when

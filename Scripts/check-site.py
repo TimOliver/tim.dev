@@ -198,6 +198,12 @@ def main() -> int:
     for error in sorted(errors):
         print(error, file=sys.stderr)
     print(f"Checked {len(pages)} HTML pages, {len(feeds)} RSS feeds and sitemap: {len(errors)} error(s).")
+
+    # Not an error: required collection Details rows nobody has filled in yet.
+    # `swift run IgniteStarter` logs each one as "TBC: <path> <row>".
+    unfilled = sum(1 for path in paths if "<dd>[TBC]</dd>" in path.read_text())
+    if unfilled:
+        print(f"Note: {unfilled} collection page(s) still show [TBC] Details rows.")
     return int(bool(errors))
 
 

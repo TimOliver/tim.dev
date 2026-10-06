@@ -8,7 +8,10 @@ owner: TimOliver
 language: Objective-C
 langColor: #438EFF
 stars: ★ 197
-details: Language=Objective-C; License=MIT; Stars=★ 197; Forks=23; Started=2019; Latest=1.3.0
+role: Author
+platforms: iOS
+license: MIT
+latest: 1.3.0
 github: https://github.com/TimOliver/TOSegmentedControl
 path: /code/tosegmentedcontrol/
 ---

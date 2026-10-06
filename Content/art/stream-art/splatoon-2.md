@@ -6,7 +6,8 @@ duration: 1:01
 meta: Starting soon · 2019
 order: 4
 image: /img/art/stream-art/splatoon-2.jpg
-details: Type=Starting soon screen; Game=Splatoon 2; Length=1:01; Year=2019
+kind: Starting soon screen
+from: Splatoon 2
 youtube: https://www.youtube.com/watch?v=l-5Tva_GRL0
 path: /art/stream-art/splatoon-2/
 ---

@@ -1,6 +1,9 @@
 ---
 title: Static site generation
-venue: Port80 Perth
+event: Port80 Perth
+location: Perth
+format: Talk
+language: English
 date: 2016-06-02 00:00:00
 duration: 32:27
 topics: Web & Marketing

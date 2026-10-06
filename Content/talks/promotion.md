@@ -1,6 +1,9 @@
 ---
 title: ProMotion
-venue: Perth iOS Meetup
+event: Perth iOS Meetup
+location: Perth
+format: Talk
+language: English
 date: 2017-07-27 00:00:00
 duration: 33:08
 topics: UI & Graphics

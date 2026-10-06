@@ -1,6 +1,9 @@
 ---
 title: Introducing the Beeline library
-venue: try! Swift Tokyo
+event: try! Swift Tokyo
+location: Tokyo
+format: Talk
+language: English
 date: 2023-01-21 00:00:00
 duration: 25:58
 topics: Engineering

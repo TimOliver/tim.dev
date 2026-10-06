@@ -1,6 +1,9 @@
 ---
 title: How presenting at this meetup got me a job in Silicon Valley
-venue: Perth iOS Meetup
+event: Perth iOS Meetup
+location: Perth
+format: Talk
+language: English
 date: 2017-12-14 00:00:00
 duration: 50:41
 topics: Community

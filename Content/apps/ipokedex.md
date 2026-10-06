@@ -5,7 +5,7 @@ layout: AppDetail
 date: 2011-06-01 00:00:00
 year: 2011
 platform: iPhone
-details: Role=Solo developer
+role: Solo developer
 path: /apps/ipokedex/
 ---
 

@@ -8,7 +8,9 @@ owner: TimOliver
 language: Objective-C
 langColor: #438EFF
 stars: ★ 410
-details: Language=Objective-C; License=Unlicense; Stars=★ 410; Forks=51; Started=2017
+role: Author
+platforms: Apple Wallet
+license: Unlicense
 github: https://github.com/TimOliver/PassKit-Business-Card
 path: /code/passkit-business-card/
 ---

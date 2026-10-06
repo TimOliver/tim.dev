@@ -6,7 +6,7 @@ import Ignite
 /// Parsed view of a talk article's front matter (Content/talks/<slug>.md).
 /// Custom keys are read with the exact case used in the markdown (Ignite stores
 /// keys verbatim - see AppModel/CodeModel); the keys in Content/talks are all
-/// lowercase (`venue:`, `youtube:`), so the reads here match that. Uses
+/// lowercase (`event:`, `youtube:`), so the reads here match that. Uses
 /// `topics:` rather than `tags:` on purpose - `tags:` would make Ignite
 /// generate a tag-archive page per keyword, which this collection doesn't want.
 struct TalkInfo {
@@ -14,9 +14,13 @@ struct TalkInfo {
     /// Display title for the talk - taken straight from the article title.
     let title: String
 
-    /// Where the talk was given, e.g. "WWDC" or "iOSDevUK". Front-matter
-    /// `venue:`; empty string when the key is absent.
-    let venue: String
+    /// The event the talk was given at, e.g. "/dev/world/2019" or "Tokyo iOS
+    /// Meetup". Front-matter `event:`; empty string when the key is absent.
+    let event: String
+
+    /// The city the talk was given in, or "Online". Front-matter `location:`;
+    /// also folded into the grid's search haystack.
+    let location: String
 
     /// Run-time label, e.g. "38 min". Rendered as a badge over the poster and
     /// as a sidebar row. Front-matter `duration:`; empty string when absent.
@@ -52,6 +56,23 @@ struct TalkInfo {
     /// key. Feeds the meta line and the year-bucket filter on the grid.
     let year: Int
 
+    /// Ordered (label, value) rows for the detail sidebar table, built from
+    /// the fixed `stats` schema below.
+    let details: [(String, String)]
+
+    /// The Details rows every talk shows, in order. `format:` is Talk,
+    /// Lightning talk, Panel, Interview or Video; Length comes from
+    /// `duration:` and Year from the date.
+    static let stats: [CollectionRenderer.Stat] = [
+        .init(label: "Event", key: "event"),
+        .init(label: "Location", key: "location"),
+        .init(label: "Format", key: "format"),
+        .init(label: "Language", key: "language"),
+        .init(label: "Topic", key: "topics"),
+        .init(label: "Length", key: "duration"),
+        .init(label: "Year", key: "year"),
+    ]
+
     /// Builds the parsed view from a raw Ignite `Article`. Runs on the main
     /// actor because `Article` is main-actor-isolated. Every field below is
     /// either a direct read of the article's title/path/body/date or a lookup
@@ -67,7 +88,8 @@ struct TalkInfo {
         // Optional front-matter strings. Ignite hands metadata back as `Any?`,
         // so each read is a cast with an empty-string fallback for a key that is
         // absent or not a string.
-        venue = a.metadata["venue"] as? String ?? ""
+        event = a.metadata["event"] as? String ?? ""
+        location = a.metadata["location"] as? String ?? ""
         duration = a.metadata["duration"] as? String ?? ""
 
         // `nonEmpty` collapses a present-but-blank value down to nil: a blank
@@ -93,13 +115,13 @@ struct TalkInfo {
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
 
-        // Derive the year from the article date. Pin to the site's display
-        // timezone (Ignite parses front-matter dates as GMT) - Calendar.current
-        // would shift a midnight-GMT date back a year on any machine west of
-        // GMT.
-        var cal = Calendar(identifier: .gregorian)
-        cal.timeZone = ArticleShell.displayTimeZone
-        year = cal.component(.year, from: a.date)
+        // Derive the year from the article date, then the sidebar's Details
+        // rows in the fixed collection order.
+        year = CollectionRenderer.year(of: a)
+        details = CollectionRenderer.statRows(a, Self.stats, derived: [
+            "topics": topics.joined(separator: ", "),
+            "year": String(year),
+        ])
     }
 }
 
@@ -135,15 +157,15 @@ enum TalksRenderer {
         )
     }
 
-    /// The "venue · year · duration" meta line, with any empty parts omitted so
+    /// The "event · year · duration" meta line, with any empty parts omitted so
     /// the middot separators never bunch up around a missing field.
-    static func metaLine(venue: String, year: Int, duration: String) -> String {
+    static func metaLine(event: String, year: Int, duration: String) -> String {
 
         // Collect only the parts that are present. Year is always included (it
-        // is derived from the date, never empty); venue and duration join in
+        // is derived from the date, never empty); event and duration join in
         // only when set.
         var parts: [String] = []
-        if !venue.isEmpty { parts.append(escape(venue)) }
+        if !event.isEmpty { parts.append(escape(event)) }
         parts.append(String(year))
         if !duration.isEmpty { parts.append(escape(duration)) }
 

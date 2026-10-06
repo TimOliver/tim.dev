@@ -8,7 +8,10 @@ owner: Instagram
 language: Objective-C
 langColor: #438EFF
 stars: ★ 13.1k
-details: Role=Top contributor; Language=Objective-C; License=MIT; Stars=★ 13.1k; Forks=1539; Started=2016; Latest=5.2.0
+role: Top contributor
+platforms: iOS, macOS, tvOS
+license: MIT
+latest: 5.2.0
 github: https://github.com/Instagram/IGListKit
 path: /code/iglistkit/
 ---

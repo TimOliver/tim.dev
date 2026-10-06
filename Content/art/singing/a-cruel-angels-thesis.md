@@ -6,9 +6,10 @@ duration: 4:24
 meta: Karaoke cover · 2018
 order: 3
 image: /img/art/singing/a-cruel-angels-thesis.jpg
-details: Type=Karaoke cover; Song=残酷な天使のテーゼ; From=Neon Genesis Evangelion; Year=2018
+kind: Karaoke cover
+from: Neon Genesis Evangelion
 youtube: https://www.youtube.com/watch?v=Ak6Q7aqQfOY
 path: /art/singing/a-cruel-angels-thesis/
 ---
 
-[Placeholder - a sentence or two about A Cruel Angel's Thesis.]
+[Placeholder - a sentence or two about A Cruel Angel's Thesis. Original title: 残酷な天使のテーゼ.]

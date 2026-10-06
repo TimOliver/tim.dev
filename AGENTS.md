@@ -56,9 +56,10 @@ media-manifest.json            build INPUT written by build-media.py (dimensions
   `PostPage()` must stay first. Collection items opt in with `layout: AppDetail|CodeDetail|ArtDetail|
   TalkDetail`; an unknown layout name is a `fatalError`.
 - **Front matter is parsed line by line**, split on the first `:` only; values are plain strings, keys
-  keep their case (`langColor`), no nested YAML. Ordered data uses the `Key=Value; Key=Value` mini
-  syntax in `details:`. `published: false` removes an article completely (no page, feed, sitemap or
-  loader entry) — that's how drafts and the Art `_section.md` files work (a `_` prefix is NOT special).
+  keep their case (`langColor`), no nested YAML. Ignite owns `type:` (it overwrites it with the
+  content folder name), so never use it as a custom key. `published: false` removes an article
+  completely (no page, feed, sitemap or loader entry) — that's how drafts and the Art `_section.md`
+  files work (a `_` prefix is NOT special).
 - **Headings**: the custom renderer keeps all body headings. Titles live in front matter, never as a
   `#` line in the body.
 - **Dates** in post front matter are `YYYY-MM-DD HH:MM:SS` (Perth/Tokyo local, offset dropped);
@@ -84,13 +85,28 @@ media-manifest.json            build INPUT written by build-media.py (dimensions
   `border-radius`, `background` or `overflow:hidden`. Each image's ratio comes from its own
   width/height, never CSS `aspect-ratio`. Decision (Oct 2026): apps will move to ONE hero image each
   (`image:`), no `shots:` carousel.
+- **Details rows are a fixed schema per collection** (`stats` in each `*Model.swift`), one
+  front-matter key per row, always in this order. A required row with no value renders `[TBC]`, is
+  logged as `TBC: <path> <row>` by `swift run`, and is counted by `check-site.py` (not an error);
+  an empty optional row (marked `?`) is dropped. The old free-form `details:` key is a build error.
+  - Apps: `role`, `company`, `platform` (Platforms; also the card badge), `stack` (Built with),
+    `status` (On the App Store / Delisted / Unreleased), `years` (Tim's time on it, e.g. 2015–2017;
+    `year:` is the release-year card badge).
+  - Code: `role` (Author / Maintainer / Contributor), `language`, `platforms`, `license`, `latest`?,
+    `stars`, then Year from `date:`.
+  - Art: `kind` (Type), `client`?, `from`? (source material: game, show, project), `artist`?,
+    `tools` (not for Singing), Length from `duration:`, Year from `date:` unless `year:` overrides
+    it with a span.
+  - Talks: `event`, `location` (city or Online), `format` (Talk / Lightning talk / Panel / Interview
+    / Video), `language`, `topics`, Length from `duration:`, Year from `date:`.
+  Ranges use an en dash.
 - **Art**: the folder is the section; `_section.md` (`published: false`) holds title/columns/order/
   slug/blurb and is read off disk by `ArtRenderer`. Item `path:` must start `/art/<section-slug>/`;
   an item no section claims is a `fatalError`. Art `youtube:` is a full URL: a video URL embeds via
   lite-youtube on the detail page (id parsed from `watch?v=`/`youtu.be`, always from the start) and
   also drives the "Watch on YouTube" badge. Talks `youtube:` is a bare video ID — don't conflate them.
 - **Code** is curated, not chronological: `order:` (1 = first) sets the grid order; entries without
-  it follow newest-first by `date:` (the repo's creation date). Stats (`stars:`, `details:`) are
+  it follow newest-first by `date:` (the repo's creation date). Stats (`stars:`, `latest:`) are
   hand-copied from GitHub until the planned auto-fill lands, so refresh them before trusting them.
 - **Talks** use `topics:` not `tags:` so Ignite doesn't generate tag pages or feed categories. The
   featured hero is always the newest talk; its grid card (`.talks-card--featured`) is hidden until a

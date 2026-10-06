@@ -6,7 +6,9 @@ duration: 2:09
 meta: Anime soundtrack · 2019
 order: 1
 image: /img/art/singing/waves.jpg
-details: Type=Anime soundtrack; Work=The Rising of the Shield Hero; Artist=Kevin Penkin; Year=2019
+kind: Anime soundtrack
+from: The Rising of the Shield Hero
+artist: Kevin Penkin
 youtube: https://www.youtube.com/watch?v=Mgjso5IY8FQ
 path: /art/singing/waves/
 ---

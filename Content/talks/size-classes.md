@@ -1,6 +1,9 @@
 ---
 title: Size classes, or how I learned to stop worrying and love iOS 9 split screen
-venue: /dev/world/2016
+event: /dev/world/2016
+location: Melbourne
+format: Talk
+language: English
 date: 2016-09-01 00:00:00
 duration: 26:28
 topics: UI & Graphics

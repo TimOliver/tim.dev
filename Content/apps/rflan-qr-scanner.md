@@ -5,7 +5,6 @@ layout: AppDetail
 date: 2013-06-01 00:00:00
 year: 2013
 platform: iPhone
-details: Role=[TBC]
 path: /apps/rflan-qr-scanner/
 ---
 

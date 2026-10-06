@@ -1,6 +1,9 @@
 ---
 title: Marketing on the App Store
-venue: #Pragma Conference
+event: #Pragma Conference
+location: Florence
+format: Talk
+language: English
 date: 2015-10-01 00:00:00
 duration: 38:47
 topics: Web & Marketing

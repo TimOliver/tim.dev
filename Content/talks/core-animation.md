@@ -1,6 +1,9 @@
 ---
 title: Advanced graphics with Core Animation
-venue: try! Swift Tokyo
+event: try! Swift Tokyo
+location: Tokyo
+format: Talk
+language: Japanese
 date: 2016-03-02 00:00:00
 duration: 29:59
 topics: UI & Graphics

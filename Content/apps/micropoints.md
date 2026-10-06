@@ -5,7 +5,7 @@ layout: AppDetail
 date: 2009-03-01 00:00:00
 year: 2009
 platform: iPhone
-details: Role=Solo developer
+role: Solo developer
 path: /apps/micropoints/
 ---
 

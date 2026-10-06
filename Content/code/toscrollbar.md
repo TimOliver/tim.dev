@@ -8,7 +8,10 @@ owner: TimOliver
 language: Objective-C
 langColor: #438EFF
 stars: ★ 90
-details: Language=Objective-C; License=MIT; Stars=★ 90; Forks=14; Started=2016; Latest=0.0.5
+role: Author
+platforms: iOS
+license: MIT
+latest: 0.0.5
 github: https://github.com/TimOliver/TOScrollBar
 path: /code/toscrollbar/
 ---

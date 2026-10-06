@@ -6,7 +6,9 @@ duration: 10s
 meta: Logo animation · 2013
 order: 4
 image: /img/art/commissions/waicon-2013-intro.jpg
-details: Type=Logo animation; Client=WAICON; Tools=After Effects; Year=2013
+kind: Logo animation
+client: WAICON
+tools: After Effects
 youtube: https://www.youtube.com/watch?v=4GhXuB-gWKw
 path: /art/commissions/waicon-2013-intro/
 ---

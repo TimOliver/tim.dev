@@ -1,6 +1,9 @@
 ---
 title: Integrating SwiftUI with UIKit and back again
-venue: Swift Heroes Digital
+event: Swift Heroes Digital
+location: Online
+format: Talk
+language: English
 date: 2020-10-01 00:00:00
 duration: 35:16
 topics: UI & Graphics

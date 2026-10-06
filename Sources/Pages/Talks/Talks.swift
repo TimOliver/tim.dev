@@ -71,7 +71,7 @@ extension TalksRenderer {
             s += #"<div class="talks-featured-text">"#
             s += #"<span class="talks-eyebrow">Featured</span>"#
             s += #"<h2 class="talks-featured-title">\#(escape(featured.title))</h2>"#
-            s += #"<p class="talks-featured-meta">\#(metaLine(venue: featured.venue, year: featured.year, duration: featured.duration))</p>"#
+            s += #"<p class="talks-featured-meta">\#(metaLine(event: featured.event, year: featured.year, duration: featured.duration))</p>"#
             s += tagsBlock(featured.topics)
             s += "</div>"  // talks-featured-text
             s += "</a>"
@@ -82,7 +82,7 @@ extension TalksRenderer {
         s += #"<div class="talks-controls">"#
         s += #"<div class="talks-search-wrap">"#
         s += CollectionRenderer.searchIcon(className: "talks-search-icon")
-        s += #"<input type="search" class="talks-search" aria-label="Search talks" placeholder="Search talks by title, venue, or topic…">"#
+        s += #"<input type="search" class="talks-search" aria-label="Search talks" placeholder="Search talks by title, event, or topic…">"#
         s += "</div>"
 
         // Topic filter row: an always-present "All" chip, then one chip per
@@ -120,10 +120,10 @@ extension TalksRenderer {
         for talk in talks {
             // Per-card filter/search hooks read by site.js: `data-topics` is the
             // space-joined list of topic IDs (see `topicID`); `data-search`
-            // folds title + venue + topics into one lowercased haystack for the
-            // search box.
+            // folds title + event + location + topics into one lowercased
+            // haystack for the search box.
             let topicsAttr = talk.topics.map(topicID).joined(separator: " ")
-            let searchAttr = ([talk.title, talk.venue] + talk.topics)
+            let searchAttr = ([talk.title, talk.event, talk.location] + talk.topics)
                 .joined(separator: " ").lowercased()
             // The featured talk's own card is hidden until a filter or search is
             // active (talks.css/site.js), so it isn't shown twice by default
@@ -136,7 +136,7 @@ extension TalksRenderer {
             s += thumb(image: talk.image, duration: talk.duration, title: talk.title, sizes: "(max-width: 720px) 90vw, 460px")
             s += #"<div class="talks-card-body">"#
             s += #"<h3 class="talks-card-title">\#(escape(talk.title))</h3>"#
-            s += #"<p class="talks-card-meta">\#(metaLine(venue: talk.venue, year: talk.year, duration: talk.duration))</p>"#
+            s += #"<p class="talks-card-meta">\#(metaLine(event: talk.event, year: talk.year, duration: talk.duration))</p>"#
             s += tagsBlock(talk.topics)
             s += "</div>"  // talks-card-body
             s += "</a>"

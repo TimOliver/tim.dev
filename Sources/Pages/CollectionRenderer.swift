@@ -37,25 +37,51 @@ enum CollectionRenderer {
         !collectionPathPrefixes.contains { article.path.hasPrefix($0) }
     }
 
-    /// Parses the `details` mini-syntax: `Key=Value; Key=Value` into ordered
-    /// pairs. Whitespace trimmed; pairs without `=` or an empty key skipped;
-    /// only the first `=` splits, so values may contain `=`.
-    static func parseDetails(_ s: String) -> [(String, String)] {
+    /// One row of a collection's fixed Details table: the sidebar label, the
+    /// front-matter key it reads, and whether every item must have it.
+    struct Stat {
+        let label: String
+        let key: String
+        var required = true
+    }
 
-        // Split into candidate rows on `;`, then turn each into a (label,
-        // value) pair - `compactMap` drops any row that fails the guard below.
-        s.split(separator: ";").compactMap { chunk -> (String, String)? in
+    /// Builds a collection's Details rows from its fixed schema, in schema
+    /// order, so every item in a collection shows the same rows in the same
+    /// place. `derived` supplies values computed in code (the year from the
+    /// date, the length from `duration:`) and wins over front matter. A
+    /// required row with no value renders as "[TBC]" and is logged, so a gap
+    /// is visible rather than silently missing; an empty optional row is
+    /// dropped. The retired free-form `details:` key is a build error, so an
+    /// old-style file can't quietly lose its rows.
+    static func statRows(_ a: Article, _ schema: [Stat], derived: [String: String] = [:]) -> [(String, String)] {
 
-            // `maxSplits: 1` keeps everything after the first `=` as the value,
-            // so a value is free to contain further `=` characters.
-            let parts = chunk.split(separator: "=", maxSplits: 1).map {
-                $0.trimmingCharacters(in: .whitespaces)
-            }
-
-            // Skip malformed rows: no `=` (a single part) or a blank label.
-            guard parts.count == 2, !parts[0].isEmpty else { return nil }
-            return (parts[0], parts[1])
+        if a.metadata["details"] != nil {
+            fatalError("\(a.path): `details:` is retired - use the collection's stat keys (see AGENTS.md)")
         }
+
+        return schema.compactMap { stat in
+            let value = (derived[stat.key] ?? a.metadata[stat.key] as? String ?? "")
+                .trimmingCharacters(in: .whitespaces)
+            if !value.isEmpty { return (stat.label, value) }
+            guard stat.required else { return nil }
+            if reportedGaps.insert("\(a.path) \(stat.label)").inserted {
+                print("TBC: \(a.path) \(stat.label)")
+            }
+            return (stat.label, "[TBC]")
+        }
+    }
+
+    /// Gaps already logged - Ignite renders some articles more than once per
+    /// build, and each gap should be reported once.
+    private static var reportedGaps = Set<String>()
+
+    /// The article's year in the site's display timezone (Ignite parses
+    /// front-matter dates as GMT; `Calendar.current` would shift a midnight
+    /// date back a year on any machine west of GMT).
+    static func year(of a: Article) -> Int {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = ArticleShell.displayTimeZone
+        return cal.component(.year, from: a.date)
     }
 
     /// Collapses absent-or-blank front-matter values: nil for nil/empty, the

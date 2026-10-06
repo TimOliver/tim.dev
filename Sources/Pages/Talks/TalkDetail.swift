@@ -37,11 +37,11 @@ extension TalksRenderer {
     /// shared two-column prose + sidebar shell.
     static func detailHTML(for talk: TalkInfo) -> String {
 
-        // Title + venue/year line (the shared metaLine minus the duration,
+        // Title + event/year line (the shared metaLine minus the duration,
         // which the sidebar table carries instead), then the video:
         // lite-youtube facade when a video id is set; poster fallback otherwise.
         var header = #"<h1 class="collection-detail-name">\#(escape(talk.title))</h1>"#
-        header += #"<p class="collection-detail-tagline">\#(metaLine(venue: talk.venue, year: talk.year, duration: ""))</p>"#
+        header += #"<p class="collection-detail-tagline">\#(metaLine(event: talk.event, year: talk.year, duration: ""))</p>"#
         header += #"<div class="collection-detail-shot">"#
         if let id = talk.youtube {
             // `<lite-youtube>` is the lite-youtube-embed facade (loaded by the
@@ -56,14 +56,6 @@ extension TalksRenderer {
             header += thumb(image: talk.image, duration: "", title: talk.title, sizes: "(max-width: 720px) 100vw, 1180px")
         }
         header += "</div>"
-
-        // Sidebar "Details" table rows. Venue/duration/topics are conditional
-        // (skipped when empty); year is always present since it is derived.
-        var rows: [(String, String)] = []
-        if !talk.venue.isEmpty { rows.append(("Venue", talk.venue)) }
-        rows.append(("Year", String(talk.year)))
-        if !talk.duration.isEmpty { rows.append(("Duration", talk.duration)) }
-        if !talk.topics.isEmpty { rows.append(("Topic", talk.topics.joined(separator: ", "))) }
 
         // Primary CTA: the "Watch on YouTube" badge, built from the raw video id
         // (a full watch URL, distinct from the inline facade above). Slides, when
@@ -83,7 +75,7 @@ extension TalksRenderer {
         return CollectionRenderer.detailShell(
             dir: "talks", label: "Talks",
             header: header, prose: talk.bodyHTML,
-            sidebar: CollectionRenderer.detailsBlock(rows) + badge + CollectionRenderer.linksBlock(links)
+            sidebar: CollectionRenderer.detailsBlock(talk.details) + badge + CollectionRenderer.linksBlock(links)
         )
     }
 }

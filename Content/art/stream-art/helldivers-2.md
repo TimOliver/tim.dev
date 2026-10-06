@@ -6,7 +6,8 @@ duration: 31s
 meta: Starting soon · 2026
 order: 1
 image: /img/art/stream-art/helldivers-2.jpg
-details: Type=Starting soon screen; Game=Helldivers 2; Length=31s; Year=2026
+kind: Starting soon screen
+from: Helldivers 2
 youtube: https://www.youtube.com/watch?v=kci5ow3odYs
 path: /art/stream-art/helldivers-2/
 ---

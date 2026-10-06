@@ -1,6 +1,9 @@
 ---
 title: Introducing Realm: a modern, local database framework for apps
-venue: /dev/world/2015
+event: /dev/world/2015
+location: Melbourne
+format: Talk
+language: English
 date: 2015-09-01 00:00:00
 duration: 24:17
 topics: Engineering

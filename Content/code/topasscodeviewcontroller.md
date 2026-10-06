@@ -8,7 +8,10 @@ owner: TimOliver
 language: Objective-C
 langColor: #438EFF
 stars: ★ 390
-details: Language=Objective-C; License=MIT; Stars=★ 390; Forks=93; Started=2017; Latest=0.0.2
+role: Author
+platforms: iOS
+license: MIT
+latest: 0.0.2
 github: https://github.com/TimOliver/TOPasscodeViewController
 path: /code/topasscodeviewcontroller/
 ---

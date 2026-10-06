@@ -8,7 +8,10 @@ owner: TimOliver
 language: Objective-C
 langColor: #438EFF
 stars: ★ 251
-details: Language=Objective-C; License=MIT; Stars=★ 251; Forks=24; Started=2018; Latest=1.0.0
+role: Author
+platforms: iOS
+license: MIT
+latest: 1.0.0
 github: https://github.com/TimOliver/TONavigationBar
 path: /code/tonavigationbar/
 ---

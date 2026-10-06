@@ -8,7 +8,10 @@ owner: TimOliver
 language: Objective-C
 langColor: #438EFF
 stars: ★ 4.9k
-details: Language=Objective-C; License=MIT; Stars=★ 4.9k; Forks=1022; Started=2015; Latest=3.2.0
+role: Author
+platforms: iOS
+license: MIT
+latest: 3.2.0
 github: https://github.com/TimOliver/TOCropViewController
 path: /code/tocropviewcontroller/
 ---

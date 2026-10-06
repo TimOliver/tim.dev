@@ -1,6 +1,9 @@
 ---
 title: WWDC 2018 overview
-venue: Tokyo iOS Meetup
+event: Tokyo iOS Meetup
+location: Tokyo
+format: Talk
+language: English
 date: 2018-06-16 00:00:00
 duration: 16:29
 topics: Engineering

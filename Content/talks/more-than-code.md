@@ -1,6 +1,9 @@
 ---
 title: More than code: rooting yourself in the iOS community
-venue: iOS Conf SG
+event: iOS Conf SG
+location: Singapore
+format: Panel
+language: English
 date: 2023-01-12 00:00:00
 duration: 33:59
 topics: Community

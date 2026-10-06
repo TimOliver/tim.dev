@@ -1,6 +1,9 @@
 ---
 title: Razer Core on a MacBook!?
-venue: YouTube
+event: YouTube
+location: Online
+format: Video
+language: English
 date: 2018-01-13 00:00:00
 duration: 12:59
 topics: Engineering

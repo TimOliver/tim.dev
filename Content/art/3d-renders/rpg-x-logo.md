@@ -5,7 +5,8 @@ date: 2005-09-10 00:00:00
 meta: 3D render · 2005
 order: 4
 image: /img/art/3d-renders/rpg-x-logo.jpg
-details: Type=3D render; Project=RPG-X; Year=2005
+kind: 3D render
+from: RPG-X
 path: /art/3d-renders/rpg-x-logo/
 ---
 

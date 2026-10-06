@@ -8,7 +8,10 @@ owner: TimOliver
 language: Swift
 langColor: #F05138
 stars: ★ 365
-details: Language=Swift; License=MIT; Stars=★ 365; Forks=13; Started=2024; Latest=1.5.0
+role: Author
+platforms: iOS
+license: MIT
+latest: 1.5.0
 github: https://github.com/TimOliver/BlurUIKit
 path: /code/bluruikit/
 ---

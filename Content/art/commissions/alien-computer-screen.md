@@ -6,7 +6,9 @@ duration: 15s
 meta: Screen graphics · 2009
 order: 9
 image: /img/art/commissions/alien-computer-screen.jpg
-details: Type=Screen graphics; Client=Welcome to the Cosmos; Tools=Photoshop, LightWave 3D, After Effects; Year=2009
+kind: Screen graphics
+client: Welcome to the Cosmos
+tools: Photoshop, LightWave 3D, After Effects
 youtube: https://www.youtube.com/watch?v=3Q8aXw1XgPA
 path: /art/commissions/alien-computer-screen/
 ---

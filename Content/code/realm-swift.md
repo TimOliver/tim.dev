@@ -8,7 +8,10 @@ owner: realm
 language: Objective-C
 langColor: #438EFF
 stars: ★ 16.6k
-details: Role=Contributor; Language=Objective-C; License=Apache-2.0; Stars=★ 16.6k; Forks=2236; Started=2012; Latest=v20.0.6
+role: Contributor
+platforms: iOS, macOS, tvOS, watchOS
+license: Apache-2.0
+latest: v20.0.6
 github: https://github.com/realm/realm-swift
 path: /code/realm-swift/
 ---

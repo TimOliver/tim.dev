@@ -1,6 +1,9 @@
 ---
 title: Realm World Tour
-venue: Realm World Tour, Singapore
+event: Realm World Tour
+location: Singapore
+format: Talk
+language: English
 date: 2017-08-10 00:00:00
 duration: 1:18:30
 topics: Engineering

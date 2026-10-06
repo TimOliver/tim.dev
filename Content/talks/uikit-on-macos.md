@@ -1,6 +1,9 @@
 ---
 title: UIKit on macOS: the holy grail of cross-platform
-venue: /dev/world/2019
+event: /dev/world/2019
+location: Melbourne
+format: Talk
+language: English
 date: 2019-09-01 00:00:00
 duration: 20:43
 topics: UI & Graphics

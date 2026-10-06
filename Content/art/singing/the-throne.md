@@ -6,7 +6,9 @@ duration: 8:21
 meta: Game soundtrack · 2023
 order: 2
 image: /img/art/singing/the-throne.jpg
-details: Type=Game soundtrack; Work=Stray Gods: The Roleplaying Musical; Artist=Tripod & Austin Wintory; Year=2023
+kind: Game soundtrack
+from: Stray Gods: The Roleplaying Musical
+artist: Tripod & Austin Wintory
 youtube: https://www.youtube.com/watch?v=Bl9JyofSouo
 path: /art/singing/the-throne/
 ---

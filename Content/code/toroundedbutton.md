@@ -8,7 +8,10 @@ owner: TimOliver
 language: Objective-C
 langColor: #438EFF
 stars: ★ 481
-details: Language=Objective-C; License=MIT; Stars=★ 481; Forks=18; Started=2019; Latest=2.1.1
+role: Author
+platforms: iOS
+license: MIT
+latest: 2.1.1
 github: https://github.com/TimOliver/TORoundedButton
 path: /code/toroundedbutton/
 ---

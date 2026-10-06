@@ -8,7 +8,10 @@ owner: TimOliver
 language: Objective-C
 langColor: #438EFF
 stars: ★ 1.5k
-details: Language=Objective-C; Stars=★ 1.5k; Forks=204; Started=2013; Latest=2.2.8
+role: Author
+platforms: iOS
+license: MIT
+latest: 2.2.8
 github: https://github.com/TimOliver/TOWebViewController
 path: /code/towebviewcontroller/
 ---

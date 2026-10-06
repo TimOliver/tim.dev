@@ -36,9 +36,29 @@ struct ArtItem {
     /// grid card through to its detail page.
     let path: String
 
-    /// Ordered (label, value) rows for the detail sidebar table. Parsed from the
-    /// front-matter `details:` string by `CollectionRenderer.parseDetails`.
+    /// Ordered (label, value) rows for the detail sidebar table. Built from the
+    /// fixed `stats(section:)` schema below.
     let details: [(String, String)]
+
+    /// The Details rows every piece shows, in order. Client, From and Artist
+    /// only apply to some pieces, so they're optional; Length comes from
+    /// `duration:` and Year from `date:` unless `year:` overrides it (for a
+    /// span like "2008–2013"). Tools is required everywhere except Singing,
+    /// where Tim made nothing but the vocals. Type reads `kind:` because
+    /// Ignite overwrites `type:` with the content folder name.
+    static func stats(section: String) -> [CollectionRenderer.Stat] {
+        [
+            .init(label: "Type", key: "kind"),
+            .init(label: "Client", key: "client", required: false),
+            .init(label: "From", key: "from", required: false),
+            .init(label: "Artist", key: "artist", required: false),
+        ]
+        + (section == "singing" ? [] : [.init(label: "Tools", key: "tools")])
+        + [
+            .init(label: "Length", key: "length", required: false),
+            .init(label: "Year", key: "year"),
+        ]
+    }
 
     /// "Watch on YouTube" link - a full YouTube URL (watch or youtu.be). The
     /// detail page embeds the video when the URL names one (see `youtubeID`)
@@ -93,10 +113,13 @@ struct ArtItem {
         // and to link the grid card to its detail page.
         path = a.path
 
-        // `details:` (not `stats:`) - same key name and mini-syntax as the
-        // Apps/Code front matter, one vocabulary across the collections. The
-        // shared parser expands it into ordered (label, value) rows.
-        details = CollectionRenderer.parseDetails(a.metadata["details"] as? String ?? "")
+        // The sidebar's Details rows, in the fixed collection order. The
+        // section is the path segment after /art/.
+        let section = a.path.split(separator: "/").dropFirst().first.map(String.init) ?? ""
+        details = CollectionRenderer.statRows(a, Self.stats(section: section), derived: [
+            "length": duration,
+            "year": a.metadata["year"] as? String ?? String(CollectionRenderer.year(of: a)),
+        ])
 
         // Same `nonEmpty` treatment as `image`: a blank `youtube:` becomes nil,
         // so the "Watch on YouTube" sidebar link is simply omitted.

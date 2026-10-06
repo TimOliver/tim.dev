@@ -1,6 +1,9 @@
 ---
 title: Crafting Delight
-venue: Tokyo iOS Meetup
+event: Tokyo iOS Meetup
+location: Tokyo
+format: Lightning talk
+language: English
 date: 2024-02-28 00:00:00
 duration: 13:16
 topics: UI & Graphics

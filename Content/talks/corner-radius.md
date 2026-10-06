@@ -1,6 +1,9 @@
 ---
 title: Ode to the corner radius API: a look at modern iOS design
-venue: Swift India Conference
+event: Swift India Conference
+location: Bengaluru
+format: Talk
+language: English
 date: 2019-09-15 00:00:00
 duration: 20:26
 topics: UI & Graphics

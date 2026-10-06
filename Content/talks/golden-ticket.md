@@ -1,6 +1,9 @@
 ---
 title: Easter eggs are cool: building the Golden Ticket in Threads
-venue: /dev/world
+event: /dev/world/2024
+location: Melbourne
+format: Talk
+language: English
 date: 2024-05-01 00:00:00
 duration: 26:13
 topics: UI & Graphics

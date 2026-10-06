@@ -1,6 +1,9 @@
 ---
 title: Getting your app out there
-venue: /dev/world/2011
+event: /dev/world/2011
+location: Melbourne
+format: Talk
+language: English
 date: 2011-09-01 00:00:00
 duration: 54:58
 topics: Web & Marketing

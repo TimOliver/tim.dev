@@ -1,6 +1,9 @@
 ---
 title: Automating your releases with Buildkite
-venue: Melbourne CocoaHeads
+event: Melbourne CocoaHeads
+location: Online
+format: Talk
+language: English
 date: 2020-04-09 00:00:00
 duration: 14:01
 topics: Engineering

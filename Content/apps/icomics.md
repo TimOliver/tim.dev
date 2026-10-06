@@ -6,7 +6,7 @@ date: 2012-06-01 00:00:00
 year: 2012
 platform: iPad
 appstore: https://icomics.co
-details: Role=Solo developer
+role: Solo developer
 path: /apps/icomics/
 ---
 

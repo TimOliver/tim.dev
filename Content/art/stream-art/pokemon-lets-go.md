@@ -6,7 +6,8 @@ duration: 16s
 meta: Starting soon · 2019
 order: 3
 image: /img/art/stream-art/pokemon-lets-go.jpg
-details: Type=Starting soon screen; Game=Pokémon Let's Go; Length=16s; Year=2019
+kind: Starting soon screen
+from: Pokémon Let's Go
 youtube: https://www.youtube.com/watch?v=hNCesSWaJPg
 path: /art/stream-art/pokemon-lets-go/
 ---

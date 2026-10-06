@@ -5,7 +5,10 @@ layout: AppDetail
 date: 2018-06-01 00:00:00
 year: 2018
 platform: iPhone
-details: Role=iOS Tech Lead; Company=Mercari; Tenure=2018 - 2020
+role: iOS Tech Lead
+company: Mercari
+status: On the App Store
+years: 2018–2020
 path: /apps/mercari-japan/
 ---
 

@@ -1,6 +1,9 @@
 ---
 title: The legend of Tom Oliver
-venue: try! Swift Tokyo
+event: try! Swift Tokyo
+location: Tokyo
+format: Lightning talk
+language: English
 date: 2026-04-01 00:00:00
 duration: 6:39
 topics: Community

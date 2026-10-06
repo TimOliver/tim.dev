@@ -1,6 +1,9 @@
 ---
 title: Introducing Foundation Models in iOS 26
-venue: /dev/world/2025
+event: /dev/world/2025
+location: Melbourne
+format: Talk
+language: English
 date: 2025-09-01 00:00:00
 duration: 35:21
 topics: Engineering

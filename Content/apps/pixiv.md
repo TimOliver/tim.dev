@@ -5,7 +5,8 @@ layout: AppDetail
 date: 2013-01-01 00:00:00
 year: 2013
 platform: iPhone
-details: Role=[TBC]; Company=pixiv
+company: pixiv
+status: On the App Store
 path: /apps/pixiv/
 ---
 

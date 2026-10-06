@@ -1,6 +1,9 @@
 ---
 title: Tips & Tricks (Swift edition)
-venue: Bitrise
+event: Bitrise
+location: Online
+format: Video
+language: Japanese
 date: 2020-11-23 00:00:00
 duration: 7:01
 topics: UI & Graphics

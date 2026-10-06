@@ -5,7 +5,7 @@ layout: AppDetail
 date: 2014-01-01 00:00:00
 year: 2014
 platform: iPad
-details: Role=[TBC]; Company=PLD
+company: PLD
 path: /apps/reading-race/
 ---
 

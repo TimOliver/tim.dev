@@ -1,6 +1,9 @@
 ---
 title: Creating HiDPI websites
-venue: /dev/world/2012
+event: /dev/world/2012
+location: Melbourne
+format: Talk
+language: English
 date: 2012-09-01 00:00:00
 duration: 44:55
 topics: Web & Marketing

@@ -6,7 +6,7 @@ duration: 27s
 meta: Starting soon · 2021
 order: 2
 image: /img/art/stream-art/beeple-fluff.jpg
-details: Type=Starting soon screen; Length=27s; Year=2021
+kind: Starting soon screen
 youtube: https://www.youtube.com/watch?v=Y5oT0zkO5uU
 path: /art/stream-art/beeple-fluff/
 ---

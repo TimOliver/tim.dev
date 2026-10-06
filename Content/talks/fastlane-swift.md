@@ -1,6 +1,9 @@
 ---
 title: Getting started with Fastlane Swift
-venue: Mobile DevOps Summit
+event: Mobile DevOps Summit
+location: Online
+format: Talk
+language: English
 date: 2022-11-01 00:00:00
 duration: 20:37
 topics: Engineering

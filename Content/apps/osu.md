@@ -5,7 +5,8 @@ layout: AppDetail
 date: 2020-01-01 00:00:00
 year: 2020
 platform: iPhone
-details: Role=[TBC]; Company=ppy; Status=Not yet on the App Store
+company: ppy
+status: Unreleased
 path: /apps/osu/
 ---
 
