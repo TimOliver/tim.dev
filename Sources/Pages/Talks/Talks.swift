@@ -60,7 +60,7 @@ extension TalksRenderer {
         // string; each `s +=` appends the next fragment in document order.
         var s = #"<div class="collection talks">"#
         s += #"<h1 class="page-title">Talks</h1>"#
-        s += #"<p class="page-subtitle">Thirteen years of standing in front of iOS conference rooms.</p>"#
+        s += #"<p class="page-subtitle">Thanks for listening! Or, depending on the talk, I'm sorry.</p>"#
 
         // Featured hero - the most-recent talk (talks are sorted desc).
         if let featured = talks.first {
@@ -93,7 +93,7 @@ extension TalksRenderer {
         s += #"<div class="talks-filter-pills">"#
         s += #"<button type="button" class="talks-filter talks-filter-topic is-active" data-topic="all" aria-pressed="true">All</button>"#
         for topic in topicList {
-            s += #"<button type="button" class="talks-filter talks-filter-topic" data-topic="\#(escape(topic.lowercased()))" aria-pressed="false">\#(escape(topic))</button>"#
+            s += #"<button type="button" class="talks-filter talks-filter-topic" data-topic="\#(topicID(topic))" aria-pressed="false">\#(escape(topic))</button>"#
         }
         s += "</div>"  // talks-filter-pills
         s += "</div>"  // talks-filter-row (topic)
@@ -114,16 +114,22 @@ extension TalksRenderer {
         s += "</div>"  // talks-filter-row (year)
         s += "</div>"  // talks-controls
 
-        // Grid - every talk (the featured one is intentionally also a card).
+        // Grid - every talk. The featured one is also a card, but hidden until
+        // filtering (see `talks-card--featured`).
         s += #"<div class="collection-grid talks-grid">"#
         for talk in talks {
             // Per-card filter/search hooks read by site.js: `data-topics` is the
-            // lowercased space-joined topic list, `data-search` folds title +
-            // venue + topics into one lowercased haystack for the search box.
-            let topicsAttr = talk.topics.map { $0.lowercased() }.joined(separator: " ")
+            // space-joined list of topic IDs (see `topicID`); `data-search`
+            // folds title + venue + topics into one lowercased haystack for the
+            // search box.
+            let topicsAttr = talk.topics.map(topicID).joined(separator: " ")
             let searchAttr = ([talk.title, talk.venue] + talk.topics)
                 .joined(separator: " ").lowercased()
-            s += #"<a class="collection-card talks-card" href="\#(escape(talk.path))" data-topics="\#(escape(topicsAttr))" data-year="\#(talk.year)" data-search="\#(escape(searchAttr))">"#
+            // The featured talk's own card is hidden until a filter or search is
+            // active (talks.css/site.js), so it isn't shown twice by default
+            // but still turns up in filtered results.
+            let featuredClass = talk.path == talks.first?.path ? " talks-card--featured" : ""
+            s += #"<a class="collection-card talks-card\#(featuredClass)" href="\#(escape(talk.path))" data-topics="\#(escape(topicsAttr))" data-year="\#(talk.year)" data-search="\#(escape(searchAttr))">"#
             // Talks cards sit in the same .collection-grid as Code cards (no
             // talks-specific column override), so they render at the same
             // ~460-490px - reuse that figure rather than the hero's 700px.
@@ -146,5 +152,14 @@ extension TalksRenderer {
 
         s += "</div>"  // collection talks
         return s
+    }
+
+    /// A topic as a space-free filter ID ("UI & Graphics" → "ui-graphics"):
+    /// site.js splits a card's `data-topics` on spaces, so multi-word topic
+    /// names must not contain any.
+    private static func topicID(_ topic: String) -> String {
+        topic.lowercased()
+            .split(whereSeparator: { !$0.isLetter && !$0.isNumber })
+            .joined(separator: "-")
     }
 }

@@ -687,6 +687,8 @@
         var year = yearBtn ? yearBtn.getAttribute('data-year') : 'all';
         var query = search ? search.value.trim().toLowerCase() : '';
         var bucket = YEAR_BUCKETS[year];
+        // Reveals the featured talk's (otherwise hidden) duplicate card.
+        grid.classList.toggle('is-filtering', topic !== 'all' || year !== 'all' || query !== '');
 
         var cards = grid.querySelectorAll('.talks-card');
         var visible = 0;

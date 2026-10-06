@@ -86,15 +86,17 @@ media-manifest.json            build INPUT written by build-media.py (dimensions
   (`image:`), no `shots:` carousel.
 - **Art**: the folder is the section; `_section.md` (`published: false`) holds title/columns/order/
   slug/blurb and is read off disk by `ArtRenderer`. Item `path:` must start `/art/<section-slug>/`;
-  an item no section claims is a `fatalError`. Art `youtube:` is a channel/video URL that links out;
-  Talks `youtube:` is a video ID that embeds via lite-youtube — don't conflate them.
+  an item no section claims is a `fatalError`. Art `youtube:` is a full URL: a video URL embeds via
+  lite-youtube on the detail page (id parsed from `watch?v=`/`youtu.be`, always from the start) and
+  also drives the "Watch on YouTube" badge. Talks `youtube:` is a bare video ID — don't conflate them.
 - **Code** is curated, not chronological: `order:` (1 = first) sets the grid order; entries without
   it follow newest-first by `date:` (the repo's creation date). Stats (`stars:`, `details:`) are
   hand-copied from GitHub until the planned auto-fill lands, so refresh them before trusting them.
 - **Talks** use `topics:` not `tags:` so Ignite doesn't generate tag pages or feed categories. The
-  featured hero is always the newest talk and also appears in the grid. Year buckets are hard-coded
-  in BOTH `Talks.swift` (`buckets`) and `site.js` (`YEAR_BUCKETS`); the newest is `2023-26`, so add a
-  bucket before adding a 2027 talk.
+  featured hero is always the newest talk; its grid card (`.talks-card--featured`) is hidden until a
+  filter or search is active, so it isn't shown twice but still turns up in filtered results. Year
+  buckets are hard-coded in BOTH `Talks.swift` (`buckets`) and `site.js` (`YEAR_BUCKETS`); the
+  newest is `2023-26`, so add a bucket before adding a 2027 talk.
 - **Adding a collection section** touches: `CollectionRenderer.collectionPathPrefixes`, the
   stylesheet switch in `MainLayout`, `.gitignore` (`Includes/_<dir>/`), the swap-path regexes in
   `site.js` (art URLs are one level deeper), and the nav in `Includes/header.html`.
@@ -215,7 +217,9 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
   downscaled and EXIF-stripped on device into `Assets/img/posts/YYYY/MM/`.
 - Auto-filled metadata: YouTube thumbnails/titles for talks, GitHub stats for code; App Store lookup
   only as a one-time import (some apps are delisted).
-- Empty `youtube:` on all talks is deliberate, awaiting Tim's own content pass. (The About page's
-  placeholders were all filled in October 2026.)
+- Talks are real as of October 2026: 31 recordings, 2011–2026, from Tim's @timXD channel and the
+  conferences' own channels (each talk's `youtube:` is the video ID). Bodies are condensed from the
+  YouTube descriptions; a few with no description are minimal. (The About page's placeholders were
+  also filled in October 2026.)
 - Claude is credited only in the About page's Tech specs card ("Design tools", "Code agents"), by
   Tim's choice; the prose doesn't repeat it.

@@ -217,6 +217,11 @@
 .talks-card.hidden,
 .talks-grid.hidden { display: none; }
 
+/* The featured talk is already the hero, so its grid card stays hidden until a
+   filter or search is active (site.js sets .is-filtering), when it should turn
+   up in the results like any other match. */
+.talks-grid:not(.is-filtering) .talks-card--featured { display: none; }
+
 /* ----- Mobile ----- */
 @media (max-width: 720px) {
     .talks-featured {
