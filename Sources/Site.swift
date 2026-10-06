@@ -20,12 +20,14 @@ struct IgniteWebsite {
         var site = TimDevSite()
 
         do {
-            // Order matters: publish() writes Build/, then both post-passes
+            // Order matters: publish() writes Build/, then the post-passes
             // read and rewrite the files it just produced. buildFeeds scopes
-            // and splits the RSS; stripIgniteCore removes the unused bundle.
+            // and splits the RSS; stripIgniteCore removes the unused bundle;
+            // removeDotfiles drops Finder litter copied over from Assets/.
             try await site.publish()
             try buildFeeds(siteURL: site.url)
             try stripIgniteCore()
+            try removeDotfiles()
         } catch {
             // Fail loud: a zero exit here would let a deploy script ship a
             // stale or partial Build/. Print the full error - Ignite errors
@@ -41,6 +43,30 @@ struct IgniteWebsite {
         URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()  // Sources/
             .deletingLastPathComponent()  // repo root
+    }
+
+    /// Ignite copies Assets/ into Build/ verbatim, including Finder's
+    /// .DS_Store files - which would deploy and list each folder's contents,
+    /// deleted files included. Delete every dotfile from Build/, then any
+    /// directory that leaves empty.
+    static func removeDotfiles() throws {
+        let fm = FileManager.default
+        let build = packageRoot.appending(path: "Build")
+        var directories: [URL] = []
+        let enumerator = fm.enumerator(at: build, includingPropertiesForKeys: [.isDirectoryKey])
+        while let url = enumerator?.nextObject() as? URL {
+            if url.lastPathComponent.hasPrefix(".") {
+                try fm.removeItem(at: url)
+            } else if (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true {
+                directories.append(url)
+            }
+        }
+
+        // Deepest first, so a parent emptied by its children goes too.
+        for dir in directories.sorted(by: { $0.path.count > $1.path.count })
+        where (try? fm.contentsOfDirectory(atPath: dir.path))?.isEmpty == true {
+            try fm.removeItem(at: dir)
+        }
     }
 
     /// Ignite emits js/ignite-core.js (plus a <script> tag on every page) and

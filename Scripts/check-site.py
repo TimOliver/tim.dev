@@ -195,6 +195,11 @@ def main() -> int:
     except (OSError, ET.ParseError) as error:
         errors.add(f"sitemap.xml: {error}")
 
+    # Dotfiles (.DS_Store and the like) must never deploy; Site.swift deletes
+    # them after publishing, so one here means that pass broke.
+    for dotfile in root.rglob(".*"):
+        fail(dotfile, "dotfile in the build output")
+
     for error in sorted(errors):
         print(error, file=sys.stderr)
     print(f"Checked {len(pages)} HTML pages, {len(feeds)} RSS feeds and sitemap: {len(errors)} error(s).")

@@ -66,6 +66,13 @@ class SiteValidationTests(unittest.TestCase):
         self.assertIn("missing CSS asset: ../img/background.svg", result.stderr)
         self.assertIn("1 error(s)", result.stdout)
 
+    def test_dotfile_in_build_fails(self):
+        (self.root / "img/.DS_Store").write_bytes(b"\x00")
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("img/.DS_Store: dotfile in the build output", result.stderr)
+        self.assertIn("1 error(s)", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
