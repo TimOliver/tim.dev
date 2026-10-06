@@ -62,7 +62,7 @@ I received another review requesting this feature very recently. 🙂
 <div class="content_cards_image"><a href="https://appfigures.com/reviews/213171321Lh-BxVpusoNvE1ZLXTZmzLg?lang=en"><img src="/img/posts/2022/05/213171321lh-bxvpusonve1zlxtzmzlg.png" alt="★★★★☆ iComics review on iOS App Store"></a></div>
 <div class="content_cards_title"><a href="https://appfigures.com/reviews/213171321Lh-BxVpusoNvE1ZLXTZmzLg?lang=en">★★★★☆ iComics review on iOS App Store</a></div>
 <div class="content_cards_description"><a href="https://appfigures.com/reviews/213171321Lh-BxVpusoNvE1ZLXTZmzLg?lang=en">Inconvenient importing · I will start by saying that this is a great app and that I would definitely recommend it. With that being said, this app's biggest flaw is that it does not feature any kind of download queue. In order to import comics, you must download them one-by-one. Not only that, but you…</a></div>
-<div class="content_cards_site_name"><img src="https://icons.appfigures.com/213171321/32" alt="Appfigures"> Appfigures</div>
+<div class="content_cards_site_name"><img src="/img/posts/2022/05/appfigures-icon.png" alt="Appfigures" width="16" height="16"> Appfigures</div>
 </div>
 
 I mentioned this in my last blog post, but since it’s something people really, REALLY want, I better touch on it again. XD

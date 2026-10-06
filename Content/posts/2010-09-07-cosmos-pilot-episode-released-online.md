@@ -16,9 +16,9 @@ Anyway, while I was away in Japan, after several months under wraps, the finishe
 
 So without furthur ado, here is the pilot episode to the Australian TV series *Welcome to the Cosmos*!
 
-<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" height="338" width="580"><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><param name="src" value="http://www.youtube.com/v/aJh1j5SjXsE?fs=1&hl=en_US&rel=0&hd=1"></param><param name="allowfullscreen" value="true"></param></object>
+<iframe allowfullscreen="allowfullscreen" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/oKdkQOsrlZU" width="560"></iframe>
 
-If you get the time, please rate it [on YouTube](http://www.youtube.com/watch?v=aJh1j5SjXsE) and spread the word around.
+If you get the time, please rate it [on YouTube](https://www.youtube.com/watch?v=oKdkQOsrlZU) and spread the word around.
 
 I really gotta say. It’s a total buzz seeing your own work finished and up on screen. It definitely makes all the effort totally worth it. XD
 

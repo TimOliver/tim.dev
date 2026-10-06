@@ -18,7 +18,7 @@ Now the colossal fail. Once I’d sorted out the import script and executed it i
 Sadly… and here’s the kicker, when I went to revert the database, not only did it remove the RPG-X stuff, but it deleted a whole pile of UberGames posts with it, as well as all of the admin accounts, which meant I was no longer logged in… and it kind of collapsed in on itself. XP
 
 Sooo….. I realised I had no choice but to restore the entire SQL database I made, since by this point, the database was riddled with corrupted tables.  
-At this point, I found out I couldn’t just feed the data back into phpMyAdmin, because it was too big and caused timeouts. ![](http://www.rpg-x.net/images/smilies/sad.gif ":(")
+At this point, I found out I couldn’t just feed the data back into phpMyAdmin, because it was too big and caused timeouts. :(
 
 So, RedTechie suggested I go and find a script that handles staggered MySQL queries, and use that. Thankfully, I found an awesome one called BigDump ([http://www.ozerov.de/bigdump.php)](http://www.ozerov.de/bigdump.php%29).
 
@@ -26,7 +26,7 @@ And now… icing on the cake, BigDump refused to load my file because it was enc
 
 So… long story short, I’ve spent up until now, writing a utlity in C# .NET that could take my SQL file, resequence it into 1 on 1 insertion queries and then debugged it until it worked.
 
-What was meant to be an easy 4 hour task has dragged onto 3 days. Ugh… ![](http://www.rpg-x.net/images/smilies/sad.gif ":(")  
+What was meant to be an easy 4 hour task has dragged onto 3 days. Ugh… :(  
 I guess I should be happy I learnt a tonne of new stuff in the meanwhile… but I’m not so sure.
 
 So the moral of this story is:  
@@ -35,6 +35,6 @@ So the moral of this story is:
 3\) Test backup restoration before assuming it’ll just work.  
 4\) Save the alcohol-based celebrations until after it works. XD
 
-So yeah…. the forum’s all back online, and I’ve taken proper backups now… so I’m ready to try again haha. ![](http://www.rpg-x.net/images/smilies/tongue.gif "Stick Out Tongue")
+So yeah…. the forum’s all back online, and I’ve taken proper backups now… so I’m ready to try again haha. :P
 
 In the meantime, I might also release my ‘SQL Splitter’ program as well, in case anyone else runs into the same problem I had…
