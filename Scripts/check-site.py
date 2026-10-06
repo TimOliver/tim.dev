@@ -197,6 +197,18 @@ def main() -> int:
     except (OSError, ET.ParseError) as error:
         errors.add(f"sitemap.xml: {error}")
 
+    # A page that uses a front-end feature must load its script; Site.swift
+    # strips unused loaders from article pages and must never over-strip.
+    feature_loaders = {
+        "data-lightbox": "/js/lightbox3.umd.js",
+        "<lite-youtube": "/js/lite-yt-embed.js",
+    }
+    for path in paths:
+        html = path.read_text()
+        for marker, script in feature_loaders.items():
+            if marker in html and f'src="{script}"' not in html:
+                fail(path, f"uses {marker} but does not load {script}")
+
     # Dotfiles (.DS_Store and the like) must never deploy; Site.swift deletes
     # them after publishing, so one here means that pass broke.
     for dotfile in root.rglob(".*"):

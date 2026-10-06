@@ -27,6 +27,7 @@ struct IgniteWebsite {
             try await site.publish()
             try buildFeeds(siteURL: site.url)
             try stripIgniteCore()
+            try stripUnusedLoaders()
             try normalizeSitemap()
             try removeDotfiles()
         } catch {
@@ -44,6 +45,49 @@ struct IgniteWebsite {
         URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()  // Sources/
             .deletingLastPathComponent()  // repo root
+    }
+
+    /// The home feed and post pages are full page loads, but MainLayout can't
+    /// see their bodies, so it links every article loader. Drop each one from
+    /// a page that has nothing for it to do: lightbox3 without a
+    /// `data-lightbox` trigger (~30 KB gzipped), lite-youtube without a
+    /// `<lite-youtube>`, social-embeds.css without an `.embed_social` card.
+    /// Talks/Art keep their loaders section-wide: site.js swaps those pages
+    /// in place without reloading <head>. check-site.py fails any page that
+    /// uses a feature without its loader, so this can't over-strip silently.
+    static func stripUnusedLoaders() throws {
+        let loaders: [(marker: String, tags: [String])] = [
+            ("data-lightbox", [#"<link href="/css/lightbox3.css" rel="stylesheet" />"#,
+                               #"<script src="/js/lightbox3.umd.js"></script>"#]),
+            ("<lite-youtube", [#"<link href="/css/lite-yt-embed.css" rel="stylesheet" />"#,
+                               #"<script src="/js/lite-yt-embed.js"></script>"#]),
+            ("embed_social", [#"<link href="/css/social-embeds.css" rel="stylesheet" />"#]),
+        ]
+        let fm = FileManager.default
+        let build = packageRoot.appending(path: "Build")
+        var pages = [build.appending(path: "index.html")]
+        let enumerator = fm.enumerator(at: build, includingPropertiesForKeys: nil)
+        while let url = enumerator?.nextObject() as? URL {
+            // Post pages live under /YYYY/MM/DD/slug/.
+            let parts = url.path.dropFirst(build.path.count).split(separator: "/")
+            if url.lastPathComponent == "index.html", parts.count == 5, parts[0].allSatisfy(\.isNumber) {
+                pages.append(url)
+            }
+        }
+
+        var removed = 0
+        for url in pages {
+            var html = try String(contentsOf: url, encoding: .utf8)
+            let original = html
+            for loader in loaders where !html.contains(loader.marker) {
+                for tag in loader.tags where html.contains(tag) {
+                    html = html.replacingOccurrences(of: tag, with: "")
+                    removed += 1
+                }
+            }
+            if html != original { try html.write(to: url, atomically: true, encoding: .utf8) }
+        }
+        print("Dropped \(removed) unused loader tags from \(pages.count) article pages")
     }
 
     /// Ignite writes each static page's sitemap <loc> from its bare path

@@ -75,6 +75,15 @@ class SiteValidationTests(unittest.TestCase):
         self.assertIn(f"sitemap URL lacks the canonical trailing slash: {bare}", result.stderr)
         self.assertIn("1 error(s)", result.stdout)
 
+    def test_lightbox_trigger_without_script_fails(self):
+        page = self.root / "2024/01/01/example/index.html"
+        page.write_text(page.read_text().replace(
+            "Example", '<a href="/css/site.css" data-lightbox>Example</a>'))
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("uses data-lightbox but does not load /js/lightbox3.umd.js", result.stderr)
+        self.assertIn("1 error(s)", result.stdout)
+
     def test_dotfile_in_build_fails(self):
         (self.root / "img/.DS_Store").write_bytes(b"\x00")
         result = self.validate()
