@@ -1621,7 +1621,9 @@ footer .container {
    the gap without growing the card much. */
 .spec-list dd + dt,
 .spec-list dd:not(:first-of-type) {
-    border-top: 1px solid var(--border);
+    /* Every spec list sits on a --bg-secondary card, where --border vanishes
+       in light mode. */
+    border-top: 1px solid var(--border-secondary);
     padding-top: 0.45em;
 }
 

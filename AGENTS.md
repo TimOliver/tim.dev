@@ -154,6 +154,12 @@ media-manifest.json            build INPUT written by build-media.py (dimensions
   planned (Tim files it himself).
   Any card whose thumbnail is a different crop from the lightbox file needs `data-crop`.
 - Section labels are sentence-case bold, never small letter-spaced caps.
+- **Link style follows the link's job**, not the page: inline links in blog prose are `--link` red
+  (Apple Music red, darkened to #D51B32 for 4.5:1); inline links in non-blog prose (collection
+  descriptions) are text colour with a thin `--text-tertiary` underline, red on hover; "go somewhere"
+  links are text with a chevron/arrow ("‹ Back to…", sidebar ↗ links); primary actions are the
+  store-style badges; linked names/titles keep heading colour with the soft hover surface (About
+  company names, post titles). Pick the matching row; don't invent a new style per page.
 - Copy voice: plain one-sentence facts in Tim's voice. If a layout slot would need filler, drop the
   slot rather than fill it.
 

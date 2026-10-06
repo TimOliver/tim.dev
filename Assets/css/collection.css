@@ -30,6 +30,22 @@ body:has(.collection-detail) {
     margin-top: 40px;
 }
 
+/* Plain text links in collection prose (descriptions, section blurbs) read in
+   the text colour with a quiet underline and only turn red on hover, like the
+   sidebar and Contact links. The red link colour is for the blog. Classed
+   anchors (cards, badges, filters) keep their own styling. */
+.collection a:not([class]) {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--text-tertiary);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+.collection a:not([class]):hover {
+    color: var(--link);
+    text-decoration-color: currentColor;
+}
+
 /* On short viewports the whole detail column narrows (centred) so its aspect-ratio
    hero fits vertically with the header and a peek of prose still on screen - the
    column moves as one, not just the media. Width is driven off the hero's ratio
