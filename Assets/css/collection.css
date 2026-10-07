@@ -188,9 +188,9 @@ body:has(.collection-detail) {
    squircle, title tucked 1em above the rows. Badges and Links stay outside
    the card, beneath it. */
 .collection-details-card {
-    padding: 24px 28px;
+    padding: 20px 28px;
     background: var(--bg-secondary);
-    border-radius: 12px;
+    border-radius: 24px;
     corner-shape: squircle;
 }
 .collection-details-card .collection-eyebrow {
@@ -288,7 +288,7 @@ body:has(.collection-detail) {
 @media (max-width: 720px) {
     /* Same phone padding as the About page's Tech specs card. */
     .collection-details-card {
-        padding: 20px;
+        padding: 16px 20px;
     }
     .collection-detail-name {
         font-size: 2.1em;

@@ -522,9 +522,23 @@ a.about-co .about-co-icon {
    lines, so titles in the same row sat at different heights. Equal cards plus
    a fixed-ratio photo (below) keep each row's titles on one line. */
 .hobby-grid {
+    /* Bleed past the content column into the page margin on wide screens -
+       up to 200px a side, always leaving 24px to the viewport edge - so the
+       cards (and their descriptions) get room to breathe. At 1200px and below
+       there's no margin to spare and the grid sits in the column as before. */
+    --hobby-bleed: clamp(0px, calc((100vw - var(--page-width, 1200px)) / 2 + var(--container-pad, 48px) - 24px), 200px);
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 18px;
+    margin-inline: calc(var(--hobby-bleed) * -1);
+}
+
+/* Full desktop: the six hobbies sit three to a row (two rows), each card a
+   little narrower than the two-column layout gives them. */
+@media (min-width: 1280px) {
+    .hobby-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .hobby-card {
@@ -543,7 +557,9 @@ a.about-co .about-co-icon {
        card width, so the title beneath always starts at the same point. Any
        spare height in a row goes below the text instead. */
     flex: none;
-    aspect-ratio: 16 / 10;
+    /* 17:10, a touch shorter than the 16:10 photo files; the karaoke and
+       geocaching data-crop values account for the trimmed top and bottom. */
+    aspect-ratio: 17 / 10;
 }
 
 .hobby-photo a {
@@ -729,7 +745,7 @@ a.about-co .about-co-icon {
 }
 
 .gallery-card {
-    flex: 0 0 clamp(195px, 54vw, 330px);   /* 75% of the former 260/72vw/440 */
+    flex: 0 0 clamp(220px, 60vw, 380px);
     min-width: 0;
     margin: 0;
 }
@@ -782,9 +798,9 @@ a.about-co .about-co-icon {
    is the value, right-aligned. */
 
 .about-colophon {
-    padding: 24px 28px;
+    padding: 20px 28px;
     background: var(--bg-secondary);
-    border-radius: 12px;
+    border-radius: 24px;
     corner-shape: squircle;
     margin: 0;
     /* Hug the content height instead of stretching to match the prose column. */
@@ -850,7 +866,7 @@ a.about-co .about-co-icon {
     /* At 28px the label column plus the longest value (the repo URL, which can
        only break at its <wbr>s) outgrew the column and pushed past the gutter. */
     .about-colophon {
-        padding: 20px;
+        padding: 16px 20px;
     }
     .about-intro {
         grid-template-columns: 1fr;
