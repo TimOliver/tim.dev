@@ -812,9 +812,8 @@ a.about-co .about-co-icon {
     font-size: 1.5em;
     font-weight: 700;
     color: var(--heading);
-    /* The first spec row sits straight under the title; the title's own
-       line-height leaves enough air. */
-    margin-bottom: 0;
+    /* Just a little air between the title and the first spec row. */
+    margin-bottom: 0.3em;
 }
 
 /* The <dl> itself is the shared .spec-list component (site.css). */
