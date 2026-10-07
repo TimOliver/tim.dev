@@ -60,7 +60,7 @@ extension TalksRenderer {
         // string; each `s +=` appends the next fragment in document order.
         var s = #"<div class="collection talks">"#
         s += #"<h1 class="page-title">Talks</h1>"#
-        s += #"<p class="page-subtitle">Thanks for listening! Or, depending on the talk, I'm sorry.</p>"#
+        s += #"<p class="page-subtitle">A collection of some of the talks I've given over the years. Thanks for listening! Or, depending on the talk, I'm sorry.</p>"#
 
         // Featured hero - the most-recent talk (talks are sorted desc).
         if let featured = talks.first {

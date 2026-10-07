@@ -57,7 +57,7 @@ extension CodeRenderer {
         // Open the shared collection wrapper and the page heading block.
         var s = #"<div class="collection">"#
         s += #"<h1 class="page-title">Code</h1>"#
-        s += #"<p class="page-subtitle">My own open source libraries, plus a few bigger projects I've been lucky enough to contribute to.</p>"#
+        s += #"<p class="page-subtitle">A collection of some of the open source projects I've written, maintained or contributed to, and occasionally broken.</p>"#
 
         // The responsive card grid; one anchor card per repo follows.
         s += #"<div class="collection-grid">"#
