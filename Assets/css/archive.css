@@ -36,11 +36,13 @@ body:has(.archive) {
     font: inherit;
     font-size: 0.9em;
     margin: 0;
+    text-overflow: ellipsis;
 }
 
+/* Text-colour focus ring, matching the Talks search. */
 .archive-search:focus {
     outline: none;
-    border-color: var(--link);
+    border-color: var(--text);
     color: var(--text);
 }
 

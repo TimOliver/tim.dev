@@ -130,6 +130,13 @@ body {
     filter: invert(1);
 }
 
+/* WebKit reserves the (invisible) clear button's width even while the field is
+   empty, which clipped long placeholders on phones. Drop it until there's
+   something to clear. */
+input[type="search"]:placeholder-shown::-webkit-search-cancel-button {
+    display: none;
+}
+
 p {
     /* ~one line-height of space between paragraphs. em (not rem) so it
        scales with the responsive body size instead of staying a fixed 40px. */

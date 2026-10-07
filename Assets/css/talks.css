@@ -118,13 +118,17 @@
     border: 1px solid var(--border);
     border-radius: 999px;
     corner-shape: squircle;
+    /* A long query ends with an ellipsis when the field isn't focused. */
+    text-overflow: ellipsis;
 }
 
 .talks-search::placeholder { color: var(--text-tertiary); }
 
+/* Focus ring in the text colour (white in dark mode, black in light) - the
+   red read as an error state. */
 .talks-search:focus {
     outline: none;
-    border-color: var(--link);
+    border-color: var(--text);
 }
 
 /* ----- Filter groups (Topic / Year) ----- */
