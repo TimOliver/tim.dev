@@ -80,6 +80,9 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
 - **Strip EXIF before committing any photo** (`python3 Scripts/strip-exif.py <files>`; the pre-commit
   hook does staged files). GPS leaks otherwise.
 - Posts shown on the home feed are complete, not excerpts; post pages exist mainly to host comments.
+  Exception, opt-in: a `<!--more-->` line in a long post cuts its feed copy there; the cut fades
+  out (`.post-excerpt` mask) and ends with a full-width "Continue reading →" block
+  (`.post-continue`). The post page and RSS always carry the whole post.
 
 ### Collections (apps, code, art, talks)
 - Images are author-exported files dropped into `Assets/img/<collection>/<slug>/` and named in front
@@ -266,11 +269,6 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
   conferences' own channels (each talk's `youtube:` is the video ID). Bodies are condensed from the
   YouTube descriptions; a few with no description are minimal. (The About page's placeholders were
   also filled in October 2026.)
-- **Opt-in excerpts on the home feed.** The feed shows posts in full (see Content conventions), but
-  some are comically long (the 2016 Telstra post is one long rant). Planned: an optional front-matter
-  key that cuts a post's home-feed copy at a chosen point (e.g. after N paragraphs, or at a marker in
-  the body) and ends it with a "Read the whole thing" link to the post page. Posts without the key
-  stay complete; the post page itself is always complete.
 - Claude is credited only in the About page's Tech specs card ("Design tools", "Code agents"), by
   Tim's choice; the prose doesn't repeat it.
 

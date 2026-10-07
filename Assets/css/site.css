@@ -1876,6 +1876,63 @@ footer .container {
 /* ---------- End-of-article links (feed): permalink · share · comments ---------- */
 
 /* Small, secondary text+icon links, left-aligned with the body. */
+/* Opt-in excerpt on the home feed (a `<!--more-->` line in the post): the
+   cut copy fades out over its last lines, then a full-width rounded block
+   links to the whole post. */
+.post-excerpt {
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 7em), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 7em), transparent);
+}
+
+.post-excerpt > :last-child {
+    margin-bottom: 0;
+}
+
+.post-continue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: var(--text-measure);
+    margin: 1.25em auto 0;
+    padding: 1.1em 1.5em;
+    background-color: var(--bg-secondary);
+    border-radius: 18px;
+    corner-shape: squircle;
+    color: var(--heading);
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+/* Hover fades the block to a lighter shade. */
+.post-continue:hover {
+    color: var(--heading);
+    text-decoration: none;
+    background-color: color-mix(in srgb, var(--bg-secondary), #fff 50%);
+}
+
+[data-color-scheme="dark"] .post-continue:hover {
+    background-color: color-mix(in srgb, var(--bg-secondary), #fff 7%);
+}
+
+/* Tabler chevron-right, drawn in the text colour. */
+.post-continue-chevron {
+    width: 1.1em;
+    height: 1.1em;
+    /* The glyph sits in the middle of its 24px box; pull it in so the visible
+       gap to the text is about a third of an em. */
+    margin-left: -0.05em;
+    /* Centre on the lowercase letters (the label is mostly x-height), not the
+       capital height flex centring lines it up with: ~1px lower. */
+    position: relative;
+    top: 0.06em;
+    transition: transform 0.2s ease;
+}
+
+.post-continue:hover .post-continue-chevron {
+    transform: translateX(2px);
+}
+
 .post-links {
     display: flex;
     flex-wrap: wrap;

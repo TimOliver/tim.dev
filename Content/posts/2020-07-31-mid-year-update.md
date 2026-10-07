@@ -16,6 +16,8 @@ My last post on this thing was at the start of this year. Back before the crazin
 
 If you want a TL;DR: Nothing went to plan this year lol. As such, I didn’t get anywhere as much work on iComics 2 done as I wanted. But things are finally back on track, and I couldn’t be happier. 😀
 
+<!--more-->
+
 It’s probably worth a blog post on its own, but long story short, late last year, I received hiring approval by Google to join their Tokyo office as a senior UX engineer of iOS. The concept behind this job sounded amazing, as it wasn’t directly related to any specific Google products, but more involved work with designers and UX researchers to prototype new UI concepts. Given how much I absolutely love simply tinkering with the UI on iOS, this position sounded like an absolute dream. Sadly, I was told I had *just* missed the cut-off for 2019, so I would need to wait until 2020 when the hiring head-counts for next year were decided.
 
 I had more or less finished up with everything else I wanted to do at my current company at the time, and so I made the decision that I would resign at the end of 2019, and herald in the start of the new decade with a completely clean slate. This also meant I could have some time resetting from that company, and some time to work on iComics 2. Sounded perfect.

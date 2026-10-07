@@ -168,10 +168,25 @@ enum ArticleShell {
         // consecutive images into lightbox galleries, then wrap the remaining
         // single images in lightbox anchors and adds responsive metadata. Order matters - grids must run
         // before the single-image wrap so runs aren't wrapped one image at a time.
-        let grouped = groupImageGrids(
+        var grouped = groupImageGrids(
             splitMixedImageParagraphs(ArticleContent.normalizedHTML(article.text)),
             galleryPrefix: CollectionRenderer.key(for: article.path, dir: "posts")
         )
+
+        // Opt-in excerpt: a `<!--more-->` line in a long post cuts its feed
+        // copy there (the post page and RSS stay complete). The cut copy fades
+        // out and ends with a "Continue reading" block linking to the post.
+        var excerpted = false
+        if context == .feed,
+           let marker = grouped.range(of: #"<!--\s*more\s*-->"#, options: .regularExpression) {
+            var cut = String(grouped[..<marker.lowerBound])
+            // A marker written mid-paragraph leaves that paragraph open.
+            if cut.components(separatedBy: "<p").count > cut.components(separatedBy: "</p>").count {
+                cut += "</p>"
+            }
+            grouped = cut
+            excerpted = true
+        }
 
         // Optional hero image (alt="" - it's decorative; the title carries the
         // meaning). Emitted OUTSIDE the <section> below so the
@@ -188,7 +203,12 @@ enum ArticleShell {
 
         // Without a hero, the first body image is the one to load first.
         let body = ArticleImages.enhance(grouped, eagerFirst: eager && !showHero)
-        s += "<section>\(body)</section>"
+        if excerpted {
+            s += #"<section class="post-excerpt">\#(body)</section>"#
+            s += #"<a class="post-continue" href="\#(href)">Continue reading<svg class="post-continue-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6l-6 6"/></svg></a>"#
+        } else {
+            s += "<section>\(body)</section>"
+        }
 
         // Footer - every article ends with the same links row (feed and post
         // page match). The post page additionally renders the comment thread
