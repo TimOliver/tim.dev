@@ -68,7 +68,7 @@ extension ArtRenderer {
         // Outer collection wrapper + page heading and subtitle.
         var s = #"<div class="collection">"#
         s += #"<h1 class="page-title">Art</h1>"#
-        s += #"<p class="page-subtitle">Coding isn't my only passion. Here are some of the other creative things I get up to.</p>"#
+        s += #"<p class="page-subtitle">Coding isn't my only passion. Here are some of the other creative escapades I get up to.</p>"#
 
         // Jump-nav chips → each section.
         s += #"<nav class="section-chips" aria-label="Jump to section">"#
