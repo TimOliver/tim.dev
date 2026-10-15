@@ -1,4 +1,5 @@
 ---
+published: false
 title: TONavigationBar
 tagline: Replicating the 'clear' navigation bar style of the iOS 12 Apple TV app.
 layout: CodeDetail
