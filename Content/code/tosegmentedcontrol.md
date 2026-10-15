@@ -3,7 +3,7 @@ title: TOSegmentedControl
 tagline: A reimplementation of UISegmentedControl featuring reversible segments.
 layout: CodeDetail
 date: 2019-08-10 00:00:00
-order: 10
+order: 9
 owner: TimOliver
 language: Objective-C
 langColor: #438EFF

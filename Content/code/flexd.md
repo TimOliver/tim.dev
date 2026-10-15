@@ -3,7 +3,7 @@ title: fleXD
 tagline: An opinionated iOS 26 redesign of the FLEX framework.
 layout: CodeDetail
 date: 2026-03-17 00:00:00
-order: 13
+order: 12
 owner: TimOliver
 language: Objective-C
 langColor: #438EFF

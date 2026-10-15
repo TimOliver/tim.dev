@@ -3,7 +3,7 @@ title: IGListKit
 tagline: A data-driven UICollectionView framework for building fast and flexible lists.
 layout: CodeDetail
 date: 2016-09-07 00:00:00
-order: 1
+order: 3
 owner: Instagram
 language: Objective-C
 langColor: #438EFF

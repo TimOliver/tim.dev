@@ -3,7 +3,7 @@ title: TOScrollBar
 tagline: An interactive scroll bar for traversing comically massive scroll views.
 layout: CodeDetail
 date: 2016-11-05 00:00:00
-order: 11
+order: 10
 owner: TimOliver
 language: Objective-C
 langColor: #438EFF
