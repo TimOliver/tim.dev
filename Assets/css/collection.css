@@ -332,6 +332,13 @@ body:has(.collection-detail) {
     .collection-grid {
         grid-template-columns: 1fr;
     }
+    /* No hover surface on phones, so the card's side padding would only push
+       the imagery in from the page gutter. Drop it so cards line up with the
+       page title and the header capsule; keep the vertical padding as the
+       spacing between cards. */
+    .collection-card {
+        padding-inline: 0;
+    }
     .collection-detail-body {
         grid-template-columns: 1fr;
         gap: 2em;
