@@ -13,7 +13,12 @@ platforms: iOS
 license: BSD
 latest: 6.2.0
 github: https://github.com/TimOliver/fleXD
+image: /img/code/flexd/screenshot.jpg
 path: /code/flexd/
 ---
 
-[Placeholder - what fleXD is and my part in it, in a sentence or two.]
+FLEX is a famous debugging tool in the iOS world. It lives inside the app itself and exposes everything happening underneath, like the current on-screen UI and the app's file system, which makes for very powerful on-device debugging.
+
+fleXD is my fork of FLEX with a complete UI overhaul. I took its original iOS 7-era design and reworked the coloring, rounding, sizing and iconography to make it feel much more modern.
+
+I use fleXD for on-device debugging in my own apps. Its ability to add app-specific settings panels is incredibly powerful.

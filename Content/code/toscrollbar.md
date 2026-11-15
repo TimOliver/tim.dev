@@ -13,7 +13,12 @@ platforms: iOS
 license: MIT
 latest: 0.0.5
 github: https://github.com/TimOliver/TOScrollBar
+image: /img/code/toscrollbar/screenshot.jpg
 path: /code/toscrollbar/
 ---
 
-[Placeholder - what TOScrollBar is and my part in it, in a sentence or two.]
+TOScrollBar adds an always-visible scroll bar to Apple's native scroll views. You can drag it directly, and even flick it to scroll with physics-based deceleration.
+
+I built it for iComics. Some users have absolutely massive comic collections, and scrolling to the one they want had become a chore. iOS does let you drag its built-in scroll indicator, but it's fiddly and not well known.
+
+For now, I'm saving it for iComics 2. The catch is that I also need a library UI fast enough to keep up with scrolling that quickly.
