@@ -1,14 +1,20 @@
 ---
 title: osu!stream
-tagline: Rhythm game from the creator of osu!
+tagline: A lighter version of osu! for mobile devices
 layout: AppDetail
 date: 2019-06-01 00:00:00
 year: 2019
-platform: iPhone
+platform: iPhone, iPad
 appstore: https://apps.apple.com/app/osu-stream/id436952197
-company: ppy
-status: On the App Store
+company: ppy Pty Ltd
+status: Live
+role: iOS Engineer
+stack: Xamarin
 path: /apps/osu-stream/
 ---
 
-[Placeholder - what I built on osu!stream, in a sentence or two.]
+In the early days of the iPhone and iPad, the hardware couldn't run the full version of osu!. Even so, the iPad was such a great fit for the gameplay that plenty of people wanted it to happen.
+
+osu!stream is a lighter, stripped-down take on osu!, designed to run within the much tighter CPU and memory limits of iOS devices, all the way back to the iPad 2.
+
+I help keep osu!stream up to date from time to time, most recently adding proper support for the iPhone X's screen and behaviour.
