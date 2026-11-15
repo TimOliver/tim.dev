@@ -57,6 +57,10 @@ body:has(.contact) {
     margin: 0;
 }
 
+.contact-blurb + .contact-blurb {
+    margin-top: 0.9em;
+}
+
 /* Contact-details card - recreates the About "Tech Specs" card + hairline
    table (kept independent of .about-colophon so About's markup stays decoupled). */
 .contact-card {
