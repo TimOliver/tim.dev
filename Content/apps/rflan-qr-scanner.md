@@ -7,6 +7,7 @@ year: 2013
 platform: iPhone, iPod
 role: Hobbyist
 company: Redflag LANfest
+years: 2013
 stack: Objective-C
 status: Open Source
 path: /apps/rflan-qr-scanner/

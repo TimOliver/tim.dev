@@ -6,6 +6,7 @@ date: 2020-01-01 00:00:00
 year: 2020
 platform: Mac, Windows, iPhone, iPad
 company: ppy Pty Ltd
+years: 2020–Present
 status: On TestFlight
 role: iOS engineer
 stack: .NET

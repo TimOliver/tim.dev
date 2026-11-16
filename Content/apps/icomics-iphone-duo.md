@@ -2,6 +2,7 @@
 title: iComics for iPhone Duo
 tagline: The perfect app for the new phone
 layout: AppDetail
+published: false
 date: 2026-09-01 00:00:00
 year: 2026
 platform: iPhone, iPad

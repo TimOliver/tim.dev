@@ -7,6 +7,7 @@ year: 2026
 platform: iPhone
 role: Contractor
 company: Luma Labs, Inc.
+years: 2026–Present
 stack: SwiftUI
 status: Live
 path: /apps/luma/

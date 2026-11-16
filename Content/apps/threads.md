@@ -8,6 +8,7 @@ platform: iPhone
 appstore: https://apps.apple.com/app/threads/id6446901002
 role: Senior iOS Engineer
 company: Instagram
+years: 2023–2026
 status: Live
 stack: Swift
 path: /apps/threads/

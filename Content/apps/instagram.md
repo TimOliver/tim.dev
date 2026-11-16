@@ -8,6 +8,7 @@ platform: iPhone
 appstore: https://apps.apple.com/app/instagram/id389801252
 role: Senior iOS Engineer
 company: Instagram
+years: 2022–2026
 status: Live
 stack: Objective-C, Objective-C++, Swift
 path: /apps/instagram/

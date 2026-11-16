@@ -7,6 +7,7 @@ year: 2019
 platform: iPhone, iPad
 appstore: https://apps.apple.com/app/osu-stream/id436952197
 company: ppy Pty Ltd
+years: 2019–2020
 status: Live
 role: iOS Engineer
 stack: Xamarin

@@ -10,7 +10,7 @@ role: Solo developer
 company: XD Digital
 stack: Objective-C, Swift
 status: Live
-years: 2012-Present
+years: 2012–Present
 path: /apps/icomics/
 ---
 
