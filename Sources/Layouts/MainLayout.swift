@@ -40,11 +40,17 @@ struct MainLayout: Layout {
 
     private var canonicalURL: String { SiteURL.canonicalPage(page.url) }
 
-    /// Absolute URL for the page's social image, if it has one (post heroes
-    /// are site-relative paths like /img/posts/…).
-    private var socialImageURL: String? {
-        // No hero image on this page - no og:image tag is emitted.
-        guard let image = page.image else { return nil }
+    /// The link card for pages with no image of their own: the white
+    /// wordmark on dark grey, 1200×630.
+    private static let defaultSocialImage = "/img/site/link-card.png"
+
+    /// Absolute URL for the page's social image (post heroes are site-relative
+    /// paths like /img/posts/…), falling back to the default link card.
+    private var socialImageURL: String {
+        // No hero image on this page - use the site-wide link card.
+        guard let image = page.image else {
+            return site.url.appending(path: Self.defaultSocialImage).absoluteString
+        }
 
         // Already absolute (has a scheme): use it verbatim. Otherwise it's a
         // site-relative path (e.g. /img/posts/…), so resolve it against the
@@ -128,10 +134,8 @@ struct MainLayout: Layout {
             MetaTag(property: "og:type", content: isPost ? "article" : "website")
             MetaTag(property: "og:title", content: pageTitle)
             MetaTag(property: "og:description", content: metaDescription)
-            if let socialImageURL {
-                MetaTag(property: "og:image", content: socialImageURL)
-            }
-            MetaTag(name: "twitter:card", content: socialImageURL != nil ? "summary_large_image" : "summary")
+            MetaTag(property: "og:image", content: socialImageURL)
+            MetaTag(name: "twitter:card", content: "summary_large_image")
             // SVG favicon (theme-aware via its own media query) + a PNG for
             // home-screen/touch contexts.
             MetaLink(href: "/img/favicon.svg", rel: "icon")
