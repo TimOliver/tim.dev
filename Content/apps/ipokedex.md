@@ -11,6 +11,7 @@ stack: Objective-C, SQLite
 status: Pulled
 years: 2011
 icon: /img/apps/ipokedex/icon.png
+image: /img/apps/ipokedex/hero.jpg
 path: /apps/ipokedex/
 ---
 
