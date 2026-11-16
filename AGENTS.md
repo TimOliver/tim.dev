@@ -233,6 +233,9 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   fixes here (e.g. the Safari OAuth popup pre-open shim).
 - CSS gotchas: Comentario's defaults are `.comentario-card`-scoped (specificity 0,3,0), so plain
   `.comentario-root .X` overrides lose; `--accent` is not global, use `--link`.
+- `Assets/js/comentario-cookie.js` (loaded just BEFORE comentario.js on article pages) turns the
+  widget's write of its all-"A" anonymous session placeholder into a delete, so readers who aren't
+  signed in get no cookie (the Privacy Policy says so). Re-check it after a Comentario upgrade.
 - Selectors depend on Comentario's runtime DOM: button `title`s ("Sticky", "Edit", "Delete",
   "Approve", "Reject"), sibling order upvote → `.comentario-score` → downvote, state classes prefixed
   `comentario-` (`comentario-is-sticky`). Re-check after any Comentario upgrade. Downvote is hidden

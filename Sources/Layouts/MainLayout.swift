@@ -241,6 +241,10 @@ struct MainLayout: Layout {
             if hasArticleContent {
                 // Comentario (self-hosted comments). Powers <comentario-comments>
                 // on post pages and <comentario-count> in the home feed.
+                // comentario-cookie.js must come first: it stops the widget
+                // storing its blank "anonymous" session cookie for readers who
+                // aren't signed in (see the file).
+                Script(file: "/js/comentario-cookie.js")
                 Script(file: "https://comments.tim.dev/comentario.js")
                 // All client-side behaviour for the widget (count badges, draft
                 // clearing, anon status, editor refocus, dialog relabel).
