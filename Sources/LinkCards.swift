@@ -7,7 +7,8 @@ import Foundation
 import SwiftSoup
 
 /// Link cards (og:image) in the style of Apple's WWDC/Tech Talk title cards:
-/// the wordmark top-left, the title and a subtitle, and a byline (Tim's
+/// the wordmark top-left, an eyebrow (an Art item's section), the title
+/// and a subtitle, and a byline (Tim's
 /// name, plus the date on posts) bottom-left. The background is dark grey, or a dimmed, blurred copy of the
 /// page's lead image when it has one.
 ///
@@ -27,7 +28,7 @@ import SwiftSoup
 enum LinkCards {
 
     /// Bump to re-render every card after changing the design below.
-    static let version = 12
+    static let version = 15
 
     static let size = CGSize(width: 1200, height: 630)
 
@@ -54,6 +55,8 @@ enum LinkCards {
         let build: URL
         let cache: URL
         let logo: NSImage
+        /// Art section titles by slug ("singing" → "Singing"), for eyebrows.
+        let artSections: [String: String]
         var rendered = 0
         private let fm = FileManager.default
 
@@ -64,6 +67,13 @@ enum LinkCards {
             try fm.createDirectory(at: build.appending(path: "img/cards"), withIntermediateDirectories: true)
             try fm.createDirectory(at: cache, withIntermediateDirectories: true)
             logo = try wordmark(root: root)
+            var sections: [String: String] = [:]
+            let art = root.appending(path: "Content/art")
+            for folder in (try? fm.contentsOfDirectory(atPath: art.path)) ?? [] {
+                let meta = (try? frontMatter(art.appending(path: "\(folder)/_section.md"))) ?? [:]
+                if let title = meta["title"] { sections[meta["slug"] ?? folder] = title }
+            }
+            artSections = sections
         }
 
         /// One card per published post, from its front matter.
@@ -118,7 +128,12 @@ enum LinkCards {
                 src = src.replacingOccurrences(of: site, with: "")
                 let image = src.hasPrefix("/") ? build.appending(path: src.removingPercentEncoding ?? src) : nil
 
-                let card = try make(title: title, subtitle: subtitle, image: image, path: path)
+                // Eyebrow: an Art item's section ("Singing"), since Art mixes
+                // very different kinds of work. Other collections go without.
+                let parts = path.split(separator: "/").map(String.init)
+                let eyebrow = parts.count == 3 && parts[0] == "art" ? artSections[parts[1]] ?? "" : ""
+
+                let card = try make(eyebrow: eyebrow, title: title, subtitle: subtitle, image: image, path: path)
                 let tag = try NSRegularExpression(pattern: #"(<meta property="og:image" content=")[^"]*""#)
                 let range = NSRange(html.startIndex..., in: html)
                 html = tag.stringByReplacingMatches(in: html, range: range,
@@ -130,12 +145,12 @@ enum LinkCards {
         /// Copies the card for these inputs into Build/, rendering it first if
         /// the cache doesn't have it. Returns its site-relative URL.
         @discardableResult
-        mutating func make(date: String = "", title: String, subtitle: String, image: URL?,
-                           path: String) throws -> String {
+        mutating func make(date: String = "", eyebrow: String = "", title: String, subtitle: String,
+                           image: URL?, path: String) throws -> String {
             // Cache key: the design version plus every input. The image is
             // keyed by size and modification date rather than its bytes, so
             // checking the cache doesn't mean reading every photo.
-            var key = "\(version)|\(date)|\(title)|\(subtitle)"
+            var key = "\(version)|\(date)|\(eyebrow)|\(title)|\(subtitle)"
             if let image, let attrs = try? fm.attributesOfItem(atPath: image.path) {
                 key += "|\(image.path)|\(attrs[.size] ?? "")|\(attrs[.modificationDate] ?? "")"
             }
@@ -147,7 +162,8 @@ enum LinkCards {
                 if let image, background == nil {
                     print("Link card: couldn't read \(image.path) for \(path); using plain background")
                 }
-                try card(date: date, title: title, subtitle: subtitle, background: background, logo: logo)
+                try card(date: date, eyebrow: eyebrow, title: title, subtitle: subtitle, background: background,
+                         logo: logo)
                     .write(to: cached)
                 rendered += 1
             }
@@ -165,7 +181,7 @@ enum LinkCards {
     private static let margin: CGFloat = 72
 
     /// Draws one card and returns it as JPEG data (PNG photo cards ran ~230 KB).
-    static func card(date: String, title: String, subtitle: String, background: CGImage?,
+    static func card(date: String, eyebrow: String, title: String, subtitle: String, background: CGImage?,
                      logo: NSImage) throws -> Data {
         let width = Int(size.width), height = Int(size.height)
         guard let rep = NSBitmapImageRep(
@@ -230,12 +246,22 @@ enum LinkCards {
         sub.balance(minimumWidth: 460)
         sub.limit(lines: 3)
 
-        // Title and subtitle centred vertically as one block.
+        // Eyebrow: the item's collection, one line above the title.
+        let over = TextBlock(text(eyebrow, size: 32, weight: .semibold, alpha: 0.65), width: 960)
+        over.limit(lines: 1)
+
+        // Eyebrow, title and subtitle centred vertically as one block. The
+        // eyebrow's 24pt gap matches the title-to-tagline gap optically (its
+        // line box has less space below the baseline than the title's).
+        let overHeight = eyebrow.isEmpty ? 0 : over.height + 24
         let gap: CGFloat = subtitle.isEmpty ? 0 : 12
         let subHeight = subtitle.isEmpty ? 0 : sub.height
-        let top = ((size.height - heading.height - gap - subHeight) / 2).rounded()
-        heading.draw(at: CGPoint(x: margin, y: top))
-        sub.draw(at: CGPoint(x: margin, y: top + heading.height + gap))
+        let top = ((size.height - overHeight - heading.height - gap - subHeight) / 2).rounded()
+        let titleTop = top + overHeight
+        heading.draw(at: CGPoint(x: margin, y: titleTop))
+
+        if !eyebrow.isEmpty { over.draw(at: CGPoint(x: margin, y: top)) }
+        if !subtitle.isEmpty { sub.draw(at: CGPoint(x: margin, y: titleTop + heading.height + gap)) }
 
         guard let jpeg = rep.representation(using: .jpeg, properties: [.compressionFactor: 0.85]) else {
             throw CocoaError(.fileWriteUnknown)
