@@ -396,7 +396,7 @@ struct TimDevSite: Site {
     var author = "Tim Oliver"
 
     /// Used by the RSS channel header and (via the layout) meta descriptions.
-    var description: String? = "Writing, apps, open source, talks and art by Tim Oliver, an iOS engineer in Tokyo."
+    var description: String? = "The blog and portfolio of Tim Oliver, an iOS engineer in Tokyo."
 
     /// Ignite's prettifier (SwiftSoup) lowercases SVG attribute names like
     /// viewBox → viewbox, which breaks <use>-referenced sprites. Ship raw.
