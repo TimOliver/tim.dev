@@ -110,8 +110,12 @@ struct MainLayout: Layout {
     private var wantsLiteYouTube: Bool { hasArticleContent || section == "talks" || section == "art" }
 
     /// Pages whose images open in the full-screen viewer: posts and the home
-    /// feed (article images), plus About (the history photo carousel).
-    private var wantsLightbox: Bool { hasArticleContent || section == "about" }
+    /// feed (article images), About (the history photo carousel), and the
+    /// Code and Art detail images. Those two load it section-wide because
+    /// site.js swaps their pages in place without reloading <head>.
+    private var wantsLightbox: Bool {
+        hasArticleContent || ["about", "code", "art"].contains(section)
+    }
 
     /// The document Ignite renders for every page: a `<head>` of metadata and
     /// asset links followed by a `<body>` of header, page content, footer, and

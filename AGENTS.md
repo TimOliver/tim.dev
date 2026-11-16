@@ -143,6 +143,9 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
 - **Adding a collection section** touches: `CollectionRenderer.collectionPathPrefixes`, the
   stylesheet switch in `MainLayout`, `.gitignore` (`Includes/_<dir>/`), the swap-path regexes in
   `site.js` (art URLs are one level deeper), and the nav in `Includes/header.html`.
+- Code and Art detail images are lightbox3 triggers (`Media.zoomable`); MainLayout loads lightbox3
+  section-wide there, and site.js starts it after an in-section swap (it only self-starts on a
+  page that loads with a trigger). Apps should get the same wrapper when hero images land.
 - Collection pages are real static pages that work without JS. The in-section JS swap only updates
   `main .container` (`main.container` matches nothing), updates title/canonical/meta, and never
   re-runs init code — so collection JS must use document-level delegation and re-read the DOM.
@@ -174,9 +177,12 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   under `html.is-ipad`, because Safari's collapsed toolbar overlays the page. Don't "fix" this with
   header padding — the capsule is absolutely positioned below 720px.
 - The bespoke `lightbox3.umd.js` (154 KB) is intentional; don't propose minifying or replacing it.
-  It carries a local patch (marked `tim.dev`): `data-crop="x y w h"` on a trigger gives the region
+  It carries local patches (marked `tim.dev`): `data-crop="x y w h"` on a trigger gives the region
   of the full image its separately-cropped thumbnail shows (fractions), so the open/close morph
-  lands on it instead of assuming a centred crop. Re-apply it if the file is ever re-vendored.
+  lands on it instead of assuming a centred crop; and `handleResize`/`refitToViewport` re-fit the
+  open image on resize or rotation (upstream lays it out once, on open; iOS can report the old
+  size during a rotation, hence a second re-fit after 300ms). Re-apply them if the file is ever
+  re-vendored.
   Upstream is https://github.com/lokesh/lightbox3 (vendored 1.1.0); an upstream PR for this is
   planned (Tim files it himself).
   Any card whose thumbnail is a different crop from the lightbox file needs `data-crop`.

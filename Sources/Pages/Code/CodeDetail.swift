@@ -46,7 +46,10 @@ extension CodeRenderer {
         // .collection-detail-shot spans the full detail column: 1250px page
         // width minus 2x35px padding = 1180px - nowhere near the grid card's
         // width, so it needs its own sizes value.
-        header += shot(image: repo.image, name: repo.title, sizes: "(max-width: 720px) 100vw, 1180px")
+        // Tapping it opens the full screenshot in the lightbox.
+        header += Media.zoomable(
+            shot(image: repo.image, name: repo.title, sizes: "(max-width: 720px) 100vw, 1180px"),
+            path: repo.image, caption: repo.title)
         header += "</div>"
 
         // Sidebar: the details table, then the "Get it on GitHub" badge (when a

@@ -55,6 +55,14 @@
     document.addEventListener('collection:swapped', initialize);
 })();
 
+// lightbox3 starts itself only when the page it loads on already has a
+// [data-lightbox] trigger. Collection indexes have none, so a swap into a
+// Code/Art detail page starts it here instead (init() is a no-op once running).
+document.addEventListener('collection:swapped', function() {
+    var lightbox = globalThis.Lightbox3;
+    if (lightbox && document.querySelector('[data-lightbox]')) lightbox.Lightbox.init();
+});
+
 // Header popovers (theme picker, RSS feeds): a trigger toggles its panel;
 // clicking outside or pressing Escape closes it. Returns the open/close setter.
 function bindPopover(wrap, trigger, popover, onTriggerClick) {

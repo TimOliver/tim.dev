@@ -68,13 +68,16 @@ extension ArtRenderer {
         }
         // Same detail column as Code/Talks: 1250px page width minus 2x35px
         // padding = 1180px - nowhere near the grid card's width.
-        header += Media.box(
-            container: "art-shot",
-            path: item.image,
-            alt: item.title,
-            sizes: "(max-width: 720px) 100vw, 1180px",
-            eager: true
-        )
+        // Tapping it opens the original in the lightbox.
+        header += Media.zoomable(
+            Media.box(
+                container: "art-shot",
+                path: item.image,
+                alt: item.title,
+                sizes: "(max-width: 720px) 100vw, 1180px",
+                eager: true
+            ),
+            path: item.image, caption: item.title)
         header += "</div>"
 
         return detailShell(header: header, item: item)

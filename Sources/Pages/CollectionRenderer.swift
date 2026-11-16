@@ -372,6 +372,15 @@ enum Media {
         return s
     }
 
+    /// Wraps a detail page's media in a lightbox3 trigger so it opens
+    /// full-screen (and pinch-zooms) at the original's resolution. No image
+    /// means nothing to open, so `html` comes back unwrapped. lightbox3 binds
+    /// clicks on `document`, so the in-section page swap needs no re-init.
+    static func zoomable(_ html: String, path: String?, caption: String) -> String {
+        guard let path else { return html }
+        return #"<a class="collection-zoom" href="\#(escape(path))" data-lightbox data-caption="\#(escape(caption))">\#(html)</a>"#
+    }
+
     /// A media container that either holds the real image or, when the image
     /// hasn't landed yet, wears `.is-empty` and shows the flat neutral surface.
     /// `overlay` (a duration badge, say) is appended inside either state.

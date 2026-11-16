@@ -151,6 +151,9 @@
             this.pressRafId = null;
             // Spring-driven fit-rect transition (aspect ratio change on full-res swap)
             this.fitRafId = null;
+            // tim.dev: pending viewport re-fits (see handleResize)
+            this.resizeRafId = null;
+            this.resizeTimer = null;
             // Focus trap
             this.previouslyFocusedEl = null;
             // Scroll lock state
@@ -189,6 +192,7 @@
             this.handlePointerMove = this.handlePointerMove.bind(this);
             this.handlePointerUp = this.handlePointerUp.bind(this);
             this.handleWheel = this.handleWheel.bind(this);
+            this.handleResize = this.handleResize.bind(this); // tim.dev
             this.close = this.close.bind(this);
             this.attach();
         }
@@ -229,12 +233,61 @@
             document.addEventListener('click', this.handleClick);
             document.addEventListener('pointerenter', this.handlePointerEnter, true);
             document.addEventListener('pointerleave', this.handlePointerLeave, true);
+            window.addEventListener('resize', this.handleResize); // tim.dev
+            window.addEventListener('orientationchange', this.handleResize); // tim.dev
+        }
+        /**
+         * tim.dev: re-fit the open image when the viewport changes (rotating a
+         * phone, resizing a window). Upstream lays the image out once, on open,
+         * so it was left sized and placed for the old viewport. Any zoom is
+         * dropped, and the adjacent gallery slides (one viewport-width away)
+         * are rebuilt for the new width.
+         */
+        handleResize() {
+            // Re-fit on the next frame, then once more after the viewport has
+            // settled: during a rotation, iOS Safari can fire resize before
+            // innerWidth/innerHeight report the new size.
+            if (this.resizeRafId === null) {
+                this.resizeRafId = requestAnimationFrame(() => {
+                    this.resizeRafId = null;
+                    this.refitToViewport();
+                });
+            }
+            clearTimeout(this.resizeTimer);
+            this.resizeTimer = setTimeout(() => this.refitToViewport(), 300);
+        }
+        /** tim.dev: lay the current image (and its neighbours) out for the viewport. */
+        refitToViewport() {
+            if (!this.state.isOpen || this.state.isClosing || this.state.isAnimating || !this.imgEl)
+                return;
+            const { naturalWidth: w, naturalHeight: h } = this.zoom;
+            if (!w || !h)
+                return;
+            this.stopFitTransition();
+            this.stopSpring();
+            this.forceCompleteStripAnimation();
+            Object.assign(this.zoom, { zoomed: false, zoomingOut: false, scale: 1, panX: 0, panY: 0 });
+            this.applyPanTransform();
+            this.zoom.fitRect = this.isShowingFullRes()
+                ? this.computeTargetRect(w, h)
+                : this.computeTargetRectFromAspectRatio(w, h);
+            this.positionImage(this.zoom.fitRect);
+            this.prevSlideEl?.remove();
+            this.nextSlideEl?.remove();
+            this.prevSlideEl = this.prevSlideImg = this.nextSlideEl = this.nextSlideImg = null;
+            this.populateAdjacentSlides();
+            this.updateCursorState();
         }
         destroy() {
             this.stopDebugPanel();
             document.removeEventListener('click', this.handleClick);
             document.removeEventListener('pointerenter', this.handlePointerEnter, true);
             document.removeEventListener('pointerleave', this.handlePointerLeave, true);
+            window.removeEventListener('resize', this.handleResize); // tim.dev
+            window.removeEventListener('orientationchange', this.handleResize); // tim.dev
+            if (this.resizeRafId !== null)
+                cancelAnimationFrame(this.resizeRafId);
+            clearTimeout(this.resizeTimer);
             this.cancelPreload();
             this.stopSpring();
             this.stopStripSpring();

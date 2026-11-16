@@ -445,6 +445,14 @@ body:has(.collection-detail) {
     border-radius: 0;
 }
 
+/* Detail images are lightbox triggers (Media.zoomable): the anchor is just a
+   block wrapper, so the frame looks the same, with a zoom cursor. */
+.collection-zoom {
+    display: block;
+    color: inherit;
+    cursor: zoom-in;
+}
+
 /* Detail video (Talks and Art): the lite-youtube facade fills the bordered
    16:9 frame. lite-yt-embed.css caps the element at 720px, so lift that. */
 .collection-detail-shot lite-youtube {
