@@ -10,6 +10,7 @@ years: 2020–Present
 status: On TestFlight
 role: iOS engineer
 stack: .NET
+icon: /img/apps/osu/icon.png
 path: /apps/osu/
 ---
 
