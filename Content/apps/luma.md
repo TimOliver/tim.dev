@@ -10,6 +10,7 @@ company: Luma Labs, Inc.
 years: 2026–Present
 stack: SwiftUI
 status: Live
+icon: /img/apps/luma/icon.png
 path: /apps/luma/
 ---
 

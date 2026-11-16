@@ -11,6 +11,7 @@ company: Instagram
 years: 2025–2026
 status: Live
 stack: Objective-C, Swift
+icon: /img/apps/instagram-for-ipad/icon.png
 path: /apps/instagram-for-ipad/
 ---
 

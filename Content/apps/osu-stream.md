@@ -11,6 +11,7 @@ years: 2019–2020
 status: Live
 role: iOS Engineer
 stack: Xamarin
+icon: /img/apps/osu-stream/icon.png
 path: /apps/osu-stream/
 ---
 

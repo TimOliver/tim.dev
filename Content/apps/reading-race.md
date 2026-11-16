@@ -10,6 +10,7 @@ years: 2014
 role: Junior iOS Engineer
 stack: Objective-C
 status: Live
+icon: /img/apps/reading-race/icon.png
 path: /apps/reading-race/
 ---
 

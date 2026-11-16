@@ -10,6 +10,7 @@ company: Drivemode
 years: 2020–2022
 stack: SwiftUI
 status: Live
+icon: /img/apps/honda-roadsync/icon.png
 path: /apps/honda-roadsync/
 ---
 

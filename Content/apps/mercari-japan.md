@@ -10,6 +10,7 @@ company: Mercari
 status: Live
 years: 2018–2020
 stack: Objective-C, Swift
+icon: /img/apps/mercari-japan/icon.png
 path: /apps/mercari-japan/
 ---
 

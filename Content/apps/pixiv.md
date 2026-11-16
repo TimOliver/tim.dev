@@ -10,6 +10,7 @@ status: Live
 role: iOS Engineer
 stack: Objective-C
 years: 2013
+icon: /img/apps/pixiv/icon.png
 path: /apps/pixiv/
 ---
 

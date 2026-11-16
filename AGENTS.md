@@ -173,6 +173,10 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   mode, `#141414` in dark. Colours only via `var(--…)` tokens defined for both themes in `site.css`.
   Keep WCAG contrast (secondary text ≥ 4.5:1, tertiary ≈ 3:1) over strict iOS palette matching.
 - Every rounded element gets `corner-shape: squircle`; true circles need `corner-shape: round`.
+  Shapes that must match iOS (app icons) use two radii: `border-radius: 22%; corner-shape: round`
+  (tuned by eye in Safari; an exported mask measured 23.3% but read over-rounded) and, in `@supports (corner-shape:
+  squircle)`, `32%` squircle (iOS's continuous corner spans ~1.5x its nominal 22.4%). Safari picks up
+  the squircle automatically once it ships `corner-shape`.
 - Breakpoints: 720px (phone: hamburger, single column, 16px text), 720–1000px (tablet: 17px header
   but 18px content, 20px gutter), 1330px (gallery bleed/fades switch off). Mobile breakpoint is 720.
 - Reading measure 740px; heroes 840px; body 18px; `--post-gap` is the one vertical rhythm on the

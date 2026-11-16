@@ -11,6 +11,7 @@ company: Instagram
 years: 2023–2026
 status: Live
 stack: Swift
+icon: /img/apps/threads/icon.png
 path: /apps/threads/
 ---
 

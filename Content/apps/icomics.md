@@ -11,6 +11,7 @@ company: XD Digital
 stack: Objective-C, Swift
 status: Live
 years: 2012–Present
+icon: /img/apps/icomics/icon.png
 path: /apps/icomics/
 ---
 
