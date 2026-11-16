@@ -110,6 +110,7 @@ enum LinkCards {
 
                 var html = try String(contentsOf: file, encoding: .utf8)
                 let doc = try SwiftSoup.parse(html)
+                // og:title is "Title - [tim.dev]"; the card's wordmark covers the brand.
                 let ogTitle = try doc.select("meta[property=og:title]").attr("content")
                 let title = ogTitle.replacingOccurrences(of: " - [tim.dev]", with: "")
                 let subtitle = try ["main .page-subtitle", "main .collection-detail-tagline", "main .about-section-subtitle"]
@@ -391,7 +392,7 @@ enum LinkCards {
     }
 
     /// Front matter as plain strings, split on the first `:` like Ignite.
-    private static func frontMatter(_ url: URL) throws -> [String: String] {
+    static func frontMatter(_ url: URL) throws -> [String: String] {
         let text = try String(contentsOf: url, encoding: .utf8)
         let parts = text.components(separatedBy: "---")
         guard parts.count >= 3 else { return [:] }

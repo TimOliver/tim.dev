@@ -28,6 +28,7 @@ struct IgniteWebsite {
             try clearGeneratedIncludes()
             try await site.publish()
             try buildFeeds(siteURL: site.url)
+            try MetaDescriptions.rewrite(root: packageRoot, siteDescription: site.description ?? "")
             try LinkCards.render(root: packageRoot, siteURL: site.url)
             try stripIgniteCore()
             try stripUnusedLoaders()
@@ -395,7 +396,7 @@ struct TimDevSite: Site {
     var author = "Tim Oliver"
 
     /// Used by the RSS channel header and (via the layout) meta descriptions.
-    var description: String? = "The personal blog of Tim Oliver - a Western Australian in Tokyo making software for iPhone and Mac."
+    var description: String? = "Writing, apps, open source, talks and art by Tim Oliver, an iOS engineer in Tokyo."
 
     /// Ignite's prettifier (SwiftSoup) lowercases SVG attribute names like
     /// viewBox → viewbox, which breaks <use>-referenced sprites. Ship raw.

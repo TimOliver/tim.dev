@@ -19,14 +19,14 @@ struct MainLayout: Layout {
     /// the page-level values defer to (e.g. the default meta description).
     @Environment(\.site) var site
 
-    /// The text shown in the browser tab / toolbar. The landing page is just
-    /// the bare `[tim.dev]` wordmark; every other page prefixes its own title
-    /// so a tab reads e.g. "About - [tim.dev]".
+    /// The text shown in the browser tab, search results and link previews,
+    /// with the same " - " separator everywhere: the landing page is the
+    /// wordmark plus a byline ("[tim.dev] - By Tim Oliver"); every other page
+    /// is its own title then the wordmark ("About - [tim.dev]").
     var pageTitle: String {
 
-        // "Home" is the landing page's internal title - collapse it to the bare
-        // wordmark rather than rendering "Home - [tim.dev]".
-        if page.title == "Home" { return "[tim.dev]" }
+        // "Home" is the landing page's internal title.
+        if page.title == "Home" { return "[tim.dev] - By Tim Oliver" }
         return "\(page.title) - [tim.dev]"
     }
 

@@ -51,13 +51,14 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   `Include(...)` because Ignite's raw-HTML initialisers are internal. Two renderings of one item need
   two files (the feed writes `<key>.feed.html`).
 - **Post-publish passes in `Site.swift`**, in order: `buildFeeds` cuts `feed.xml` down to blog posts
-  (`/YYYY/…`) and derives the per-category feeds; `LinkCards.render` draws a WWDC-style og:image
-  title card (AppKit; blurred lead image or dark grey) for every post (title/date/`image:` from
-  front matter; date in the byline; the tagline is `subtitle:`, else what follows a spaced dash
-  in an older title) and every other page but home and the 404 (Art items get their section name
-  above the title; title, `.page-subtitle` /
-  `.collection-detail-tagline` /
-  first `.about-section-subtitle`, and an `img[data-link-card]`,
+  (`/YYYY/…`) and derives the per-category feeds; `MetaDescriptions.rewrite` sets each post's meta
+  and og description to its opening sentences (~155 chars; a `description:` front-matter key wins)
+  and gives other pages still on the site description their tagline; `LinkCards.render` draws a
+  WWDC-style og:image title card (AppKit; blurred lead image or dark grey) for every post
+  (title/date/`image:` from front matter; date in the byline; the tagline is `subtitle:`, else
+  what follows a spaced dash in an older title) and every other page but home and the 404 (Art
+  items get their section name above the title; title, `.page-subtitle` /
+  `.collection-detail-tagline` / first `.about-section-subtitle`, and an `img[data-link-card]`,
   else its og:image, else its first content image - read from the built HTML, whose og:image it
   then rewrites) into `Build/img/cards/`, cached in `.build/link-cards/` (bump
   `LinkCards.version` after a design change); home and the 404 use
