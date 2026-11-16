@@ -47,11 +47,12 @@ extension ArtRenderer {
 
         // Video pieces play in place: the same lite-youtube facade as Talks
         // (poster + play button; the real iframe loads only on click) in the
-        // standard 16:9 frame, always from the beginning. The "Watch on
-        // YouTube" badge stays in the sidebar.
+        // standard 16:9 frame, from the beginning unless the URL carries a
+        // `t=` start time. The "Watch on YouTube" badge stays in the sidebar.
         if let id = item.youtubeID {
+            let start = item.youtubeStart.map { #" params="start=\#($0)""# } ?? ""
             header += #"<div class="collection-detail-shot">"#
-            header += #"<lite-youtube videoid="\#(escape(id))" playlabel="Play: \#(escape(item.title))"></lite-youtube>"#
+            header += #"<lite-youtube videoid="\#(escape(id))"\#(start) playlabel="Play: \#(escape(item.title))"></lite-youtube>"#
             header += "</div>"
             return detailShell(header: header, item: item)
         }

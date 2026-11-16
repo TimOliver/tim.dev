@@ -125,8 +125,9 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
 - **Art**: the folder is the section; `_section.md` (`published: false`) holds title/columns/order/
   slug/blurb and is read off disk by `ArtRenderer`. Item `path:` must start `/art/<section-slug>/`;
   an item no section claims is a `fatalError`. Art `youtube:` is a full URL: a video URL embeds via
-  lite-youtube on the detail page (id parsed from `watch?v=`/`youtu.be`, always from the start) and
-  also drives the "Watch on YouTube" badge. Talks `youtube:` is a bare video ID — don't conflate them.
+  lite-youtube on the detail page (id parsed from `watch?v=`/`youtu.be`; a `t=` such as `4m5s`
+  sets the start time) and also drives the "Watch on YouTube" badge. Talks `youtube:` is a bare
+  video ID — don't conflate them.
 - **Code** is curated, not chronological: `order:` (1 = first) sets the grid order; entries without
   it follow newest-first by `date:` (the repo's creation date). Stats (`stars:`, `latest:`) are
   hand-copied from GitHub until the planned auto-fill lands, so refresh them before trusting them.

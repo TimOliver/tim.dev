@@ -76,6 +76,28 @@ struct ArtItem {
         return url.queryItems?.first { $0.name == "v" }?.value
     }
 
+    /// Where the inline player starts, in seconds: the URL's `t=` (`245`,
+    /// `245s` or `4m5s`), or nil to start from the beginning. Lets a piece
+    /// where Tim is one voice of many open on his part.
+    var youtubeStart: Int? {
+        guard let youtube, let value = URLComponents(string: youtube)?
+            .queryItems?.first(where: { $0.name == "t" })?.value else { return nil }
+        if let seconds = Int(value) { return seconds }
+        var total = 0, number = ""
+        for character in value {
+            if character.isNumber { number.append(character); continue }
+            guard let n = Int(number) else { return nil }
+            switch character {
+            case "h": total += n * 3600
+            case "m": total += n * 60
+            case "s": total += n
+            default: return nil
+            }
+            number = ""
+        }
+        return number.isEmpty && total > 0 ? total : nil
+    }
+
     /// "Like this shot on Dribbble" badge linking to the shot's page. Front-matter `dribbble:`,
     /// already `nonEmpty`-filtered; nil when absent.
     let dribbble: String?
