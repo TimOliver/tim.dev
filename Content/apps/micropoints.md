@@ -11,6 +11,7 @@ stack: Objective-C
 status: Discontinued
 years: 2010
 icon: /img/apps/micropoints/icon.png
+image: /img/apps/micropoints/hero.jpg
 path: /apps/micropoints/
 ---
 
