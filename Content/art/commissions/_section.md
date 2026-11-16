@@ -5,4 +5,4 @@ order: 2
 slug: commissions
 published: false
 ---
-Animations made for other folks - logo stings, intro sequences and brand loops. A few seconds long, sometimes weeks in the making.
+A variety of projects I've made professionally for some of the amazing creative organisations in Australia.

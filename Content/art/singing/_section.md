@@ -5,4 +5,4 @@ order: 1
 slug: singing
 published: false
 ---
-Professional sessions and the karaoke nights that got out of hand. Long-form covers on YouTube, mostly J-pop and a few stubborn 80s ballads.
+I'm a huge fan of singing (just ask my neighbours). Sometimes I even get to do it professionally!

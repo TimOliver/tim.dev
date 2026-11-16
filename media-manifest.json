@@ -251,28 +251,28 @@
     "srcset": "/img/art/singing/waves@400w.jpg 400w, /img/art/singing/waves@800w.jpg 800w, /img/art/singing/waves.jpg 1280w",
     "width": 1280
   },
-  "/img/art/stream-art/beeple-fluff.jpg": {
+  "/img/art/stream-cards/beeple-fluff.jpg": {
     "height": 720,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACJUlEQVR42gXBW08TQRQA4HPOzO52d7Zb2lIKpbQqKBiNMT5iNPHf+B999IHExMT4IgJtwVCorfTGbvcyO3P8PgxfNJEQAFyXXAJVhXpNtBrWLYQt0AobbnFC+m6GUYYPubydGjC2dK3dgGQGcsGR6BIERPUaHu3xbiSSKffqRSJ8lGYpxMumnS54MWAVUFkieFYXLEkgMUgCSeBXYXcbXu3LZsbPPnZO37f+Dc+GlypN5PmCZzUK67BZGa2ZhaDISmZGQMelSNl2LXz3ttdS1PemJx8+TyBK+687rU08Xy7norqxnjP6OhlqjWXM1kXht1UlwmgHlRTP94Ojw+5eLW12jxPntAJS1T651S7aazSkbYkWRjd3i0e2GohQVhQEIfR7ZUvJwMvNw2C7Hh12fRkqLzghKFbrC6lWJnB//Dr/9n3iaYpCXmtw20YSoYqsb2nX40aUV714WQY/R8lBfwirqRQx55c39zVygsfM+RuX84zTwhYS9RqlKfBxgUsHzmP0QvOmr3typjBZDwecmWqruL6jP+Pkaly5Gae5oUSXaQa6ZJOh1Npu1jDasCc5CpFngZnEO0/mEdNOx+gxfjmj34NKnK/nCRQlS585hSJnQJSlsWwFaHAYdUy3uU21VDE2HDzI7WKCkxhgy/CKBBrOOdNQGPYBHA+FiAJrgQhRQhIzh1xKsyhsp2MuBmJ4z42n6Xa/qLQ5NyZls3xgTiByyT+G//X8NA/a4wqZAAAAAElFTkSuQmCC",
-    "srcset": "/img/art/stream-art/beeple-fluff@400w.jpg 400w, /img/art/stream-art/beeple-fluff@800w.jpg 800w, /img/art/stream-art/beeple-fluff@1280w.jpg 1280w",
+    "srcset": "/img/art/stream-cards/beeple-fluff@400w.jpg 400w, /img/art/stream-cards/beeple-fluff@800w.jpg 800w, /img/art/stream-cards/beeple-fluff@1280w.jpg 1280w",
     "width": 1280
   },
-  "/img/art/stream-art/helldivers-2.jpg": {
+  "/img/art/stream-cards/helldivers-2.jpg": {
     "height": 720,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACPElEQVR42gXBS0tVURQA4LX2Xvucc73nPs/V6KH0QO0FEWJKkEGDoB9Qf6Jhf6NR80YRNMhJowZBkwZJUhChYEZlolfv1Xve771X34fZ+jNghigW85ex4ZiTCbYGfDREt8lRwoGPzRZPIrlyF60OaA3ArGu9u8VDX5i9Y2y6oCxzOOKs5CKHNIHOwAQJdPsMNhsBdlNv7XBVgrRBuWboo2zXYUOYccqAOH0ONHJhhNvnSSxBqfaAErbnFqlwpTsr0o7YmeCJ0X8zSLuqtRiVc6QGN0k389yX9RzWLnTaoGJ/O0NvWke5cRy0z2aBgIbTsh0rdafaPZhxyqrGB7doY5vzYfDwSe/9i9+rq557XVen4zeb0ajam7GKxGn7ZSH63bKsej2v1XQdYSlSSWXOXVug3Bt/+HF8+Hb24/6fqZFYwxjCLwJmv0Zq5aI95DqVlAR+r99jW010KXRtoa11mR7ty6Xlec+j5++2Q0TKzNr9K+SV6a/jzQNz74aqSx4FSWFMUeR5GtcsUEoWQlpWVVdyvz6zOzaRkCwxPIzuXOr2Hy0pP9jc8L8Fxb/TMkjrJMvLPK+qukjSNA6T0E/CSRz4lOVxkkYk2CD7NX9a/3z18fKF26uqePXzoAGyIpIojG1RladCCCKFQiplKUVUGiTWqAsNkAp8vTOUT1/SoPs9DrWVM4IRaBgzSbbTsIgMMCISkaVsPL+whGAka2QtgBUyFrUSQrYahWa0HEDSmpGURUpJUYIggQRaIv8HjsM/rv0g/J8AAAAASUVORK5CYII=",
-    "srcset": "/img/art/stream-art/helldivers-2@400w.jpg 400w, /img/art/stream-art/helldivers-2@800w.jpg 800w, /img/art/stream-art/helldivers-2.jpg 1280w",
+    "srcset": "/img/art/stream-cards/helldivers-2@400w.jpg 400w, /img/art/stream-cards/helldivers-2@800w.jpg 800w, /img/art/stream-cards/helldivers-2.jpg 1280w",
     "width": 1280
   },
-  "/img/art/stream-art/pokemon-lets-go.jpg": {
+  "/img/art/stream-cards/pokemon-lets-go.jpg": {
     "height": 720,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAACfUlEQVR42gXBvWsTUQAA8Hvv3iV3l0vSS5u0NTaa2tiqYCnioNK6WKlWHApC/QfEzaUqODm6SR0UHJxEUFx0VRC7KFrFgk1NS5KS78/7fvfu+/z9wPzEpDCWKbD8eUmbN93CzRsWA4c7u28L9BfYzDlURQEs4+sDJxLavO97tEewQ2QXay6K8+ylIFwu1mKWSwWeVvyXf7mZa7dH72yIZyPWamq6AqNjxHExy3CGbZkGMyjJhy0ZRAi4d/TEWkNCFAUAikIa+noiOTH56hn9t+S+eH74YZHKXSUDFIslHANIWpMG3Nbn199Lf9QOoO87TMLzAIB8CHmKzrBiBJv43RvY6ttDNx4GypUUVg0zKCVUOYOHXeWrlA3F2ISBVSRatk8BLgSIgqMo2odha/WyMDPNf9rKs9D+1k0GtjMSj4koP37c6HBHgrkUk+hxg2b9KYpSAUdH2ZDO0GxAhfVbK0ubT9hkXNrb/7myLuWmzrEsqQv9MqXRHSFstDitaMm4N2Q4ir7NpTUHWyEcIHiAqIXHD8W5QkiFfCbtC8Lp5cVkoedDL5U5FEZwejIbZc8EpE8Zmt0FaOfuutzueiZJp1JZhi3/+DW+dJEWYsbuXlYYM1GDQM3VLiB6wQ3d6pDoetXVPGMIh5KNyrsHDx5tRCDi/ECMCdXt35X3H0cLeZ74dtRjZ7oAg0i4TXTihSY2ia6RftPqlLHcwnSk3Rs0WsdmTyKGsYg1npsSkyNRHxBLMRLbfXfQalrYUGRFbzfNWtXYLynVg0GtInXqKlhIpX3XP5XPr12/NjM7y7McAE5bqTWMohexNAIY5No4UBUPD23JxJJtyF2iqoaukv/5KmW8Cu2VYQAAAABJRU5ErkJggg==",
-    "srcset": "/img/art/stream-art/pokemon-lets-go@400w.jpg 400w, /img/art/stream-art/pokemon-lets-go@800w.jpg 800w, /img/art/stream-art/pokemon-lets-go@1280w.jpg 1280w",
+    "srcset": "/img/art/stream-cards/pokemon-lets-go@400w.jpg 400w, /img/art/stream-cards/pokemon-lets-go@800w.jpg 800w, /img/art/stream-cards/pokemon-lets-go@1280w.jpg 1280w",
     "width": 1280
   },
-  "/img/art/stream-art/splatoon-2.jpg": {
+  "/img/art/stream-cards/splatoon-2.jpg": {
     "height": 720,
     "lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAChElEQVR42gXBSU8TUQAA4Ld12um+j7RSaFmqaaEsFqSJkCiJBxMSPXjUmyfjXxCv3r2KBy9GEhM8cDAheBCJEjGGpYRikZbSaelGp9PpLO/5ffC5sT10Zc28tSGC2AujBwjZVOmH3PYzNJAVyumj/PDWIniSAGNNIOuAfQGlc9p2As7MEJlEsUQPxhZJbUMzqVhtYffHws7TqGUCZ5WfPXFf0cXvvdV650KULwv5nGt2KjyWcjO2gAPkgRRgx6o2qLesbdL2X54UGg4NG+4QdZTOGg0ZeRzpPPer2/RKNgz6+wS3NwH9iCkQcIT2rlgYaUHaMNXFWgFdlDuKoxjOunR0I+oqu1QYMYb5h045USoWIERBs0M4PRsaiOlUg1K7qfxTO7JczIrbxobrkV347HdTjz6vrZ1+ym4dxK8lWcXOGDbrFPYMWe4ySl++WrZYeLKmvh90Ji5RXZwp8QVefYPRPCB99FDZL9H8jPVOBEXLrDg+nfL5/BxAfp9vb29fleSaWMUoInn99jDwtfTzNq2NS0mj0v17b2/ftZvxzt69OTc1GZ26lQoJ0WqlEAwI0cHU6GjcxAyj3CKcGXYrVxJopWMLR7U/6lyH1nW86s0Id6dBcv3ruglz3a6GrLzT5wkF4qxjyDtVYqAgi5DZpblGU04UrjtBON4kJ6UckawRIozsxIKB/hlEbBMOx4jTaud5ZiM9TjumqOGhGEEnJBeO02FyOwkn1iorTrM3vjJWfSxaeIwPeWXESC9mgAsAAIAN6DmmbsgAAdRngiGI/BC/XlrmsOkQ7HYk/Qf5jVsdQ9BM78z1zTI967nu+6hmaEVF+dbQD2r0vMXqMo4iMsRDg/0HO8s8OMY3F2YAAAAASUVORK5CYII=",
-    "srcset": "/img/art/stream-art/splatoon-2@400w.jpg 400w, /img/art/stream-art/splatoon-2@800w.jpg 800w, /img/art/stream-art/splatoon-2@1280w.jpg 1280w",
+    "srcset": "/img/art/stream-cards/splatoon-2@400w.jpg 400w, /img/art/stream-cards/splatoon-2@800w.jpg 800w, /img/art/stream-cards/splatoon-2@1280w.jpg 1280w",
     "width": 1280
   },
   "/img/code/beeline/screenshot.jpg": {
