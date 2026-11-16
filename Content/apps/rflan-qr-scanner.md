@@ -10,6 +10,7 @@ company: Redflag LANfest
 years: 2013
 stack: Objective-C
 status: Open Source
+icon: /img/apps/rflan-qr-scanner/icon.png
 path: /apps/rflan-qr-scanner/
 ---
 

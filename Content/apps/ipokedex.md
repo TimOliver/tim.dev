@@ -10,6 +10,7 @@ company: UberGames
 stack: Objective-C, SQLite
 status: Pulled
 years: 2011
+icon: /img/apps/ipokedex/icon.png
 path: /apps/ipokedex/
 ---
 
