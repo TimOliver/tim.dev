@@ -47,6 +47,10 @@ struct MainLayout: Layout {
     /// Absolute URL for the page's social image (post heroes are site-relative
     /// paths like /img/posts/…), falling back to the default link card.
     private var socialImageURL: String {
+        // Posts get their own title card (see LinkCards).
+        if isPost {
+            return site.url.appending(path: LinkCards.url(forPostPath: page.url.path)).absoluteString
+        }
         // No hero image on this page - use the site-wide link card.
         guard let image = page.image else {
             return site.url.appending(path: Self.defaultSocialImage).absoluteString

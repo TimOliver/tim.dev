@@ -28,6 +28,7 @@ struct IgniteWebsite {
             try clearGeneratedIncludes()
             try await site.publish()
             try buildFeeds(siteURL: site.url)
+            try LinkCards.render(root: packageRoot, siteURL: site.url)
             try stripIgniteCore()
             try stripUnusedLoaders()
             try pruneUnusedVariants()

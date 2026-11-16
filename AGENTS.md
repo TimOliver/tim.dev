@@ -51,7 +51,14 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   `Include(...)` because Ignite's raw-HTML initialisers are internal. Two renderings of one item need
   two files (the feed writes `<key>.feed.html`).
 - **Post-publish passes in `Site.swift`**, in order: `buildFeeds` cuts `feed.xml` down to blog posts
-  (`/YYYY/…`) and derives the per-category feeds; `stripIgniteCore` deletes the unused `ignite-core`
+  (`/YYYY/…`) and derives the per-category feeds; `LinkCards.render` draws a WWDC-style og:image
+  title card (AppKit; blurred lead image or dark grey) for every post (title/date/`image:` from
+  front matter) and every other page but home and the 404 (title, `.page-subtitle` /
+  `.collection-detail-tagline` / first `.about-section-subtitle`, and an `img[data-link-card]`,
+  else its og:image, else its first content image - read from the built HTML, whose og:image it
+  then rewrites) into `Build/img/cards/`, cached in `.build/link-cards/` (bump
+  `LinkCards.version` after a design change); home and the 404 use
+  `Assets/img/site/link-card.png`; `stripIgniteCore` deletes the unused `ignite-core`
   bundle and its script tag; `stripUnusedLoaders` drops lightbox/lite-youtube/social-embeds tags from
   home/post pages that don't use them (MainLayout can't see post bodies); `pruneUnusedVariants`
   deletes image variants no page references; `normalizeSitemap` gives every `<loc>` the canonical
