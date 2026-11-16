@@ -12,7 +12,8 @@ import SwiftSoup
 /// page's lead image when it has one.
 ///
 /// - Posts: the date joins the byline ("Tim Oliver · 21 June 2015"); the
-///   part of the title after a spaced dash, if any, becomes the subtitle.
+///   subtitle is the post's `subtitle:`, or for older posts the part of the
+///   title after a spaced dash.
 ///   The image is the post's `image:`.
 ///   MainLayout points og:image at the card (see `url(forPostPath:)`).
 /// - Every other page except home and the 404: the subtitle is the page's
@@ -26,7 +27,7 @@ import SwiftSoup
 enum LinkCards {
 
     /// Bump to re-render every card after changing the design below.
-    static let version = 11
+    static let version = 12
 
     static let size = CGSize(width: 1200, height: 630)
 
@@ -72,11 +73,12 @@ enum LinkCards {
                 let meta = try frontMatter(folder.appending(path: name))
                 guard meta["published"] != "false",
                       let title = meta["title"], let path = meta["path"], let date = meta["date"] else { continue }
-                // A spaced dash splits a title into title and tagline
-                // ("TOCropViewController – An open source image cropper for
-                // iOS").
-                var heading = title, subtitle = ""
-                if let dash = title.range(of: #" [–—] "#, options: .regularExpression) {
+                // The tagline is the post's `subtitle:` (shown under the title
+                // on the page too). Older posts carry theirs after a spaced
+                // dash instead ("TOCropViewController – An open source image
+                // cropper for iOS"), so split on that when there's no subtitle.
+                var heading = title, subtitle = meta["subtitle"] ?? ""
+                if subtitle.isEmpty, let dash = title.range(of: #" [–—] "#, options: .regularExpression) {
                     heading = String(title[..<dash.lowerBound])
                     subtitle = String(title[dash.upperBound...])
                 }
@@ -221,11 +223,11 @@ enum LinkCards {
         heading.limit(lines: 3)
 
         // Subtitle: a tagline of up to three lines. Its
-        // measure follows the title's width (within 600-760) so a short title
+        // measure follows the title's width (within 680-860) so a short title
         // doesn't sit over a long, thin line, and its lines are balanced too.
-        let measure = min(max(heading.width, 600), 760)
-        let sub = TextBlock(text(subtitle, size: 30, weight: .medium, alpha: 0.65, leading: 1.3), width: measure)
-        sub.balance(minimumWidth: 400)
+        let measure = min(max(heading.width, 680), 860)
+        let sub = TextBlock(text(subtitle, size: 38, weight: .medium, alpha: 0.65, leading: 1.25), width: measure)
+        sub.balance(minimumWidth: 460)
         sub.limit(lines: 3)
 
         // Title and subtitle centred vertically as one block.

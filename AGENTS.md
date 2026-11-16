@@ -53,8 +53,9 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
 - **Post-publish passes in `Site.swift`**, in order: `buildFeeds` cuts `feed.xml` down to blog posts
   (`/YYYY/…`) and derives the per-category feeds; `LinkCards.render` draws a WWDC-style og:image
   title card (AppKit; blurred lead image or dark grey) for every post (title/date/`image:` from
-  front matter; date in the byline; a spaced dash in the title splits off a tagline) and every
-  other page but home and the 404 (title, `.page-subtitle` / `.collection-detail-tagline` /
+  front matter; date in the byline; the tagline is `subtitle:`, else what follows a spaced dash
+  in an older title) and every other page but home and the 404 (title, `.page-subtitle` /
+  `.collection-detail-tagline` /
   first `.about-section-subtitle`, and an `img[data-link-card]`,
   else its og:image, else its first content image - read from the built HTML, whose og:image it
   then rewrites) into `Build/img/cards/`, cached in `.build/link-cards/` (bump
@@ -87,6 +88,8 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   renderer wraps them in lightbox anchors and emits `srcset`; variants come from `build-media.py`.
 - **Strip EXIF before committing any photo** (`python3 Scripts/strip-exif.py <files>`; the pre-commit
   hook does staged files). GPS leaks otherwise.
+- A post's tagline goes in `subtitle:` (shown under the title on the page and feed, and on its
+  link card). Don't tack it onto the title after a dash; that's only how older posts did it.
 - Posts shown on the home feed are complete, not excerpts; post pages exist mainly to host comments.
   Exception, opt-in: a `<!--more-->` line in a long post cuts its feed copy there; the cut fades
   out (`.post-excerpt` mask) and ends with a full-width "Continue reading →" block
