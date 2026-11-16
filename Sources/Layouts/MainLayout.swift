@@ -238,9 +238,14 @@ struct MainLayout: Layout {
             // include so the site ID stays out of Swift; an empty file means no
             // analytics. See Includes/analytics.html.
             Include("analytics.html")
-            if hasArticleContent {
-                // Comentario (self-hosted comments). Powers <comentario-comments>
-                // on post pages and <comentario-count> in the home feed.
+            if isHome {
+                // The feed only shows comment counts: one batched request to
+                // Comentario's counts API instead of the ~28 KB widget, which
+                // would ask once per badge (see the file).
+                Script(file: "/js/comment-counts.js")
+            } else if isPost {
+                // Comentario (self-hosted comments): <comentario-comments> and
+                // the post's <comentario-count>s.
                 // comentario-cookie.js must come first: it stops the widget
                 // storing its blank "anonymous" session cookie for readers who
                 // aren't signed in (see the file).

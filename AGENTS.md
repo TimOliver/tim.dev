@@ -233,7 +233,10 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   fixes here (e.g. the Safari OAuth popup pre-open shim).
 - CSS gotchas: Comentario's defaults are `.comentario-card`-scoped (specificity 0,3,0), so plain
   `.comentario-root .X` overrides lose; `--accent` is not global, use `--link`.
-- `Assets/js/comentario-cookie.js` (loaded just BEFORE comentario.js on article pages) turns the
+- The home feed doesn't load the widget: `Assets/js/comment-counts.js` fills its `<comentario-count>`
+  badges from ONE batched call to `/api/embed/comments/counts` (the widget made one per badge). Post
+  pages load comentario.js + tweaks as before.
+- `Assets/js/comentario-cookie.js` (loaded just BEFORE comentario.js on post pages) turns the
   widget's write of its all-"A" anonymous session placeholder into a delete, so readers who aren't
   signed in get no cookie (the Privacy Policy says so). Re-check it after a Comentario upgrade.
 - Selectors depend on Comentario's runtime DOM: button `title`s ("Sticky", "Edit", "Delete",

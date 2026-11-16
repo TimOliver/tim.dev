@@ -2,8 +2,8 @@
  *
  * ALL client-side behaviour for the embedded Comentario widget lives here. (All
  * visual styling lives in Assets/css/comentario.css; this file is only for things
- * CSS can't do.) Loaded only on pages with Comentario elements: post pages
- * (<comentario-comments>) and the home feed (<comentario-count> badges).
+ * CSS can't do.) Loaded only on post pages, alongside the widget. (The home
+ * feed's count badges don't load the widget at all - see comment-counts.js.)
  *
  * 1. Comment-count badges: toggle .has-count so the count (and its spacing) only
  *    shows once a number is actually present.
