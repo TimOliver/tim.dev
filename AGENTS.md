@@ -146,9 +146,16 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
 - **Adding a collection section** touches: `CollectionRenderer.collectionPathPrefixes`, the
   stylesheet switch in `MainLayout`, `.gitignore` (`Includes/_<dir>/`), the swap-path regexes in
   `site.js` (art URLs are one level deeper), and the nav in `Includes/header.html`.
-- Code and Art detail images are lightbox3 triggers (`Media.zoomable`); MainLayout loads lightbox3
-  section-wide there, and site.js starts it after an in-section swap (it only self-starts on a
-  page that loads with a trigger). Apps should get the same wrapper when hero images land.
+- Code, Art and Apps detail images are lightbox3 triggers (`Media.zoomable`); MainLayout loads
+  lightbox3 section-wide there, and site.js starts it after an in-section swap (it only self-starts
+  on a page that loads with a trigger).
+- App heroes: an app's `image:` (`Assets/img/apps/<slug>/hero.jpg`) replaces the empty stage. The
+  grid card shows it cropped to 16:10 (`.app-hero`, rounded - heroes are full-bleed pictures, not
+  bare device shots); the detail page frames it at its natural ratio like Art. It's also the
+  page's og:image, so the app's link card blurs the hero rather than the icon. App icons come from
+  the App Store's square artwork where listed (iTunes lookup `artworkUrl512`, swapped to
+  `1024x1024bb.png`), stored at 512px; layered iOS 26 icons in an `Assets.car` can be rendered
+  with CoreUI's `iconImageWithName:…desiredSize:`.
 - Collection pages are real static pages that work without JS. The in-section JS swap only updates
   `main .container` (`main.container` matches nothing), updates title/canonical/meta, and never
   re-runs init code — so collection JS must use document-level delegation and re-read the DOM.

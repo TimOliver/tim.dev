@@ -10,6 +10,7 @@ company: UberGames
 stack: Objective-C
 status: Discontinued
 years: 2010
+icon: /img/apps/micropoints/icon.png
 path: /apps/micropoints/
 ---
 

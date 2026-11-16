@@ -426,6 +426,7 @@ body:has(.collection-detail) {
 /* The image fills its container; the container's aspect ratio decides the
    crop. Shared by every clipped media surface, including the app icon tile. */
 .app-icon img,
+.app-hero img,
 .code-shot img,
 .talks-thumb img,
 .art-shot img {
@@ -469,6 +470,7 @@ body:has(.collection-detail) {
     width: min(100%, max(480px, calc(var(--detail-media-max-h) * var(--ar))));
     margin-inline: auto;
 }
-.collection-detail-shot--natural .art-shot {
+.collection-detail-shot--natural .art-shot,
+.collection-detail-shot--natural .app-hero {
     aspect-ratio: var(--ar);
 }

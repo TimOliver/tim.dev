@@ -11,6 +11,7 @@ years: 2020–2022
 stack: SwiftUI
 status: Live
 icon: /img/apps/honda-roadsync/icon.png
+image: /img/apps/honda-roadsync/hero.jpg
 path: /apps/honda-roadsync/
 ---
 

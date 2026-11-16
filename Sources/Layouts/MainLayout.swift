@@ -116,7 +116,7 @@ struct MainLayout: Layout {
     /// Code and Art detail images. Those two load it section-wide because
     /// site.js swaps their pages in place without reloading <head>.
     private var wantsLightbox: Bool {
-        hasArticleContent || ["about", "code", "art"].contains(section)
+        hasArticleContent || ["about", "code", "art", "apps"].contains(section)
     }
 
     /// The document Ignite renders for every page: a `<head>` of metadata and

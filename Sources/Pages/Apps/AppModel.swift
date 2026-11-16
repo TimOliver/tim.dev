@@ -30,6 +30,11 @@ struct AppInfo {
     /// image path.
     let icon: String?
 
+    /// The app's single hero image (`image:`), shown in place of the
+    /// screenshot stage on the grid card and the detail page; nil until one
+    /// lands. Also the page's og:image, so its link card uses it.
+    let image: String?
+
     /// Screenshot image paths from the comma-separated `shots:` key. The device
     /// chrome is baked into each PNG by hand, so the site renders them bare.
     let shots: [String]
@@ -82,6 +87,7 @@ struct AppInfo {
         // `nonEmpty` collapses a present-but-blank `icon:` down to nil, so the
         // renderer shows the flat empty tile rather than a broken image path.
         icon = CollectionRenderer.nonEmpty(a.metadata["icon"] as? String)
+        image = CollectionRenderer.nonEmpty(a.metadata["image"] as? String)
 
         // `shots:` is a single comma-separated string in the markdown. Split it
         // into individual paths, trim the whitespace around each, and drop any

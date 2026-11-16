@@ -102,6 +102,22 @@
     padding: 24px;
 }
 
+/* An app's hero image (`image:`): a full-bleed picture in the card's 16:10
+   media slot, cropped to fill. On the detail page it sits in the shared
+   natural-ratio frame instead (collection.css). Unlike the bare device
+   shots above, heroes are rectangular pictures, so they're rounded. */
+.app-hero {
+    aspect-ratio: 16 / 10;
+    border-radius: 18px;
+    corner-shape: squircle;
+    overflow: hidden;
+    background: var(--bg-secondary);
+}
+
+.collection-detail-shot .app-hero {
+    border-radius: 0;
+}
+
 /* No shots yet - hold the space with the flat surface. */
 .app-stage.is-empty,
 .app-detail-stage.is-empty {

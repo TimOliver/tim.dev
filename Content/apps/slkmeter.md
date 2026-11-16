@@ -10,6 +10,7 @@ company: Lateral
 stack: Xamarin
 status: Delisted
 years: 2014
+icon: /img/apps/slkmeter/icon.png
 path: /apps/slkmeter/
 ---
 

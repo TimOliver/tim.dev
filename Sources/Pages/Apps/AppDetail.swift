@@ -56,12 +56,23 @@ extension AppRenderer {
         // Screenshot stage. The shots render bare (their device chrome is baked
         // into each PNG). On a phone this becomes a full-bleed scroll-snap
         // pager (apps.css) - one shot per view.
-        header += stage(
-            app.shots,
-            className: "app-detail-stage",
-            sizes: "(max-width: 720px) 74vw, 320px",
-            appName: app.title
-        )
+        // A hero image replaces the stage: the same framed, natural-ratio
+        // slot as Art, and a lightbox trigger like Code and Art.
+        if let image = app.image, let entry = Media.manifest[image] {
+            header += #"<div class="collection-detail-shot collection-detail-shot--natural" style="--ar: \#(entry.width) / \#(entry.height)">"#
+            header += Media.zoomable(
+                Media.box(container: "app-hero", path: image, alt: "\(app.title) screenshot",
+                          sizes: "(max-width: 720px) 100vw, 1180px", eager: true),
+                path: image, caption: app.title)
+            header += "</div>"
+        } else {
+            header += stage(
+                app.shots,
+                className: "app-detail-stage",
+                sizes: "(max-width: 720px) 74vw, 320px",
+                appName: app.title
+            )
+        }
 
         // Sidebar starts with the shared details table (empty string when the
         // app has no `details:` rows).
