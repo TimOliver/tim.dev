@@ -7,11 +7,13 @@ import Foundation
 import SwiftSoup
 
 /// Link cards (og:image) in the style of Apple's WWDC/Tech Talk title cards:
-/// the wordmark top-left, then the title, a subtitle and Tim's name
-/// bottom-left. The background is dark grey, or a dimmed, blurred copy of the
+/// the wordmark top-left, the title and a subtitle, and a byline (Tim's
+/// name, plus the date on posts) bottom-left. The background is dark grey, or a dimmed, blurred copy of the
 /// page's lead image when it has one.
 ///
-/// - Posts: the subtitle is the date; the image is the post's `image:`.
+/// - Posts: the date joins the byline ("Tim Oliver · 21 June 2015"); the
+///   part of the title after a spaced dash, if any, becomes the subtitle.
+///   The image is the post's `image:`.
 ///   MainLayout points og:image at the card (see `url(forPostPath:)`).
 /// - Every other page except home and the 404: the subtitle is the page's
 ///   tagline and the image the one marked `data-link-card`, else its existing
@@ -24,7 +26,7 @@ import SwiftSoup
 enum LinkCards {
 
     /// Bump to re-render every card after changing the design below.
-    static let version = 6
+    static let version = 11
 
     static let size = CGSize(width: 1200, height: 630)
 
@@ -70,7 +72,15 @@ enum LinkCards {
                 let meta = try frontMatter(folder.appending(path: name))
                 guard meta["published"] != "false",
                       let title = meta["title"], let path = meta["path"], let date = meta["date"] else { continue }
-                try make(title: title, subtitle: formattedDate(date),
+                // A spaced dash splits a title into title and tagline
+                // ("TOCropViewController – An open source image cropper for
+                // iOS").
+                var heading = title, subtitle = ""
+                if let dash = title.range(of: #" [–—] "#, options: .regularExpression) {
+                    heading = String(title[..<dash.lowerBound])
+                    subtitle = String(title[dash.upperBound...])
+                }
+                try make(date: formattedDate(date), title: heading, subtitle: subtitle,
                          image: meta["image"].map { root.appending(path: "Assets" + $0) },
                          path: path)
             }
@@ -118,11 +128,12 @@ enum LinkCards {
         /// Copies the card for these inputs into Build/, rendering it first if
         /// the cache doesn't have it. Returns its site-relative URL.
         @discardableResult
-        mutating func make(title: String, subtitle: String, image: URL?, path: String) throws -> String {
+        mutating func make(date: String = "", title: String, subtitle: String, image: URL?,
+                           path: String) throws -> String {
             // Cache key: the design version plus every input. The image is
             // keyed by size and modification date rather than its bytes, so
             // checking the cache doesn't mean reading every photo.
-            var key = "\(version)|\(title)|\(subtitle)"
+            var key = "\(version)|\(date)|\(title)|\(subtitle)"
             if let image, let attrs = try? fm.attributesOfItem(atPath: image.path) {
                 key += "|\(image.path)|\(attrs[.size] ?? "")|\(attrs[.modificationDate] ?? "")"
             }
@@ -134,7 +145,8 @@ enum LinkCards {
                 if let image, background == nil {
                     print("Link card: couldn't read \(image.path) for \(path); using plain background")
                 }
-                try card(title: title, subtitle: subtitle, background: background, logo: logo).write(to: cached)
+                try card(date: date, title: title, subtitle: subtitle, background: background, logo: logo)
+                    .write(to: cached)
                 rendered += 1
             }
 
@@ -151,7 +163,8 @@ enum LinkCards {
     private static let margin: CGFloat = 72
 
     /// Draws one card and returns it as JPEG data (PNG photo cards ran ~230 KB).
-    static func card(title: String, subtitle: String, background: CGImage?, logo: NSImage) throws -> Data {
+    static func card(date: String, title: String, subtitle: String, background: CGImage?,
+                     logo: NSImage) throws -> Data {
         let width = Int(size.width), height = Int(size.height)
         guard let rep = NSBitmapImageRep(
             bitmapDataPlanes: nil, pixelsWide: width, pixelsHigh: height,
@@ -189,18 +202,14 @@ enum LinkCards {
         logo.draw(in: CGRect(x: margin, y: 64, width: logoWidth, height: logoHeight),
                   from: .zero, operation: .sourceOver, fraction: 1, respectFlipped: true, hints: nil)
 
-        // Name at the bottom; the date and title stack upwards from above it.
-        let textWidth = size.width - margin * 2
-        let name = text("Tim Oliver", size: 28, weight: .semibold, alpha: 0.9)
+        // Byline at the bottom: who, and on posts when.
+        let name = NSMutableAttributedString(attributedString: text("Tim Oliver", size: 28, weight: .semibold, alpha: 0.9))
+        if !date.isEmpty {
+            name.append(text("  ·  \(date)", size: 28, weight: .medium, alpha: 0.65))
+        }
         let nameHeight = name.size().height
-        let nameTop = size.height - 64 - nameHeight
-        name.draw(in: CGRect(x: margin, y: nameTop, width: textWidth, height: nameHeight))
-
-        // Subtitle: the post date, or a page tagline of up to two lines.
-        let sub = TextBlock(text(subtitle, size: 30, weight: .medium, alpha: 0.65, leading: 1.3), width: 900)
-        sub.limit(lines: 2)
-        let dateTop = nameTop - 56 - (subtitle.isEmpty ? 0 : sub.height)
-        sub.draw(at: CGPoint(x: margin, y: dateTop))
+        name.draw(in: CGRect(x: margin, y: size.height - 64 - nameHeight,
+                             width: size.width - margin * 2, height: nameHeight))
 
         // Title: the biggest size that wraps to three lines or fewer (the
         // smallest truncates). TextKit measures and draws the same layout.
@@ -210,7 +219,21 @@ enum LinkCards {
         }
         heading.balance(minimumWidth: 480)
         heading.limit(lines: 3)
-        heading.draw(at: CGPoint(x: margin, y: dateTop - 10 - heading.height))
+
+        // Subtitle: a tagline of up to three lines. Its
+        // measure follows the title's width (within 600-760) so a short title
+        // doesn't sit over a long, thin line, and its lines are balanced too.
+        let measure = min(max(heading.width, 600), 760)
+        let sub = TextBlock(text(subtitle, size: 30, weight: .medium, alpha: 0.65, leading: 1.3), width: measure)
+        sub.balance(minimumWidth: 400)
+        sub.limit(lines: 3)
+
+        // Title and subtitle centred vertically as one block.
+        let gap: CGFloat = subtitle.isEmpty ? 0 : 12
+        let subHeight = subtitle.isEmpty ? 0 : sub.height
+        let top = ((size.height - heading.height - gap - subHeight) / 2).rounded()
+        heading.draw(at: CGPoint(x: margin, y: top))
+        sub.draw(at: CGPoint(x: margin, y: top + heading.height + gap))
 
         guard let jpeg = rep.representation(using: .jpeg, properties: [.compressionFactor: 0.85]) else {
             throw CocoaError(.fileWriteUnknown)
@@ -236,6 +259,11 @@ enum LinkCards {
             var count = 0
             layout.enumerateLineFragments(forGlyphRange: layout.glyphRange(for: container)) { _, _, _, _, _ in count += 1 }
             return count
+        }
+
+        var width: CGFloat {
+            layout.ensureLayout(for: container)
+            return layout.usedRect(for: container).width.rounded(.up)
         }
 
         var height: CGFloat {

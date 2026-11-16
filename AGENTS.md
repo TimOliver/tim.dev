@@ -53,8 +53,9 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
 - **Post-publish passes in `Site.swift`**, in order: `buildFeeds` cuts `feed.xml` down to blog posts
   (`/YYYY/…`) and derives the per-category feeds; `LinkCards.render` draws a WWDC-style og:image
   title card (AppKit; blurred lead image or dark grey) for every post (title/date/`image:` from
-  front matter) and every other page but home and the 404 (title, `.page-subtitle` /
-  `.collection-detail-tagline` / first `.about-section-subtitle`, and an `img[data-link-card]`,
+  front matter; date in the byline; a spaced dash in the title splits off a tagline) and every
+  other page but home and the 404 (title, `.page-subtitle` / `.collection-detail-tagline` /
+  first `.about-section-subtitle`, and an `img[data-link-card]`,
   else its og:image, else its first content image - read from the built HTML, whose og:image it
   then rewrites) into `Build/img/cards/`, cached in `.build/link-cards/` (bump
   `LinkCards.version` after a design change); home and the 404 use
