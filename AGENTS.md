@@ -62,7 +62,9 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   else its og:image, else its first content image - read from the built HTML, whose og:image it
   then rewrites) into `Build/img/cards/`, cached in `.build/link-cards/` (bump
   `LinkCards.version` after a design change); home and the 404 use
-  `Assets/img/site/link-card.png`; `stripIgniteCore` deletes the unused `ignite-core`
+  `Assets/img/site/link-card.png`; `StructuredData.inject` adds JSON-LD
+  (`BlogPosting` per post plus `article:published_time`; `WebSite` + `Person` with `sameAs` on
+  home); `stripIgniteCore` deletes the unused `ignite-core`
   bundle and its script tag; `stripUnusedLoaders` drops lightbox/lite-youtube/social-embeds tags from
   home/post pages that don't use them (MainLayout can't see post bodies); `pruneUnusedVariants`
   deletes image variants no page references; `normalizeSitemap` gives every `<loc>` the canonical
@@ -153,6 +155,11 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
 - Leak check after adding a collection: `Build/index.html` and `Build/archive/index.html` must contain
   no `/apps/<slug>/`-style links (`CollectionRenderer.isBlogPost` is the single filter).
 - Contact: the raw address never appears in HTML; it's split across `data-user`/`data-domain`.
+- Head metadata (MainLayout): `og:image:width/height/alt` (every og:image is a 1200x630 card),
+  `fediverse:creator` and `<link rel="me">` for Mastodon (the footer and Contact links carry `rel="me"`
+  too, for profile verification), and `theme-color`, which theme.js keeps on the page background for
+  the resolved scheme. site.css sets `color-scheme` from `data-color-scheme` so native controls and
+  scrollbars follow the theme toggle.
 - Acknowledgements, Privacy and Terms (/acknowledgements/, /privacy/, /terms/) are hand-written
   includes styled by `info.css`. Acknowledgements is open-source notices grouped by licence (name,
   copyright line, then the licence text once): shipped JS, icons, Comentario and the Swift build

@@ -30,6 +30,7 @@ struct IgniteWebsite {
             try buildFeeds(siteURL: site.url)
             try MetaDescriptions.rewrite(root: packageRoot, siteDescription: site.description ?? "")
             try LinkCards.render(root: packageRoot, siteURL: site.url)
+            try StructuredData.inject(root: packageRoot, siteURL: site.url)
             try stripIgniteCore()
             try stripUnusedLoaders()
             try pruneUnusedVariants()

@@ -45,7 +45,14 @@
    overpowering; lifting off black settles it. Surfaces step up #141414 →
    #1E1E20 so cards/popovers still separate without reading too bright against
    the page. Secondary/tertiary text stay alpha-based and both meet 4.5:1. */
+/* Built-in controls and scrollbars follow the resolved scheme (the theme
+   toggle included, which a <meta name="color-scheme"> couldn't). */
+:root {
+    color-scheme: light;
+}
+
 [data-color-scheme="dark"] {
+    color-scheme: dark;
     --bg: #141414;
     --bg-secondary: #1F1F1F;
     --bg-tertiary: rgba(120, 120, 120, 0.24);

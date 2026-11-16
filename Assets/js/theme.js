@@ -34,11 +34,16 @@
         }
     }
 
+    // The browser-UI tint follows the resolved scheme: the page background
+    // (--bg) in each, #fff light and #141414 dark.
+    var themeColor = document.querySelector('meta[name="theme-color"]');
+
     function syncScheme() {
         var t = root.getAttribute('data-theme') || 'auto';
         if (!allowedThemes.test(t)) t = 'auto';
         var effective = t === 'auto' ? (darkQuery.matches ? 'dark' : 'light') : t;
         root.setAttribute('data-color-scheme', effective);
+        if (themeColor) themeColor.setAttribute('content', effective === 'dark' ? '#141414' : '#ffffff');
     }
 
     root.setAttribute('data-theme', storedTheme());

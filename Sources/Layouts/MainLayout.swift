@@ -144,7 +144,16 @@ struct MainLayout: Layout {
             MetaTag(property: "og:title", content: pageTitle)
             MetaTag(property: "og:description", content: metaDescription)
             MetaTag(property: "og:image", content: socialImageURL)
+            // Every og:image is a 1200x630 link card (LinkCards, or the
+            // default card), so the size and alt text are known up front.
+            MetaTag(property: "og:image:width", content: "1200")
+            MetaTag(property: "og:image:height", content: "630")
+            MetaTag(property: "og:image:alt", content: pageTitle)
             MetaTag(name: "twitter:card", content: "summary_large_image")
+            // Mastodon: credits shared links to Tim ("By @timoliver@...") and,
+            // with rel="me", verifies tim.dev on his profile.
+            MetaTag(name: "fediverse:creator", content: "@timoliver@mastodon.social")
+            MetaLink(href: "https://mastodon.social/@timoliver", rel: "me")
             // SVG favicon (theme-aware via its own media query) + a PNG for
             // home-screen/touch contexts.
             MetaLink(href: "/img/favicon.svg", rel: "icon")
@@ -162,6 +171,10 @@ struct MainLayout: Layout {
             }
             // theme.js must run synchronously in <head> - it sets data-theme +
             // data-color-scheme on <html> before first paint, preventing FOUC.
+            // Browser UI tint (Safari's bar, the iOS status area). theme.js,
+            // right below, sets it to the page background for the resolved
+            // light/dark scheme, so it must come first.
+            MetaTag(name: "theme-color", content: "#ffffff")
             Script(file: "/js/theme.js")
             // Preload sprites - works around Safari sometimes failing to render
             // external <use href> references on cold cache.
