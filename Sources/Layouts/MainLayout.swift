@@ -221,6 +221,10 @@ struct MainLayout: Layout {
                 Script(file: "/js/twitch-live.js")
             }
             Script(file: "/js/site.js")
+            // Fathom Analytics (cookieless). The tag lives in a hand-written
+            // include so the site ID stays out of Swift; an empty file means no
+            // analytics. See Includes/analytics.html.
+            Include("analytics.html")
             if hasArticleContent {
                 // Comentario (self-hosted comments). Powers <comentario-comments>
                 // on post pages and <comentario-count> in the home feed.
