@@ -10,4 +10,6 @@ tools: LightWave 3D, Photoshop
 path: /art/3d-renders/atari-joystick/
 ---
 
-[Placeholder - a sentence or two about Atari-Style Joystick.]
+I originally made this render as a desktop wallpaper. I love video games, and a simple joystick felt like the rawest version of that idea. That said, it's pretty obvious I did zero research on what an actual Atari joystick looks like. They don't have buttons on top!
+
+We later reused the model for the logo of UberGames, my mod team.

@@ -10,4 +10,6 @@ tools: LightWave 3D, Photoshop
 path: /art/3d-renders/headed-for-earth/
 ---
 
-[Placeholder - a sentence or two about Headed for Earth.]
+Around then, a well-known LightWave artist had recently posted a tutorial on rendering a photorealistic Earth: high-quality texture maps, clouds that cast real shadows, and a physically accurate Fresnel rim shading for the atmosphere. This was my attempt at it.
+
+Then I made it more exciting with a motion zoom and a lens flare from the sun, which, admittedly, hid most of the detail.
