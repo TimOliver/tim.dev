@@ -10,6 +10,8 @@ company: Realm
 years: 2015–2017
 stack: Objective-C
 status: Open Source
+icon: /img/apps/realm-browser/icon.png
+image: /img/apps/realm-browser/hero.jpg
 path: /apps/realm-browser/
 ---
 

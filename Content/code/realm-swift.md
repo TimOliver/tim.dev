@@ -13,6 +13,7 @@ platforms: iOS, macOS, tvOS, watchOS
 license: Apache-2.0
 latest: v20.0.6
 github: https://github.com/realm/realm-swift
+image: /img/code/realm-swift/screenshot.jpg
 path: /code/realm-swift/
 ---
 
