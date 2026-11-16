@@ -13,4 +13,4 @@ youtube: https://www.youtube.com/watch?v=3Q8aXw1XgPA
 path: /art/commissions/alien-computer-screen/
 ---
 
-[Placeholder - a sentence or two about the alien computer screen.]
+Screen graphics for an alien computer in *Welcome to the Cosmos*. The brief was an alien scanning Earth for a lost artifact, with the interface eventually finding it underwater, south of Australia. Built in Photoshop, LightWave 3D and After Effects.

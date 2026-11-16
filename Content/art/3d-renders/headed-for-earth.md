@@ -6,6 +6,7 @@ meta: 3D render · 2005
 order: 5
 image: /img/art/3d-renders/headed-for-earth.jpg
 kind: 3D render
+tools: LightWave 3D, Photoshop
 path: /art/3d-renders/headed-for-earth/
 ---
 

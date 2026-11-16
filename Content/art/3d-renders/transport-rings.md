@@ -7,6 +7,7 @@ order: 3
 image: /img/art/3d-renders/transport-rings.jpg
 kind: 3D render
 from: Stargate SG-1
+tools: LightWave 3D, Photoshop
 path: /art/3d-renders/transport-rings/
 ---
 

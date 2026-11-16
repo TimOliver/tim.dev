@@ -13,4 +13,4 @@ youtube: https://www.youtube.com/watch?v=_jdPEc91lxk
 path: /art/commissions/waicon-2014/
 ---
 
-[Placeholder - a sentence or two about the WAI-CON 2014 intro logo.]
+The intro logo for WAI-CON 2014, Perth's annual anime convention. It was the same sort of job as the year before, but a special one: 2014 marked the convention's tenth anniversary.

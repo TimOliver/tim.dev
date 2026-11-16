@@ -9,7 +9,8 @@ image: /img/art/stream-cards/splatoon-2.jpg
 kind: Starting soon screen
 from: Splatoon 2
 youtube: https://www.youtube.com/watch?v=l-5Tva_GRL0
+tools: After Effects
 path: /art/stream-cards/splatoon-2/
 ---
 
-[Placeholder - a sentence or two about Splatoon 2.]
+An animated starting-soon screen for my Splatoon 2 streams.

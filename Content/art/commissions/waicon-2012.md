@@ -13,4 +13,6 @@ youtube: https://www.youtube.com/watch?v=GnCFLZD8UPo
 path: /art/commissions/waicon-2012/
 ---
 
-An animated logo loop for the TV screens around the theatre at WAI-CON 2012. I never submitted it in the end, since the bright backdrop wouldn't have been legible from across the room.
+WAI-CON was Perth's annual anime convention, run by a non-profit from 2004 to 2014. I first went as a fan in 2005, and from 2010 to 2015 I was one of its volunteers, after Jon Hayward invited me on board.
+
+This is an animated logo loop I made for the TV screens around the theatre at WAI-CON 2012. I never submitted it in the end, since the bright backdrop wouldn't have been legible from across the room.

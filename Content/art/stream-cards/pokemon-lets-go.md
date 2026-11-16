@@ -9,7 +9,8 @@ image: /img/art/stream-cards/pokemon-lets-go.jpg
 kind: Starting soon screen
 from: Pokémon Let's Go
 youtube: https://www.youtube.com/watch?v=hNCesSWaJPg
+tools: After Effects
 path: /art/stream-cards/pokemon-lets-go/
 ---
 
-[Placeholder - a sentence or two about Pokémon Let's Go.]
+An animated starting-soon screen for my Pokémon Let's Go streams.

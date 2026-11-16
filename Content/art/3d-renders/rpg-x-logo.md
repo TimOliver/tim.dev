@@ -7,6 +7,7 @@ order: 4
 image: /img/art/3d-renders/rpg-x-logo.jpg
 kind: 3D render
 from: RPG-X
+tools: LightWave 3D, Photoshop
 path: /art/3d-renders/rpg-x-logo/
 ---
 
