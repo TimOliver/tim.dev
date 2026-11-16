@@ -765,6 +765,16 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
         if (empty) empty.hidden = totalVisible !== 0;
     }
     input.addEventListener('input', apply);
+
+    // A search handed over in the URL (?q=…, e.g. from the 404 page's search
+    // box) pre-fills the box and filters straight away.
+    try {
+        var handedOver = new URLSearchParams(location.search).get('q');
+        if (handedOver) {
+            input.value = handedOver;
+            apply();
+        }
+    } catch (e) { /* no URLSearchParams: just show the full archive */ }
 })();
 
 // Share + copy for any [data-share-path] control (the share badge at the top

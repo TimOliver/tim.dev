@@ -93,6 +93,7 @@ struct MainLayout: Layout {
     /// vocabulary; comentario.css is NOT listed here - the widget loads it
     /// itself via the css-override attribute (see ArticleShell).
     private var pageStylesheets: [String] {
+        if isErrorPage { return ["/css/not-found.css"] }
         switch section {
         case "archive": return ["/css/archive.css"]
         case "about": return ["/css/about.css"]

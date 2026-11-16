@@ -5,9 +5,9 @@ import Ignite
 
 /// The site's custom 404 page. Conforming to Ignite's `ErrorPage` makes this
 /// the type Ignite renders to `Build/404.html`; it is wired up as
-/// `TimDevSite.errorPage`. Reuses the global page-title/subtitle styles so it
-/// matches the rest of the site; served by hosts that honour the `404.html`
-/// convention.
+/// `TimDevSite.errorPage`. Reuses the global page-title/subtitle styles, plus
+/// not-found.css; served by hosts that honour the `404.html` convention. The
+/// search box submits to the Archive as `?q=`, which site.js pre-fills.
 struct NotFound: ErrorPage {
 
     /// The document `<title>` (and browser-tab label). `ErrorPage`, like every
@@ -24,11 +24,19 @@ struct NotFound: ErrorPage {
         // continuation - it swallows the following newline so the emitted HTML
         // carries no stray whitespace between the tags.
         String("""
-        <div class="error-page">\
-        <h1 class="page-title">404</h1>\
-        <p class="page-subtitle">This page doesn't exist - it may have moved \
-        when the site did. <a href="/">Head back home</a>, or try \
-        <a href="/archive/">the archive</a>.</p>\
+        <div class="not-found">\
+        <p class="not-found-code">404</p>\
+        <h1 class="page-title">Well, this is awkward.</h1>\
+        <p class="page-subtitle">This page doesn’t exist. It may have moved when the site \
+        did, or maybe it never existed at all.</p>\
+        <form class="not-found-search" action="/archive/" method="get" role="search">\
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" \
+        stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle>\
+        <line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>\
+        <input type="search" name="q" placeholder="Search posts by title…" \
+        aria-label="Search posts by title">\
+        </form>\
+        <p class="not-found-home">Or head back <a href="/">home</a>.</p>\
         </div>
         """)
     }

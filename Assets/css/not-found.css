@@ -1,0 +1,93 @@
+/* ---------- 404 page ----------
+   One centred block in the middle of the window: a small "404", the global
+   .page-title / .page-subtitle, an archive search (styled like the Archive's
+   own box; it submits there as ?q=) and a way home. */
+
+.not-found {
+    min-height: calc(100svh - 260px);
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.not-found-code {
+    margin: 0 0 0.6em;
+    font-weight: 600;
+    color: var(--text-tertiary);
+}
+
+.not-found .page-title {
+    font-size: 2.4em;
+    margin: 0 0 0.35em;
+    text-wrap: balance;
+}
+
+.not-found .page-subtitle {
+    max-width: 520px;
+    font-size: 1.1em;
+    line-height: 1.5;
+    margin: 0 auto 1.8em;
+}
+
+.not-found-search {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    margin: 0;
+}
+
+.not-found-search svg {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: var(--text-tertiary);
+    pointer-events: none;
+}
+
+.not-found-search input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 18px 12px 46px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    corner-shape: squircle;
+    background: var(--bg-secondary);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.9em;
+    margin: 0;
+}
+
+.not-found-search input:focus {
+    outline: none;
+    border-color: var(--text);
+}
+
+.not-found-home {
+    margin: 1.2em 0 0;
+    font-size: 0.95em;
+    color: var(--text-secondary);
+}
+
+/* Non-blog prose link: text colour, quiet underline, red on hover. */
+.not-found-home a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--text-tertiary);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.not-found-home a:hover {
+    color: var(--link);
+    text-decoration-color: currentColor;
+}
