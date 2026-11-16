@@ -152,6 +152,12 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
 - Leak check after adding a collection: `Build/index.html` and `Build/archive/index.html` must contain
   no `/apps/<slug>/`-style links (`CollectionRenderer.isBlogPost` is the single filter).
 - Contact: the raw address never appears in HTML; it's split across `data-user`/`data-domain`.
+- Acknowledgements, Privacy and Terms (/acknowledgements/, /privacy/, /terms/) are hand-written
+  includes styled by `info.css`. Acknowledgements is open-source notices grouped by licence (name,
+  copyright line, then the licence text once): shipped JS, icons, Comentario and the Swift build
+  tools. Add an entry when adding a dependency. All three are linked only from the About Tech
+  specs card (Credits and Legal rows); the footer has no room. Keep Privacy true to what the
+  site actually loads: update it when adding a third-party script, cookie or storage key.
 
 ## Front-end conventions
 
@@ -297,8 +303,9 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
   history squashed to one commit. History holds deleted planning docs with the plain contact
   address and `~/...` paths (no credentials).
 - **Licensing is undecided.** LICENSE declares the tree public domain, but the vendored
-  `Assets/js/lightbox3.umd.js` (and lite-yt-embed, embla) are MIT and carry no notice of that here.
-  Decide how third-party code is labelled (a notice in each file, a THIRD-PARTY list, or a narrower
-  LICENSE) before publishing.
+  `Assets/js/lightbox3.umd.js` and embla are MIT and lite-yt-embed is Apache 2.0. The site's
+  /acknowledgements/ page (`Includes/acknowledgements-page.html`) credits them and carries their
+  licence texts; the repo itself still needs a narrower LICENSE or a THIRD-PARTY note before
+  publishing.
 - **Scrub personal infrastructure from the docs.** The Tailscale MagicDNS hostname in the
   Verification section above is private; replace it with a generic description before launch.

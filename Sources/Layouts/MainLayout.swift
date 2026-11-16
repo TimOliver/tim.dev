@@ -97,6 +97,7 @@ struct MainLayout: Layout {
         case "archive": return ["/css/archive.css"]
         case "about": return ["/css/about.css"]
         case "contact": return ["/css/contact.css"]
+        case "acknowledgements", "privacy", "terms": return ["/css/info.css"]
         case "apps": return ["/css/collection.css", "/css/apps.css"]
         case "code": return ["/css/collection.css", "/css/code.css"]
         case "art": return ["/css/collection.css", "/css/art.css"]

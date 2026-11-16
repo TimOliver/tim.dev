@@ -1,0 +1,118 @@
+/* ---------- Info pages (Acknowledgements, Privacy, Terms) ----------
+   Plain reading pages: the global .page-title / .page-subtitle header, then
+   sections of prose at the reading measure. Links follow the non-blog prose
+   style (text colour, quiet underline, red on hover). */
+
+.info {
+    max-width: 740px;
+    margin: 40px auto 0;
+}
+
+/* "Acknowledgements" is one long word: scale it down on narrow phones so it
+   never breaks mid-word. */
+.info .page-title {
+    font-size: min(2.7em, 8.6vw);
+}
+
+.info .page-subtitle {
+    max-width: 600px;
+    font-size: 1.15em;
+    line-height: 1.5;
+    margin-bottom: 2.4em;
+}
+
+.info-section + .info-section {
+    margin-top: 2.2em;
+}
+
+.info-section h2 {
+    font-size: 1.4em;
+    font-weight: 700;
+    margin: 0 0 0.5em;
+}
+
+.info-section p {
+    line-height: 1.6;
+    margin: 0 0 0.9em;
+}
+
+.info a:not([class]) {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--text-tertiary);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+.info a:not([class]):hover {
+    color: var(--link);
+    text-decoration-color: currentColor;
+}
+
+/* Acknowledgements: open-source notices grouped by licence - each
+   component's name and copyright line, then the licence text once. */
+.info-components {
+    padding-left: 1.2em;
+    margin: 0 0 1.2em;
+}
+
+.info-components li::marker {
+    color: var(--text-tertiary);
+}
+
+.info-components li {
+    line-height: 1.5;
+}
+
+.info-components li + li {
+    margin-top: 0.35em;
+}
+
+/* The names already stand out against the grey copyright text, so they go
+   without the prose underline (it comes back on hover). */
+.info-components a:not([class]) {
+    color: var(--heading);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.info-components a:not([class]):hover {
+    text-decoration: underline;
+}
+
+/* Name and copyright share one line, separated by a dot. */
+.info-copyright {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+}
+
+.info-copyright::before {
+    content: "\00B7";
+    margin: 0 0.5em;
+}
+
+/* Licence text, reflowed into normal paragraphs (the source files' hard
+   line breaks made it ragged on phones), in a soft grey box. */
+.info-licence-text {
+    font-size: 0.85em;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    overflow-wrap: anywhere;
+    padding: 1em 1.2em;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    corner-shape: squircle;
+}
+
+.info-licence-text p {
+    margin: 0;
+}
+
+.info-licence-text p + p {
+    margin-top: 0.8em;
+}
+
+.info-updated {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+}
