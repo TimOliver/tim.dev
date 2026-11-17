@@ -12,6 +12,8 @@ import SwiftSoup
 /// - Other pages still on the site-wide description (Apps, Code, Art, Talks,
 ///   Archive, Contact, About...): their page tagline instead. The home page
 ///   keeps the site description.
+/// - Collection detail pages: Ignite's first paragraph, cut down the same way
+///   as a post's when it runs past the limit.
 enum MetaDescriptions {
 
     /// The snippet length search engines show before truncating.
@@ -57,6 +59,10 @@ enum MetaDescriptions {
                 description = try ["main .page-subtitle", "main .about-tagline"]
                     .lazy.compactMap { try doc.select($0).first()?.text() }
                     .first { !$0.isEmpty } ?? ""
+            } else if current.count > limit {
+                // Collection detail pages get Ignite's whole first paragraph,
+                // which runs to 400+ characters on some Art pieces.
+                description = excerpt(current)
             }
             guard !description.isEmpty, description != current else { continue }
 

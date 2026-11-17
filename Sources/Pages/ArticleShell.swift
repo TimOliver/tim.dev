@@ -64,7 +64,7 @@ enum ArticleShell {
     /// count appears beside it only once the widget resolves a non-zero count
     /// (the .has-count toggle in comentario-tweaks.js). `path` and `title` are
     /// already HTML-escaped.
-    private static func badgeRow(path: String, title: String) -> String {
+    private static func badgeRow(path: String, title: String, threadPath: String) -> String {
 
         // Link badge first.
         var inner = linkBadge(path: path)
@@ -74,7 +74,7 @@ enum ArticleShell {
         // resolves a non-zero count and .has-count reveals it.
         inner += #"<a class="post-badge" href="\#(path)#comments" aria-label="Comments">"#
         inner += spriteIcon("comments")
-        inner += #"<comentario-count path="\#(path)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count>"#
+        inner += #"<comentario-count path="\#(threadPath)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count>"#
         inner += "</a>"
 
         // Share badge last, then wrap the trio in the row container.
@@ -85,7 +85,7 @@ enum ArticleShell {
     /// End-of-article links: permalink (links to the post), share, and a comment
     /// count - small secondary text links sharing the badge icons. `path` and
     /// `title` are already HTML-escaped.
-    private static func endLinks(path: String, title: String) -> String {
+    private static func endLinks(path: String, title: String, threadPath: String) -> String {
 
         // Permalink: icon + visible "Permalink" label.
         var s = #"<div class="post-links">"#
@@ -104,7 +104,7 @@ enum ArticleShell {
         // since Comentario's suffix can't pluralise).
         s += #"<a class="post-link" href="\#(path)#comments" aria-label="Comments">"#
         s += spriteIcon("comments")
-        s += #"<comentario-count path="\#(path)" suffix=" comments" placeholder="Comments" zero-text="Comments" error-text="Comments"></comentario-count>"#
+        s += #"<comentario-count path="\#(threadPath)" suffix=" comments" placeholder="Comments" zero-text="Comments" error-text="Comments"></comentario-count>"#
         s += "</a>"
         s += "</div>"
         return s
@@ -143,6 +143,10 @@ enum ArticleShell {
         // Escape the path once - it is reused across the header link, badge
         // row, and footer links below.
         let href = escape(article.path)
+        // Comentario keys each thread by the page's location.pathname, which the
+        // browser percent-encodes (/2012/12/10/26-%E0%B2%A0_%E0%B2%A0/), so the
+        // counts must ask for that spelling, not the raw Unicode path.
+        let threadPath = escape(article.path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? article.path)
         var s = "<article>"
 
         // Header - plain date, then the title (a link to the post in the feed).
@@ -161,7 +165,7 @@ enum ArticleShell {
             s += "<p class=\"subtitle\">\(escape(subtitle))</p>"
         }
         // Badge row (link · comments · share) above the hero - feed and page.
-        s += badgeRow(path: href, title: escape(article.title))
+        s += badgeRow(path: href, title: escape(article.title), threadPath: threadPath)
 
         // Body transform pipeline, innermost call first: expand Instagram
         // embeds, rescue Markdown images that leaked as literal text, group
@@ -181,7 +185,9 @@ enum ArticleShell {
            let marker = grouped.range(of: #"<!--\s*more\s*-->"#, options: .regularExpression) {
             var cut = String(grouped[..<marker.lowerBound])
             // A marker written mid-paragraph leaves that paragraph open.
-            if cut.components(separatedBy: "<p").count > cut.components(separatedBy: "</p>").count {
+            let opened = (try? NSRegularExpression(pattern: #"<p[\s>]"#))?
+                .numberOfMatches(in: cut, range: NSRange(cut.startIndex..., in: cut)) ?? 0
+            if opened > cut.components(separatedBy: "</p>").count - 1 {
                 cut += "</p>"
             }
             grouped = cut
@@ -213,13 +219,13 @@ enum ArticleShell {
         // Footer - every article ends with the same links row (feed and post
         // page match). The post page additionally renders the comment thread
         // below; its "comments" link then just scrolls to it.
-        s += endLinks(path: href, title: escape(article.title))
+        s += endLinks(path: href, title: escape(article.title), threadPath: threadPath)
         if context == .page {
             s += #"<section class="post-comments" id="comments">"#
             // Heading shows "Comments · N"; the count is revealed by site.js
             // once Comentario loads it (see the has-count toggler).
             s += #"<h2 class="post-comments-title"><span>Comments</span>"#
-            s += #"<comentario-count class="post-comments-count" path="\#(href)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count></h2>"#
+            s += #"<comentario-count class="post-comments-count" path="\#(threadPath)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count></h2>"#
             // Comentario widget (self-hosted). comentario.js is loaded site-wide
             // in MainLayout; the thread is keyed to this post's URL path.
             // css-override loads /css/comentario.css after Comentario's default
