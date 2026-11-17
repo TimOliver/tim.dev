@@ -49,7 +49,7 @@ enum MetaDescriptions {
                 // image-only paragraphs, embedded social cards, and list items
                 // that wrap their own paragraphs (those are read as <p>s).
                 let blocks = try doc.select("article > section p, article > section li").array().filter {
-                    let insideCard = try $0.parents().array().contains { $0.hasClass("embed_social") }
+                    let insideCard = $0.parents().array().contains { $0.hasClass("embed_social") }
                     let wrapsParagraphs = try $0.tagName() == "li" && !$0.select("p").isEmpty()
                     return !insideCard && !wrapsParagraphs
                 }
