@@ -2,8 +2,8 @@
 title: osu!stream
 tagline: A lighter version of osu! for mobile devices
 layout: AppDetail
-date: 2019-06-01 00:00:00
-year: 2019
+date: 2020-02-26 00:00:00
+year: 2020
 platform: iPhone, iPad
 appstore: https://apps.apple.com/app/osu-stream/id436952197
 company: ppy Pty Ltd
@@ -12,6 +12,7 @@ status: Live
 role: iOS Engineer
 stack: Xamarin
 icon: /img/apps/osu-stream/icon.png
+image: /img/apps/osu-stream/hero.jpg
 path: /apps/osu-stream/
 ---
 

@@ -40,6 +40,7 @@ Assets/                        copied verbatim into Build/ (css, js, img, fonts)
 Template/                      the original hand-coded mockup — design source of truth (Template/AGENTS.md)
 Scripts/                       build-media, check-site, dev-server, strip-exif, hooks, tests
 Design/app-heroes/<slug>/      source bezel PNGs for Scripts/app-heroes.py (never copied into Build/)
+~/Desktop/App-PNGs/hero-frames/  OUTSIDE the repo: Pixeden device frames (no redistribution)
 media-manifest.json            build INPUT written by build-media.py (dimensions, LQIP, variants)
 instagram-posts.json           build INPUT: snapshot of every embedded Instagram post (see below)
 ```
@@ -170,7 +171,11 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   page's og:image, so the app's link card blurs the hero rather than the icon. Heroes are 1600x1000,
   made by `Scripts/app-heroes.py` (layouts for MicroPoints, iPokédex, Mercari, iComics, pixiv; needs numpy;
   Honda and Realm are photos, not composed; run it with no arguments, or name slugs) from Tim's
-  lossless bezel PNGs, kept in `Design/app-heroes/<slug>/` (never images pasted into chat, which arrive as lossy
+  lossless bezel PNGs, kept in `Design/app-heroes/<slug>/`, except Pixeden frames (iPhone 4/5/X,
+  iPad Air, iPad Pro), whose licence forbids sharing the raw file: those live outside the repo
+  in `~/Desktop/App-PNGs/hero-frames/` (Tim backs it up to his NAS; the script reads it, or
+  `--frames DIR`) and Pixeden is credited on /acknowledgements/
+  (never images pasted into chat, which arrive as lossy
   WebP), composed in floating point and dithered once at the end (8-bit gradients band), and
   saved as JPEG quality 100 with `subsampling=0` (the lightbox target; pages get q95/q97 variants):
   4:2:0 visibly smears red UI text. Layout rule (Tim): use as much of the canvas as the

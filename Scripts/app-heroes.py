@@ -6,13 +6,17 @@ since 8-bit gradients band, then saved as JPEG quality 100 with 4:4:4 chroma (th
 target; build-media.py derives the q95/q97 page variants from it).
 
 Sources are Tim's lossless bezel PNGs, never images pasted into chat (those arrive as
-lossy WebP), kept in the repo under Design/app-heroes/<slug>/ so a hero can be re-tweaked
-on any machine: micropoints-1/2.png, ipokedex-1/2.png, Mercari-1/2/3.png, pixiv-1/2.png,
-slkmeter-1/2.png, readingrace-1.png and icomics-devices.webp (from icomics.net; swap in a PNG export if one turns up).
+lossy WebP), found anywhere under Design/app-heroes/. Committed: slkmeter-1/2.png
+(GadgetsGuy, CC BY 3.0) and icomics-devices.webp (from icomics.net).
+Kept OUT of the repo, because Pixeden's licence forbids sharing the raw frames: they live in
+~/Desktop/App-PNGs/hero-frames/ (Tim backs that up to his NAS): micropoints-1/2.png,
+ipokedex-1/2.png (iPhone 4), pixiv-1/2.png (iPhone 5), Mercari-1/2/3.png (iPhone X),
+readingrace-1.png (iPad Air) and osustream-bezel.png (iPad Pro). Both folders are searched; --frames DIR points elsewhere.
 Design/ is never copied into Build/. Needs numpy as well as Pillow.
 
     python3 Scripts/app-heroes.py [slug ...]          # all heroes, or just these
     python3 Scripts/app-heroes.py --from DIR [slug ...] # sources from elsewhere
+    python3 Scripts/app-heroes.py --frames DIR [slug ...] # Pixeden frames from elsewhere
 
 Afterwards run Scripts/strip-exif.py on the heroes and Scripts/build-media.py.
 """
@@ -23,9 +27,12 @@ from PIL import Image, ImageDraw
 ROOT=Path(__file__).resolve().parent.parent
 args=sys.argv[1:]
 D=str(ROOT/'Design/app-heroes')+'/'
-if args[:1]==['--from']:
+FRAMES=Path.home()/'Desktop/App-PNGs/hero-frames'
+while args[:1] in (['--from'],['--frames']):
     if len(args)<2: sys.exit(__doc__)
-    D=args[1].rstrip('/')+'/'; args=args[2:]
+    if args[0]=='--from': D=args[1].rstrip('/')+'/'
+    else: FRAMES=Path(args[1])
+    args=args[2:]
 REPO=str(ROOT/'Assets/img/apps')+'/'
 W,H=1600,1000
 def box(a,r,axis):
@@ -73,15 +80,15 @@ def save(img,slug):
     out.save(REPO+slug+'/hero.jpg',quality=100,subsampling=0,optimize=True,progressive=True)
     print('wrote',REPO+slug+'/hero.jpg')
 def L(name):   # a source file found anywhere under SOURCE_DIR (Tim keeps per-app folders)
-    hits=sorted(Path(D).rglob(name))
-    if not hits: sys.exit(f'{name} not found under {D}')
+    hits=sorted(Path(D).rglob(name)) or (sorted(FRAMES.rglob(name)) if FRAMES.is_dir() else [])
+    if not hits: sys.exit(f'{name} not found under {D} or {FRAMES}')
     return Image.open(hits[0]).convert('RGBA')
 def pokeball_mask(s):
     m=Image.new('L',(s,s),0); d=ImageDraw.Draw(m)
     d.ellipse((0,0,s-1,s-1),fill=255); b=int(s*0.085); d.rectangle((0,s//2-b//2,s,s//2+b//2),fill=0)
     r1=int(s*0.21); d.ellipse((s//2-r1,s//2-r1,s//2+r1,s//2+r1),fill=0)
     r2=int(s*0.13); d.ellipse((s//2-r2,s//2-r2,s//2+r2,s//2+r2),fill=255); return m
-which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter','reading-race']
+which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter','reading-race','osu-stream']
 if 'micropoints' in which:
     img=radial((74,190,62),(22,92,20),cy=0.45,p=1.3)
     g=Image.new('L',(W,H),0); gd=ImageDraw.Draw(g)
@@ -142,3 +149,13 @@ if 'reading-race' in which:
     # Multiply shadow in a deep sky blue, so it reads as shade on the sky, not grey smudge.
     img=phones_over(img,[L('readingrace-1.png')],h,[(H-h)//2],0,0.55,24,16,[0],tint=(40,90,150))
     save(img,'reading-race')
+if 'osu-stream' in which:
+    # Gameplay in a Face ID 12.9" iPad Pro (the screenshots were taken on one; the home
+    # indicator shows), composited by Tim from a Pixeden mockup. Pixeden forbids sharing the
+    # raw file, so it lives outside the repo in ~/Desktop/App-PNGs/hero-frames/. Shown whole and
+    # centred on a subtle deep purple, lit behind the iPad and falling to near-black at the
+    # corners, picking up the gameplay's purple; tinted multiply shadow so it isn't muddy.
+    img=radial((66,24,92),(14,5,22),cy=0.5,p=1.1)
+    h=960
+    img=phones_over(img,[L('osustream-bezel.png')],h,[(H-h)//2],0,0.6,26,16,[0],tint=(70,30,100))
+    save(img,'osu-stream')
