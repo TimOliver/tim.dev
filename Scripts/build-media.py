@@ -31,7 +31,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, JpegImagePlugin
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 ASSETS = REPO_ROOT / "Assets"
@@ -160,6 +160,14 @@ def build_variants(
     return out
 
 
+def full_chroma(src: Path) -> bool:
+    """True for a JPEG source encoded 4:4:4 (reads only the header)."""
+    if src.suffix.lower() not in (".jpg", ".jpeg"):
+        return False
+    with Image.open(src) as im:
+        return JpegImagePlugin.get_sampling(im) == 0
+
+
 def encode_variant(src: Path, im: Image.Image, width: int, is_png: bool, has_alpha: bool,
                    jpeg_ok: bool, newest_input: float) -> Path | None:
     """Write (or reuse) <stem>@<width>w as PNG or JPEG; returns its path."""
@@ -186,8 +194,15 @@ def encode_variant(src: Path, im: Image.Image, width: int, is_png: bool, has_alp
     if as_jpg:
         buffer = io.BytesIO()
         # Converted PNGs are often screenshots with text: a little more quality.
-        resized.save(buffer, format="JPEG", quality=85 if is_png else 80, progressive=True,
-                     optimize=True, icc_profile=icc_profile)
+        # A JPEG saved without chroma subsampling (4:4:4: the app heroes, where 4:2:0
+        # smears red UI text) is a showcase graphic, not a photo: it keeps 4:4:4 at
+        # quality 95, 97 for the full-width copy (q80 flattens dithered gradients into blocks).
+        if full_chroma(src):
+            quality, extra = (97 if width == im.width else 95), {"subsampling": 0}
+        else:
+            quality, extra = (85 if is_png else 80), {}
+        resized.save(buffer, format="JPEG", quality=quality, progressive=True,
+                     optimize=True, icc_profile=icc_profile, **extra)
         encoded[as_jpg] = buffer.getvalue()
     if as_png and as_jpg and len(encoded[as_jpg]) > len(encoded[as_png]) * 0.75:
         del encoded[as_jpg]  # PNG wins unless JPEG is clearly smaller
