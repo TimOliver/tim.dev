@@ -175,7 +175,11 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   devices allow. Two phones go WWDC-style: scaled so the screens fill the height with ~15px of
   phone above and below, rounded ends off-canvas (pixiv). Three phones are width-bound, so as
   large as fits with tight gaps (Mercari: 944px tall, 50px gaps). Never upscale a bezel PNG to
-  get there; ask Tim for a bigger source instead. App icons come from
+  get there; ask Tim for a bigger source instead. Exception: a single landscape iPad is shown
+  whole and vertically centred, as large as fits (Reading Race: 960px tall), because WWDC
+  framing makes it nearly full-bleed. On a coloured background, pass `tint=` to
+  `phones_over` for a multiply shadow in a deep shade of that colour; plain black greys it
+  out (muddy on Reading Race's sky). App icons come from
   the App Store's square artwork where listed (iTunes lookup `artworkUrl512`, swapped to
   `1024x1024bb.png`), stored at 512px; layered iOS 26 icons in an `Assets.car` can be rendered
   with CoreUI's `iconImageWithName:…desiredSize:`.

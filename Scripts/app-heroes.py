@@ -8,7 +8,7 @@ target; build-media.py derives the q95/q97 page variants from it).
 Sources are Tim's lossless bezel PNGs, never images pasted into chat (those arrive as
 lossy WebP), kept in the repo under Design/app-heroes/<slug>/ so a hero can be re-tweaked
 on any machine: micropoints-1/2.png, ipokedex-1/2.png, Mercari-1/2/3.png, pixiv-1/2.png,
-slkmeter-1/2.png and icomics-devices.webp (from icomics.net; swap in a PNG export if one turns up).
+slkmeter-1/2.png, readingrace-1.png and icomics-devices.webp (from icomics.net; swap in a PNG export if one turns up).
 Design/ is never copied into Build/. Needs numpy as well as Pillow.
 
     python3 Scripts/app-heroes.py [slug ...]          # all heroes, or just these
@@ -51,7 +51,9 @@ def fmask(pil_L): return np.asarray(pil_L,dtype=np.float64)/255
 def shift(a,dx,dy):
     out=np.zeros_like(a); h,w=a.shape
     out[max(dy,0):h+min(dy,0), max(dx,0):w+min(dx,0)]=a[max(-dy,0):h-max(dy,0), max(-dx,0):w-max(dx,0)]; return out
-def phones_over(img,phones,h,tops,gap,sa,sig,dy,order):
+def phones_over(img,phones,h,tops,gap,sa,sig,dy,order,tint=None):
+    # Shadow: plain black at alpha sa (the default), or with tint=(r,g,b) a MULTIPLY blend
+    # by that colour, which darkens a coloured background without greying it out.
     sc=[q.resize((round(q.width*h/q.height),h),Image.LANCZOS) for q in phones]
     x=(W-(sum(s.width for s in sc)+gap*(len(sc)-1)))//2; pos=[]
     for s in sc: pos.append(x); x+=s.width+gap
@@ -60,7 +62,8 @@ def phones_over(img,phones,h,tops,gap,sa,sig,dy,order):
         canvas_a=np.zeros((H,W)); rgb=np.zeros((H,W,3))
         y0,y1=max(py,0),min(py+s.shape[0],H); x0,x1=max(px,0),min(px+s.shape[1],W)
         canvas_a[y0:y1,x0:x1]=s[y0-py:y1-py,x0-px:x1-px,3]; rgb[y0:y1,x0:x1]=s[y0-py:y1-py,x0-px:x1-px,:3]*255
-        img=over(img,(0,0,0),blur(shift(canvas_a,0,dy),sig)*sa)
+        sh=np.clip(blur(shift(canvas_a,0,dy),sig)*sa,0,1)[...,None]
+        img=img*(1-sh)+img*np.asarray(tint,float)/255*sh if tint else over(img,(0,0,0),sh[...,0])
         img=over(img,rgb,canvas_a)
     return img
 def save(img,slug):
@@ -78,7 +81,7 @@ def pokeball_mask(s):
     d.ellipse((0,0,s-1,s-1),fill=255); b=int(s*0.085); d.rectangle((0,s//2-b//2,s,s//2+b//2),fill=0)
     r1=int(s*0.21); d.ellipse((s//2-r1,s//2-r1,s//2+r1,s//2+r1),fill=0)
     r2=int(s*0.13); d.ellipse((s//2-r2,s//2-r2,s//2+r2,s//2+r2),fill=255); return m
-which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter']
+which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter','reading-race']
 if 'micropoints' in which:
     img=radial((74,190,62),(22,92,20),cy=0.45,p=1.3)
     g=Image.new('L',(W,H),0); gd=ImageDraw.Draw(g)
@@ -130,3 +133,12 @@ if 'slkmeter' in which:
     s=970/1074
     img=phones_over(img,[L('slkmeter-1.png'),L('slkmeter-2.png')],round(1383*s),[round(15-151*s)]*2,70,0.6,24,16,[0,1])
     save(img,'slkmeter')
+if 'reading-race' in which:
+    # One white iPad Air in landscape with the landing screen already in it. Shown whole
+    # (WWDC framing made a landscape iPad nearly full-bleed, which looked awkward), centred
+    # on the game's own sky, a soft blue gradient.
+    img=linear((118,196,240),(186,226,248))
+    h=960   # the whole iPad on canvas, centred, 20px of sky above and below
+    # Multiply shadow in a deep sky blue, so it reads as shade on the sky, not grey smudge.
+    img=phones_over(img,[L('readingrace-1.png')],h,[(H-h)//2],0,0.55,24,16,[0],tint=(40,90,150))
+    save(img,'reading-race')

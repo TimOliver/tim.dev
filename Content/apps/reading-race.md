@@ -10,7 +10,9 @@ years: 2014
 role: Junior iOS Engineer
 stack: Objective-C
 status: Live
+appstore: https://apps.apple.com/au/app-bundle/id1069236312
 icon: /img/apps/reading-race/icon.png
+image: /img/apps/reading-race/hero.jpg
 path: /apps/reading-race/
 ---
 
