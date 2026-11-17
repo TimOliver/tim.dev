@@ -13,7 +13,8 @@ Kept OUT of the repo, because Pixeden's licence forbids sharing the raw frames: 
 ipokedex-1/2.png (iPhone 4), pixiv-1/2.png (iPhone 5), Mercari-1/2/3.png (iPhone X),
 readingrace-1.png (iPad Air), osustream-bezel.png and osu-Pad.png (iPad Pro), and
 threads-1/2/3.png (Apple's own iPhone 16 Pro Max frame, likewise not to be shared) with
-threads-bg.jpg (Meta's Threads launch art; only a heavy blur of it ships).
+threads-bg.jpg (Meta's Threads launch art; only a heavy blur of it ships), and
+luma-1/2/3.png (Apple's iPhone Air frame).
 Both folders are searched; --frames DIR points elsewhere.
 Design/ is never copied into Build/. Needs numpy as well as Pillow.
 
@@ -91,7 +92,7 @@ def pokeball_mask(s):
     d.ellipse((0,0,s-1,s-1),fill=255); b=int(s*0.085); d.rectangle((0,s//2-b//2,s,s//2+b//2),fill=0)
     r1=int(s*0.21); d.ellipse((s//2-r1,s//2-r1,s//2+r1,s//2+r1),fill=0)
     r2=int(s*0.13); d.ellipse((s//2-r2,s//2-r2,s//2+r2,s//2+r2),fill=255); return m
-which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter','reading-race','osu-stream','osu','threads']
+which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter','reading-race','osu-stream','osu','threads','luma']
 if 'micropoints' in which:
     img=radial((74,190,62),(22,92,20),cy=0.45,p=1.3)
     g=Image.new('L',(W,H),0); gd=ImageDraw.Draw(g)
@@ -181,3 +182,10 @@ if 'threads' in which:
     h=round(950*3000/2956)   # the PNGs are 3000 tall with 22px of transparent margin
     img=phones_over(img,[L(f'threads-{i}.png') for i in (1,2,3)],h,[(H-h)//2]*3,36,0.6,26,18,[0,2,1])
     save(img,'threads')
+if 'luma' in which:
+    # Three iPhone Air screens in Apple's frame, on white like Mercari: phones 950px tall
+    # (the PNGs are 2880 tall with 26px of transparent margin), ~50px apart, middle on top.
+    img=np.full((H,W,3),255.0)
+    h=round(950*2880/2828)
+    img=phones_over(img,[L(f'luma-{i}.png') for i in (1,2,3)],h,[(H-h)//2]*3,46,0.28,26,18,[0,2,1])
+    save(img,'luma')

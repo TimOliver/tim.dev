@@ -11,6 +11,7 @@ years: 2026–Present
 stack: SwiftUI
 status: Live
 icon: /img/apps/luma/icon.png
+image: /img/apps/luma/hero.jpg
 path: /apps/luma/
 ---
 
