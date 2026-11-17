@@ -12,6 +12,7 @@ years: 2023–2026
 status: Live
 stack: Swift
 icon: /img/apps/threads/icon.png
+image: /img/apps/threads/hero.jpg
 path: /apps/threads/
 ---
 

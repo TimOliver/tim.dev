@@ -169,12 +169,15 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   grid card shows it cropped to 16:10 (`.app-hero`, rounded - heroes are full-bleed pictures, not
   bare device shots); the detail page frames it at its natural ratio like Art. It's also the
   page's og:image, so the app's link card blurs the hero rather than the icon. Heroes are 1600x1000,
-  made by `Scripts/app-heroes.py` (layouts for MicroPoints, iPokédex, Mercari, iComics, pixiv; needs numpy;
+  made by `Scripts/app-heroes.py` (a layout per app: MicroPoints, iPokédex, Mercari, iComics, pixiv, SLKMeter, Reading Race,
+  osu!stream, osu!, Threads; needs numpy;
   Honda and Realm are photos, not composed; run it with no arguments, or name slugs) from Tim's
   lossless bezel PNGs, kept in `Design/app-heroes/<slug>/`, except Pixeden frames (iPhone 4/5/X,
   iPad Air, iPad Pro), whose licence forbids sharing the raw file: those live outside the repo
   in `~/Desktop/App-PNGs/hero-frames/` (Tim backs it up to his NAS; the script reads it, or
-  `--frames DIR`) and Pixeden is credited on /acknowledgements/
+  `--frames DIR`) and Pixeden is credited on /acknowledgements/. Apple's own frames (Threads'
+  iPhone 16 Pro Max) and third-party background art (Meta's Threads launch art, shipped only
+  heavily blurred) live there too; Apple needs no credit
   (never images pasted into chat, which arrive as lossy
   WebP), composed in floating point and dithered once at the end (8-bit gradients band), and
   saved as JPEG quality 100 with `subsampling=0` (the lightbox target; pages get q95/q97 variants):
