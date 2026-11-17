@@ -7,8 +7,8 @@ target; build-media.py derives the q95/q97 page variants from it).
 
 Sources are Tim's lossless bezel PNGs, never images pasted into chat (those arrive as
 lossy WebP), kept in the repo under Design/app-heroes/<slug>/ so a hero can be re-tweaked
-on any machine: micropoints-1/2.png, ipokedex-1/2.png, Mercari-1/2/3.png, pixiv-1/2.png
-and icomics-devices.webp (from icomics.net; swap in a PNG export if one turns up).
+on any machine: micropoints-1/2.png, ipokedex-1/2.png, Mercari-1/2/3.png, pixiv-1/2.png,
+slkmeter-1/2.png and icomics-devices.webp (from icomics.net; swap in a PNG export if one turns up).
 Design/ is never copied into Build/. Needs numpy as well as Pillow.
 
     python3 Scripts/app-heroes.py [slug ...]          # all heroes, or just these
@@ -78,7 +78,7 @@ def pokeball_mask(s):
     d.ellipse((0,0,s-1,s-1),fill=255); b=int(s*0.085); d.rectangle((0,s//2-b//2,s,s//2+b//2),fill=0)
     r1=int(s*0.21); d.ellipse((s//2-r1,s//2-r1,s//2+r1,s//2+r1),fill=0)
     r2=int(s*0.13); d.ellipse((s//2-r2,s//2-r2,s//2+r2,s//2+r2),fill=255); return m
-which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv']
+which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter']
 if 'micropoints' in which:
     img=radial((74,190,62),(22,92,20),cy=0.45,p=1.3)
     g=Image.new('L',(W,H),0); gd=ImageDraw.Draw(g)
@@ -121,3 +121,12 @@ if 'pixiv' in which:
     s=970/1136
     img=phones_over(img,[L('pixiv-1.png'),L('pixiv-2.png')],round(1602*s),[round(15-237*s)]*2,80,0.45,24,16,[0,1])
     save(img,'pixiv')
+if 'slkmeter' in which:
+    # Flat black, like SLKMeter's own black UI, so the white bezels stand out (a lit centre
+    # clashed with the gloss on the device renders). White Galaxy S II frames (GadgetsGuy on DeviantArt, CC BY 3.0, credited on
+    # /acknowledgements/), WWDC-style: the screens (y 151-1225 in the 1383px PNGs) fill the
+    # height with 15px of phone above and below.
+    img=np.zeros((H,W,3))
+    s=970/1074
+    img=phones_over(img,[L('slkmeter-1.png'),L('slkmeter-2.png')],round(1383*s),[round(15-151*s)]*2,70,0.6,24,16,[0,1])
+    save(img,'slkmeter')

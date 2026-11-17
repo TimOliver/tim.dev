@@ -11,6 +11,7 @@ stack: Xamarin
 status: Delisted
 years: 2014
 icon: /img/apps/slkmeter/icon.png
+image: /img/apps/slkmeter/hero.jpg
 path: /apps/slkmeter/
 ---
 

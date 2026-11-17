@@ -193,7 +193,9 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
 - Acknowledgements, Privacy and Terms (/acknowledgements/, /privacy/, /terms/) are hand-written
   includes styled by `info.css`. Acknowledgements is open-source notices grouped by licence (name,
   copyright line, then the licence text once): shipped JS, icons, Comentario and the Swift build
-  tools. Add an entry when adding a dependency. All three are linked only from the About Tech
+  tools, plus CC BY assets (the Galaxy S II frame in the SLKMeter hero; CC BY needs title,
+  author, source link, licence link and a note of changes). Add an entry when adding a
+  dependency or a licensed asset. All three are linked only from the About Tech
   specs card (Credits and Legal rows); the footer has no room. Keep Privacy true to what the
   site actually loads: update it when adding a third-party script, cookie or storage key.
 
