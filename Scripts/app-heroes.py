@@ -10,7 +10,8 @@ lossy WebP). Needs numpy as well as Pillow.
 
     python3 Scripts/app-heroes.py SOURCE_DIR [slug ...]
 
-SOURCE_DIR holds micropoints-1/2.png, ipokedex-1/2.png and Mercari-1/2/3.png.
+SOURCE_DIR holds micropoints-1/2.png, ipokedex-1/2.png, Mercari-1/2/3.png and
+icomics-devices.webp (from icomics.net; swap in a PNG export if one turns up).
 Afterwards run Scripts/strip-exif.py on the heroes and Scripts/build-media.py.
 """
 import sys,math
@@ -66,7 +67,7 @@ def pokeball_mask(s):
     d.ellipse((0,0,s-1,s-1),fill=255); b=int(s*0.085); d.rectangle((0,s//2-b//2,s,s//2+b//2),fill=0)
     r1=int(s*0.21); d.ellipse((s//2-r1,s//2-r1,s//2+r1,s//2+r1),fill=0)
     r2=int(s*0.13); d.ellipse((s//2-r2,s//2-r2,s//2+r2,s//2+r2),fill=255); return m
-which=sys.argv[2:] or ['micropoints','ipokedex','mercari-japan']
+which=sys.argv[2:] or ['micropoints','ipokedex','mercari-japan','icomics']
 if 'micropoints' in which:
     img=radial((74,190,62),(22,92,20),cy=0.45,p=1.3)
     g=Image.new('L',(W,H),0); gd=ImageDraw.Draw(g)
@@ -93,3 +94,9 @@ if 'mercari-japan' in which:
     img=np.full((H,W,3),255.0)
     img=phones_over(img,[L('Mercari-1.png'),L('Mercari-2.png'),L('Mercari-3.png')],880,[52,52,52],70,0.28,26,18,[0,2,1])
     save(img,'mercari-japan')
+if 'icomics' in which:
+    # White, like Mercari, behind the iPad + iPhone render (both devices in one image).
+    img=np.full((H,W,3),255.0)
+    dev=L('icomics-devices.webp'); h=round(dev.height*1380/dev.width)
+    img=phones_over(img,[dev],h,[(H-h)//2+10],0,0.28,26,18,[0])
+    save(img,'icomics')

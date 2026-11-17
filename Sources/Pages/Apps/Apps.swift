@@ -21,11 +21,25 @@ struct Apps: StaticPage {
     /// disk and referenced by name; see `CollectionRenderer.include`).
     var body: some HTML {
 
-        // Every article filed under the `apps` collection, newest first, each
-        // parsed into the `AppInfo` front-matter view the renderer consumes.
-        let apps = articles.typed("apps")
-            .sorted { $0.date > $1.date }
-            .map(AppInfo.init)
+        // Every article filed under the `apps` collection, newest first by
+        // `date:` (an app's latest major release). A front-matter `order:` N
+        // pins an app to slot N (1 = first) and the rest fill the other slots
+        // newest-first - e.g. to keep two related apps from touching in the
+        // 1/2/3-column grid. Each parsed into the `AppInfo` view the renderer uses.
+        let byDate = articles.typed("apps").sorted { $0.date > $1.date }
+        let slotOf = { (a: Article) in Int(a.metadata["order"] as? String ?? "") }
+        var unpinned = byDate.filter { slotOf($0) == nil }
+        var ordered: [Article] = []
+        for slot in 1...max(byDate.count, 1) {
+            if let pinned = byDate.first(where: { slotOf($0) == slot }) {
+                ordered.append(pinned)
+            } else if !unpinned.isEmpty {
+                ordered.append(unpinned.removeFirst())
+            }
+        }
+        // A pin past the end (or a duplicate slot) still gets listed, last.
+        ordered += byDate.filter { a in !ordered.contains { $0.path == a.path } }
+        let apps = ordered.map(AppInfo.init)
 
         // Assemble the whole grid as one HTML string.
         let html = AppRenderer.gridHTML(for: apps)

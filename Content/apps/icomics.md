@@ -2,8 +2,9 @@
 title: iComics
 tagline: Comic book reader
 layout: AppDetail
-date: 2012-06-01 00:00:00
-year: 2012
+date: 2025-03-01 00:00:00
+year: 2025
+order: 1
 platform: iPad, iPhone
 appstore: https://icomics.co
 role: Solo developer
@@ -12,6 +13,7 @@ stack: Objective-C, Swift
 status: Live
 years: 2012–Present
 icon: /img/apps/icomics/icon.png
+image: /img/apps/icomics/hero.jpg
 path: /apps/icomics/
 ---
 

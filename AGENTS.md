@@ -122,8 +122,14 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   logged as `TBC: <path> <row>` by `swift run`, and is counted by `check-site.py` (not an error);
   an empty optional row (marked `?`) is dropped. The old free-form `details:` key is a build error.
   - Apps: `role`, `company`, `platform` (Platforms; also the card badge), `stack` (Built with),
-    `status` (On the App Store / Delisted / Unreleased), `years` (Tim's time on it, e.g. 2015–2017;
-    `year:` is the release-year card badge).
+    `status` (in use: Live, Delisted, Discontinued, Pulled, On TestFlight, Open Source), `years`
+    (Tim's time on it, e.g. 2015–2017, or 2012–Present). `year:` (the card badge) and `date:` (the
+    grid's newest-first sort) mark the app's latest MAJOR release, so a big redesign moves an app
+    forward (iComics: released 2012, redesigned 2025); `years:` keeps the full span. `order: N`
+    pins an app to grid slot N and the rest fill in newest-first (unlike Code's, pins needn't be
+    contiguous): iComics is pinned first, and Instagram to slot 7, four slots after Instagram for
+    iPad, because Tim wants the two never side by side or stacked at 1, 2 or 3 columns (slots 1-3
+    apart touch). Re-check that when adding an app.
   - Code: `role` (Author / Maintainer / Contributor), `language`, `platforms`, `license`, `latest`?,
     `stars`, then Year from `date:`.
   - Art: `kind` (Type), `client`?, `from`? (source material: game, show, project), `artist`?,
