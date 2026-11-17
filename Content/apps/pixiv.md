@@ -20,3 +20,5 @@ pixiv is a Japanese social network for illustrators. Lots of very well-known art
 I joined pixiv in 2013, and worked in their Sendagaya office for most of the year. It was my first time at a Japanese software company, and I learned a tonne about how software gets made there. I was on the iOS team, mostly focused on improving the app on iPad.
 
 Midway through the year, Apple announced iOS 7 and its completely new flat design language, so we spent most of the second half of 2013 planning and designing the app's update to match.
+
+*The artwork in the screenshot is みらい by my friend Stephanie ([@greyradian](https://www.instagram.com/greyradian/)), shown with her permission.*
