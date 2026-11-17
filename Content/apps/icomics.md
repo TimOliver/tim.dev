@@ -2,8 +2,8 @@
 title: iComics
 tagline: Comic book reader
 layout: AppDetail
-date: 2025-03-01 00:00:00
-year: 2025
+date: 2026-01-01 00:00:00
+year: 2026
 order: 1
 platform: iPad, iPhone
 appstore: https://icomics.co
