@@ -37,8 +37,8 @@ enum InstagramEmbed {
         // Drop the dead Instagram embed script(s).
         out = replace(out, #"<script\b[^>]*instagram\.com[^>]*>.*?</script>"#) { _ in "" }
 
-        // Rewrite existing frames before creating replacements below, so a
-        // newly emitted iframe is not wrapped in a second .ig-embed container.
+        // Bare Instagram iframes (the oldest form) first, then the wrapper
+        // forms below.
         out = replace(out, #"<iframe\b[^>]*>(?:\s*</iframe>)?"#) { frame in
             frame.contains("instagram.com/p/") ? shortcode(in: frame).map(render) : nil
         }
@@ -57,7 +57,7 @@ enum InstagramEmbed {
             shortcode(in: block).map(render)
         }
 
-        // Mangled blockquote embeds → clean iframe (non-Instagram quotes kept).
+        // Mangled blockquote embeds → card (non-Instagram quotes kept).
         // Every legacy blockquote embed opens with the same padding placeholder
         // div the align-center form anchors on, so require it here too - an
         // ordinary markdown quote that merely links an Instagram post must
@@ -69,12 +69,11 @@ enum InstagramEmbed {
         return out
     }
 
-    /// Builds the canonical replacement markup for one post shortcode: a
-    /// token-free, lazy-loaded iframe pointing at Instagram's official
-    /// `/embed/captioned/` endpoint, wrapped in `.ig-embed` for sizing. The
-    /// iframe carries no fixed height - the Instagram resize listener in site.js
-    /// receives Instagram's postMessage height and grows the frame so captions
-    /// aren't clipped.
+    /// Builds the static card for one post shortcode from its snapshot in
+    /// instagram-posts.json: account header, the saved photo (a lightbox
+    /// trigger, with srcset on the page but a plain src in feeds), caption and
+    /// date. A post missing from the snapshot renders as a bare link card; one
+    /// deleted from Instagram keeps just its date and link.
     private static func embed(_ code: String, forFeed: Bool) -> String {
         let permalink = "https://www.instagram.com/p/\(code)/"
         // Not snapshotted yet: still a card, just a link, and say so loudly.

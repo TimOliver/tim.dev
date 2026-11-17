@@ -201,7 +201,7 @@ enum ArtRenderer {
 
         // Content/art/ is the collection root; each subfolder is one section.
         let fm = FileManager.default
-        let artRoot = URL(fileURLWithPath: fm.currentDirectoryPath)
+        let artRoot = IgniteWebsite.packageRoot
             .appendingPathComponent("Content")
             .appendingPathComponent("art")
 
@@ -241,34 +241,10 @@ enum ArtRenderer {
     /// after the closing fence is the blurb. `folder` is the fallback slug.
     static func parseSection(_ raw: String, folder: String) -> ArtSection? {
 
-        var meta: [String: String] = [:]
-        var blurb = ""
-        let lines = raw.components(separatedBy: "\n")
-
         // The file MUST open with a `---` fence; anything else isn't a section
         // manifest, so bail (the caller then skips this folder).
-        var i = 0
-        guard i < lines.count, lines[i].trimmingCharacters(in: .whitespaces) == "---" else {
-            return nil
-        }
-        i += 1
-
-        // Walk the front-matter block until the closing fence, splitting each
-        // line on its first `:` into key/value (later colons stay in the value).
-        while i < lines.count, lines[i].trimmingCharacters(in: .whitespaces) != "---" {
-            let line = lines[i]
-            if let colon = line.firstIndex(of: ":") {
-                let key = String(line[line.startIndex..<colon]).trimmingCharacters(in: .whitespaces)
-                let value = String(line[line.index(after: colon)...]).trimmingCharacters(in: .whitespaces)
-                if !key.isEmpty { meta[key] = value }
-            }
-            i += 1
-        }
-        i += 1 // skip closing ---
-
-        // Everything after the closing fence is the blurb (trimmed); a fence at
-        // end-of-file leaves it empty.
-        blurb = i < lines.count ? lines[i...].joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines) : ""
+        guard let (meta, body) = FrontMatter.parse(raw) else { return nil }
+        let blurb = body.trimmingCharacters(in: .whitespacesAndNewlines)
 
         // Fill the struct, each field falling back when its key is absent:
         // title/slug to the folder name, columns to 3, order to 0.

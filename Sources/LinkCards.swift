@@ -73,7 +73,7 @@ enum LinkCards {
             var sections: [String: String] = [:]
             let art = root.appending(path: "Content/art")
             for folder in (try? fm.contentsOfDirectory(atPath: art.path)) ?? [] {
-                let meta = (try? frontMatter(art.appending(path: "\(folder)/_section.md"))) ?? [:]
+                let meta = (try? FrontMatter.read(art.appending(path: "\(folder)/_section.md"))) ?? [:]
                 if let title = meta["title"] { sections[meta["slug"] ?? folder] = title }
             }
             artSections = sections
@@ -83,7 +83,7 @@ enum LinkCards {
         mutating func posts() throws {
             let folder = root.appending(path: "Content/posts")
             for name in try fm.contentsOfDirectory(atPath: folder.path).sorted() where name.hasSuffix(".md") {
-                let meta = try frontMatter(folder.appending(path: name))
+                let meta = try FrontMatter.read(folder.appending(path: name))
                 guard meta["published"] != "false",
                       let title = meta["title"], let path = meta["path"], let date = meta["date"] else { continue }
                 // The tagline is the post's `subtitle:` (shown under the title
@@ -109,7 +109,7 @@ enum LinkCards {
                 let path = String(file.deletingLastPathComponent().path.dropFirst(build.path.count)) + "/"
                 let section = path.split(separator: "/").first.map(String.init) ?? ""
                 // Home keeps the plain card; posts were done above.
-                if section.isEmpty || (section.count == 4 && section.allSatisfy(\.isNumber)) { continue }
+                if section.isEmpty || SiteURL.isPostSection(section) { continue }
 
                 var html = try String(contentsOf: file, encoding: .utf8)
                 let doc = try SwiftSoup.parse(html)
@@ -454,20 +454,6 @@ enum LinkCards {
             .replacingOccurrences(of: "<path ", with: "<path fill=\"#fff\" ")
         guard let image = NSImage(data: Data(svg.utf8)) else { throw CocoaError(.fileReadCorruptFile) }
         return image
-    }
-
-    /// Front matter as plain strings, split on the first `:` like Ignite.
-    static func frontMatter(_ url: URL) throws -> [String: String] {
-        let text = try String(contentsOf: url, encoding: .utf8)
-        let parts = text.components(separatedBy: "---")
-        guard parts.count >= 3 else { return [:] }
-        var meta: [String: String] = [:]
-        for line in parts[1].split(separator: "\n") {
-            guard let colon = line.firstIndex(of: ":") else { continue }
-            let key = line[..<colon].trimmingCharacters(in: .whitespaces)
-            meta[key] = line[line.index(after: colon)...].trimmingCharacters(in: .whitespaces)
-        }
-        return meta
     }
 
     /// `2017-09-19 01:12:24` → `19 September 2017`.

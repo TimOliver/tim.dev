@@ -17,4 +17,11 @@ enum SiteURL {
         parts.fragment = nil
         return parts.url?.absoluteString ?? url.absoluteString
     }
+
+    /// True for a blog post's first path component: posts live at
+    /// /YYYY/MM/DD/slug/, everything else (apps, about, archive...) doesn't
+    /// start with a four-digit year.
+    static func isPostSection(_ section: some StringProtocol) -> Bool {
+        section.count == 4 && section.allSatisfy(\.isNumber)
+    }
 }

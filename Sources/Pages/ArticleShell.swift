@@ -270,15 +270,6 @@ enum ArticleShell {
         isoDateFormatter.string(from: date)
     }
 
-    /// Turns runs of 2+ consecutive standalone images into a lightbox-backed
-    /// thumbnail grid (.post-gallery, styled in site.css). Matches both fresh
-    /// markdown output (`<p><img></p>` paragraphs) and legacy WordPress blocks
-    /// (`<figure class="wp-block-image"><img>[<figcaption>]</figure>`). Each
-    /// image becomes an `<a data-lightbox="…">` thumb - lightbox3 (loaded on
-    /// home + post pages) groups anchors sharing a data-lightbox value into a
-    /// navigable gallery and shows data-caption under each. The caption comes
-    /// from the figcaption where present, else the image's alt text. Single
-    /// images are left exactly as they were.
     /// Gives every post image its own paragraph. WordPress-era posts often put
     /// an image and text in one `<p>` - image first (it used to float beside
     /// the text; the float was lost in the migration) or text, `<br>`, image -
@@ -317,6 +308,15 @@ enum ArticleShell {
         }
     }
 
+    /// Turns runs of 2+ consecutive standalone images into a lightbox-backed
+    /// thumbnail grid (.post-gallery, styled in site.css). Matches both fresh
+    /// markdown output (`<p><img></p>` paragraphs) and legacy WordPress blocks
+    /// (`<figure class="wp-block-image"><img>[<figcaption>]</figure>`). Each
+    /// image becomes an `<a data-lightbox="…">` thumb - lightbox3 (loaded on
+    /// home + post pages) groups anchors sharing a data-lightbox value into a
+    /// navigable gallery and shows data-caption under each. The caption comes
+    /// from the figcaption where present, else the image's alt text. Single
+    /// images are left exactly as they were.
     private static func groupImageGrids(_ html: String, galleryPrefix: String) -> String {
 
         // A single grid-eligible item: a markdown image paragraph OR a WP image

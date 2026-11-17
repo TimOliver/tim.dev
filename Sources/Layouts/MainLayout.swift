@@ -77,9 +77,7 @@ struct MainLayout: Layout {
     private var isHome: Bool { section.isEmpty && !isErrorPage }
 
     /// Blog posts live under year directories (/2008/… through /2021/…).
-    private var isPost: Bool {
-        section.count == 4 && section.allSatisfy(\.isNumber)
-    }
+    private var isPost: Bool { SiteURL.isPostSection(section) }
 
     /// Pages whose <article> content can carry post media: the home feed
     /// (which mirrors full posts) and the posts themselves. These get the

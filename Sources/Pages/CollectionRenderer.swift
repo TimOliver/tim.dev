@@ -121,9 +121,10 @@ enum CollectionRenderer {
     /// fragment - a broken site would deploy.
     static func include(key: String, dir: String, html: String) -> Include {
 
-        // Target dir: Includes/_<dir> under the build's working directory. The
-        // leading underscore marks these fragments as generated (see .gitignore).
-        let root = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        // Target dir: Includes/_<dir> under the repo root, where Ignite reads
+        // includes and clearGeneratedIncludes() empties them. The leading
+        // underscore marks these fragments as generated (see .gitignore).
+        let root = IgniteWebsite.packageRoot
             .appendingPathComponent("Includes")
             .appendingPathComponent("_\(dir)")
         let file = root.appendingPathComponent("\(key).html")
@@ -257,9 +258,10 @@ enum Media {
     /// rather than shipping images that would 404.
     private static func load() -> [String: MediaEntry] {
 
-        // Resolve media-manifest.json relative to the build's working directory.
-        let cwd = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-        let url = cwd.appendingPathComponent("media-manifest.json")
+        // media-manifest.json sits at the repo root (whatever the working
+        // directory is).
+        let root = IgniteWebsite.packageRoot
+        let url = root.appendingPathComponent("media-manifest.json")
         // No manifest = no collection images yet. Every media slot renders its
         // empty surface; there is nothing to fail over.
         guard let data = try? Data(contentsOf: url) else { return [:] }
@@ -271,7 +273,7 @@ enum Media {
             fatalError("media-manifest.json is unreadable - run Scripts/build-media.py")
         }
 
-        let assetsRoot = cwd.appendingPathComponent("Assets")
+        let assetsRoot = root.appendingPathComponent("Assets")
         var out: [String: MediaEntry] = [:]
         for (path, value) in raw {
 

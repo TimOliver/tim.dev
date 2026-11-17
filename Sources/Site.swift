@@ -12,7 +12,8 @@ import Ignite
 @main
 struct IgniteWebsite {
 
-    /// Builds the entire site, then runs the two post-publish passes. Marked
+    /// Builds the entire site, then runs the post-publish passes below over
+    /// Build/ (feeds, meta, link cards, JSON-LD, clean-up, fingerprints). Marked
     /// `async` only because Ignite's `publish()` is async - this is a one-shot
     /// build that runs to completion and exits, not a long-lived server.
     static func main() async {
@@ -21,10 +22,11 @@ struct IgniteWebsite {
         var site = TimDevSite()
 
         do {
-            // Order matters: publish() writes Build/, then the post-passes
-            // read and rewrite the files it just produced. buildFeeds scopes
-            // and splits the RSS; stripIgniteCore removes the unused bundle;
-            // removeDotfiles drops Finder litter copied over from Assets/.
+            // Order matters: publish() writes Build/, then the post-passes read
+            // and rewrite the files it just produced. MetaDescriptions settles
+            // the descriptions before LinkCards and StructuredData read them,
+            // and fingerprintAssets runs last because the earlier passes match
+            // the plain CSS/JS tags.
             try clearGeneratedIncludes()
             try await site.publish()
             try buildFeeds(siteURL: site.url)
@@ -78,7 +80,7 @@ struct IgniteWebsite {
         while let url = enumerator?.nextObject() as? URL {
             // Post pages live under /YYYY/MM/DD/slug/.
             let parts = url.path.dropFirst(build.path.count).split(separator: "/")
-            if url.lastPathComponent == "index.html", parts.count == 5, parts[0].allSatisfy(\.isNumber) {
+            if url.lastPathComponent == "index.html", parts.count == 5, SiteURL.isPostSection(parts[0]) {
                 pages.append(url)
             }
         }
@@ -406,7 +408,7 @@ struct TimDevSite: Site {
     /// Full-text feed at /feed.xml (matching the footer link). Ignite feeds the
     /// entire content collection in (apps/code/art/talks included) with no
     /// Site-level filter, so contentCount is set high enough to cover everything
-    /// and IgniteWebsite.scopeFeedToBlog() post-processes the XML down to dated
+    /// and IgniteWebsite.buildFeeds() post-processes the XML down to dated
     /// blog posts after publish.
     var feedConfiguration: FeedConfiguration? = FeedConfiguration(mode: .full, contentCount: 500, path: "/feed.xml")
 

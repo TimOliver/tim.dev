@@ -27,7 +27,7 @@ enum MetaDescriptions {
         var authored = Set<String>()
         let posts = root.appending(path: "Content/posts")
         for name in try fm.contentsOfDirectory(atPath: posts.path) where name.hasSuffix(".md") {
-            let meta = try LinkCards.frontMatter(posts.appending(path: name))
+            let meta = try FrontMatter.read(posts.appending(path: name))
             if let path = meta["path"], !(meta["description"] ?? "").isEmpty { authored.insert(path) }
         }
 
@@ -36,7 +36,7 @@ enum MetaDescriptions {
             let path = String(file.deletingLastPathComponent().path.dropFirst(build.path.count)) + "/"
             let section = path.split(separator: "/").first.map(String.init) ?? ""
             if section.isEmpty { continue }  // home keeps the site description
-            let isPost = section.count == 4 && section.allSatisfy(\.isNumber)
+            let isPost = SiteURL.isPostSection(section)
             if isPost && authored.contains(path) { continue }
 
             let html = try String(contentsOf: file, encoding: .utf8)

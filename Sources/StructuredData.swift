@@ -42,7 +42,7 @@ enum StructuredData {
             let path = String(file.deletingLastPathComponent().path.dropFirst(build.path.count)) + "/"
             let section = path.split(separator: "/").first.map(String.init) ?? ""
             let isHome = section.isEmpty
-            let isPost = section.count == 4 && section.allSatisfy(\.isNumber)
+            let isPost = SiteURL.isPostSection(section)
             guard isHome || isPost else { continue }
 
             var html = try String(contentsOf: file, encoding: .utf8)

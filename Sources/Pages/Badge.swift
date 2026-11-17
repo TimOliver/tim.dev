@@ -20,7 +20,7 @@ enum Badge {
     private static var cache: [String: String] = [:]
     static func svg(_ file: String) -> String {
         if let hit = cache[file] { return hit }
-        let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        let url = IgniteWebsite.packageRoot
             .appendingPathComponent("Assets/img/portfolio/\(file)")
         guard let s = try? String(contentsOf: url, encoding: .utf8) else {
             fatalError("Badge SVG missing: Assets/img/portfolio/\(file)")
