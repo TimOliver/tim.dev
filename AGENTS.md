@@ -39,6 +39,7 @@ Includes/_posts|_apps|…/       GENERATED per build, gitignored — never edit 
 Assets/                        copied verbatim into Build/ (css, js, img, fonts)
 Template/                      the original hand-coded mockup — design source of truth (Template/AGENTS.md)
 Scripts/                       build-media, check-site, dev-server, strip-exif, hooks, tests
+Design/app-heroes/<slug>/      source bezel PNGs for Scripts/app-heroes.py (never copied into Build/)
 media-manifest.json            build INPUT written by build-media.py (dimensions, LQIP, variants)
 instagram-posts.json           build INPUT: snapshot of every embedded Instagram post (see below)
 ```
@@ -166,10 +167,15 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   bare device shots); the detail page frames it at its natural ratio like Art. It's also the
   page's og:image, so the app's link card blurs the hero rather than the icon. Heroes are 1600x1000,
   made by `Scripts/app-heroes.py` (layouts for MicroPoints, iPokédex, Mercari, iComics, pixiv; needs numpy;
-  Honda and Realm are photos, not composed) from Tim's lossless bezel PNGs (never images pasted into chat, which arrive as lossy
+  Honda and Realm are photos, not composed; run it with no arguments, or name slugs) from Tim's
+  lossless bezel PNGs, kept in `Design/app-heroes/<slug>/` (never images pasted into chat, which arrive as lossy
   WebP), composed in floating point and dithered once at the end (8-bit gradients band), and
   saved as JPEG quality 100 with `subsampling=0` (the lightbox target; pages get q95/q97 variants):
-  4:2:0 visibly smears red UI text. App icons come from
+  4:2:0 visibly smears red UI text. Layout rule (Tim): use as much of the canvas as the
+  devices allow. Two phones go WWDC-style: scaled so the screens fill the height with ~15px of
+  phone above and below, rounded ends off-canvas (pixiv). Three phones are width-bound, so as
+  large as fits with tight gaps (Mercari: 944px tall, 50px gaps). Never upscale a bezel PNG to
+  get there; ask Tim for a bigger source instead. App icons come from
   the App Store's square artwork where listed (iTunes lookup `artworkUrl512`, swapped to
   `1024x1024bb.png`), stored at 512px; layered iOS 26 icons in an `Assets.car` can be rendered
   with CoreUI's `iconImageWithName:…desiredSize:`.

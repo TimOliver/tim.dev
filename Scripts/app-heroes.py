@@ -6,22 +6,27 @@ since 8-bit gradients band, then saved as JPEG quality 100 with 4:4:4 chroma (th
 target; build-media.py derives the q95/q97 page variants from it).
 
 Sources are Tim's lossless bezel PNGs, never images pasted into chat (those arrive as
-lossy WebP). Needs numpy as well as Pillow.
+lossy WebP), kept in the repo under Design/app-heroes/<slug>/ so a hero can be re-tweaked
+on any machine: micropoints-1/2.png, ipokedex-1/2.png, Mercari-1/2/3.png, pixiv-1/2.png
+and icomics-devices.webp (from icomics.net; swap in a PNG export if one turns up).
+Design/ is never copied into Build/. Needs numpy as well as Pillow.
 
-    python3 Scripts/app-heroes.py SOURCE_DIR [slug ...]
+    python3 Scripts/app-heroes.py [slug ...]          # all heroes, or just these
+    python3 Scripts/app-heroes.py --from DIR [slug ...] # sources from elsewhere
 
-SOURCE_DIR holds micropoints-1/2.png, ipokedex-1/2.png, Mercari-1/2/3.png, pixiv-1/2.png and
-icomics-devices.webp (from icomics.net; swap in a PNG export if one turns up).
 Afterwards run Scripts/strip-exif.py on the heroes and Scripts/build-media.py.
 """
 import sys,math
 from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
-if len(sys.argv) < 2:
-    sys.exit(__doc__)
-D=sys.argv[1].rstrip('/')+'/'
-REPO=str(Path(__file__).resolve().parent.parent/'Assets/img/apps')+'/'
+ROOT=Path(__file__).resolve().parent.parent
+args=sys.argv[1:]
+D=str(ROOT/'Design/app-heroes')+'/'
+if args[:1]==['--from']:
+    if len(args)<2: sys.exit(__doc__)
+    D=args[1].rstrip('/')+'/'; args=args[2:]
+REPO=str(ROOT/'Assets/img/apps')+'/'
 W,H=1600,1000
 def box(a,r,axis):
     if r<1: return a
@@ -64,13 +69,16 @@ def save(img,slug):
     out=Image.fromarray(np.clip(np.round(img),0,255).astype(np.uint8),'RGB')
     out.save(REPO+slug+'/hero.jpg',quality=100,subsampling=0,optimize=True,progressive=True)
     print('wrote',REPO+slug+'/hero.jpg')
-L=lambda f: Image.open(D+f).convert('RGBA')
+def L(name):   # a source file found anywhere under SOURCE_DIR (Tim keeps per-app folders)
+    hits=sorted(Path(D).rglob(name))
+    if not hits: sys.exit(f'{name} not found under {D}')
+    return Image.open(hits[0]).convert('RGBA')
 def pokeball_mask(s):
     m=Image.new('L',(s,s),0); d=ImageDraw.Draw(m)
     d.ellipse((0,0,s-1,s-1),fill=255); b=int(s*0.085); d.rectangle((0,s//2-b//2,s,s//2+b//2),fill=0)
     r1=int(s*0.21); d.ellipse((s//2-r1,s//2-r1,s//2+r1,s//2+r1),fill=0)
     r2=int(s*0.13); d.ellipse((s//2-r2,s//2-r2,s//2+r2,s//2+r2),fill=255); return m
-which=sys.argv[2:] or ['micropoints','ipokedex','mercari-japan','icomics','pixiv']
+which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv']
 if 'micropoints' in which:
     img=radial((74,190,62),(22,92,20),cy=0.45,p=1.3)
     g=Image.new('L',(W,H),0); gd=ImageDraw.Draw(g)
@@ -95,7 +103,7 @@ if 'ipokedex' in which:
     save(img,'ipokedex')
 if 'mercari-japan' in which:
     img=np.full((H,W,3),255.0)
-    img=phones_over(img,[L('Mercari-1.png'),L('Mercari-2.png'),L('Mercari-3.png')],880,[52,52,52],70,0.28,26,18,[0,2,1])
+    img=phones_over(img,[L('Mercari-1.png'),L('Mercari-2.png'),L('Mercari-3.png')],944,[28,28,28],50,0.28,26,18,[0,2,1])
     save(img,'mercari-japan')
 if 'icomics' in which:
     # White, like Mercari, behind the iPad + iPhone render (both devices in one image).
