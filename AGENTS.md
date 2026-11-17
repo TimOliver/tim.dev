@@ -128,8 +128,10 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   - Apps: `role`, `company`, `platform` (Platforms; also the card badge), `stack` (Built with),
     `status` (in use: Live, Delisted, Discontinued, Pulled, On TestFlight, Open Source), `years`
     (Tim's time on it, e.g. 2015–2017, or 2012–Present). `year:` (the card badge) and `date:` (the
-    grid's newest-first sort) mark the app's latest MAJOR release, so a big redesign moves an app
-    forward (iComics: released 2012, badge 2026 after its redesign); `years:` keeps the full span.
+    grid's newest-first sort) mark the app's latest MAJOR public release, so a big redesign moves
+    an app forward (iComics: released 2012, badge 2026 after its redesign). Public launch dates,
+    not when Tim finished or handed off the code: Reading Race was handed over in 2014 but
+    launched 2015-09-11, so its badge is 2015 while `years:` stays 2014 (his time on it).
     `order: N` pins an app to grid slot N and the rest fill in newest-first (unlike Code's, pins
     needn't be contiguous): only iComics is pinned (first). The rest are by date, which puts
     Threads between Instagram for iPad and Instagram; they stack in the 2-column grid and Tim is

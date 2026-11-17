@@ -2,8 +2,8 @@
 title: osu!
 tagline: Tap the circles! To the beat!
 layout: AppDetail
-date: 2020-01-01 00:00:00
-year: 2020
+date: 2026-03-01 00:00:00
+year: 2026
 platform: Mac, Windows, iPhone, iPad
 company: ppy Pty Ltd
 years: 2020–Present
