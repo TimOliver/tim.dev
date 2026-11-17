@@ -2,6 +2,7 @@
 title: RFLAN QR Code Scanner
 tagline: QR code scanner for RFLAN
 layout: AppDetail
+published: false
 date: 2013-06-01 00:00:00
 year: 2013
 platform: iPhone, iPod

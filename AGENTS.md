@@ -165,7 +165,7 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   grid card shows it cropped to 16:10 (`.app-hero`, rounded - heroes are full-bleed pictures, not
   bare device shots); the detail page frames it at its natural ratio like Art. It's also the
   page's og:image, so the app's link card blurs the hero rather than the icon. Heroes are 1600x1000,
-  made by `Scripts/app-heroes.py` (layouts for MicroPoints, iPokédex, Mercari; needs numpy;
+  made by `Scripts/app-heroes.py` (layouts for MicroPoints, iPokédex, Mercari, iComics, pixiv; needs numpy;
   Honda and Realm are photos, not composed) from Tim's lossless bezel PNGs (never images pasted into chat, which arrive as lossy
   WebP), composed in floating point and dithered once at the end (8-bit gradients band), and
   saved as JPEG quality 100 with `subsampling=0` (the lightbox target; pages get q95/q97 variants):

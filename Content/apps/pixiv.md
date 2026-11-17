@@ -11,6 +11,7 @@ role: iOS Engineer
 stack: Objective-C
 years: 2013
 icon: /img/apps/pixiv/icon.png
+image: /img/apps/pixiv/hero.jpg
 path: /apps/pixiv/
 ---
 

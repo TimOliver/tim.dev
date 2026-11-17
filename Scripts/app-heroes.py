@@ -10,7 +10,7 @@ lossy WebP). Needs numpy as well as Pillow.
 
     python3 Scripts/app-heroes.py SOURCE_DIR [slug ...]
 
-SOURCE_DIR holds micropoints-1/2.png, ipokedex-1/2.png, Mercari-1/2/3.png and
+SOURCE_DIR holds micropoints-1/2.png, ipokedex-1/2.png, Mercari-1/2/3.png, pixiv-1/2.png and
 icomics-devices.webp (from icomics.net; swap in a PNG export if one turns up).
 Afterwards run Scripts/strip-exif.py on the heroes and Scripts/build-media.py.
 """
@@ -37,6 +37,9 @@ def radial(inner,outer,cy=0.42,p=1.2):
     y,x=np.mgrid[0:H,0:W].astype(np.float64); R=math.hypot(W/2,H/2)
     t=np.minimum(1,np.hypot(x-W/2,y-H*cy)/R)**p
     return np.array(inner,float)[None,None,:]*(1-t[...,None])+np.array(outer,float)[None,None,:]*t[...,None]
+def linear(top,bottom,p=1.0):   # vertical gradient; p>1 holds the top colour longer
+    t=((np.arange(H,dtype=np.float64)/(H-1))**p)[:,None,None]
+    return np.broadcast_to(np.array(top,float)*(1-t)+np.array(bottom,float)*t,(H,W,3)).copy()
 def over(img,color,alpha):   # color: rgb tuple or HxWx3 array; alpha: HxW in 0..1
     a=np.clip(alpha,0,1)[...,None]; return img*(1-a)+np.asarray(color,float)*a
 def fmask(pil_L): return np.asarray(pil_L,dtype=np.float64)/255
@@ -67,7 +70,7 @@ def pokeball_mask(s):
     d.ellipse((0,0,s-1,s-1),fill=255); b=int(s*0.085); d.rectangle((0,s//2-b//2,s,s//2+b//2),fill=0)
     r1=int(s*0.21); d.ellipse((s//2-r1,s//2-r1,s//2+r1,s//2+r1),fill=0)
     r2=int(s*0.13); d.ellipse((s//2-r2,s//2-r2,s//2+r2,s//2+r2),fill=255); return m
-which=sys.argv[2:] or ['micropoints','ipokedex','mercari-japan','icomics']
+which=sys.argv[2:] or ['micropoints','ipokedex','mercari-japan','icomics','pixiv']
 if 'micropoints' in which:
     img=radial((74,190,62),(22,92,20),cy=0.45,p=1.3)
     g=Image.new('L',(W,H),0); gd=ImageDraw.Draw(g)
@@ -100,3 +103,13 @@ if 'icomics' in which:
     dev=L('icomics-devices.webp'); h=round(dev.height*1380/dev.width)
     img=phones_over(img,[dev],h,[(H-h)//2+10],0,0.28,26,18,[0])
     save(img,'icomics')
+if 'pixiv' in which:
+    # pixiv blue (its marketing puts the bezels on blue): the icon's exact #0096FA at the
+    # top, held through the upper half, then darkening toward the bottom, so the card
+    # matches its icon. WWDC-style framing: the iPhone 5 screens (y 237-1373
+    # in the 1602px bezel PNGs) fill the height with 15px of phone above and below, so
+    # the rounded ends never show.
+    img=linear((0,150,250),(0,108,200),p=2.2)
+    s=970/1136
+    img=phones_over(img,[L('pixiv-1.png'),L('pixiv-2.png')],round(1602*s),[round(15-237*s)]*2,80,0.45,24,16,[0,1])
+    save(img,'pixiv')
