@@ -23,12 +23,14 @@ enum MetaDescriptions {
         let fm = FileManager.default
         let build = root.appending(path: "Build")
 
-        // Posts that set their own `description:` are left alone.
-        var authored = Set<String>()
+        // Posts that set their own `description:` get it verbatim. Ignite
+        // ignores the key (its description is always the first paragraph),
+        // so it has to be written in here.
+        var authored: [String: String] = [:]
         let posts = root.appending(path: "Content/posts")
         for name in try fm.contentsOfDirectory(atPath: posts.path) where name.hasSuffix(".md") {
             let meta = try FrontMatter.read(posts.appending(path: name))
-            if let path = meta["path"], !(meta["description"] ?? "").isEmpty { authored.insert(path) }
+            if let path = meta["path"], let text = meta["description"], !text.isEmpty { authored[path] = text }
         }
 
         guard let files = fm.enumerator(at: build, includingPropertiesForKeys: nil) else { return }
@@ -37,14 +39,15 @@ enum MetaDescriptions {
             let section = path.split(separator: "/").first.map(String.init) ?? ""
             if section.isEmpty { continue }  // home keeps the site description
             let isPost = SiteURL.isPostSection(section)
-            if isPost && authored.contains(path) { continue }
 
             let html = try String(contentsOf: file, encoding: .utf8)
             let doc = try SwiftSoup.parse(html)
             let current = try doc.select("meta[name=description]").attr("content")
 
             var description = ""
-            if isPost {
+            if isPost, let text = authored[path] {
+                description = text
+            } else if isPost {
                 // Prose in reading order - paragraphs and list items - skipping
                 // image-only paragraphs, embedded social cards, and list items
                 // that wrap their own paragraphs (those are read as <p>s).

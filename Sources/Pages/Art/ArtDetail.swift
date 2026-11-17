@@ -52,7 +52,7 @@ extension ArtRenderer {
         if let id = item.youtubeID {
             let start = item.youtubeStart.map { #" params="start=\#($0)""# } ?? ""
             header += #"<div class="collection-detail-shot">"#
-            header += #"<lite-youtube videoid="\#(escape(id))"\#(start) playlabel="Play: \#(escape(item.title))"></lite-youtube>"#
+            header += #"<lite-youtube videoid="\#(escape(id))"\#(start)\#(Media.posterStyle(item.image)) playlabel="Play: \#(escape(item.title))"></lite-youtube>"#
             header += "</div>"
             return detailShell(header: header, item: item)
         }

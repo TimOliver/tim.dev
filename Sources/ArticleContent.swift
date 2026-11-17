@@ -9,6 +9,16 @@ enum ArticleContent {
     static func normalizedHTML(_ html: String, forFeed: Bool = false) -> String {
         outsideCode(html) { fragment in
             var out = InstagramEmbed.transform(fragment, forFeed: forFeed)
+            // WordPress-era posts embed YouTube as a raw iframe, which loads
+            // the whole player (and YouTube's cookies) as soon as it scrolls
+            // near the viewport. Pages get the same click-to-play facade as
+            // Talks; feeds, where no script runs, get a plain link.
+            out = replace(out, #"(?is)<iframe\b[^>]*\bsrc="(?:https?:)?//(?:www\.)?youtube(?:-nocookie)?\.com/embed/([A-Za-z0-9_-]{11})[^"]*"[^>]*>\s*</iframe>"#) { match, text in
+                let id = text.substring(with: match.range(at: 1))
+                return forFeed
+                    ? #"<a href="https://www.youtube.com/watch?v=\#(id)">Watch on YouTube</a>"#
+                    : #"<lite-youtube videoid="\#(id)"\#(posterStyle(id)) playlabel="Play video"></lite-youtube>"#
+            }
             // WordPress exports left Markdown inside raw HTML blocks, where
             // the Markdown parser intentionally does not interpret it.
             out = replace(out, #"\[\s*!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)\s*\]\(([^)\s]+)(?:\s+"[^"]*")?\)"#) { match, text in
@@ -27,6 +37,17 @@ enum ArticleContent {
             }
             return out
         }
+    }
+
+    /// The facade's placeholder, saved locally by Scripts/youtube-posters.py so
+    /// the page never fetches YouTube's thumbnail before Play. A missing one
+    /// fails the build rather than quietly falling back to YouTube's.
+    private static func posterStyle(_ id: String) -> String {
+        let path = "/img/posts/youtube/\(id).jpg"
+        guard FileManager.default.fileExists(atPath: IgniteWebsite.packageRoot.appending(path: "Assets" + path).path) else {
+            fatalError("No local poster for YouTube video \(id). Run python3 Scripts/youtube-posters.py")
+        }
+        return #" style="background-image: url('\#(path)')""#
     }
 
     /// RSS readers do not run the site's JavaScript. Emit usable Instagram
@@ -67,6 +88,12 @@ enum ArticleContent {
             let canonical = SiteURL.canonicalPage(url)
             if tag == "link", let permalink = URL(string: canonical) { articleURL = permalink }
             return "<\(tag)\(attributes)>\(canonical)</\(tag)>"
+        }
+        // Ignite writes the item <title> verbatim, so a title with `&` or `<`
+        // would make the whole feed invalid XML. Escape bare ones (entities
+        // already present are kept).
+        out = replace(out, #"<title>([^<]*(?:<(?!/title>)[^<]*)*)</title>"#) { match, text in
+            "<title>\(attribute(text.substring(with: match.range(at: 1))))</title>"
         }
         out = replace(out, #"(?s)<content:encoded><!\[CDATA\[(.*?)\]\]></content:encoded>"#) { match, text in
             let html = text.substring(with: match.range(at: 1))

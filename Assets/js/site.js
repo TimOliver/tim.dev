@@ -63,6 +63,17 @@ document.addEventListener('collection:swapped', function() {
     if (lightbox && document.querySelector('[data-lightbox]')) lightbox.Lightbox.init();
 });
 
+// A lightbox left open over a collection page (Back pressed while viewing an
+// app hero, say) would stay on top of the swapped-in page with scrolling
+// still locked. Shut it instantly, without the close animation, since the
+// thumbnail it would shrink back into is about to be replaced.
+document.addEventListener('collection:before-swap', function() {
+    var lightbox = globalThis.Lightbox3 && globalThis.Lightbox3.Lightbox.instance;
+    if (!lightbox || !(lightbox.state.isOpen || lightbox.state.isAnimating)) return;
+    if (lightbox.stopSpring) lightbox.stopSpring();
+    lightbox.finishClose();
+});
+
 // Header popovers (theme picker, RSS feeds): a trigger toggles its panel;
 // clicking outside or pressing Escape closes it. Returns the open/close setter.
 function bindPopover(wrap, trigger, popover, onTriggerClick) {
@@ -507,9 +518,17 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
         catch (err) { return null; }
     }
 
-    function swapTo(url, push, fade, destinationEntry) {
-        var request = ++sequence;
+    // Invalidate any swap still in flight, so its late response can't
+    // replace whatever the visitor has done since.
+    function cancelPending() {
+        ++sequence;
         if (controller) controller.abort();
+        controller = null;
+    }
+
+    function swapTo(url, push, fade, destinationEntry) {
+        cancelPending();
+        var request = sequence;
         controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
         var options = {};
         if (controller) options.signal = controller.signal;
@@ -580,6 +599,7 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
         if (a.pathname === location.pathname && a.search === location.search && a.hash) {
             var target = hashTarget(a.hash);
             if (!target) return;
+            cancelPending();
             e.preventDefault();
             target.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'start' });
             history.replaceState(currentEntry, '', a.href);
@@ -589,6 +609,7 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
         // on Talks): scroll back to the top rather than refetching it and
         // stacking a duplicate history entry.
         if (a.pathname === location.pathname && a.search === location.search) {
+            cancelPending();
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
             return;
@@ -606,8 +627,7 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
         if (collectionSection(location.pathname) === section) {
             swapTo(location.href, false, false, event.state);
         } else {
-            ++sequence;
-            if (controller) controller.abort();
+            cancelPending();
             window.location.reload();
         }
     });

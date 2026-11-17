@@ -34,9 +34,17 @@ struct MainLayout: Layout {
     /// front matter) or the site-wide one.
     private var metaDescription: String {
         // Prefer the page's own `description:` front matter; fall back to the
-        // site-wide description when the page doesn't set one.
-        page.description.isEmpty ? (site.description ?? "") : page.description
+        // site-wide description when the page doesn't set one. Ignite writes
+        // attribute values verbatim; the description arrives already
+        // entity-encoded (it's tag-stripped rendered HTML) except for quotes,
+        // which would end the content attribute early.
+        let text = page.description.isEmpty ? (site.description ?? "") : page.description
+        return text.replacingOccurrences(of: "\"", with: "&quot;")
     }
+
+    /// pageTitle for HTML: Ignite writes <title> text and attribute values
+    /// verbatim, so a title like `My "new" app & UIKit` must be escaped here.
+    private var escapedTitle: String { escape(pageTitle) }
 
     private var canonicalURL: String { SiteURL.canonicalPage(page.url) }
 
@@ -128,7 +136,7 @@ struct MainLayout: Layout {
 
             MetaTag(characterSet: "UTF-8")
             MetaTag(name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover")
-            Title(pageTitle)
+            Title(escapedTitle)
             // Error pages have no canonical identity: a host can serve this
             // document at any missing URL. Keep it out of search results.
             MetaTag(name: "description", content: metaDescription)
@@ -140,14 +148,14 @@ struct MainLayout: Layout {
             }
             MetaTag(property: "og:site_name", content: "tim.dev")
             MetaTag(property: "og:type", content: isPost ? "article" : "website")
-            MetaTag(property: "og:title", content: pageTitle)
+            MetaTag(property: "og:title", content: escapedTitle)
             MetaTag(property: "og:description", content: metaDescription)
             MetaTag(property: "og:image", content: socialImageURL)
             // Every og:image is a 1200x630 link card (LinkCards, or the
             // default card), so the size and alt text are known up front.
             MetaTag(property: "og:image:width", content: "1200")
             MetaTag(property: "og:image:height", content: "630")
-            MetaTag(property: "og:image:alt", content: pageTitle)
+            MetaTag(property: "og:image:alt", content: escapedTitle)
             MetaTag(name: "twitter:card", content: "summary_large_image")
             // Mastodon: credits shared links to Tim ("By @timoliver@...") and,
             // with rel="me", verifies tim.dev on his profile.

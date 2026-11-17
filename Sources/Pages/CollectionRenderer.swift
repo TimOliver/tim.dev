@@ -374,6 +374,15 @@ enum Media {
         return s
     }
 
+    /// A `style` attribute giving a `<lite-youtube>` facade the item's own
+    /// poster, so the placeholder comes from this site: without one, the
+    /// facade fetches YouTube's thumbnail before Play is pressed. Empty when
+    /// the item has no image (the facade falls back to YouTube's).
+    static func posterStyle(_ path: String?) -> String {
+        guard let path, manifest[path] != nil else { return "" }
+        return #" style="background-image: url('\#(escape(path))')""#
+    }
+
     /// Wraps a detail page's media in a lightbox3 trigger so it opens
     /// full-screen (and pinch-zooms) at the original's resolution. No image
     /// means nothing to open, so `html` comes back unwrapped. lightbox3 binds

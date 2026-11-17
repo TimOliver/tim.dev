@@ -1710,17 +1710,23 @@ footer .container {
     cursor: pointer;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.25s ease;
+    /* Hidden means out of the tab order too: visibility flips after the
+       fade-out finishes, and straight away on the way in. */
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0s linear 0.25s;
     z-index: 20;
 }
 
 .back-to-top.visible {
     opacity: 1;
     pointer-events: auto;
+    visibility: visible;
+    transition: opacity 0.25s ease, visibility 0s;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .back-to-top {
+    .back-to-top,
+    .back-to-top.visible {
         transition: none;
     }
 }

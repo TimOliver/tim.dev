@@ -100,6 +100,10 @@ class LiteYTEmbed extends HTMLElement {
      * But TBH, I don't think it'll happen soon with Site Isolation and split caches adding serious complexity.
      */
     static warmConnections() {
+        // tim.dev: no preconnects. Hovering a video would otherwise open
+        // connections to YouTube, Google and DoubleClick before Play is
+        // pressed, and the Privacy Policy promises nothing loads until then.
+        return;
         if (LiteYTEmbed.preconnected) return;
 
         // The iframe document and most of its subresources come right off youtube.com
@@ -149,6 +153,7 @@ class LiteYTEmbed extends HTMLElement {
 
         this.playerPromise = new Promise(resolve => {
             let player = new YT.Player(videoPlaceholderEl, {
+                host: 'https://www.youtube-nocookie.com', // tim.dev: privacy-enhanced mode, as the iframe path uses
                 width: '100%',
                 videoId: this.videoId,
                 playerVars: paramsObj,

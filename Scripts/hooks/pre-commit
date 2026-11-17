@@ -26,6 +26,16 @@ if [[ ${#staged[@]} -eq 0 ]]; then
     exit 0
 fi
 
+# The hook strips the working-tree file and re-stages it, so an image with
+# further unstaged edits would have those edits committed too. Refuse
+# instead: stage (or stash) the image's final version first.
+for path in "${staged[@]}"; do
+    if ! git diff --quiet -- "$path"; then
+        echo "pre-commit: $path has unstaged changes; stage or stash them, then commit again." >&2
+        exit 1
+    fi
+done
+
 count=${#staged[@]}
 echo "pre-commit: stripping EXIF from $count staged image(s)..."
 
