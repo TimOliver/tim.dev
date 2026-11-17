@@ -61,8 +61,11 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   `.collection-detail-tagline` / first `.about-section-subtitle`, and an `img[data-link-card]`,
   else its og:image, else its first content image - read from the built HTML, whose og:image it
   then rewrites) into `Build/img/cards/`, cached in `.build/link-cards/` (bump
-  `LinkCards.version` after a design change); home and the 404 use
-  `Assets/img/site/link-card.png`; `StructuredData.inject` adds JSON-LD
+  `LinkCards.version` after a design change); home and the 404 share the site card
+  (`/img/site/link-card.png`), drawn every build by `LinkCards.siteCard`: wordmark, "Tim
+  Oliver · iOS Engineer in Tokyo", and section pills, with an even 38px of visible space
+  between the three (the Assets copy is just a synced snapshot; update the pills if a
+  section is added); `StructuredData.inject` adds JSON-LD
   (`BlogPosting` per post plus `article:published_time`; `WebSite` + `Person` with `sameAs` on
   home); `stripIgniteCore` deletes the unused `ignite-core`
   bundle and its script tag; `stripUnusedLoaders` drops lightbox/lite-youtube/social-embeds tags from

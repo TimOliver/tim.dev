@@ -48,6 +48,9 @@ enum LinkCards {
         try renderer.posts()
         try renderer.pages(siteURL: siteURL)
         if renderer.rendered > 0 { print("Link cards: rendered \(renderer.rendered)") }
+        // Home and the 404 share the site card (MainLayout's default og:image).
+        try siteCard(logo: renderer.logo)
+            .write(to: root.appending(path: "Build/img/site/link-card.png"))
     }
 
     private struct Renderer {
@@ -268,6 +271,68 @@ enum LinkCards {
             throw CocoaError(.fileWriteUnknown)
         }
         return jpeg
+    }
+
+    /// The site card for home and the 404 (design D from the Nov 2026 canvas):
+    /// the wordmark centred, "Tim Oliver · iOS Engineer in Tokyo" under it, and
+    /// a row of quiet pills naming the sections, so a shared link says what the
+    /// site is. Flat graphic, so PNG. Rendered every build (it's one card).
+    static func siteCard(logo: NSImage) throws -> Data {
+        let width = Int(size.width), height = Int(size.height)
+        guard let rep = NSBitmapImageRep(
+            bitmapDataPlanes: nil, pixelsWide: width, pixelsHigh: height,
+            bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
+            colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0),
+              let context = NSGraphicsContext(bitmapImageRep: rep) else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+        NSGraphicsContext.saveGraphicsState()
+        defer { NSGraphicsContext.restoreGraphicsState() }
+        NSGraphicsContext.current = context
+        NSColor(srgbRed: 0x1c / 255, green: 0x1c / 255, blue: 0x1e / 255, alpha: 1).setFill()
+        CGRect(origin: .zero, size: size).fill()
+
+        let cg = context.cgContext
+        cg.translateBy(x: 0, y: size.height)
+        cg.scaleBy(x: 1, y: -1)
+        NSGraphicsContext.current = NSGraphicsContext(cgContext: cg, flipped: true)
+
+        let logoSize = CGSize(width: 400, height: (400 * logo.size.height / logo.size.width).rounded())
+        let byline = text("Tim Oliver  ·  iOS Engineer in Tokyo", size: 32, weight: .medium, alpha: 0.65)
+        let sections = ["Blog", "Apps", "Code", "Art", "Talks"]
+            .map { text($0, size: 24, weight: .medium, alpha: 0.5) }
+        let pad = CGSize(width: 18, height: 8), pillGap: CGFloat = 14
+        let pills = sections.map { CGSize(width: ($0.size().width + pad.width * 2).rounded(),
+                                          height: ($0.size().height + pad.height * 2).rounded()) }
+        let rowWidth = pills.reduce(0) { $0 + $1.width } + pillGap * CGFloat(pills.count - 1)
+        let pillHeight = pills.map(\.height).max() ?? 0
+
+        // One centred column: wordmark, byline, pills. The two gaps differ
+        // because the byline's line box carries space above and below its ink;
+        // 34 and 37 give an even 38px of visible space between all three.
+        let bylineSize = byline.size()
+        let gapAbove: CGFloat = 34, gapBelow: CGFloat = 37
+        var y = ((size.height - (logoSize.height + gapAbove + bylineSize.height + gapBelow + pillHeight)) / 2).rounded()
+        logo.draw(in: CGRect(x: ((size.width - logoSize.width) / 2).rounded(), y: y,
+                             width: logoSize.width, height: logoSize.height),
+                  from: .zero, operation: .sourceOver, fraction: 1, respectFlipped: true, hints: nil)
+        y += logoSize.height + gapAbove
+        byline.draw(at: CGPoint(x: ((size.width - bylineSize.width) / 2).rounded(), y: y))
+        y += bylineSize.height + gapBelow
+        var x = ((size.width - rowWidth) / 2).rounded()
+        for (label, pill) in zip(sections, pills) {
+            let box = CGRect(x: x, y: y, width: pill.width, height: pillHeight)
+            NSColor(white: 1, alpha: 0.08).setFill()
+            NSBezierPath(roundedRect: box, xRadius: pillHeight / 2, yRadius: pillHeight / 2).fill()
+            let labelSize = label.size()
+            label.draw(at: CGPoint(x: box.midX - labelSize.width / 2, y: box.midY - labelSize.height / 2))
+            x += pill.width + pillGap
+        }
+
+        guard let png = rep.representation(using: .png, properties: [:]) else {
+            throw CocoaError(.fileWriteUnknown)
+        }
+        return png
     }
 
     /// A TextKit layout of one attributed string at a fixed width.
