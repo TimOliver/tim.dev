@@ -11,6 +11,7 @@ status: On TestFlight
 role: iOS engineer
 stack: .NET
 icon: /img/apps/osu/icon.png
+image: /img/apps/osu/hero.jpg
 path: /apps/osu/
 ---
 

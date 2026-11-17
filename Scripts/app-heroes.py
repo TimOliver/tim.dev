@@ -11,7 +11,7 @@ lossy WebP), found anywhere under Design/app-heroes/. Committed: slkmeter-1/2.pn
 Kept OUT of the repo, because Pixeden's licence forbids sharing the raw frames: they live in
 ~/Desktop/App-PNGs/hero-frames/ (Tim backs that up to his NAS): micropoints-1/2.png,
 ipokedex-1/2.png (iPhone 4), pixiv-1/2.png (iPhone 5), Mercari-1/2/3.png (iPhone X),
-readingrace-1.png (iPad Air) and osustream-bezel.png (iPad Pro). Both folders are searched; --frames DIR points elsewhere.
+readingrace-1.png (iPad Air), and osustream-bezel.png and osu-Pad.png (iPad Pro). Both folders are searched; --frames DIR points elsewhere.
 Design/ is never copied into Build/. Needs numpy as well as Pillow.
 
     python3 Scripts/app-heroes.py [slug ...]          # all heroes, or just these
@@ -88,7 +88,7 @@ def pokeball_mask(s):
     d.ellipse((0,0,s-1,s-1),fill=255); b=int(s*0.085); d.rectangle((0,s//2-b//2,s,s//2+b//2),fill=0)
     r1=int(s*0.21); d.ellipse((s//2-r1,s//2-r1,s//2+r1,s//2+r1),fill=0)
     r2=int(s*0.13); d.ellipse((s//2-r2,s//2-r2,s//2+r2,s//2+r2),fill=255); return m
-which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter','reading-race','osu-stream']
+which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter','reading-race','osu-stream','osu']
 if 'micropoints' in which:
     img=radial((74,190,62),(22,92,20),cy=0.45,p=1.3)
     g=Image.new('L',(W,H),0); gd=ImageDraw.Draw(g)
@@ -159,3 +159,11 @@ if 'osu-stream' in which:
     h=960
     img=phones_over(img,[L('osustream-bezel.png')],h,[(H-h)//2],0,0.6,26,16,[0],tint=(70,30,100))
     save(img,'osu-stream')
+if 'osu' in which:
+    # osu! (lazer) gameplay in the same Face ID 12.9" iPad Pro as osu!stream (Tim's composite
+    # of a Pixeden frame, outside the repo). Same framing as osu!stream so the two pair up, on
+    # a subtle deep osu! pink instead of purple, with a tinted multiply shadow.
+    img=radial((92,22,60),(20,4,13),cy=0.5,p=1.1)
+    h=960
+    img=phones_over(img,[L('osu-Pad.png')],h,[(H-h)//2],0,0.6,26,16,[0],tint=(100,30,70))
+    save(img,'osu')
