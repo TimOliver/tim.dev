@@ -170,7 +170,7 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   bare device shots); the detail page frames it at its natural ratio like Art. It's also the
   page's og:image, so the app's link card blurs the hero rather than the icon. Heroes are 1600x1000,
   made by `Scripts/app-heroes.py` (a layout per app: MicroPoints, iPokédex, Mercari, iComics, pixiv, SLKMeter, Reading Race,
-  osu!stream, osu!, Threads, Luma; needs numpy;
+  osu!stream, osu!, Threads, Luma, Instagram; needs numpy;
   Honda and Realm are photos, not composed; run it with no arguments, or name slugs) from Tim's
   lossless bezel PNGs, kept in `Design/app-heroes/<slug>/`, except Pixeden frames (iPhone 4/5/X,
   iPad Air, iPad Pro), whose licence forbids sharing the raw file: those live outside the repo

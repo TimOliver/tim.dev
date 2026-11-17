@@ -14,7 +14,7 @@ ipokedex-1/2.png (iPhone 4), pixiv-1/2.png (iPhone 5), Mercari-1/2/3.png (iPhone
 readingrace-1.png (iPad Air), osustream-bezel.png and osu-Pad.png (iPad Pro), and
 threads-1/2/3.png (Apple's own iPhone 16 Pro Max frame, likewise not to be shared) with
 threads-bg.jpg (Meta's Threads launch art; only a heavy blur of it ships), and
-luma-1/2/3.png (Apple's iPhone Air frame).
+luma-1/2/3.png (Apple's iPhone Air frame), and instagram-1/2/3.png (iPhone 14 Pro Max).
 Both folders are searched; --frames DIR points elsewhere.
 Design/ is never copied into Build/. Needs numpy as well as Pillow.
 
@@ -92,7 +92,7 @@ def pokeball_mask(s):
     d.ellipse((0,0,s-1,s-1),fill=255); b=int(s*0.085); d.rectangle((0,s//2-b//2,s,s//2+b//2),fill=0)
     r1=int(s*0.21); d.ellipse((s//2-r1,s//2-r1,s//2+r1,s//2+r1),fill=0)
     r2=int(s*0.13); d.ellipse((s//2-r2,s//2-r2,s//2+r2,s//2+r2),fill=255); return m
-which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter','reading-race','osu-stream','osu','threads','luma']
+which=args or ['micropoints','ipokedex','mercari-japan','icomics','pixiv','slkmeter','reading-race','osu-stream','osu','threads','luma','instagram']
 if 'micropoints' in which:
     img=radial((74,190,62),(22,92,20),cy=0.45,p=1.3)
     g=Image.new('L',(W,H),0); gd=ImageDraw.Draw(g)
@@ -189,3 +189,13 @@ if 'luma' in which:
     h=round(950*2880/2828)
     img=phones_over(img,[L(f'luma-{i}.png') for i in (1,2,3)],h,[(H-h)//2]*3,46,0.28,26,18,[0,2,1])
     save(img,'luma')
+if 'instagram' in which:
+    # Three iPhone 14 Pro Max screens (feed, profile, map), laid out like Threads, over
+    # Instagram's own brand gradient drawn here (no source art): yellow at the bottom left
+    # through orange, pink and purple to blue at the top right, dimmed so the dark screens lead.
+    stops=[(0,(254,218,117)),(.25,(250,126,30)),(.5,(214,41,118)),(.75,(150,47,191)),(1,(79,91,213))]
+    yy,xx=np.mgrid[0:H,0:W]; d=np.clip(np.hypot((xx-0.15*W)/W,(yy-1.15*H)/W)/1.35,0,1)
+    img=np.dstack([np.interp(d,[t for t,_ in stops],[c[k] for _,c in stops]) for k in range(3)])*0.38
+    h=round(950*2936/2910)   # the PNGs are 2936 tall with 13px of transparent margin
+    img=phones_over(img,[L(f'instagram-{i}.png') for i in (1,2,3)],h,[(H-h)//2]*3,40,0.6,26,18,[0,2,1])
+    save(img,'instagram')
