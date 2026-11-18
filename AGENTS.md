@@ -261,7 +261,7 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
 - **No `text-wrap: pretty` on body text** — Safari re-rags the whole paragraph and leaves wide gaps in
   narrow columns. Headings keep `balance`. Deliberate exceptions on the About page, where Tim prefers
   the evened rag: the Work section (`.about-cols--work p`) and the "About this site" prose beside the
-  Tech specs card (`.about-section--site .about-cols p`).
+  Colophon card (`.about-section--site .about-cols p`).
 - Stylesheets load per page (MainLayout). A component used on several pages must live in a sheet
   every one of them links. `collection.css` loads before each section's own file so the section can
   override it.
@@ -309,7 +309,7 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
   both files together. Path coordinates are kept to 2 decimals (invisible even at 6x).
 - Copy voice: plain one-sentence facts in Tim's voice. If a layout slot would need filler, drop the
   slot rather than fill it.
-- AI credit on the site itself is only the About page's Tech specs rows ("Design tools", "Code
+- AI credit on the site itself is only the About page's Colophon rows ("Design tools", "Code
   agents"), by Tim's choice; the prose doesn't repeat it. (Commits disclose it per Working rules.)
 
 ### Hard-won front-end lessons (from the mockup)

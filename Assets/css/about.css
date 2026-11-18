@@ -218,7 +218,7 @@ a.about-co .about-co-icon {
     gap: 2em;
 }
 
-/* "About this site": the Tech specs card hugs its rows and the prose takes the
+/* "About this site": the Colophon card hugs its rows and the prose takes the
    rest rather than equal halves - so the pair stays side by side down to iPad
    landscape. Side by side, no spec value wraps ("Swift, HTML, CSS,
    JavaScript" is the longest, ~415px of card); the 460px cap leaves room for
@@ -250,6 +250,20 @@ a.about-co .about-co-icon {
 
 @container (min-width: 880.02px) {
     .about-section--site .about-colophon dd {
+        white-space: nowrap;
+    }
+    /* Side by side, the card plainly belongs to the prose beside it and a
+       second title would compete with the section's own heading and tagline,
+       so the "Colophon" heading only shows once the card stacks below the
+       prose. It stays in the accessibility tree (the aside's label). */
+    .about-specs .card-heading {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
         white-space: nowrap;
     }
 }
@@ -400,7 +414,7 @@ a.about-co .about-co-icon {
 
 /* A deliberate exception to the site-wide "no text-wrap: pretty on body text"
    rule (see site.css): in the short Work descriptions, and in the "About this
-   site" prose beside the Tech specs card, the evened rag reads better next to
+   site" prose beside the Colophon card, the evened rag reads better next to
    the neighbouring column's edge, and the columns are wide enough that
    Safari's whole-paragraph re-ragging doesn't leave big gaps. */
 .about-cols--work p,
@@ -794,27 +808,25 @@ a.about-co .about-co-icon {
     color: var(--text-secondary);
 }
 
-/* Tech Specs card (About this site). Inner elevated surface in the section's
-   right column: a bold title above a <dl> grid where dt is the label and dd
-   is the value, right-aligned. */
+/* Colophon (About this site), in the section's right column: a
+   .card-heading above an elevated card holding a <dl> grid, where dt is the
+   label and dd is the value, right-aligned. */
 
-.about-colophon {
-    padding: 20px 28px 28px;
-    background: var(--bg-secondary);
-    border-radius: 24px;
-    corner-shape: squircle;
+.about-specs .card-heading {
+    font-size: 1.5em;
+}
+
+.about-specs {
     margin: 0;
     /* Hug the content height instead of stretching to match the prose column. */
     align-self: start;
 }
 
-/* "Tech Specs" title - larger + bold, brighter than the rows below it. */
-.about-colophon .about-label {
-    font-size: 1.5em;
-    font-weight: 700;
-    color: var(--heading);
-    /* Just a little air between the title and the first spec row. */
-    margin-bottom: 0.3em;
+.about-colophon {
+    padding: 20px 28px;
+    background: var(--bg-secondary);
+    border-radius: 24px;
+    corner-shape: squircle;
 }
 
 /* The <dl> itself is the shared .spec-list component (site.css). */
@@ -865,7 +877,7 @@ a.about-co .about-co-icon {
     /* At 28px the label column plus the longest value (the repo URL, which can
        only break at its <wbr>s) outgrew the column and pushed past the gutter. */
     .about-colophon {
-        padding: 16px 20px 22px;
+        padding: 16px 20px;
     }
     .about-intro {
         grid-template-columns: 1fr;

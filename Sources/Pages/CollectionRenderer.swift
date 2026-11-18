@@ -142,17 +142,18 @@ enum CollectionRenderer {
         return Include("_\(dir)/\(key).html")
     }
 
-    /// The shared "Details" sidebar block (eyebrow + hairline table). Returns
-    /// empty string when there are no rows.
+    /// The shared "Details" sidebar block: a heading above a hairline table on
+    /// a rounded card. Returns empty string when there are no rows.
     static func detailsBlock(_ rows: [(String, String)]) -> String {
 
         // Nothing to show → emit nothing, so the caller renders no stray block.
         guard !rows.isEmpty else { return "" }
 
-        // Eyebrow label, then a <dl> of escaped label/value pairs, on the same
-        // rounded card as the About page's Tech specs and the Contact details.
-        var s = #"<div class="collection-details-card">"#
-        s += #"<span class="collection-eyebrow">Details</span>"#
+        // The heading sits outside the card, inset to line up with the text
+        // inside it, then a <dl> of escaped label/value pairs on the same
+        // rounded card as the About page's Colophon and the Contact details.
+        var s = #"<span class="card-heading">Details</span>"#
+        s += #"<div class="collection-details-card">"#
         s += #"<dl class="spec-list">"#
         for (label, value) in rows {
             s += #"<dt>\#(escape(label))</dt><dd>\#(escape(value))</dd>"#

@@ -1636,6 +1636,26 @@ footer .container {
 /* Tech-Specs-style hairline key/value list - used by the collection detail
    sidebars (Apps/Code/Art/Talks) and the About colophon. The Contact card's
    list is deliberately decoupled (larger type/looser rows - see contact.css). */
+/* A heading above a rounded card (About's Colophon, the detail pages'
+   Details), outside it like an iOS grouped-table header: inset by the card's
+   own side padding so it lines up with the text inside. */
+.card-heading {
+    display: block;
+    padding: 0 28px;
+    margin: 0 0 0.4em;
+    /* The detail pages' size, matching their "Links" header; About sets its
+       own, larger one. */
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--heading);
+}
+
+@media (max-width: 720px) {
+    .card-heading {
+        padding: 0 20px;
+    }
+}
+
 .spec-list {
     display: grid;
     grid-template-columns: max-content 1fr;
