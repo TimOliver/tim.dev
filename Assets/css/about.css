@@ -816,6 +816,40 @@ a.about-co .about-co-icon {
     font-size: 1.5em;
 }
 
+/* The Colophon rows and the links beneath read at the prose's own size
+   (the shared .spec-list and .card-footer default a touch smaller). */
+.about-specs .spec-list dt,
+.about-specs .spec-list dd,
+.about-specs .card-footer {
+    font-size: 1em;
+}
+
+/* Below iPhone mini/SE width (375pt) the values get squeezed into several
+   lines beside their labels at prose size, so each row stacks:
+   label, then value beneath it, both left-aligned, with the hairline only
+   between rows. Everything wider keeps the two columns; a value wrapping onto
+   a second line there is fine. */
+@media (max-width: 374.98px) {
+    .about-specs .spec-list {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 0.1em;
+    }
+    .about-specs .spec-list dt {
+        padding-right: 0;
+    }
+    .about-specs .spec-list dd {
+        text-align: left;
+    }
+    .about-specs .spec-list dd:not(:first-of-type) {
+        border-top: 0;
+        padding-top: 0;
+    }
+    .about-specs .spec-list dd + dt {
+        margin-top: 0.5em;
+        padding-top: 0.6em;
+    }
+}
+
 .about-specs {
     margin: 0;
     /* Hug the content height instead of stretching to match the prose column. */

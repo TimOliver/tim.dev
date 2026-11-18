@@ -1656,6 +1656,31 @@ footer .container {
     }
 }
 
+/* Links beneath a rounded card (About's legal pages, then Acknowledgements):
+   quiet secondary text, centred under the card in two short lines that fit
+   any phone. Links on the same line are dot-separated like the site footer;
+   the dots are drawn in CSS so screen readers just hear the links. */
+.card-footer {
+    margin: 1.1em 0 0;
+    text-align: center;
+    font-size: 0.95em;
+    line-height: 1.7;
+}
+
+.card-footer a,
+.card-footer a:hover {
+    color: var(--text-secondary);
+}
+
+.card-footer a + a::before {
+    content: "·";
+    display: inline-block;
+    margin: 0 0.6em;
+    color: var(--text-tertiary);
+    /* The dot isn't part of the link's underline on hover. */
+    text-decoration: none;
+}
+
 .spec-list {
     display: grid;
     grid-template-columns: max-content 1fr;
