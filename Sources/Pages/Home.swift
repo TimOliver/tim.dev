@@ -23,16 +23,22 @@ struct Home: StaticPage {
     /// short - the full history lives on the Archive page.
     private static let recentPostCount = 10
 
-    /// Builds the feed: the newest `recentPostCount` blog posts, each as a
-    /// preview card. Non-post collections (apps, code, art, talks) are excluded
-    /// so only writing surfaces here.
+    /// Builds the feed: the newest `recentPostCount` blog posts from the same
+    /// year as the newest post, each as a preview card. Older years live only
+    /// on the Archive, so a fresh year starts with a fresh home page. Keyed to
+    /// the newest post's year rather than the build date, so a deploy early in
+    /// a new year never empties the page. Non-post collections (apps, code,
+    /// art, talks) are excluded so only writing surfaces here.
     var body: some HTML {
 
         // Start from every article, keep only blog posts, sort newest-first,
-        // then take just the leading slice the home page is willing to show.
-        let recent = articles.all
+        // keep the newest post's year, then take the leading slice.
+        let posts = articles.all
             .filter(CollectionRenderer.isBlogPost)
             .sorted { $0.date > $1.date }
+        let latestYear = posts.first.map(CollectionRenderer.year(of:))
+        let recent = posts
+            .filter { CollectionRenderer.year(of: $0) == latestYear }
             .prefix(Home.recentPostCount)
 
         // The Twitch "live now" card. Ships hidden; twitch-live.js reveals it
