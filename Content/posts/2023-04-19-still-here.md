@@ -2,7 +2,7 @@
 title: Still Here. 😝
 date: 2023-04-19 11:58:38
 author: Tim Oliver
-tags: uncategorized
+tags: personal
 path: /2023/04/19/still-here/
 ---
 Hey folks! Thought I’d do a quick little update. All is well in Tokyo still! A few things of note:

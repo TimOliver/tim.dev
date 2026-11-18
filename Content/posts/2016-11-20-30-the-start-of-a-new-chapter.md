@@ -156,7 +156,7 @@ I think it’s safe to say that of all the conferences I’ve ever attended, /de
 
 But on the topic of amazing conferences, another one I attended this year was iOS Conf SG, in Singapore. I was very kindly invited by the organisers to come out and speak about Realm:
 
-<iframe allowfullscreen="" frameborder="0" height="315" loading="lazy" src="https://www.youtube.com/embed/QmoOuS1nXh8" width="560"></iframe>
+<lite-youtube videoid="QmoOuS1nXh8" data-no-embed></lite-youtube>
 
 I had a fantastic time at the conference. Everyone was so incredibly nice, and all the speakers were looked after to a degree I’ve not seen in another conference.
 

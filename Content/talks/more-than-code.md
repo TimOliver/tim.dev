@@ -8,6 +8,7 @@ date: 2023-01-12 00:00:00
 duration: 33:59
 topics: Community
 youtube: ZxJeNq4ODZQ
+embed: no
 image: /img/talks/more-than-code.jpg
 layout: TalkDetail
 path: /talks/more-than-code/

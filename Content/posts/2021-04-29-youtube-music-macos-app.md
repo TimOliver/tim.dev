@@ -3,7 +3,7 @@ title: YouTube Music macOS App
 date: 2021-04-29 00:51:15
 author: Tim Oliver
 image: /img/posts/2021/04/YouTube-Music.jpg
-tags: uncategorized
+tags: development, tech
 path: /2021/04/29/youtube-music-macos-app/
 ---
 I hope everyone’s been staying safe and having a relatively uneventful 2021 so far. I’ll do a proper status update at some point, but so far, on my end, things are good.

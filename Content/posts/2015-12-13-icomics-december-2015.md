@@ -24,7 +24,7 @@ After scratching my head for several hours, I finally managed to trace the issue
 ```objc
 EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
 [EAGLContext setCurrentContext:context];
-glGetIntegerv(GL_MAX_TEXTURE_SIZE, &amp;ICMaxTextureSize);
+glGetIntegerv(GL_MAX_TEXTURE_SIZE, &ICMaxTextureSize);
 [EAGLContext setCurrentContext:nil]; //THIS LINE OF CODE IS ABSOLUTELY ESSENTIAL!!!!!!!!!
 ```
 

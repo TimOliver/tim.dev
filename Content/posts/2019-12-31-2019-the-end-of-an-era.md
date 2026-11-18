@@ -3,7 +3,7 @@ title: 2019. The end of an era.
 date: 2019-12-31 23:31:36
 author: Tim Oliver
 image: /img/posts/2019/12/NYE-2020.jpg
-tags: uncategorized
+tags: personal
 path: /2019/12/31/2019-the-end-of-an-era/
 ---
 And just like that, 2019 is over, and with it, the 2010s (The Tennies? Tens? Tenties?) are also over. Blimey.

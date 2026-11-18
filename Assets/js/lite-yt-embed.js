@@ -12,6 +12,10 @@
  */
 class LiteYTEmbed extends HTMLElement {
     connectedCallback() {
+        // tim.dev: the video's owner has turned off playback on other sites,
+        // so the facade stays a plain link to YouTube (see Media.youtube).
+        if (this.hasAttribute('data-no-embed')) return;
+
         this.videoId = this.getAttribute('videoid');
 
         let playBtnEl = this.querySelector('.lyt-playbtn,.lty-playbtn');

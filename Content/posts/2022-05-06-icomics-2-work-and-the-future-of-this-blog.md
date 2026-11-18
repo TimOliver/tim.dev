@@ -3,7 +3,7 @@ title: iComics 2, work, and the future of this blog
 date: 2022-05-06 15:54:47
 author: Tim Oliver
 image: /img/posts/2022/05/iComics-2022.jpg
-tags: personal, tech
+tags: personal, tech, icomics
 path: /2022/05/06/icomics-2-work-and-the-future-of-this-blog/
 ---
 I hope everyone’s been having a great 2022 so far. This week was [Golden Week](https://en.wikipedia.org/wiki/Golden_Week_(Japan)) in Japan, and I personally had a fantastic, relaxing week of doing some long overdue cleaning, catching up on emails and hanging with friends.

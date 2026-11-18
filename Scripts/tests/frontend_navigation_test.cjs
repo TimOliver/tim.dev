@@ -143,6 +143,22 @@ test('Back and Forward restore each entry scroll after its DOM has loaded', asyn
     assert.equal(h.window.scrollY, 230);
 });
 
+test('a same-page click during a pending Back lets the Back swap land', async () => {
+    const h = harness();
+    h.click('/apps/icomics/');
+    h.resolve(0, 'iComics');
+    await flush();
+    h.pop(-1);
+    // The address already says /apps/ while iComics is still on screen.
+    assert.equal(h.click('/apps/'), true);
+    assert.equal(h.requests[1].options.signal.aborted, false);
+    h.resolve(1, 'Apps');
+    await flush();
+    assert.equal(h.pathname, '/apps/');
+    assert.equal(h.container.innerHTML, 'Apps');
+    assert.equal(h.requests.length, 2);
+});
+
 test('a failed current request falls back to ordinary navigation', async () => {
     const h = harness();
     h.click('/apps/icomics/');

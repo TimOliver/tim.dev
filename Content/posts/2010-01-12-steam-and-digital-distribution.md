@@ -22,9 +22,11 @@ I guess in its simplest form, it’s merely just buying digital content online a
     When you’re relying on physical media, there’s always a finite amount of stock in the shop, and once that runs out, you’re either going to have to wait for more, or you’re just plain screwed. Since digital distribution is just downloading a copy of the data already, the stock is basically infinite. 🙂
 - **Diversity**  
     Since there is only a finite amount of space in a shop, usually only the most current or popular games are stocked and available at any given time. Given in contrast, since there’s no kind of limit like that for digital distribution, then it’s really easy to pick up classic games you might have missed while they were in the shops.
-<div class="wp-caption alignright" id="attachment_147" style="width: 213px">**![My PC Games Collection](/img/posts/2010/01/games_collection.jpg)**This is like 2/3 of my PC game collection... and I doubt I could fit any more!!
+<div class="wp-caption alignright" id="attachment_147" style="width: 213px">![My PC Games Collection](/img/posts/2010/01/games_collection.jpg)This is like 2/3 of my PC game collection... and I doubt I could fit any more!!
 
-</div>- **No Physical Storage Space**  
+</div>
+
+- **No Physical Storage Space**  
     This one’s pretty huge for me. Since you didn’t actually buy anything physical, that means no more extra junk cluttering up your living space by buying this. Since I went through the effort of buying it, I try to be very protective of all of the physical copies of games I’ve bought. That being said, I seriously have no space for potentially 100 or more extra game cases. So being able to own a game, but not have to physically store it is great! ^\_^
 - **Helps prevents piracy** There’s no doubt about it. Piracy sucks. It makes companies want to install crappy DRM into their software that ultimately screws over paying customers as well as taking money away from the people who originally developed it. Since digital copies are usually tied to one account, this can help discourage it (Please note, it’s not perfect though)
 - **No publishing fees** Since there’s no need to package up physical copies and ship them around, a lot of money can be saved on distribution fees. This ultimately means more money for the original developers.

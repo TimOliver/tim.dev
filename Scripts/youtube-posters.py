@@ -29,8 +29,8 @@ OUT = ROOT / "Assets/img/posts/youtube"
 
 # The same embeds ArticleContent rewrites: iframe src (any youtube host,
 # protocol-relative included) and an explicit <lite-youtube videoid>.
-IFRAME = re.compile(r'<iframe\b[^>]*\bsrc="(?:https?:)?//(?:www\.)?youtube(?:-nocookie)?\.com/embed/([A-Za-z0-9_-]{11})', re.I)
-LITE = re.compile(r'<lite-youtube\b[^>]*\bvideoid="([A-Za-z0-9_-]{11})"', re.I)
+IFRAME = re.compile(r'<iframe\b[^>]*\bsrc=["\'](?:https?:)?//(?:www\.)?youtube(?:-nocookie)?\.com/embed/([A-Za-z0-9_-]{11})', re.I)
+LITE = re.compile(r'<lite-youtube\b[^>]*\bvideoid=["\']([A-Za-z0-9_-]{11})["\']', re.I)
 SIZES = ["maxresdefault", "sddefault", "hqdefault"]
 
 

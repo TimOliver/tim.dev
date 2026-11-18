@@ -150,7 +150,10 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   an item no section claims is a `fatalError`. Art `youtube:` is a full URL: a video URL embeds via
   lite-youtube on the detail page (id parsed from `watch?v=`/`youtu.be`; a `t=` such as `4m5s`
   sets the start time) and also drives the "Watch on YouTube" badge. Talks `youtube:` is a bare
-  video ID — don't conflate them.
+  video ID — don't conflate them. A talk whose owner has turned off embedding gets `embed: no`
+  (in a post: `<lite-youtube videoid="…" data-no-embed>`): the facade then links to YouTube
+  instead of playing. Every facade is built by `Media.youtube` and holds a real watch link, so
+  it works without JS.
 - **Code** is curated, not chronological: `order:` (1 = first) sets the grid order; entries without
   it follow newest-first by `date:` (the repo's creation date). Stats (`stars:`, `latest:`) are
   hand-copied from GitHub until the planned auto-fill lands, so refresh them before trusting them.

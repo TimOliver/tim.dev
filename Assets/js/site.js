@@ -487,6 +487,9 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
 
     var sequence = 0;
     var controller = null;
+    // True while a Back/Forward swap is loading: the address already names
+    // the destination, but the old page is still on screen.
+    var restoring = false;
     var positions = Object.create(null);
     var entrySequence = 0;
     function newEntry() {
@@ -524,11 +527,13 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
         ++sequence;
         if (controller) controller.abort();
         controller = null;
+        restoring = false;
     }
 
     function swapTo(url, push, fade, destinationEntry) {
         cancelPending();
         var request = sequence;
+        restoring = !push;
         controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
         var options = {};
         if (controller) options.signal = controller.signal;
@@ -546,6 +551,7 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
             })
             .then(function(htmlText) {
                 if (request !== sequence) return;
+                restoring = false;
                 var doc = new DOMParser().parseFromString(htmlText, 'text/html');
                 var incoming = doc.querySelector('main .container');
                 if (!incoming) throw new Error('no container in response');
@@ -595,6 +601,14 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
         var href = a.getAttribute('href');
         if (!href) return;
 
+        // During a pending Back/Forward, `location` is the destination, not
+        // the page on screen, so the same-page checks below would compare
+        // against the wrong page (and cancelling would strand the old page
+        // under the new address). Let the swap land instead.
+        if (restoring && a.pathname === location.pathname && a.search === location.search) {
+            e.preventDefault();
+            return;
+        }
         // Keep jump chips on the current page out of the fetch/history machinery.
         if (a.pathname === location.pathname && a.search === location.search && a.hash) {
             var target = hashTarget(a.hash);

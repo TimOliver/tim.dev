@@ -35,6 +35,9 @@ struct TalkInfo {
     /// YouTube" link. Front-matter `youtube:`, `nonEmpty`-filtered; nil omits
     /// the embed, and the poster thumbnail renders in its place instead.
     let youtube: String?
+    /// False (`embed: no`) when the video's owner has turned off playback on
+    /// other sites: the facade then links to YouTube instead of playing.
+    let embeddable: Bool
 
     /// Optional slides URL, rendered as a sidebar link on the detail page.
     /// Front-matter `slides:`, `nonEmpty`-filtered; nil when absent.
@@ -99,6 +102,7 @@ struct TalkInfo {
         image = CollectionRenderer.nonEmpty(a.metadata["image"] as? String)
         youtube = CollectionRenderer.nonEmpty(a.metadata["youtube"] as? String)
         slides = CollectionRenderer.nonEmpty(a.metadata["slides"] as? String)
+        embeddable = (a.metadata["embed"] as? String)?.lowercased() != "no"
 
         // The article's own site path - used to link the grid card to its
         // detail page.

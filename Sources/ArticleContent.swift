@@ -12,12 +12,25 @@ enum ArticleContent {
             // WordPress-era posts embed YouTube as a raw iframe, which loads
             // the whole player (and YouTube's cookies) as soon as it scrolls
             // near the viewport. Pages get the same click-to-play facade as
-            // Talks; feeds, where no script runs, get a plain link.
-            out = replace(out, #"(?is)<iframe\b[^>]*\bsrc="(?:https?:)?//(?:www\.)?youtube(?:-nocookie)?\.com/embed/([A-Za-z0-9_-]{11})[^"]*"[^>]*>\s*</iframe>"#) { match, text in
-                let id = text.substring(with: match.range(at: 1))
+            // Talks; feeds, where no script runs, get a plain link. A
+            // hand-written <lite-youtube> is rebuilt the same way, so it gets
+            // the local poster and link too (`data-no-embed` is kept).
+            out = replace(out, #"(?is)<iframe\b[^>]*\bsrc=(["'])(?:https?:)?//(?:www\.)?youtube(?:-nocookie)?\.com/embed/([A-Za-z0-9_-]{11})[^"']*\1[^>]*>\s*</iframe>|<lite-youtube\b([^>]*)>.*?</lite-youtube>"#) { match, text in
+                var id = "", embeddable = true
+                if match.range(at: 2).location != NSNotFound {
+                    id = text.substring(with: match.range(at: 2))
+                } else {
+                    let attributes = text.substring(with: match.range(at: 3))
+                    let videoID = try! NSRegularExpression(pattern: #"(?i)\bvideoid=(["'])([A-Za-z0-9_-]{11})\1"#)
+                    guard let found = videoID.firstMatch(in: attributes, range: NSRange(location: 0, length: (attributes as NSString).length)) else {
+                        fatalError("<lite-youtube> without a valid videoid: \(attributes)")
+                    }
+                    id = (attributes as NSString).substring(with: found.range(at: 2))
+                    embeddable = attributes.range(of: #"(?i)\bdata-no-embed\b"#, options: .regularExpression) == nil
+                }
                 return forFeed
                     ? #"<a href="https://www.youtube.com/watch?v=\#(id)">Watch on YouTube</a>"#
-                    : #"<lite-youtube videoid="\#(id)"\#(posterStyle(id)) playlabel="Play video"></lite-youtube>"#
+                    : Media.youtube(id: id, posterStyle: posterStyle(id), label: "Play video", embeddable: embeddable)
             }
             // WordPress exports left Markdown inside raw HTML blocks, where
             // the Markdown parser intentionally does not interpret it.

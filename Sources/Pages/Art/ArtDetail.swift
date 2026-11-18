@@ -50,9 +50,8 @@ extension ArtRenderer {
         // standard 16:9 frame, from the beginning unless the URL carries a
         // `t=` start time. The "Watch on YouTube" badge stays in the sidebar.
         if let id = item.youtubeID {
-            let start = item.youtubeStart.map { #" params="start=\#($0)""# } ?? ""
             header += #"<div class="collection-detail-shot">"#
-            header += #"<lite-youtube videoid="\#(escape(id))"\#(start)\#(Media.posterStyle(item.image)) playlabel="Play: \#(escape(item.title))"></lite-youtube>"#
+            header += Media.youtube(id: id, posterStyle: Media.posterStyle(item.image), label: "Play: \(item.title)", start: item.youtubeStart)
             header += "</div>"
             return detailShell(header: header, item: item)
         }

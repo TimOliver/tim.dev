@@ -6,7 +6,7 @@ published: false
 date: 2026-09-01 00:00:00
 year: 2026
 platform: iPhone, iPad
-appstore: https://icomics.co
+appstore: https://apps.apple.com/app/icomics/id493845493
 role: Solo developer
 company: XD Digital
 stack: Objective-C, Swift

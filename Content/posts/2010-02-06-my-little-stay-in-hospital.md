@@ -35,7 +35,7 @@ On one of of the days, the doc came in at one point and told me everything seeme
 
 After the 5th day, I was able to (VERY slowly) get out of my bed and make it to the toilet and back (having to carry all of my drainage bags with me ^\_^; ) and by the 7th day, albeit slowly, I was able to go home. I couldn’t move very much at all still though, so I just spent most of the time playing on my PC or playing Xbox. Thankfully, due to the timing of the surgery and the Christmas holidays, I was able to rest up without needing to take too much time off.
 
-<div class="wp-caption alignright" id="attachment_210" style="width: 310px">![Tim's Hospital Release](/img/posts/2010/02/tim_hospital_release.jpg)Taken just before going home. The epically terrible posture is because it actually hurt to stand up straight at the time. ^\_^;
+<div class="wp-caption alignright" id="attachment_210" style="width: 310px">![Tim's Hospital Release](/img/posts/2010/02/tim_hospital_release.jpg)Taken just before going home. The epically terrible posture is because it actually hurt to stand up straight at the time. ^_^;
 
 </div>
 
