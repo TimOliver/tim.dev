@@ -104,9 +104,9 @@ iOSInjectionProject/
 .DS_Store
 __pycache__/
 
-# Safety net: Pixeden device frames (no redistribution) live outside the repo in
-# ~/Desktop/App-PNGs/hero-frames/; never commit one here by mistake.
-Design/app-heroes/_private/
+# Safety net: hero sources and device frames (some not redistributable) live
+# outside the repo in ~/Desktop/App-PNGs/; never commit them here by mistake.
+/Design/
 
 # Private local notes for Claude Code (server, hostnames)
 /CLAUDE.local.md

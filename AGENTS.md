@@ -58,9 +58,8 @@ Template/                      the original hand-coded mockup — design source 
 Scripts/                       build, build-media, youtube-posters, app-heroes, check-site,
                                dev-server, strip-exif, hooks, tests
 Tests/IgniteStarterTests/      swift test: generation + ArticleImages
-Design/app-heroes/<slug>/      source bezel PNGs for Scripts/app-heroes.py (never copied into Build/)
-Design/app-icons/              source app icon art
-~/Desktop/App-PNGs/hero-frames/  OUTSIDE the repo: Pixeden device frames (no redistribution)
+~/Desktop/App-PNGs/hero-frames/  OUTSIDE the repo: every hero source (bezel PNGs, device frames)
+~/Desktop/App-PNGs/app-icons/    OUTSIDE the repo: source app icon art
 media-manifest.json            build INPUT written by build-media.py (dimensions, LQIP, variants)
 instagram-posts.json           build INPUT: snapshot of every embedded Instagram post (see below)
 LICENSE, THIRD-PARTY-NOTICES   code public domain, content reserved, vendored licences (see Licensing)
@@ -202,10 +201,10 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
   made by `Scripts/app-heroes.py` (a layout per app: MicroPoints, iPokédex, Mercari, iComics, pixiv, SLKMeter, Reading Race,
   osu!stream, osu!, Threads, Luma, Instagram, Instagram for iPad; needs numpy;
   Honda and Realm are photos, not composed; run it with no arguments, or name slugs) from Tim's
-  lossless bezel PNGs, kept in `Design/app-heroes/<slug>/`, except Pixeden frames (iPhone 4/5/X,
-  iPad Air, iPad Pro), whose licence forbids sharing the raw file: those live outside the repo
-  in `~/Desktop/App-PNGs/hero-frames/` (backed up separately; the script reads it, or
-  `--frames DIR`) and Pixeden is credited on /acknowledgements/. Apple's own frames (Threads' and Luma's
+  lossless bezel PNGs. None are in the repo (Pixeden's licence forbids sharing the raw iPhone
+  4/5/X, iPad Air and iPad Pro frames, so all sources are kept together): they live in
+  `~/Desktop/App-PNGs/hero-frames/` (backed up separately; the script searches it recursively,
+  or `--frames DIR`) and Pixeden is credited on /acknowledgements/. Apple's own frames (Threads' and Luma's
   iPhone 16 Pro Max and iPhone Air) and third-party background art (Meta's Threads launch art, shipped only
   heavily blurred) live there too; Apple needs no credit
   (never images pasted into chat, which arrive as lossy
@@ -409,6 +408,6 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
 
 LICENSE splits three ways (decided 2026-11-18): the code (Sources, Scripts, Tests, CSS/JS,
 markup) is public domain (Unlicense); content (Content/, the writing in Includes/, Assets/img/,
-Template/img/, Design/, instagram-posts.json) is all rights reserved; vendored Lightbox3, Embla,
+Template/img/, instagram-posts.json) is all rights reserved; vendored Lightbox3, Embla,
 lite-youtube-embed and Tabler icons keep their licences, with texts in THIRD-PARTY-NOTICES. Add a
 vendored file to both (and to /acknowledgements/) when adding one.

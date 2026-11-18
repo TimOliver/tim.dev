@@ -6,21 +6,19 @@ since 8-bit gradients band, then saved as JPEG quality 100 with 4:4:4 chroma (th
 target; build-media.py derives the q95/q97 page variants from it).
 
 Sources are Tim's lossless bezel PNGs, never images pasted into chat (those arrive as
-lossy WebP), found anywhere under Design/app-heroes/. Committed: slkmeter-1/2.png
-(GadgetsGuy, CC BY 3.0) and icomics-devices.webp (from icomics.net).
-Kept OUT of the repo, because Pixeden's licence forbids sharing the raw frames: they live in
-~/Desktop/App-PNGs/hero-frames/ (Tim backs that up to his NAS): micropoints-1/2.png,
+lossy WebP). None are in the repo - several frames' licences forbid sharing the raw files -
+so they all live in ~/Desktop/App-PNGs/hero-frames/ (backed up separately), searched
+recursively: slkmeter-1/2.png (GadgetsGuy, CC BY 3.0), icomics-devices.webp (from
+icomics.net), micropoints-1/2.png,
 ipokedex-1/2.png (iPhone 4), pixiv-1/2.png (iPhone 5), Mercari-1/2/3.png (iPhone X),
 readingrace-1.png (iPad Air), osustream-bezel.png and osu-Pad.png (iPad Pro), and
 threads-1/2/3.png (Apple's own iPhone 16 Pro Max frame, likewise not to be shared) with
 threads-bg.jpg (Meta's Threads launch art; only a heavy blur of it ships), and
 luma-1/2/3.png (Apple's iPhone Air frame), and instagram-1/2/3.png (iPhone 14 Pro Max) and instagram-ipad.png (iPad Pro).
-Both folders are searched; --frames DIR points elsewhere.
-Design/ is never copied into Build/. Needs numpy as well as Pillow.
+Needs numpy as well as Pillow.
 
-    python3 Scripts/app-heroes.py [slug ...]          # all heroes, or just these
-    python3 Scripts/app-heroes.py --from DIR [slug ...] # sources from elsewhere
-    python3 Scripts/app-heroes.py --frames DIR [slug ...] # Pixeden frames from elsewhere
+    python3 Scripts/app-heroes.py [slug ...]               # all heroes, or just these
+    python3 Scripts/app-heroes.py --frames DIR [slug ...]  # sources from elsewhere
 
 Afterwards run Scripts/strip-exif.py on the heroes and Scripts/build-media.py.
 """
@@ -30,12 +28,10 @@ import numpy as np
 from PIL import Image, ImageDraw
 ROOT=Path(__file__).resolve().parent.parent
 args=sys.argv[1:]
-D=str(ROOT/'Design/app-heroes')+'/'
 FRAMES=Path.home()/'Desktop/App-PNGs/hero-frames'
-while args[:1] in (['--from'],['--frames']):
+while args[:1] in (['--from'],['--frames']):   # --from is the old spelling
     if len(args)<2: sys.exit(__doc__)
-    if args[0]=='--from': D=args[1].rstrip('/')+'/'
-    else: FRAMES=Path(args[1])
+    FRAMES=Path(args[1])
     args=args[2:]
 REPO=str(ROOT/'Assets/img/apps')+'/'
 W,H=1600,1000
@@ -84,9 +80,9 @@ def save(img,slug):
     out=Image.fromarray(np.clip(np.round(img),0,255).astype(np.uint8),'RGB')
     out.save(REPO+slug+'/hero.jpg',quality=100,subsampling=0,optimize=True,progressive=True)
     print('wrote',REPO+slug+'/hero.jpg')
-def L(name):   # a source file found anywhere under SOURCE_DIR (Tim keeps per-app folders)
-    hits=sorted(Path(D).rglob(name)) or (sorted(FRAMES.rglob(name)) if FRAMES.is_dir() else [])
-    if not hits: sys.exit(f'{name} not found under {D} or {FRAMES}')
+def L(name):   # a source file found anywhere under FRAMES (Tim keeps per-app folders)
+    hits=sorted(FRAMES.rglob(name)) if FRAMES.is_dir() else []
+    if not hits: sys.exit(f'{name} not found under {FRAMES}')
     return Image.open(hits[0]).convert('RGBA')
 def pokeball_mask(s):
     m=Image.new('L',(s,s),0); d=ImageDraw.Draw(m)
