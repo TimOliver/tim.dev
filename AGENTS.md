@@ -375,10 +375,11 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
 ## Working rules
 
 - **Agents must disclose authorship.** Every commit an AI agent writes ends with a
-  `Co-Authored-By` trailer naming the agent, without a model version: Claude uses
-  `Co-Authored-By: Claude <noreply@anthropic.com>`, Codex `Co-Authored-By: Codex <noreply@openai.com>`.
-  Tim reviews what lands, but the history should show who wrote it. (Commits made before this
-  rule were tagged retroactively from session logs and message style, so a few may be missed.)
+  `Co-Authored-By` trailer naming the agent, and its model if known: e.g.
+  `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>` or
+  `Co-Authored-By: Codex <noreply@openai.com>`. Tim reviews what lands, but the history should
+  show who wrote it. (Commits made before this rule were tagged retroactively as plain "Claude"
+  from session logs and message style, since the model wasn't recorded; a few may be missed.)
 - Never `git add -A`/`.`; stage by explicit path. Never commit `Build/`, `Includes/_*`, generated
   `@<width>w` variants, or tool artefacts.
 - Commit only when asked; push only when asked (remote: github.com/TimOliver/tim.dev, made public
