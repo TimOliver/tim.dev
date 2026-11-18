@@ -2,8 +2,8 @@
 title: Realm Browser
 tagline: Inspect and edit Realm files
 layout: AppDetail
-date: 2015-06-01 00:00:00
-year: 2015
+date: 2016-09-27 00:00:00
+year: 2016
 platform: Mac
 role: Product Engineer
 company: Realm

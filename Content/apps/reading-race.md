@@ -2,7 +2,7 @@
 title: Reading Race by PLD
 tagline: Reading apps for Australian kids
 layout: AppDetail
-date: 2015-09-11 00:00:00
+date: 2014-12-01 00:00:00
 year: 2015
 platform: iPad
 company: PLD

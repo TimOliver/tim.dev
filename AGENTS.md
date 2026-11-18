@@ -156,7 +156,10 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
     grid's newest-first sort) mark the app's latest MAJOR public release, so a big redesign moves
     an app forward (iComics: released 2012, badge 2026 after its redesign). Public launch dates,
     not when Tim finished or handed off the code: Reading Race was handed over in 2014 but
-    launched 2015-09-11, so its badge is 2015 while `years:` stays 2014 (his time on it).
+    launched 2015-09-11, so its badge is 2015 while `years:` stays 2014 (his time on it). One exception to
+    date-as-release: Reading Race's `date:` is 2014-12 so it sorts after SLKMeter, the order Tim
+    worked on them at Lateral (its badge stays 2015). Realm Browser's date is its 2.0 release
+    (2016-09-27), the last major one in Tim's time at Realm.
     `order: N` pins an app to grid slot N and the rest fill in newest-first (unlike Code's, pins
     needn't be contiguous): only iComics is pinned (first). The rest are by date, which puts
     Threads between Instagram for iPad and Instagram; they stack in the 2-column grid and Tim is
