@@ -20,7 +20,7 @@ python3 Scripts/deploy-bunny.py --dry-run  # what a deploy would upload/purge/de
 Needs macOS with Xcode/Swift and Python 3.10+ with Pillow.
 
 **Deploying** is `.github/workflows/deploy.yml` on a macOS runner: `Scripts/build.sh`, the tests,
-then `Scripts/deploy-bunny.py`. It runs on every push to master once the repo variable
+then `Scripts/deploy-bunny.py`. It runs on every push to main once the repo variable
 `DEPLOY_ENABLED` is `true` (by hand from the Actions tab otherwise, as a dry run by default).
 The build is deterministic - two builds of one commit are byte-identical, image variants and link
 cards included - so the deploy is a diff: it compares SHA-256s with Bunny's storage listing,

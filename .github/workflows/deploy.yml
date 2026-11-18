@@ -1,6 +1,6 @@
 # Build the site and sync it to Bunny, uploading only what changed.
 #
-# Runs on every push to master once the repository variable DEPLOY_ENABLED is
+# Runs on every push to main once the repository variable DEPLOY_ENABLED is
 # "true"; until then only by hand (Actions → Deploy → Run workflow), where it
 # defaults to a dry run that prints the plan without touching Bunny.
 #
@@ -11,7 +11,7 @@ name: Deploy
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
     inputs:
       dry_run:
@@ -29,16 +29,17 @@ permissions:
 
 jobs:
   deploy:
-    if: github.event_name == 'workflow_dispatch' || vars.DEPLOY_ENABLED == 'true'
+    # Only main ever reaches the live site, even from a manual run.
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || vars.DEPLOY_ENABLED == 'true')
     # macOS: the build is Swift, and link cards are drawn with AppKit.
     runs-on: macos-15
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use the newest Xcode on the runner
+      - name: Use the newest release Xcode on the runner (no betas or RCs)
         run: |
-          sudo xcode-select -s "$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)"
+          sudo xcode-select -s "$(ls -d /Applications/Xcode_*.app | grep -viE 'beta|_rc|release.candidate' | sort -V | tail -1)"
           swift --version
 
       - uses: actions/setup-python@v5
