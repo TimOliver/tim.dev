@@ -129,6 +129,26 @@ class MediaPipelineTests(unittest.TestCase):
         with Image.open(variant) as image:
             self.assertEqual(image.convert("RGB").getpixel((10, 10))[2] > 200, True)
 
+    def test_rejected_variants_are_remembered_not_re_encoded(self):
+        # Two-colour stripes as a palette PNG: tiny on disk, but every
+        # antialiased downscale comes out bigger, so all are rejected.
+        source = self.posts / "flat.png"
+        stripes = Image.new("P", (1000, 600), 0)
+        stripes.putpalette([255, 0, 0, 255, 255, 255])
+        for x in range(0, 1000, 2):
+            stripes.paste(1, (x, 0, x + 1, 600))
+        stripes.save(source, optimize=True)
+        first = self.build()["/img/posts/flat.png"]
+        self.assertEqual(first["srcset"], "/img/posts/flat.png 1000w")
+        widths = []
+        real = self.media.encode_variant
+        def spy(src, im, width, *rest):
+            widths.append(width)
+            return real(src, im, width, *rest)
+        with patch.object(self.media, "encode_variant", side_effect=spy):
+            self.assertEqual(self.build()["/img/posts/flat.png"], first)
+        self.assertEqual(widths, [])
+
     def test_manifest_matches_exif_oriented_original_without_modifying_it(self):
         source = self.posts / "portrait.jpg"
         image = Image.new("RGB", (1000, 600), "red")

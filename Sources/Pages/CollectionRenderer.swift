@@ -388,11 +388,15 @@ enum Media {
     /// the poster still goes somewhere without JavaScript; lite-yt-embed turns
     /// it into a button. `embeddable: false` is for videos whose owner has
     /// turned off playback on other sites: the facade stays a plain link
-    /// (lite-yt-embed skips `data-no-embed`). `start` is in seconds.
-    nonisolated static func youtube(id: String, posterStyle: String, label: String, start: Int? = nil, embeddable: Bool = true) -> String {
+    /// (lite-yt-embed skips `data-no-embed`). `start` is in seconds. `title`
+    /// names the video for screen readers ("Play: <title>").
+    nonisolated static func youtube(id: String, posterStyle: String, title: String? = nil, start: Int? = nil,
+                                    embeddable: Bool = true) -> String {
         let watch = "https://www.youtube.com/watch?v=\(id)" + (start.map { "&t=\($0)" } ?? "")
         let mode = !embeddable ? " data-no-embed" : start.map { #" params="start=\#($0)""# } ?? ""
-        let text = embeddable ? label : "Watch on YouTube"
+        let text = embeddable
+            ? title.map { "Play: \($0)" } ?? "Play video"
+            : title.map { "Watch \($0) on YouTube" } ?? "Watch on YouTube"
         return #"<lite-youtube videoid="\#(escape(id))"\#(mode)\#(posterStyle)><a class="lyt-playbtn" href="\#(escape(watch))" target="_blank" rel="noopener"><span class="lyt-visually-hidden">\#(escape(text))</span></a></lite-youtube>"#
     }
 

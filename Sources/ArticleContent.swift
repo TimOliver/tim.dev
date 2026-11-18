@@ -14,13 +14,16 @@ enum ArticleContent {
             // near the viewport. Pages get the same click-to-play facade as
             // Talks; feeds, where no script runs, get a plain link. A
             // hand-written <lite-youtube> is rebuilt the same way, so it gets
-            // the local poster and link too (`data-no-embed` is kept).
-            out = replace(out, #"(?is)<iframe\b[^>]*\bsrc=(["'])(?:https?:)?//(?:www\.)?youtube(?:-nocookie)?\.com/embed/([A-Za-z0-9_-]{11})[^"']*\1[^>]*>\s*</iframe>|<lite-youtube\b([^>]*)>.*?</lite-youtube>"#) { match, text in
-                var id = "", embeddable = true
+            // the local poster and link too (`data-no-embed` and a start
+            // time - iframe `?start=` or lite-youtube `params="start="` - are kept).
+            out = replace(out, #"(?is)<iframe\b[^>]*\bsrc=(["'])(?:https?:)?//(?:www\.)?youtube(?:-nocookie)?\.com/embed/([A-Za-z0-9_-]{11})([^"']*)\1[^>]*>\s*</iframe>|<lite-youtube\b([^>]*)>.*?</lite-youtube>"#) { match, text in
+                var id = "", embeddable = true, options = ""
                 if match.range(at: 2).location != NSNotFound {
                     id = text.substring(with: match.range(at: 2))
+                    options = text.substring(with: match.range(at: 3))
                 } else {
-                    let attributes = text.substring(with: match.range(at: 3))
+                    let attributes = text.substring(with: match.range(at: 4))
+                    options = attributes
                     let videoID = try! NSRegularExpression(pattern: #"(?i)\bvideoid=(["'])([A-Za-z0-9_-]{11})\1"#)
                     guard let found = videoID.firstMatch(in: attributes, range: NSRange(location: 0, length: (attributes as NSString).length)) else {
                         fatalError("<lite-youtube> without a valid videoid: \(attributes)")
@@ -28,9 +31,12 @@ enum ArticleContent {
                     id = (attributes as NSString).substring(with: found.range(at: 2))
                     embeddable = attributes.range(of: #"(?i)\bdata-no-embed\b"#, options: .regularExpression) == nil
                 }
+                let start = options.range(of: #"\bstart=\d+"#, options: .regularExpression)
+                    .flatMap { Int(options[$0].dropFirst("start=".count)) }
+                let watch = "https://www.youtube.com/watch?v=\(id)" + (start.map { "&amp;t=\($0)" } ?? "")
                 return forFeed
-                    ? #"<a href="https://www.youtube.com/watch?v=\#(id)">Watch on YouTube</a>"#
-                    : Media.youtube(id: id, posterStyle: posterStyle(id), label: "Play video", embeddable: embeddable)
+                    ? #"<a href="\#(watch)">Watch on YouTube</a>"#
+                    : Media.youtube(id: id, posterStyle: posterStyle(id), start: start, embeddable: embeddable)
             }
             // WordPress exports left Markdown inside raw HTML blocks, where
             // the Markdown parser intentionally does not interpret it.

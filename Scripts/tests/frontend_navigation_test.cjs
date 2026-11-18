@@ -159,6 +159,22 @@ test('a same-page click during a pending Back lets the Back swap land', async ()
     assert.equal(h.requests.length, 2);
 });
 
+test('a jump link tapped during a pending Back is applied when the page lands', async () => {
+    const h = harness();
+    const section = { scrolled: false, scrollIntoView() { this.scrolled = true; } };
+    h.document.getElementById = id => (id === 'singing' ? section : null);
+    h.click('/apps/icomics/');
+    h.resolve(0, 'iComics');
+    await flush();
+    h.pop(-1);
+    assert.equal(h.click('/apps/#singing'), true);
+    h.resolve(1, 'Apps');
+    await flush();
+    assert.equal(h.container.innerHTML, 'Apps');
+    assert.equal(section.scrolled, true);
+    assert.equal(h.window.location.href, 'https://tim.dev/apps/#singing');
+});
+
 test('a failed current request falls back to ordinary navigation', async () => {
     const h = harness();
     h.click('/apps/icomics/');

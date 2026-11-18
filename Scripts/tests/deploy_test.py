@@ -65,10 +65,21 @@ class DeployTests(unittest.TestCase):
         self.assertEqual(changed, ["css/site.def.css", "img/a.jpg", "index.html"])
         self.assertEqual(removed, ["css/site.abc.css"])
         purged = sorted(line[len("purge: "):] for line in log.splitlines() if line.startswith("purge: "))
-        self.assertEqual(purged, ["https://tim.dev/", "https://tim.dev/css/site.abc.css",
-                                  "https://tim.dev/img/a.jpg"])
+        self.assertEqual(purged, ["https://tim.dev/", "https://tim.dev/?*", "https://tim.dev/css/site.abc.css*",
+                                  "https://tim.dev/img/a.jpg*", "https://tim.dev/index.html*"])
         self.assertFalse((self.zone_dir / "css/site.abc.css").exists())
         self.assertEqual((self.zone_dir / "index.html").read_text(), "home v2")
+
+    def test_removed_files_are_deleted_before_the_purge(self):
+        self.run_deploy()
+        (self.build / "img/a.jpg").unlink()
+        order = []
+        delete = self.zone.delete
+        self.zone.delete = lambda p: (order.append("delete"), delete(p))
+        real_purge = self.deploy.purge
+        self.deploy.purge = lambda urls, dry: (order.append("purge"), real_purge(urls, dry))
+        self.run_deploy()
+        self.assertEqual(order, ["delete", "purge"])
 
     def test_dry_run_changes_nothing(self):
         changed, _, _ = self.run_deploy(dry_run=True)
@@ -96,9 +107,12 @@ class DeployTests(unittest.TestCase):
 
     def test_directory_pages_purge_their_clean_url(self):
         self.assertEqual(self.deploy.urls_for("2026/11/18/post/index.html", "https://tim.dev"),
-                         ["https://tim.dev/2026/11/18/post/"])
-        self.assertEqual(self.deploy.urls_for("2011/11/20/誕生日/index.html", "https://tim.dev"),
-                         ["https://tim.dev/2011/11/20/%E8%AA%95%E7%94%9F%E6%97%A5/"])
+                         ["https://tim.dev/2026/11/18/post/", "https://tim.dev/2026/11/18/post/?*",
+                          "https://tim.dev/2026/11/18/post/index.html*"])
+        self.assertEqual(self.deploy.urls_for("2011/11/20/誕生日/index.html", "https://tim.dev")[0],
+                         "https://tim.dev/2011/11/20/%E8%AA%95%E7%94%9F%E6%97%A5/")
+        # Never a bare site-wide wildcard for the home page.
+        self.assertNotIn("https://tim.dev/*", self.deploy.urls_for("index.html", "https://tim.dev"))
 
 
 if __name__ == "__main__":

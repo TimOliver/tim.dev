@@ -490,6 +490,8 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
     // True while a Back/Forward swap is loading: the address already names
     // the destination, but the old page is still on screen.
     var restoring = false;
+    // A jump link tapped during that wait (e.g. #singing), applied on arrival.
+    var pendingHash = '';
     var positions = Object.create(null);
     var entrySequence = 0;
     function newEntry() {
@@ -528,6 +530,7 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
         if (controller) controller.abort();
         controller = null;
         restoring = false;
+        pendingHash = '';
     }
 
     function swapTo(url, push, fade, destinationEntry) {
@@ -580,7 +583,14 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
                 heading.focus({ preventScroll: true });
                 var position = positions[currentEntry.key] || currentEntry.scroll || [0, 0];
                 var target = hashTarget(new URL(url, location.href).hash);
-                if (push && target) target.scrollIntoView({ behavior: 'instant', block: 'start' });
+                var jump = push;
+                if (pendingHash) {
+                    target = hashTarget(pendingHash);
+                    jump = true;
+                    history.replaceState(currentEntry, '', url.split('#')[0] + pendingHash);
+                    pendingHash = '';
+                }
+                if (jump && target) target.scrollIntoView({ behavior: 'instant', block: 'start' });
                 else window.scrollTo({ left: position[0], top: position[1], behavior: 'instant' });
                 history.scrollRestoration = 'auto';
                 document.dispatchEvent(new Event('collection:swapped'));
@@ -607,6 +617,7 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
         // under the new address). Let the swap land instead.
         if (restoring && a.pathname === location.pathname && a.search === location.search) {
             e.preventDefault();
+            pendingHash = a.hash;
             return;
         }
         // Keep jump chips on the current page out of the fetch/history machinery.

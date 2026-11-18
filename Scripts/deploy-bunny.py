@@ -7,9 +7,11 @@ checksums Bunny reports for the files it holds, then
 
   1. upload new and changed files - everything else first, HTML and feeds
      last, so no page goes live before the CSS, JS and images it points at;
-  2. purge exactly the URLs whose files changed or went away (or the whole
-     pull zone, past PURGE_ALL_OVER URLs);
-  3. delete files that are no longer in the build.
+  2. delete files that are no longer in the build;
+  3. purge the URLs whose files changed or went away - after the delete, so
+     the CDN can't re-fetch a removed file in between (or the whole pull
+     zone, past PURGE_ALL_OVER URLs). Each purge is a wildcard, so the
+     /post/?fbclid=... and /post/index.html variants go too.
 
 Nothing is uploaded twice and nothing unchanged is purged, so a new post is a
 handful of requests. Run with --dry-run to print the plan without touching
@@ -60,13 +62,36 @@ def local_files(build: Path) -> dict[str, str]:
 
 
 def urls_for(path: str, site: str) -> list[str]:
-    """The public URLs a stored file answers to."""
-    quoted = urllib.parse.quote(path)
-    if path == "index.html":
-        return [site + "/"]
-    if path.endswith("/index.html"):
-        return [site + "/" + quoted[: -len("index.html")]]
-    return [site + "/" + quoted]
+    """Purge patterns for a stored file: its URL plus any query-string
+    variant the CDN may have cached separately (shared links carry ?fbclid=
+    and the like), and a page's /index.html spelling. Bunny treats a trailing
+    * as a wildcard. A page's folder isn't wildcarded as a whole: for the
+    home page that would purge the entire site."""
+    url = site + "/" + urllib.parse.quote(path)
+    if path == "index.html" or path.endswith("/index.html"):
+        folder = url[: -len("index.html")]
+        return [folder, folder + "?*", url + "*"]
+    return [url + "*"]
+
+
+def http(method: str, url: str, key: str, data: bytes | None = None, headers: dict | None = None,
+         missing_ok: bool = False) -> bytes:
+    """One Bunny API call, retried with backoff on 5xx and network errors."""
+    for attempt in range(4):
+        req = urllib.request.Request(url, data=data, method=method, headers={"AccessKey": key, **(headers or {})})
+        try:
+            with urllib.request.urlopen(req, timeout=60) as response:
+                return response.read()
+        except urllib.error.HTTPError as error:
+            if error.code == 404 and missing_ok:
+                return b"[]"
+            if error.code < 500 or attempt == 3:
+                raise SystemExit(f"deploy: {method} {url} failed: HTTP {error.code} {error.read()[:200]!r}")
+        except (urllib.error.URLError, TimeoutError) as error:
+            if attempt == 3:
+                raise SystemExit(f"deploy: {method} {url} failed: {error}")
+        time.sleep(2 ** attempt)
+    raise AssertionError("unreachable")
 
 
 class LocalZone:
@@ -95,23 +120,8 @@ class BunnyZone:
         self.key = key
 
     def request(self, method: str, path: str, data: bytes | None = None, headers: dict | None = None) -> bytes:
-        url = self.base + urllib.parse.quote(path)
-        for attempt in range(4):
-            req = urllib.request.Request(url, data=data, method=method,
-                                         headers={"AccessKey": self.key, **(headers or {})})
-            try:
-                with urllib.request.urlopen(req, timeout=60) as response:
-                    return response.read()
-            except urllib.error.HTTPError as error:
-                if error.code == 404 and method in ("GET", "DELETE"):
-                    return b"[]"
-                if error.code < 500 or attempt == 3:
-                    raise SystemExit(f"deploy: {method} {path} failed: HTTP {error.code} {error.read()[:200]!r}")
-            except (urllib.error.URLError, TimeoutError) as error:
-                if attempt == 3:
-                    raise SystemExit(f"deploy: {method} {path} failed: {error}")
-            time.sleep(2 ** attempt)
-        raise AssertionError("unreachable")
+        return http(method, self.base + urllib.parse.quote(path), self.key, data, headers,
+                    missing_ok=method in ("GET", "DELETE"))
 
     def checksums(self) -> dict[str, str]:
         found: dict[str, str] = {}
@@ -158,9 +168,7 @@ def purge(urls: list[str], dry_run: bool) -> None:
 def api(key: str | None, url: str) -> None:
     if not key:
         raise SystemExit("deploy: BUNNY_API_KEY is not set, so the CDN can't be purged")
-    req = urllib.request.Request(url, data=b"", method="POST", headers={"AccessKey": key})
-    with urllib.request.urlopen(req, timeout=60):
-        pass
+    http("POST", url, key, b"")
 
 
 def plan(local: dict[str, str], remote: dict[str, str]) -> tuple[list[str], list[str]]:
@@ -193,14 +201,15 @@ def deploy(build: Path, zone, site: str, dry_run: bool, force: bool = False) -> 
         with ThreadPoolExecutor(WORKERS) as pool:
             for batch in (first, last):
                 list(pool.map(lambda p: zone.put(p, (build / p).read_bytes(), local[p]), batch))
+        # Delete before purging, or the CDN could re-cache a removed file
+        # from storage in between.
+        with ThreadPoolExecutor(WORKERS) as pool:
+            list(pool.map(zone.delete, removed))
     # New files have nothing cached; only replaced and removed ones need a purge.
     stale = [u for p in changed if p in remote for u in urls_for(p, site)]
     stale += [u for p in removed for u in urls_for(p, site)]
     # A local stand-in zone has no CDN in front of it: just report.
     purge(sorted(set(stale)), dry_run or isinstance(zone, LocalZone))
-    if not dry_run:
-        with ThreadPoolExecutor(WORKERS) as pool:
-            list(pool.map(zone.delete, removed))
     return changed, removed
 
 

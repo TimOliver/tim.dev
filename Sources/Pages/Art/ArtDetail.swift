@@ -51,7 +51,7 @@ extension ArtRenderer {
         // `t=` start time. The "Watch on YouTube" badge stays in the sidebar.
         if let id = item.youtubeID {
             header += #"<div class="collection-detail-shot">"#
-            header += Media.youtube(id: id, posterStyle: Media.posterStyle(item.image), label: "Play: \(item.title)", start: item.youtubeStart)
+            header += Media.youtube(id: id, posterStyle: Media.posterStyle(item.image), title: item.title, start: item.youtubeStart)
             header += "</div>"
             return detailShell(header: header, item: item)
         }

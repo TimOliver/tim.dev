@@ -146,13 +146,13 @@ def build_variants(
     # per pixel than a quality-80 JPEG, and the largest candidate is what
     # 2x/3x screens fetch. The untouched original stays the lightbox target.
     widths = [w for w in VARIANT_WIDTHS if w < im.width * 0.9] + [im.width]
-    # A rejected full-width re-encode is deleted, so remember the verdict for
-    # these exact source bytes rather than re-encoding it on every run.
-    verdict = "keep-original:" + site_path(src)
-    if stamps.get(verdict) == stamp:
-        widths.pop()
-        new_stamps[verdict] = stamp
     for width in widths:
+        # A rejected variant is deleted, so remember the verdict for these
+        # exact source bytes rather than re-encoding it on every run.
+        verdict = f"keep-original:{site_path(src)}@{width}w"
+        if stamps.get(verdict) == stamp:
+            new_stamps[verdict] = stamp
+            continue
         variant = encode_variant(src, im, width, is_png, has_alpha, jpeg_ok, stamp, stamps)
         new_stamps[site_path(variant)] = stamp
         # Keep a variant only when it beats the original by enough to matter;
@@ -164,8 +164,7 @@ def build_variants(
         else:
             worthwhile = size < original
         if not worthwhile:
-            if width == im.width:
-                new_stamps[verdict] = stamp
+            new_stamps[verdict] = stamp
             continue
         expected.add(variant)
         out.append((width, site_path(variant)))

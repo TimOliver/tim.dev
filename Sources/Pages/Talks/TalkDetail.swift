@@ -47,7 +47,7 @@ extension TalksRenderer {
             // `<lite-youtube>` is the lite-youtube-embed facade (loaded by the
             // talks include/JS): it shows the poster + play button and only
             // pulls in the real YouTube iframe on click, so the page stays fast.
-            header += Media.youtube(id: id, posterStyle: Media.posterStyle(talk.image), label: "Play: \(talk.title)", embeddable: talk.embeddable)
+            header += Media.youtube(id: id, posterStyle: Media.posterStyle(talk.image), title: talk.title, embeddable: talk.embeddable)
         } else {
             // No video id - fall back to the poster thumbnail. Same
             // .collection-detail-shot box as CodeDetail's screenshot -
