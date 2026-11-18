@@ -12,7 +12,7 @@ Whew, that last bit was a bit of a rush there! XD
 
 Well, without further ado. \*Ahem\*
 
-#### Version 1.0 of iPokédex has been uploaded to Apple and is currently awaiting review for approval to the App Store! ^\_^
+**Version 1.0 of iPokédex has been uploaded to Apple and is currently awaiting review for approval to the App Store!** ^\_^
 
 Let me just say that getting an app to a releasable level is always a VERY nice feeling. I haven’t actually had an instance when there wasn’t at least one uphill battle with getting the code to work (/compile XD) yet.
 

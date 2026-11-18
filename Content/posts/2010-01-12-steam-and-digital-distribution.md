@@ -14,7 +14,7 @@ Me being the stickler for bargains that I am, I couldn’t resist and bought eve
 So while I was settling down to playing my new games, I started to actually ponder the concept of digital distribution a little bit. I was feeling a lot happier and excited about getting and playing these games that I had downloaded, rather than bought from a store and was trying to figure out why.  
 I guess in its simplest form, it’s merely just buying digital content online and downloading it to your hard drive, as opposed to going to a shop and buying the exact same data on a physical form of media. On it’s own, this seems pretty uninspiring, so I started to think more about why I was feeling more satisfied about it. Here are some of the reasons I came up with.
 
-### Pros of digital distribution
+## Pros of digital distribution
 
 - **Laziness++**  
     I never had to leave my house to get these games. Nor did I have to go to the shop, sift through piles of old game boxes, find the one I want and then stand in a line so I could buy it. The whole process was much quicker than that. ^\_^
@@ -38,7 +38,7 @@ I guess in its simplest form, it’s merely just buying digital content online a
 
 On the flip-side however, I’ve noticed there are a few downsides to Steam and digital distribution.
 
-### Potential cons of digital distribution
+## Potential cons of digital distribution
 
 - **Putting the shops out of business**  
      Even though the games shops are more expensive and more of a hassle to use than online distribution, they do provide a lot of people with jobs and help fuel the local economy (and sometimes even the local gaming community). Not that I don’t see game shops going out of business directly because of digital distribution anytime soon, but they’ve gotta be thinking about it.

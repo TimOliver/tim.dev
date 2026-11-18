@@ -11,7 +11,7 @@ path: /2011/10/17/izukan-to-ios/
 
 *(This is a Japanese translation of [this blog post](/2011/10/13/ipokedex-and-ios-5/ "iPokédex and iOS 5"))*
 
-### iOS 5の配達より、iずかんはもっとエラーが出て、ちょっと壊れちゃった。 残念ながら通信を停止しなきゃいけなかったから、もう直せない。 もし手伝いたかったら、[この請願を](http://www.change.org/petitions/keep-pokedroid-and-other-applications-like-it-2)サインください！
+**iOS 5の配達より、iずかんはもっとエラーが出て、ちょっと壊れちゃった。 残念ながら通信を停止しなきゃいけなかったから、もう直せない。 もし手伝いたかったら、[この請願を](http://www.change.org/petitions/keep-pokedroid-and-other-applications-like-it-2)サインください！**
 
 やあ皆！
 
