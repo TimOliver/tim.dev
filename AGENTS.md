@@ -25,7 +25,8 @@ then `Scripts/deploy-bunny.py`. It runs on every push to main once the repo vari
 The build is deterministic - two builds of one commit are byte-identical, image variants and link
 cards included - so the deploy is a diff: it compares SHA-256s with Bunny's storage listing,
 uploads only changed files (pages and feeds last), purges exactly the changed URLs (whole zone
-past 300) and deletes what left the build (refusing to remove over a quarter of the zone without
+past 300; exact purges only, since Bunny rate-limits prefix purges hard - so the pull zone must
+have "Ignore query strings" on, and `/.deploy-manifest.json` backs up the checksums) and deletes what left the build (refusing to remove over a quarter of the zone without
 `--force`). Keep it deterministic: never put a build time, random id or absolute local path in the
 output. Secrets/variables are listed at the top of the workflow. CI caches `.build`, the image
 variants with `.media-cache.json`, and `.build/link-cards`; a miss only makes the run slower.

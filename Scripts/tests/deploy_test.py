@@ -65,8 +65,8 @@ class DeployTests(unittest.TestCase):
         self.assertEqual(changed, ["css/site.def.css", "img/a.jpg", "index.html"])
         self.assertEqual(removed, ["css/site.abc.css"])
         purged = sorted(line[len("purge: "):] for line in log.splitlines() if line.startswith("purge: "))
-        self.assertEqual(purged, ["https://tim.dev/", "https://tim.dev/?*", "https://tim.dev/css/site.abc.css*",
-                                  "https://tim.dev/img/a.jpg*", "https://tim.dev/index.html*"])
+        self.assertEqual(purged, ["https://tim.dev/", "https://tim.dev/css/site.abc.css",
+                                  "https://tim.dev/img/a.jpg", "https://tim.dev/index.html"])
         self.assertFalse((self.zone_dir / "css/site.abc.css").exists())
         self.assertEqual((self.zone_dir / "index.html").read_text(), "home v2")
 
@@ -107,12 +107,48 @@ class DeployTests(unittest.TestCase):
 
     def test_directory_pages_purge_their_clean_url(self):
         self.assertEqual(self.deploy.urls_for("2026/11/18/post/index.html", "https://tim.dev"),
-                         ["https://tim.dev/2026/11/18/post/", "https://tim.dev/2026/11/18/post/?*",
-                          "https://tim.dev/2026/11/18/post/index.html*"])
+                         ["https://tim.dev/2026/11/18/post/", "https://tim.dev/2026/11/18/post/index.html"])
         self.assertEqual(self.deploy.urls_for("2011/11/20/誕生日/index.html", "https://tim.dev")[0],
                          "https://tim.dev/2011/11/20/%E8%AA%95%E7%94%9F%E6%97%A5/")
-        # Never a bare site-wide wildcard for the home page.
-        self.assertNotIn("https://tim.dev/*", self.deploy.urls_for("index.html", "https://tim.dev"))
+        # No wildcards anywhere: Bunny would treat them as rate-limited prefix purges.
+        for path in ["index.html", "img/a.jpg", "feed.xml"]:
+            self.assertFalse(any("*" in u for u in self.deploy.urls_for(path, "https://tim.dev")))
+
+    def test_purges_are_exact_even_for_folder_urls(self):
+        calls = []
+        self.deploy.api = lambda key, url: calls.append(url)
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.deploy.purge(["https://tim.dev/", "https://tim.dev/img/a.jpg"], False)
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(all("exactPath=true" in c for c in calls))
+
+    def test_listing_without_checksums_falls_back_to_the_manifest(self):
+        self.run_deploy()
+        self.assertTrue((self.zone_dir / self.deploy.MANIFEST).exists())
+        # A listing that reports files but no hashes (Bunny's docs don't promise them).
+        self.zone.checksums = lambda: {p: "" for p in self.deploy.local_files(self.zone_dir)}
+        changed, removed, _ = self.run_deploy()
+        self.assertEqual((changed, removed), ([], []))
+        self.write("img/a.jpg", "a v2")
+        changed, _, _ = self.run_deploy()
+        self.assertEqual(changed, ["img/a.jpg"])
+
+    def test_rate_limited_calls_are_retried(self):
+        import urllib.error
+        attempts = []
+        class Response:
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+            def read(self): return b"ok"
+        def urlopen(req, timeout):
+            attempts.append(req.full_url)
+            if len(attempts) < 3:
+                raise urllib.error.HTTPError(req.full_url, 429, "Too Many Requests", {"Retry-After": "1"}, None)
+            return Response()
+        from unittest.mock import patch
+        with patch("urllib.request.urlopen", urlopen), patch("time.sleep", lambda s: None):
+            self.assertEqual(self.deploy.http("POST", "https://api.bunny.net/purge?url=x", "k", b""), b"ok")
+        self.assertEqual(len(attempts), 3)
 
 
 if __name__ == "__main__":

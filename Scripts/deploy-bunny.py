@@ -10,8 +10,16 @@ checksums Bunny reports for the files it holds, then
   2. delete files that are no longer in the build;
   3. purge the URLs whose files changed or went away - after the delete, so
      the CDN can't re-fetch a removed file in between (or the whole pull
-     zone, past PURGE_ALL_OVER URLs). Each purge is a wildcard, so the
-     /post/?fbclid=... and /post/index.html variants go too.
+     zone, past PURGE_ALL_OVER URLs).
+
+Purges are exact (Bunny treats a URL ending in "/" or containing "*" as a
+prefix purge, which is rate-limited to bursts of 20, so pages are purged with
+exactPath=true). Query-string variants such as /post/?fbclid=... rely on the
+pull zone's "Ignore query strings" setting, which caches them as one URL.
+
+Bunny's directory listing reports each file's SHA-256 as Checksum. As a
+fallback, every deploy also stores the full path -> checksum map as
+/.deploy-manifest.json, used for any file the listing leaves unhashed.
 
 Nothing is uploaded twice and nothing unchanged is purged, so a new post is a
 handful of requests. Run with --dry-run to print the plan without touching
@@ -48,6 +56,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 WORKERS = 12
 PURGE_ALL_OVER = 300
+MANIFEST = ".deploy-manifest.json"
 # Pages and feeds go up after the files they reference.
 LAST = (".html", ".xml", ".txt", ".webmanifest")
 
@@ -62,35 +71,39 @@ def local_files(build: Path) -> dict[str, str]:
 
 
 def urls_for(path: str, site: str) -> list[str]:
-    """Purge patterns for a stored file: its URL plus any query-string
-    variant the CDN may have cached separately (shared links carry ?fbclid=
-    and the like), and a page's /index.html spelling. Bunny treats a trailing
-    * as a wildcard. A page's folder isn't wildcarded as a whole: for the
-    home page that would purge the entire site."""
+    """The URLs a stored file answers to, for an exact purge: a page by its
+    folder (/post/, how it's linked and requested) and its /index.html
+    spelling; anything else by its own URL."""
     url = site + "/" + urllib.parse.quote(path)
     if path == "index.html" or path.endswith("/index.html"):
-        folder = url[: -len("index.html")]
-        return [folder, folder + "?*", url + "*"]
-    return [url + "*"]
+        return [url[: -len("index.html")], url]
+    return [url]
 
 
 def http(method: str, url: str, key: str, data: bytes | None = None, headers: dict | None = None,
          missing_ok: bool = False) -> bytes:
-    """One Bunny API call, retried with backoff on 5xx and network errors."""
-    for attempt in range(4):
+    """One Bunny API call, retried with backoff on 5xx, network errors and
+    429 (rate limited: waits as long as Retry-After asks, else backs off)."""
+    attempts = 6
+    for attempt in range(attempts):
         req = urllib.request.Request(url, data=data, method=method, headers={"AccessKey": key, **(headers or {})})
+        wait = 2 ** attempt
         try:
             with urllib.request.urlopen(req, timeout=60) as response:
                 return response.read()
         except urllib.error.HTTPError as error:
             if error.code == 404 and missing_ok:
                 return b"[]"
-            if error.code < 500 or attempt == 3:
+            retryable = error.code >= 500 or error.code == 429
+            if not retryable or attempt == attempts - 1:
                 raise SystemExit(f"deploy: {method} {url} failed: HTTP {error.code} {error.read()[:200]!r}")
+            if error.code == 429:
+                after = error.headers.get("Retry-After", "")
+                wait = max(wait, int(after) if after.isdigit() else 2)
         except (urllib.error.URLError, TimeoutError) as error:
-            if attempt == 3:
+            if attempt == attempts - 1:
                 raise SystemExit(f"deploy: {method} {url} failed: {error}")
-        time.sleep(2 ** attempt)
+        time.sleep(wait)
     raise AssertionError("unreachable")
 
 
@@ -110,6 +123,10 @@ class LocalZone:
 
     def delete(self, path: str) -> None:
         (self.root / path).unlink(missing_ok=True)
+
+    def read(self, path: str) -> bytes | None:
+        target = self.root / path
+        return target.read_bytes() if target.exists() else None
 
 
 class BunnyZone:
@@ -133,6 +150,8 @@ class BunnyZone:
                 for directory, entries in listings:
                     for entry in entries:
                         path = directory + entry["ObjectName"]
+                        if entry["ObjectName"].startswith("."):
+                            continue  # the deploy manifest, never a site file
                         if entry.get("IsDirectory"):
                             pending.append(path + "/")
                         else:
@@ -146,6 +165,10 @@ class BunnyZone:
 
     def delete(self, path: str) -> None:
         self.request("DELETE", path)
+
+    def read(self, path: str) -> bytes | None:
+        data = self.request("GET", path)
+        return None if data == b"[]" else data
 
 
 def purge(urls: list[str], dry_run: bool) -> None:
@@ -162,7 +185,10 @@ def purge(urls: list[str], dry_run: bool) -> None:
         print(f"purge: {url}")
     if not dry_run:
         with ThreadPoolExecutor(WORKERS) as pool:
-            list(pool.map(lambda u: api(key, "https://api.bunny.net/purge?" + urllib.parse.urlencode({"url": u})), urls))
+            # exactPath: a URL ending in "/" is otherwise a prefix purge (for the
+            # home page, the whole site), which Bunny rate-limits far harder.
+            list(pool.map(lambda u: api(key, "https://api.bunny.net/purge?"
+                                        + urllib.parse.urlencode({"url": u, "exactPath": "true"})), urls))
 
 
 def api(key: str | None, url: str) -> None:
@@ -183,6 +209,14 @@ def deploy(build: Path, zone, site: str, dry_run: bool, force: bool = False) -> 
     if "index.html" not in local or "404.html" not in local:
         raise SystemExit(f"deploy: {build} doesn't look like a finished build (no index.html/404.html)")
     remote = zone.checksums()
+    # Any file the listing didn't hash: trust the last deploy's manifest.
+    if any(not digest for digest in remote.values()):
+        try:
+            manifest = json.loads(zone.read(MANIFEST) or b"{}")
+        except ValueError:
+            manifest = {}
+        if isinstance(manifest, dict):
+            remote = {p: digest or manifest.get(p, "") for p, digest in remote.items()}
     changed, removed = plan(local, remote)
     print(f"deploy: {len(local)} files in the build, {len(remote)} on the zone; "
           f"{len(changed)} to upload, {len(removed)} to delete")
@@ -205,6 +239,9 @@ def deploy(build: Path, zone, site: str, dry_run: bool, force: bool = False) -> 
         # from storage in between.
         with ThreadPoolExecutor(WORKERS) as pool:
             list(pool.map(zone.delete, removed))
+        # What's on the zone now, for the next deploy's fallback.
+        data = json.dumps(local, sort_keys=True).encode()
+        zone.put(MANIFEST, data, hashlib.sha256(data).hexdigest().upper())
     # New files have nothing cached; only replaced and removed ones need a purge.
     stale = [u for p in changed if p in remote for u in urls_for(p, site)]
     stale += [u for p in removed for u in urls_for(p, site)]
