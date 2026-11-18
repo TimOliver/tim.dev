@@ -110,10 +110,11 @@ enum ArticleContent {
             return "<\(tag)\(attributes)>\(canonical)</\(tag)>"
         }
         // Ignite writes the item <title> verbatim, so a title with `&` or `<`
-        // would make the whole feed invalid XML. Escape bare ones (entities
-        // already present are kept).
+        // would make the whole feed invalid XML - and so would an HTML-only
+        // entity like `&copy;`, which XML doesn't know. Decode it to plain
+        // text, then escape it for XML.
         out = replace(out, #"<title>([^<]*(?:<(?!/title>)[^<]*)*)</title>"#) { match, text in
-            "<title>\(attribute(text.substring(with: match.range(at: 1))))</title>"
+            "<title>\(xmlText(text.substring(with: match.range(at: 1))))</title>"
         }
         out = replace(out, #"(?s)<content:encoded><!\[CDATA\[(.*?)\]\]></content:encoded>"#) { match, text in
             let html = text.substring(with: match.range(at: 1))
@@ -122,6 +123,14 @@ enum ArticleContent {
             return "<content:encoded><![CDATA[\(content)]]></content:encoded>"
         }
         return out
+    }
+
+    /// Plain text from a string that may carry HTML entities, escaped for XML.
+    static func xmlText(_ text: String) -> String {
+        let plain = (try? Entities.unescape(text)) ?? text
+        return plain.replacingOccurrences(of: "&", with: "&amp;")
+            .replacingOccurrences(of: "<", with: "&lt;")
+            .replacingOccurrences(of: ">", with: "&gt;")
     }
 
     private static func attribute(_ text: String, preservingEntities: Bool = true) -> String {

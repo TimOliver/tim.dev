@@ -54,4 +54,11 @@ final class ArticleContentTests: XCTestCase {
         XCTAssertTrue(!repaired.contains("post//"), "RSS guid and link match canonical")
         XCTAssertTrue(repaired.contains(#"src="https://tim.dev/img/photo.jpg""#), "RSS item body is repaired")
     }
+
+    func testFeedTitlesAreValidXML() {
+        let item = #"<item><title>Tom & Jerry <3 &amp; friends &copy; 2026</title><link>https://tim.dev/2026/01/01/post/</link></item>"#
+        let repaired = ArticleContent.normalizedFeedItem(item, siteURL: URL(string: "https://tim.dev")!)
+        XCTAssertTrue(repaired.contains("<title>Tom &amp; Jerry &lt;3 &amp; friends © 2026</title>"), repaired)
+        XCTAssertNoThrow(try XMLDocument(xmlString: repaired), "RSS only knows XML's own entities")
+    }
 }

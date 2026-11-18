@@ -412,6 +412,15 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
 
 ## Roadmap (not built yet)
 
+- Dependency updates (dry-run on 2026-11-18, deferred past launch; rebuild, diff `Build/` and confirm
+  the feeds are unchanged before merging any of them):
+  - SwiftSoup 2.11.3 → 2.14.4 and swift-markdown 0.7.3 → 0.9.0 compile and pass, but change 22
+    pages: void tags become `<br>`-style (cosmetic), `<wbr>` comes out as `<wbr></wbr>` in
+    2011/07/21/on-ipokedex-getting-pulled (check a newer SwiftSoup), and italics stop carrying
+    across a paragraph in 2010/06/25/day-1-of-volunteering-at-supanova (fix that post's markup).
+  - Ignite past `7486c3f` changes its pages' actor isolation: ~216 "main actor-isolated" errors
+    across the page templates, so it needs a migration, not a bump.
+
 - A native iOS/Mac posting app (separate repo) committing via the GitHub API; photos converted,
   downscaled and EXIF-stripped on device into `Assets/img/posts/YYYY/MM/`.
 - Auto-filled metadata: YouTube thumbnails/titles for talks, GitHub stats for code; App Store lookup

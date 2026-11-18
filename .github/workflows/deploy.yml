@@ -79,6 +79,7 @@ jobs:
         run: |
           python -m unittest discover -s Scripts/tests -p '*_test.py'
           node --test Scripts/tests/frontend_navigation_test.cjs
+          swift test --disable-automatic-resolution
 
       - name: Deploy
         env:
