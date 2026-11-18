@@ -420,5 +420,5 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
 LICENSE splits three ways (decided 2026-11-18): the code (Sources, Scripts, Tests, CSS/JS,
 markup) is public domain (Unlicense); content (Content/, the writing in Includes/, Assets/img/,
 instagram-posts.json) is all rights reserved; vendored Lightbox3, Embla,
-lite-youtube-embed and Tabler icons keep their licences, with texts in THIRD-PARTY-NOTICES. Add a
+lite-youtube-embed and Tabler icons (site and comment UI) keep their licences, with texts in THIRD-PARTY-NOTICES. Add a
 vendored file to both (and to /acknowledgements/) when adding one.

@@ -68,7 +68,7 @@ their copyright notices and licence texts.
   Assets/js/embla-carousel.umd.js                        Embla Carousel, MIT
   Assets/js/lite-yt-embed.js, Assets/css/lite-yt-embed.css
                                                          lite-youtube-embed, Apache 2.0
-  Icons in Assets/img/site/                              Tabler Icons, MIT
+  Icons in Assets/img/site/ and Assets/img/comentario/  Tabler Icons, MIT
 
 Swift packages (Ignite, SwiftSoup, Swift Markdown) are fetched by Swift
 Package Manager under their own licences and aren't included here.

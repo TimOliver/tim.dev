@@ -1,6 +1,5 @@
 /* Social embed cards - static, build-time facades for quoting Mastodon /
-   Twitter / Bluesky posts inside article content (see the Template/AGENTS.md design notes in git history,
-   "Social Embeds"). No platform script loads. Migrated tweets use the twitter
+   Twitter / Bluesky posts inside article content. No platform script loads. Migrated tweets use the twitter
    variant; avatars live in /img/site/avatars/. Loaded (with the
    social-logos.svg preload) only on pages that contain a card - see
    Site.stripUnusedLoaders. */
