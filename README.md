@@ -13,10 +13,12 @@ python3 Scripts/dev-server.py Build 8000
 
 The build command generates responsive images, publishes the site, and checks
 routes, assets, canonical URLs, image markup, feeds, and the sitemap. Open
-[the local preview](http://localhost:8000). Deploy the contents of `Build/`
-only after that command succeeds. Configure the host to serve `404.html` for
-missing routes and verify the Unicode birthday permalink after deployment.
-This repository does not automatically publish when building.
+[the local preview](http://localhost:8000).
+
+Pushing to `master` deploys: `.github/workflows/deploy.yml` builds the site on a
+macOS runner and `Scripts/deploy-bunny.py` syncs `Build/` to Bunny, uploading
+only the files that changed and purging only their URLs. The host serves
+`404.html` for missing routes.
 
 `Package.resolved` locks Swift dependencies. Responsive `@<width>w` image files
 are generated and ignored by Git; keep originals in `Assets/` and run the build

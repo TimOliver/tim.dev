@@ -110,3 +110,5 @@ Design/app-heroes/_private/
 
 # Private local notes for Claude Code (server, hostnames)
 /CLAUDE.local.md
+# build-media.py: which source bytes each variant was made from
+/.media-cache.json

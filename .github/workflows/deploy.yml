@@ -1,0 +1,93 @@
+# Build the site and sync it to Bunny, uploading only what changed.
+#
+# Runs on every push to master once the repository variable DEPLOY_ENABLED is
+# "true"; until then only by hand (Actions → Deploy → Run workflow), where it
+# defaults to a dry run that prints the plan without touching Bunny.
+#
+# Secrets: BUNNY_STORAGE_ZONE, BUNNY_STORAGE_KEY, BUNNY_API_KEY.
+# Variables: BUNNY_STORAGE_HOST (e.g. syd.storage.bunnycdn.com),
+#            BUNNY_PULL_ZONE_ID, DEPLOY_ENABLED.
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Dry run (print what would change, upload nothing)
+        type: boolean
+        default: true
+
+# One deploy at a time, in order; never cancel one halfway through an upload.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: github.event_name == 'workflow_dispatch' || vars.DEPLOY_ENABLED == 'true'
+    # macOS: the build is Swift, and link cards are drawn with AppKit.
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use the newest Xcode on the runner
+        run: |
+          sudo xcode-select -s "$(ls -d /Applications/Xcode_*.app | sort -V | tail -1)"
+          swift --version
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --quiet Pillow==12.2.0
+
+      # Caches only make the build faster: a cold run produces the same bytes,
+      # so a cache miss never means a bigger upload.
+      - name: Restore Swift build
+        uses: actions/cache@v4
+        with:
+          path: |
+            .build
+            !.build/link-cards
+          key: swiftpm-${{ runner.os }}-${{ hashFiles('Package.resolved', 'Package.swift', 'Sources/**/*.swift') }}
+          restore-keys: swiftpm-${{ runner.os }}-
+      - name: Restore image variants
+        uses: actions/cache@v4
+        with:
+          path: |
+            Assets/img/**/*@*w.*
+            .media-cache.json
+          key: media-${{ github.run_id }}
+          restore-keys: media-
+      - name: Restore link cards
+        uses: actions/cache@v4
+        with:
+          path: .build/link-cards
+          key: link-cards-${{ github.run_id }}
+          restore-keys: link-cards-
+
+      - name: Build and check
+        run: bash Scripts/build.sh
+
+      - name: Tests
+        run: |
+          python -m unittest discover -s Scripts/tests -p '*_test.py'
+          node --test Scripts/tests/frontend_navigation_test.cjs
+
+      - name: Deploy
+        env:
+          BUNNY_STORAGE_ZONE: ${{ secrets.BUNNY_STORAGE_ZONE }}
+          BUNNY_STORAGE_KEY: ${{ secrets.BUNNY_STORAGE_KEY }}
+          BUNNY_API_KEY: ${{ secrets.BUNNY_API_KEY }}
+          BUNNY_STORAGE_HOST: ${{ vars.BUNNY_STORAGE_HOST }}
+          BUNNY_PULL_ZONE_ID: ${{ vars.BUNNY_PULL_ZONE_ID }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '--dry-run' || '' }}
+        shell: bash  # -o pipefail, so a failed deploy isn't hidden by tee
+        run: |
+          python Scripts/deploy-bunny.py $DRY_RUN | tee deploy.log
+          { echo '```'; head -c 60000 deploy.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

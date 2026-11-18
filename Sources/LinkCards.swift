@@ -48,6 +48,7 @@ enum LinkCards {
         try renderer.posts()
         try renderer.pages(siteURL: siteURL)
         if renderer.rendered > 0 { print("Link cards: rendered \(renderer.rendered)") }
+        try renderer.pruneCache()
         // Home and the 404 share the site card (MainLayout's default og:image).
         try siteCard(logo: renderer.logo)
             .write(to: root.appending(path: "Build/img/site/link-card.png"))
@@ -61,6 +62,8 @@ enum LinkCards {
         /// Art section titles by slug ("singing" → "Singing"), for eyebrows.
         let artSections: [String: String]
         var rendered = 0
+        /// Cache entries this build used; the rest are pruned afterwards.
+        private var used: Set<String> = []
         private let fm = FileManager.default
 
         init(root: URL) throws {
@@ -151,15 +154,16 @@ enum LinkCards {
         @discardableResult
         mutating func make(date: String = "", eyebrow: String = "", title: String, subtitle: String,
                            image: URL?, path: String) throws -> String {
-            // Cache key: the design version plus every input. The image is
-            // keyed by size and modification date rather than its bytes, so
-            // checking the cache doesn't mean reading every photo.
+            // Cache key: the design version plus every input, the image by its
+            // bytes. (Not its modification date: a CI checkout dates every file
+            // "now", which would redraw every card on every deploy.)
             var key = "\(version)|\(date)|\(eyebrow)|\(title)|\(subtitle)"
-            if let image, let attrs = try? fm.attributesOfItem(atPath: image.path) {
-                key += "|\(image.path)|\(attrs[.size] ?? "")|\(attrs[.modificationDate] ?? "")"
+            if let image, let data = fm.contents(atPath: image.path) {
+                key += "|" + SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
             }
             let digest = SHA256.hash(data: Data(key.utf8)).map { String(format: "%02x", $0) }.joined()
             let cached = cache.appending(path: "\(digest).jpg")
+            used.insert(cached.lastPathComponent)
 
             if !fm.fileExists(atPath: cached.path) {
                 let background = image.flatMap { NSImage(contentsOf: $0)?.cgImage(forProposedRect: nil, context: nil, hints: nil) }
@@ -177,6 +181,14 @@ enum LinkCards {
             try? fm.removeItem(at: target)
             try fm.copyItem(at: cached, to: target)
             return url
+        }
+
+        /// Drops cards no page uses any more (old designs, edited titles), so
+        /// the cache - which CI carries between deploys - doesn't grow forever.
+        func pruneCache() throws {
+            for name in try fm.contentsOfDirectory(atPath: cache.path) where !used.contains(name) {
+                try fm.removeItem(at: cache.appending(path: name))
+            }
         }
     }
 

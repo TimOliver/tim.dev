@@ -4,6 +4,8 @@ import contextlib
 import hashlib
 import importlib.util
 import io
+import time
+import os
 import json
 from pathlib import Path
 import shutil
@@ -44,6 +46,7 @@ class MediaPipelineTests(unittest.TestCase):
         self.media.REPO_ROOT = self.root
         self.media.ASSETS = self.root / "Assets"
         self.media.MANIFEST = self.root / "media-manifest.json"
+        self.media.CACHE = self.root / ".media-cache.json"
 
     def build(self):
         with contextlib.redirect_stdout(io.StringIO()):
@@ -106,6 +109,25 @@ class MediaPipelineTests(unittest.TestCase):
         self.assertEqual(entry["srcset"], "/img/posts/photo.jpg 300w")
         self.assertFalse(list(self.posts.glob("photo@*w.jpg")))
         self.assertTrue(source.exists())
+
+    def test_variants_follow_source_bytes_not_modification_times(self):
+        source = self.posts / "photo.jpg"
+        Image.effect_noise((1000, 600), 70).convert("RGB").save(source, quality=95)
+        self.build()
+        variant = self.posts / "photo@800w.jpg"
+        built = variant.read_bytes()
+        modified = variant.stat().st_mtime_ns
+        # A fresh checkout: every source looks newer, but nothing changed.
+        os.utime(source, (time.time() + 60, time.time() + 60))
+        self.build()
+        self.assertEqual(variant.stat().st_mtime_ns, modified)
+        # A replacement dated in the past is still a new picture.
+        Image.new("RGB", (1000, 600), "blue").save(source, quality=95)
+        os.utime(source, (1, 1))
+        self.build()
+        self.assertNotEqual(variant.read_bytes(), built)
+        with Image.open(variant) as image:
+            self.assertEqual(image.convert("RGB").getpixel((10, 10))[2] > 200, True)
 
     def test_manifest_matches_exif_oriented_original_without_modifying_it(self):
         source = self.posts / "portrait.jpg"

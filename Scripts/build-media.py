@@ -12,8 +12,11 @@ The manifest is a BUILD INPUT, not site output - it lives at the repo root
 rather than under Assets/, because everything under Assets/ is copied verbatim
 into Build/ and shipped.
 
-Idempotent: re-runs skip variants that are newer than their source, and
-generated variants are never themselves treated as sources.
+Idempotent: re-runs reuse a variant while its source's bytes (and this
+script) are unchanged, recorded in .media-cache.json (gitignored; CI caches it
+with the variants). Content, not mtimes: a fresh checkout reuses everything,
+and a replacement with an older date is still rebuilt. Generated variants are
+never themselves treated as sources.
 
 GIFs and animated PNGs retain their original animation and receive metadata
 without resized variants. Original source files are never modified.
@@ -24,6 +27,7 @@ Run after adding or changing images:  python3 Scripts/build-media.py
 from __future__ import annotations
 
 import base64
+import hashlib
 import io
 import json
 import re
@@ -37,6 +41,11 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 ASSETS = REPO_ROOT / "Assets"
 COLLECTIONS = ("posts", "apps", "code", "art", "talks", "about")
 MANIFEST = REPO_ROOT / "media-manifest.json"
+# Which source bytes each variant was made from (variant path -> fingerprint).
+# Lives with the variants, not in the committed manifest: a CI cache restored
+# from an older run must never pair new fingerprints with old variant files.
+CACHE = REPO_ROOT / ".media-cache.json"
+SCRIPT_HASH = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 VARIANT_WIDTHS = (400, 800, 1200, 1600)
 LQIP_WIDTH = 20
@@ -100,8 +109,14 @@ def lqip_data_uri(im: Image.Image) -> str:
     return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
 
 
+def fingerprint(src: Path) -> str:
+    """Source bytes plus this script: either changing means new variants."""
+    return hashlib.sha256(src.read_bytes() + SCRIPT_HASH.encode()).hexdigest()[:24]
+
+
 def build_variants(
-    src: Path, im: Image.Image, expected: set[Path], previous: dict | None = None
+    src: Path, im: Image.Image, expected: set[Path], stamps: dict[str, str],
+    new_stamps: dict[str, str],
 ) -> list[tuple[int, str]]:
     """Emit downscaled variants; never upscale. Returns [(width, site_path)].
 
@@ -124,23 +139,22 @@ def build_variants(
     has_alpha = is_png and ("transparency" in im.info or "A" in im.getbands())
     jpeg_ok = not has_alpha and not (is_png and src.with_suffix(".jpg").exists())
     out: list[tuple[int, str]] = []
-    newest_input = max(src.stat().st_mtime, Path(__file__).stat().st_mtime)
+    stamp = fingerprint(src)
 
     # Downscaled widths, plus a re-encode at the source's own width: some
     # originals (high-quality renders, PNG photos) are several times heavier
     # per pixel than a quality-80 JPEG, and the largest candidate is what
     # 2x/3x screens fetch. The untouched original stays the lightbox target.
     widths = [w for w in VARIANT_WIDTHS if w < im.width * 0.9] + [im.width]
-    # A rejected full-width re-encode is deleted, so remember the verdict:
-    # when the last manifest (written after this source last changed) kept
-    # the original on top, don't re-encode it on every run.
-    if (previous and previous.get("srcset", "").endswith(f"{site_path(src)} {im.width}w")
-            and MANIFEST.exists() and MANIFEST.stat().st_mtime >= newest_input):
+    # A rejected full-width re-encode is deleted, so remember the verdict for
+    # these exact source bytes rather than re-encoding it on every run.
+    verdict = "keep-original:" + site_path(src)
+    if stamps.get(verdict) == stamp:
         widths.pop()
+        new_stamps[verdict] = stamp
     for width in widths:
-        variant = encode_variant(src, im, width, is_png, has_alpha, jpeg_ok, newest_input)
-        if variant is None:
-            continue
+        variant = encode_variant(src, im, width, is_png, has_alpha, jpeg_ok, stamp, stamps)
+        new_stamps[site_path(variant)] = stamp
         # Keep a variant only when it beats the original by enough to matter;
         # otherwise the original itself is the better candidate. (Antialiasing
         # a tiny flat-colour PNG can even make a downscale bigger.)
@@ -150,6 +164,8 @@ def build_variants(
         else:
             worthwhile = size < original
         if not worthwhile:
+            if width == im.width:
+                new_stamps[verdict] = stamp
             continue
         expected.add(variant)
         out.append((width, site_path(variant)))
@@ -169,13 +185,13 @@ def full_chroma(src: Path) -> bool:
 
 
 def encode_variant(src: Path, im: Image.Image, width: int, is_png: bool, has_alpha: bool,
-                   jpeg_ok: bool, newest_input: float) -> Path | None:
+                   jpeg_ok: bool, stamp: str, stamps: dict[str, str]) -> Path:
     """Write (or reuse) <stem>@<width>w as PNG or JPEG; returns its path."""
     as_png = src.with_name(f"{src.stem}@{width}w.png") if is_png else None
     as_jpg = src.with_name(f"{src.stem}@{width}w{'.jpg' if is_png else src.suffix}") if jpeg_ok else None
-    # Reuse whichever format a previous run chose, while it is still fresh.
+    # Reuse whichever format a previous run chose from these same source bytes.
     for existing in (as_png, as_jpg):
-        if existing and existing.exists() and existing.stat().st_mtime >= newest_input:
+        if existing and existing.exists() and stamps.get(site_path(existing)) == stamp:
             return existing
 
     height = max(1, round(im.height * width / im.width))
@@ -246,9 +262,10 @@ def prune_orphaned_variants(expected: set[Path]) -> None:
 def main() -> None:
     manifest: dict[str, dict] = {}
     try:
-        previous_manifest = json.loads(MANIFEST.read_text())
+        stamps = json.loads(CACHE.read_text())
     except (OSError, ValueError):
-        previous_manifest = {}
+        stamps = {}
+    new_stamps: dict[str, str] = {}
     expected_variants: set[Path] = set()
 
     for collection in COLLECTIONS:
@@ -267,8 +284,7 @@ def main() -> None:
                 # modifying them. Metadata stripping remains a separate step.
                 animated = getattr(original, "is_animated", False)
                 im = original if animated else ImageOps.exif_transpose(original)
-                variants = build_variants(src, im, expected_variants,
-                                          previous_manifest.get(site_path(src)))
+                variants = build_variants(src, im, expected_variants, stamps, new_stamps)
                 manifest[site_path(src)] = {
                     "width": im.width,
                     "height": im.height,
@@ -277,18 +293,25 @@ def main() -> None:
                 }
 
     prune_orphaned_variants(expected_variants)
+    write_json(CACHE, {k: v for k, v in sorted(new_stamps.items())
+                       if k.startswith("keep-original:") or ASSETS.joinpath(k.lstrip("/")).exists()})
 
-    with tempfile.NamedTemporaryFile(mode="w", dir=MANIFEST.parent, prefix=".media-manifest-",
+    write_json(MANIFEST, manifest)
+    print(f"media-manifest.json: {len(manifest)} image(s)")
+
+
+def write_json(path: Path, data: dict) -> None:
+    """Atomically replace `path`, so a failed run never leaves half a file."""
+    with tempfile.NamedTemporaryFile(mode="w", dir=path.parent, prefix=f".{path.stem}-",
                                      encoding="utf-8", delete=False) as tmp:
         temporary = Path(tmp.name)
         try:
-            tmp.write(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+            tmp.write(json.dumps(data, indent=2, sort_keys=True) + "\n")
             tmp.close()
             temporary.chmod(0o644)
-            temporary.replace(MANIFEST)
+            temporary.replace(path)
         finally:
             temporary.unlink(missing_ok=True)
-    print(f"media-manifest.json: {len(manifest)} image(s)")
 
 
 if __name__ == "__main__":
