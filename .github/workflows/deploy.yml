@@ -45,7 +45,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install --quiet Pillow==12.2.0
+      - run: python -m pip install --quiet -r requirements.txt
 
       # Caches only make the build faster: a cold run produces the same bytes,
       # so a cache miss never means a bigger upload.

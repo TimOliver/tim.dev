@@ -38,6 +38,10 @@ done
 count=${#staged[@]}
 echo "pre-commit: stripping EXIF from $count staged image(s)..."
 
-# set -e prevents re-staging or committing when any image fails processing.
-python3 Scripts/strip-exif.py "${staged[@]}"
+# The project virtualenv from Scripts/setup.sh has Pillow; fall back to the
+# PATH's python3. set -e prevents re-staging or committing when any image
+# fails processing.
+python=python3
+[[ -x .venv/bin/python ]] && python=.venv/bin/python
+"$python" Scripts/strip-exif.py "${staged[@]}"
 git add -- "${staged[@]}"

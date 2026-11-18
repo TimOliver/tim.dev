@@ -113,3 +113,6 @@ __pycache__/
 /CLAUDE.local.md
 # build-media.py: which source bytes each variant was made from
 /.media-cache.json
+
+# Python virtualenv (Scripts/setup.sh)
+.venv/
