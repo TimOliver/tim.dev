@@ -17,7 +17,7 @@ path: /apps/mercari-japan/
 
 Mercari needs no introduction in Japan. It's the country's largest C2C marketplace, where people list and sell the things they no longer need.
 
-I moved to Japan in 2018 to join Mercari as a tech lead on the JP marketplace team, which looked after the main iOS app.
+I moved back to Japan in 2018 to join Mercari as a tech lead on the JP marketplace team, which looked after the main iOS app.
 
 While I was there, I worked on a range of features, including tools to make managing item prices easier, as well as a project to revamp the main app's architecture.
 

@@ -1,6 +1,6 @@
 ---
 title: Honda RoadSync
-tagline: A companion app for Honda motorcycles.
+tagline: A companion app for Honda motorcycles
 layout: AppDetail
 date: 2020-06-01 00:00:00
 year: 2020
