@@ -33,6 +33,9 @@ check those in a browser.
 **Deploying** is `.github/workflows/deploy.yml` on a macOS runner: `Scripts/build.sh`, the tests,
 then `Scripts/deploy-bunny.py`. It runs on every push to main once the repo variable
 `DEPLOY_ENABLED` is `true` (by hand from the Actions tab otherwise, as a dry run by default).
+The Bunny secrets and variables live in the `Prod` GitHub environment (the job sets
+`environment: Prod`); `DEPLOY_ENABLED` must stay a repository variable, since the job's `if` can't
+see environment variables.
 The build is deterministic - two builds of one commit are byte-identical, image variants and link
 cards included - so the deploy is a diff: it compares SHA-256s with Bunny's storage listing,
 uploads only changed files (pages and feeds last), purges exactly the changed URLs (whole zone

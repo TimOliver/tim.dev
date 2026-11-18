@@ -4,9 +4,9 @@
 # "true"; until then only by hand (Actions → Deploy → Run workflow), where it
 # defaults to a dry run that prints the plan without touching Bunny.
 #
-# Secrets: BUNNY_STORAGE_ZONE, BUNNY_STORAGE_KEY, BUNNY_API_KEY.
-# Variables: BUNNY_STORAGE_HOST (e.g. syd.storage.bunnycdn.com),
-#            BUNNY_PULL_ZONE_ID, DEPLOY_ENABLED.
+# Secrets (Prod environment): BUNNY_STORAGE_ZONE, BUNNY_STORAGE_KEY, BUNNY_API_KEY.
+# Variables (Prod environment): BUNNY_STORAGE_HOST (e.g. syd.storage.bunnycdn.com),
+#            BUNNY_PULL_ZONE_ID. Repository variable: DEPLOY_ENABLED.
 name: Deploy
 
 on:
@@ -31,6 +31,10 @@ jobs:
   deploy:
     # Only main ever reaches the live site, even from a manual run.
     if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || vars.DEPLOY_ENABLED == 'true')
+    # The Bunny secrets and variables live in the Prod environment. DEPLOY_ENABLED
+    # must stay a repository variable: the job's `if` runs before the
+    # environment loads, so it can't see environment variables.
+    environment: Prod
     # macOS: the build is Swift, and link cards are drawn with AppKit.
     runs-on: macos-15
     timeout-minutes: 45
