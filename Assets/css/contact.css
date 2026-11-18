@@ -22,11 +22,15 @@ body:has(.contact) {
     margin: 0 auto 3em;
 }
 
-/* Email on the left (primary), the contact/social card alongside it. */
+/* Email on the left (primary), the contact/social card alongside it. The text
+   column is capped at a comfortable reading measure and the card at the width
+   that keeps the Mastodon handle on one line; the pair is centred, so any
+   spare width insets both instead of opening a gap between them. */
 .contact-cols {
     display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-    gap: 3em;
+    grid-template-columns: minmax(0, 30em) minmax(0, 470px);
+    gap: 36px;
+    justify-content: center;
     align-items: start;
 }
 
@@ -43,7 +47,7 @@ body:has(.contact) {
     text-decoration: none;
     border-bottom: 2px solid var(--link);
     padding-bottom: 0.05em;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.8em;
     word-break: break-word;
 }
 
