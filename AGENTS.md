@@ -177,7 +177,7 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   Honda and Realm are photos, not composed; run it with no arguments, or name slugs) from Tim's
   lossless bezel PNGs, kept in `Design/app-heroes/<slug>/`, except Pixeden frames (iPhone 4/5/X,
   iPad Air, iPad Pro), whose licence forbids sharing the raw file: those live outside the repo
-  in `~/Desktop/App-PNGs/hero-frames/` (Tim backs it up to his NAS; the script reads it, or
+  in `~/Desktop/App-PNGs/hero-frames/` (backed up separately; the script reads it, or
   `--frames DIR`) and Pixeden is credited on /acknowledgements/. Apple's own frames (Threads' and Luma's
   iPhone 16 Pro Max and iPhone Air) and third-party background art (Meta's Threads launch art, shipped only
   heavily blurred) live there too; Apple needs no credit
@@ -293,11 +293,10 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
 ## Comments (Comentario at comments.tim.dev)
 
 - Runs the **official** `registry.gitlab.com/comentario/comentario` image (v3.18.0 since 2026-09-05)
-  via Docker Compose on a DigitalOcean droplet (`ssh <server>`; compose in `<compose dir>`).
-  Redeploy: `<redeploy script> <tag>` (bare tag = official registry; full image ref also accepted).
-  Take `pg_dump` before any image change; migrations only run forward.
-- Secrets live only on the droplet in `<server secrets file>` (`idp.<name>.key/.secret`;
-  the Apple `.p8` key beside it). Never print them. Providers are enabled per domain in the admin UI.
+  via Docker Compose on a small VPS. Server access, redeploy steps and where the secrets live are in
+  `CLAUDE.local.md` (gitignored, local only). Take `pg_dump` before any image change; migrations
+  only run forward. Secrets never leave the server: never print or commit them. Providers are
+  enabled per domain in the admin UI.
 - **All widget customisation is site-side**: `Assets/css/comentario.css` (loaded via
   `css-override`) and `Assets/js/comentario-tweaks.js`. No fork builds, no upstream MRs — contain
   fixes here (e.g. the Safari OAuth popup pre-open shim).
@@ -335,11 +334,12 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
 
 - Preview with `Scripts/dev-server.py` (no-store headers). iOS Safari caches anyway across plain
   reloads: when a fix "doesn't work" on a device, reload with a throwaway `?v=…` query first.
-- Over Tailscale the Mac is `<your-mac>.ts.net`; the LAN IP changes.
+- To test on a phone, reach the Mac's dev server over the LAN or Tailscale (hostnames in
+  `CLAUDE.local.md`).
 - Real WebKit rendering: the `verify` skill in `.claude/skills/verify/` (WKWebView snapshotter,
-  pixel diff, JS probes). It and `.claude/launch.json` (the dev-server config for the Claude app's
-  preview pane) are local-only Claude tooling: gitignored, not part of the site, and absent from a
-  fresh clone - copy them over by hand on a new machine.
+  pixel diff, JS probes). It, `.claude/launch.json` (the dev-server config for the Claude app's
+  preview pane) and `CLAUDE.local.md` (private ops notes) are local-only: gitignored, not part of
+  the site, and absent from a fresh clone - copy them over by hand on a new machine.
 - No-JS check in Safari (Develop → Disable JavaScript): collection cards navigate, "Back to…" works,
   Talks grid is unfiltered.
 - For a markup/CSS refactor that must not change output, diff a class-stripped fingerprint of
@@ -350,7 +350,10 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
 - Commit messages are plain: **no `Co-Authored-By` or AI trailers**.
 - Never `git add -A`/`.`; stage by explicit path. Never commit `Build/`, `Includes/_*`, generated
   `@<width>w` variants, or tool artefacts.
-- Commit only when asked; push only when asked (the remote is private GitHub, HTTPS; SSH auth works).
+- Commit only when asked; push only when asked (remote: github.com/TimOliver/tim.dev, made public
+  at launch; HTTPS remote URL, SSH auth works).
+- The repo is public: nothing private goes in tracked files (home-folder paths, hostnames, server
+  details, email addresses beyond the public contact one). Those belong in `CLAUDE.local.md`.
 - Prefer fewer, larger, vetted changes. For CSS/visual work the loop is edit → `swift run
   IgniteStarter` → Tim eyeballs → tweak; skip heavy process for restyles.
 - Editor "Cannot find X in scope" errors are usually a stale SourceKit index; trust `swift run`.
@@ -373,15 +376,10 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
 - Claude is credited only in the About page's Tech specs card ("Design tools", "Code agents"), by
   Tim's choice; the prose doesn't repeat it.
 
-### Before making the repo public (open decisions, from the October 2026 audit)
+## Licensing
 
-- **Publish a fresh copy, not this repo.** The plan is to open-source a copy with the entire
-  history squashed to one commit. History holds deleted planning docs with the plain contact
-  address and `~/...` paths (no credentials).
-- **Licensing is undecided.** LICENSE declares the tree public domain, but the vendored
-  `Assets/js/lightbox3.umd.js` and embla are MIT and lite-yt-embed is Apache 2.0. The site's
-  /acknowledgements/ page (`Includes/acknowledgements-page.html`) credits them and carries their
-  licence texts; the repo itself still needs a narrower LICENSE or a THIRD-PARTY note before
-  publishing.
-- **Scrub personal infrastructure from the docs.** The Tailscale MagicDNS hostname in the
-  Verification section above is private; replace it with a generic description before launch.
+LICENSE splits three ways (decided 2026-11-18): the code (Sources, Scripts, Tests, CSS/JS,
+markup) is public domain (Unlicense); content (Content/, the writing in Includes/, Assets/img/,
+Template/img/, Design/, instagram-posts.json) is all rights reserved; vendored Lightbox3, Embla,
+lite-youtube-embed and Tabler icons keep their licences, with texts in THIRD-PARTY-NOTICES. Add a
+vendored file to both (and to /acknowledgements/) when adding one.

@@ -107,3 +107,6 @@ __pycache__/
 # Safety net: Pixeden device frames (no redistribution) live outside the repo in
 # ~/Desktop/App-PNGs/hero-frames/; never commit one here by mistake.
 Design/app-heroes/_private/
+
+# Private local notes for Claude Code (server, hostnames)
+/CLAUDE.local.md

@@ -1,3 +1,15 @@
+tim.dev is licensed in three parts: the code that builds the site, the
+content it publishes, and a few third-party files bundled with it.
+
+
+1. CODE: PUBLIC DOMAIN
+
+The site's own code is released into the public domain:
+
+  Sources/, Scripts/, Tests/, Package.swift, Assets/css/, Assets/js/, and the
+  HTML, CSS and JavaScript in Template/ and Includes/ (the markup only, not
+  the writing in it) - except the third-party files listed in section 3.
+
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
@@ -22,3 +34,41 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <https://unlicense.org>
+
+
+2. CONTENT: ALL RIGHTS RESERVED
+
+Copyright (c) 2008-2026 Tim Oliver. All rights reserved.
+
+The site's content is NOT covered by section 1 and may not be reused
+without permission:
+
+  Content/ (posts and portfolio entries), the writing in Includes/,
+  Assets/img/, Template/img/, Design/, instagram-posts.json, and the
+  tim.dev name and logo - except the third-party files in section 3.
+
+Some of it belongs to other people and is shown here with their permission
+or under their own terms: quoted posts by other people, app screenshots and
+icons (owned by the companies that make those apps), app store and YouTube
+badges (trademarks of their owners), Pixeden and Apple device frames
+(licensed to me, not redistributable), and the Samsung Galaxy S II frame in
+the SLKMeter image ("Samsung Galaxy S2" by GadgetsGuy, CC BY 3.0, adapted
+with square screen corners).
+
+You're welcome to use the code to build your own site. Please don't reuse
+the writing or pictures.
+
+
+3. THIRD-PARTY CODE
+
+These bundled files keep their own licences. See THIRD-PARTY-NOTICES for
+their copyright notices and licence texts.
+
+  Assets/js/lightbox3.umd.js, Assets/css/lightbox3.css   Lightbox3, MIT
+  Assets/js/embla-carousel.umd.js                        Embla Carousel, MIT
+  Assets/js/lite-yt-embed.js, Assets/css/lite-yt-embed.css
+                                                         lite-youtube-embed, Apache 2.0
+  Icons in Assets/img/site/ and Template/img/            Tabler Icons, MIT
+
+Swift packages (Ignite, SwiftSoup, Swift Markdown) are fetched by Swift
+Package Manager under their own licences and aren't included here.
