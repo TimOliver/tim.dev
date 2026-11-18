@@ -22,7 +22,8 @@ let package = Package(
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
             ]),
         .testTarget(
-            name: "IgniteStarterTests",
-            dependencies: ["IgniteStarter"]),
+            name: "Tests",
+            dependencies: ["IgniteStarter"],
+            path: "Tests"),
     ]
 )

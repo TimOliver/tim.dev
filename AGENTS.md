@@ -57,7 +57,7 @@ Includes/_posts|_apps|…/       GENERATED per build, gitignored — never edit 
 Assets/                        copied verbatim into Build/ (css, js, img)
 Scripts/                       build, build-media, youtube-posters, app-heroes, check-site,
                                dev-server, strip-exif, hooks, tests
-Tests/IgniteStarterTests/      swift test: generation + ArticleImages
+Tests/                         swift test: one file per subject (ArticleContent, ArticleImages, SiteURL)
 ~/Desktop/App-PNGs/hero-frames/  OUTSIDE the repo: every hero source (bezel PNGs, device frames)
 ~/Desktop/App-PNGs/app-icons/    OUTSIDE the repo: source app icon art
 media-manifest.json            build INPUT written by build-media.py (dimensions, LQIP, variants)

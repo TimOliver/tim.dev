@@ -1,23 +1,11 @@
-// Regression fixtures for canonical URLs and the shared article/RSS repairs.
+// The shared article and RSS repairs in ArticleContent.
 
 import Foundation
 import XCTest
 import SwiftSoup
 @testable import IgniteStarter
 
-final class GenerationTests: XCTestCase {
-    func testCanonicalPageURLs() {
-        for (input, expected) in [
-            ("https://tim.dev", "https://tim.dev/"),
-            ("https://tim.dev/about", "https://tim.dev/about/"),
-            ("https://tim.dev/apps/icomics//", "https://tim.dev/apps/icomics/"),
-            ("https://tim.dev/404.html", "https://tim.dev/404.html"),
-            ("https://tim.dev/2012/12/10/26-ಠ_ಠ//?test=1#comments", "https://tim.dev/2012/12/10/26-%E0%B2%A0_%E0%B2%A0/"),
-        ] {
-            XCTAssertTrue(SiteURL.canonicalPage(URL(string: input)!) == expected, "canonical URL: \(input)")
-        }
-    }
-
+final class ArticleContentTests: XCTestCase {
     func testSharedArticleRepairsAndFeedURLs() {
         let raw = #"<figure>![A &amp; B](/img/photo.jpg)</figure><p>[![thumb](/img/thumb.jpg)](/img/full.jpg)</p>"#
         let page = ArticleContent.normalizedHTML(raw)
