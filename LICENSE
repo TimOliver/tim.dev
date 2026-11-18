@@ -7,8 +7,8 @@ content it publishes, and a few third-party files bundled with it.
 The site's own code is released into the public domain:
 
   Sources/, Scripts/, Tests/, Package.swift, Assets/css/, Assets/js/, and the
-  HTML, CSS and JavaScript in Template/ and Includes/ (the markup only, not
-  the writing in it) - except the third-party files listed in section 3.
+  HTML in Includes/ (the markup only, not the writing in it) - except the
+  third-party files listed in section 3.
 
 This is free and unencumbered software released into the public domain.
 
@@ -44,7 +44,7 @@ The site's content is NOT covered by section 1 and may not be reused
 without permission:
 
   Content/ (posts and portfolio entries), the writing in Includes/,
-  Assets/img/, Template/img/, instagram-posts.json, and the
+  Assets/img/, instagram-posts.json, and the
   tim.dev name and logo - except the third-party files in section 3.
 
 Some of it belongs to other people and is shown here with their permission
@@ -68,7 +68,7 @@ their copyright notices and licence texts.
   Assets/js/embla-carousel.umd.js                        Embla Carousel, MIT
   Assets/js/lite-yt-embed.js, Assets/css/lite-yt-embed.css
                                                          lite-youtube-embed, Apache 2.0
-  Icons in Assets/img/site/ and Template/img/            Tabler Icons, MIT
+  Icons in Assets/img/site/                              Tabler Icons, MIT
 
 Swift packages (Ignite, SwiftSoup, Swift Markdown) are fetched by Swift
 Package Manager under their own licences and aren't included here.

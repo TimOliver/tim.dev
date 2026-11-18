@@ -227,7 +227,7 @@ struct MainLayout: Layout {
         // the client-side scripts each page actually needs are appended.
         Body {
 
-            // Replaces the `html.no-js` initial class from Template/ (Ignite
+            // Replaces the `html.no-js` initial class from the mockup (Ignite
             // doesn't expose <html> attributes). Hides the LQIP placeholder
             // when JS is disabled so only the <noscript> real image shows.
             Include("noscript-lqip.html")

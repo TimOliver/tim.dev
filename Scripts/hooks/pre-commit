@@ -5,8 +5,7 @@
 # Strips EXIF from any staged JPEG/PNG under Assets/ before the commit lands
 # (added, copied, modified or renamed - a renamed photo is still a new file).
 # Modified files are re-staged so the commit picks up the stripped versions.
-# Scoped to Assets/ specifically - Template/img/ contains hand-vetted mockup
-# assets we don't want to re-process, and other dirs are out of scope.
+# Scoped to Assets/, the only images that ship.
 #
 # Installed by Scripts/install-hooks.sh (symlink into .git/hooks/).
 #

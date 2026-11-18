@@ -54,7 +54,6 @@ Content/posts|apps|code|art|talks/   Markdown + front matter (art is nested: art
 Includes/                      hand-written HTML (about-page, contact-page, header, footer…)
 Includes/_posts|_apps|…/       GENERATED per build, gitignored — never edit or commit
 Assets/                        copied verbatim into Build/ (css, js, img, fonts)
-Template/                      the original hand-coded mockup — design source of truth (Template/AGENTS.md)
 Scripts/                       build, build-media, youtube-posters, app-heroes, check-site,
                                dev-server, strip-exif, hooks, tests
 Tests/IgniteStarterTests/      swift test: generation + ArticleImages
@@ -308,6 +307,20 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
 - Copy voice: plain one-sentence facts in Tim's voice. If a layout slot would need filler, drop the
   slot rather than fill it.
 
+### Hard-won front-end lessons (from the mockup)
+- Hamburger menu: the closed bar is a separate sibling `div`, not reused `li`s (they flash at the
+  end of the close animation); the toggle is a checkbox hidden with `clip`, not
+  `pointer-events: none` (iOS ignores it); listen for `change`, not `click`; every visual runs on
+  WAAPI with `cubic-bezier(0.32, 0.72, 0, 1)` (CSS transitions fired twice). Keep all three race
+  guards: the `animating` flag, `pointer-events: none` on the label while animating, and the
+  state-revert in the `change` handler.
+- An SVG `<use>` of a sprite symbol must repeat the symbol's `viewBox` on the wrapping `<svg>`,
+  or it lays out at the 300x150 default.
+- `viewport-fit=cover` plus `env(safe-area-inset-*)` padding; don't try to cancel the inset in
+  landscape (it broke other Safari behaviour). Keep `text-size-adjust: 100%`.
+- ThumbHash placeholders were tried and rejected for LQIP: blobs, not miniatures, and ~150 lines
+  of decoder JS.
+
 ### Tried and rejected (don't re-propose)
 - Separator rules between feed posts: solid full-width hairline, and a short centred rule. The
   fading gradient rule is the one that stuck (Sept 2026).
@@ -388,8 +401,9 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
 - Prefer fewer, larger, vetted changes. For CSS/visual work the loop is edit → `swift run
   IgniteStarter` → Tim eyeballs → tweak; skip heavy process for restyles.
 - Editor "Cannot find X in scope" errors are usually a stale SourceKit index; trust `swift run`.
-- `Template/` is the design source of truth; when porting, preserve behaviour verbatim
-  (see `Template/AGENTS.md`).
+- The original hand-coded mockup (`Template/`, with its design notes in `Template/AGENTS.md`)
+  was deleted once the port was done; it's in history: `git show ace869f:Template/AGENTS.md`.
+  The live site is now the source of truth.
 
 ## Roadmap (not built yet)
 
@@ -408,6 +422,6 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
 
 LICENSE splits three ways (decided 2026-11-18): the code (Sources, Scripts, Tests, CSS/JS,
 markup) is public domain (Unlicense); content (Content/, the writing in Includes/, Assets/img/,
-Template/img/, instagram-posts.json) is all rights reserved; vendored Lightbox3, Embla,
+instagram-posts.json) is all rights reserved; vendored Lightbox3, Embla,
 lite-youtube-embed and Tabler icons keep their licences, with texts in THIRD-PARTY-NOTICES. Add a
 vendored file to both (and to /acknowledgements/) when adding one.
