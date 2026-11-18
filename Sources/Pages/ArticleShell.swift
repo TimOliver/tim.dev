@@ -71,9 +71,11 @@ enum ArticleShell {
 
         // Comments badge: the icon, plus a <comentario-count> element that stays
         // empty (blank suffix/placeholder/zero/error text) until the widget
-        // resolves a non-zero count and .has-count reveals it.
-        inner += #"<a class="post-badge" href="\#(path)#comments" aria-label="Comments">"#
+        // resolves a non-zero count and .has-count reveals it. The name comes
+        // from a hidden "Comments" plus that count (an aria-label would hide it).
+        inner += #"<a class="post-badge" href="\#(path)#comments">"#
         inner += spriteIcon("comments")
+        inner += #"<span class="visually-hidden">Comments</span>"#
         inner += #"<comentario-count path="\#(threadPath)" suffix="" placeholder="" zero-text="" error-text=""></comentario-count>"#
         inner += "</a>"
 
@@ -101,10 +103,13 @@ enum ArticleShell {
         // Comments: the <comentario-count> reads as a label ("Comments") before the
         // count resolves and at zero; once resolved it becomes "N comments" (the
         // singular "1 comments" is corrected to "1 comment" in comentario-tweaks.js,
-        // since Comentario's suffix can't pluralise).
-        s += #"<a class="post-link" href="\#(path)#comments" aria-label="Comments">"#
+        // since Comentario's suffix can't pluralise). That visible text is the
+        // link's name, so no aria-label (which would hide the count).
+        s += #"<a class="post-link" href="\#(path)#comments">"#
         s += spriteIcon("comments")
-        s += #"<comentario-count path="\#(threadPath)" suffix=" comments" placeholder="Comments" zero-text="Comments" error-text="Comments"></comentario-count>"#
+        // "Comments" as the starting text too, so the link has a name before
+        // (or without) the count script; it's replaced by the same text or a count.
+        s += #"<comentario-count path="\#(threadPath)" suffix=" comments" placeholder="Comments" zero-text="Comments" error-text="Comments">Comments</comentario-count>"#
         s += "</a>"
         s += "</div>"
         return s
@@ -147,7 +152,11 @@ enum ArticleShell {
         // browser percent-encodes (/2012/12/10/26-%E0%B2%A0_%E0%B2%A0/), so the
         // counts must ask for that spelling, not the raw Unicode path.
         let threadPath = escape(article.path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? article.path)
-        var s = "<article>"
+        // A post written in another language says so (`lang: ja`), so screen
+        // readers switch voice and search engines index it correctly; the
+        // page around it stays English.
+        let lang = (article.metadata["lang"] as? String).flatMap { $0.isEmpty ? nil : $0 }
+        var s = lang.map { #"<article lang="\#(escape($0))">"# } ?? "<article>"
 
         // Header - plain date, then the title (a link to the post in the feed).
         // The badge row sits between the title and the hero (see below), not here.
@@ -357,7 +366,8 @@ enum ArticleShell {
             let cols = (items.count == 2 || items.count == 4) ? 2 : 3
             var out = #"<div class="post-gallery" style="--gallery-cols: \#(cols);">"#
             for i in items {
-                out += #"<a href="\#(i.src)" data-lightbox="\#(gallery)" data-caption="\#(i.caption)">"#
+                let label = i.alt.trimmingCharacters(in: .whitespaces).isEmpty ? #" aria-label="Open image""# : ""
+                out += #"<a href="\#(i.src)" data-lightbox="\#(gallery)" data-caption="\#(i.caption)"\#(label)>"#
                 out += #"<img src="\#(i.src)" alt="\#(i.alt)" loading="lazy">"#
                 out += "</a>"
             }

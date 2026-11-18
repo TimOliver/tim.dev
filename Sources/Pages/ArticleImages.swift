@@ -80,7 +80,12 @@ enum ArticleImages {
                    let text = try figure.select("figcaption").first()?.text(), !text.isEmpty {
                     caption = text
                 }
-                try image.wrap(#"<a href="\#(escape(source))" data-lightbox data-caption="\#(escape(caption))"></a>"#)
+                // A link whose only content is an image with no alt text has no
+                // name for screen readers: label it with the caption, or at least
+                // say what it does.
+                let label = try image.attr("alt").trimmingCharacters(in: .whitespaces).isEmpty
+                    ? #" aria-label="\#(escape(caption.isEmpty ? "Open image" : caption))""# : ""
+                try image.wrap(#"<a href="\#(escape(source))" data-lightbox data-caption="\#(escape(caption))"\#(label)></a>"#)
             }
             return try body.html()
         } catch {

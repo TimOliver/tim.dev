@@ -109,7 +109,8 @@ enum InstagramEmbed {
         if let v = variants, !forFeed {
             s += #" srcset="\#(v.srcset)" sizes="(max-width: 720px) calc(100vw - 82px), 550px" width="\#(v.width)" height="\#(v.height)""#
         }
-        s += #" alt="" loading="lazy" decoding="async"></a></div>"#
+        // The photo is the lightbox link's only content, so it needs a name.
+        s += #" alt="Photo by @\#(user)" loading="lazy" decoding="async"></a></div>"#
 
         if !post.caption.isEmpty { s += #"<p class="text">\#(post.caption)</p>"# }
         s += #"<p class="meta"><a href="\#(permalink)">\#(date)</a></p></blockquote>"#

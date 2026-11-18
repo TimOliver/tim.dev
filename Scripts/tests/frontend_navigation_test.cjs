@@ -269,5 +269,7 @@ test('reduced-motion menu toggles without animation and hides duplicate links fr
     checkbox.dispatchEvent({ type: 'change' });
     document.dispatchEvent({ type: 'collection:before-swap' });
     assert.equal(checkbox.checked, false);
-    assert.equal(label.attributes['aria-expanded'], 'false');
+    // The state lives on the checkbox; ARIA attributes don't belong on its <label>.
+    assert.equal(checkbox.attributes['aria-expanded'], 'false');
+    assert.equal(label.attributes['aria-expanded'], undefined);
 });

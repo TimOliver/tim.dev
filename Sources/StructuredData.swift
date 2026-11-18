@@ -65,7 +65,7 @@ enum StructuredData {
                     "description": try meta("description"),
                     "image": try meta("og:image"),
                     "author": person,
-                    "inLanguage": "en",
+                    "inLanguage": try doc.select("article").first().map { try $0.attr("lang") }.flatMap { $0.isEmpty ? nil : $0 } ?? "en",
                 ]
                 if !date.isEmpty {
                     posting["datePublished"] = date

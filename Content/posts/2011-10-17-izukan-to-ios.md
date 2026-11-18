@@ -4,6 +4,7 @@ date: 2011-10-17 13:41:56
 author: Tim Oliver
 image: /img/posts/2011/10/borked_ipokedex.png
 tags: development, tech
+lang: ja
 path: /2011/10/17/izukan-to-ios/
 ---
 ![It still works.... kinda](/img/posts/2011/10/borked_ipokedex.png)

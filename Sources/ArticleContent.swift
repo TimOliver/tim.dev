@@ -47,7 +47,8 @@ enum ArticleContent {
                 let isImage = ["jpg", "jpeg", "png", "gif", "webp", "avif"]
                     .contains(URL(string: target)?.pathExtension.lowercased() ?? "")
                 let lightbox = isImage && !forFeed ? #" data-lightbox data-caption="\#(alt)""# : ""
-                return #"<a href="\#(attribute(target))"\#(lightbox)><img src="\#(thumb)" alt="\#(alt)"></a>"#
+                let label = alt.isEmpty ? #" aria-label="Open image""# : ""
+                return #"<a href="\#(attribute(target))"\#(lightbox)\#(label)><img src="\#(thumb)" alt="\#(alt)"></a>"#
             }
             out = replace(out, #"!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)"#) { match, text in
                 let alt = attribute(text.substring(with: match.range(at: 1)))

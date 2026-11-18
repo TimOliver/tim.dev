@@ -170,7 +170,6 @@ function bindPopover(wrap, trigger, popover, onTriggerClick) {
     var mobileMenu = window.matchMedia('(max-width: 720px)');
 
     function setExpanded(expanded) {
-        label.setAttribute('aria-expanded', expanded ? 'true' : 'false');
         checkbox.setAttribute('aria-expanded', expanded ? 'true' : 'false');
         var closedBar = getClosedBar();
         if (closedBar) {
@@ -692,6 +691,13 @@ var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-moti
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.back-to-top')) return;
         window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+        // Move keyboard focus up with the page: the button is about to hide,
+        // and the next Tab would otherwise resume from the bottom.
+        var heading = document.querySelector('main h1');
+        if (heading) {
+            if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+            heading.focus({ preventScroll: true });
+        }
     });
 })();
 

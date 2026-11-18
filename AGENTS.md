@@ -108,6 +108,8 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
   files work (a `_` prefix is NOT special).
 - **Headings**: the custom renderer keeps all body headings. Titles live in front matter, never as a
   `#` line in the body.
+- A post in another language gets `lang:` (e.g. `lang: ja`): its `<article>` carries the
+  attribute and its JSON-LD `inLanguage` follows; the rest of the page stays English.
 - **Dates** in post front matter are `YYYY-MM-DD HH:MM:SS` (Perth/Tokyo local, offset dropped);
   `path:` is `/YYYY/MM/DD/slug/`. Filenames are `YYYY-MM-DD-slug.md`.
 

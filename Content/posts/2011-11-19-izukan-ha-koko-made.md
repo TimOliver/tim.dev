@@ -4,6 +4,7 @@ date: 2011-11-19 22:48:00
 author: Tim Oliver
 image: /img/posts/2011/11/ipokedex_rest.png
 tags: development
+lang: ja
 path: /2011/11/19/izukan-ha-koko-made/
 ---
 ![](/img/posts/2011/11/ipokedex_rest.png)
