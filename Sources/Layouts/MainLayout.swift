@@ -161,8 +161,13 @@ struct MainLayout: Layout {
             // with rel="me", verifies tim.dev on his profile.
             MetaTag(name: "fediverse:creator", content: "@timoliver@mastodon.social")
             MetaLink(href: "https://mastodon.social/@timoliver", rel: "me")
-            // SVG favicon (theme-aware via its own media query) + a PNG for
-            // home-screen/touch contexts.
+            // Favicons: the [t] from the wordmark's own outlines, white on the
+            // dark page colour. The SVG (modern browsers) and the .ico (16/32/48,
+            // for older browsers and crawlers that request /favicon.ico) are a
+            // tile in the iOS app-icon shape; the touch icon is a full flat
+            // square, since iOS applies its own mask and lighting.
+            MetaLink(href: "/favicon.ico", rel: "icon")
+                .customAttribute(name: "sizes", value: "32x32")
             MetaLink(href: "/img/favicon.svg", rel: "icon")
                 .customAttribute(name: "type", value: "image/svg+xml")
             MetaLink(href: "/img/apple-touch-icon.png", rel: "apple-touch-icon")
