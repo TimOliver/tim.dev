@@ -92,7 +92,7 @@ body:has(.collection-detail) {
 .collection-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 64px 44px;
 }
 
 /* Cardless at rest - transparent surface, so only the imagery (rounded) shows
@@ -331,6 +331,7 @@ body:has(.collection-detail) {
 @media (max-width: 720px) {
     .collection-grid {
         grid-template-columns: 1fr;
+        gap: 32px;
     }
     /* No hover surface on phones, so the card's side padding would only push
        the imagery in from the page gutter. Drop it so cards line up with the
