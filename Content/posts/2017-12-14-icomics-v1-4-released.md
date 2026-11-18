@@ -41,6 +41,6 @@ In order to make progress of iComics more transparent, as well as to allow anyon
 
 With Twitch finally enabling creative non-game related streams, and with the recent release of the Justin.tv usernames, I’m going to properly get into Twitch streaming now.
 
-If you’re interested, feel free to follow me at http://twitch.tv/timxd
+If you’re interested, feel free to follow me at [twitch.tv/timXD](https://twitch.tv/timXD)
 
 As aways, thanks for using iComics! Have a happy holiday and see you next year!

@@ -6,7 +6,7 @@ image: /img/posts/2011/01/app_rejected.jpg
 tags: events, tech
 path: /2011/01/06/mac-app-store/
 ---
-[](/img/posts/2011/01/app_rejected.jpg)![Sound familiar anyone? XD](/img/posts/2011/01/app_rejected.jpg)
+![Sound familiar anyone? XD](/img/posts/2011/01/app_rejected.jpg)
 
 Well… I was going to write a blog post on this before it came out, but ‘lo and behold, it came out a few minutes ago.
 

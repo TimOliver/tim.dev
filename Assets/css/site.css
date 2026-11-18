@@ -1436,9 +1436,9 @@ article pre code {
 [data-color-scheme="dark"] {
     --hl-keyword: #FC5FA3;
     --hl-string: #FC6A5D;
-    --hl-comment: #6C7986;
+    --hl-comment: #8A96A3;
     --hl-number: #D0BF69;
-    --hl-type: #A167E6;
+    --hl-type: #AE7CF0;
     --hl-pre: #FD8F3F;
 }
 .hl-keyword { color: var(--hl-keyword); font-weight: 600; }

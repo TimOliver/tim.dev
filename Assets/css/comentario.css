@@ -177,7 +177,6 @@
             mask-size: auto 100%;
     -webkit-mask-position: var(--cmntr-icon-pos) 50%;
             mask-position: var(--cmntr-icon-pos) 50%;
-    transition: background-color 0.12s ease;
 }
 
 /* Hover: brighten to the primary label colour (matches the sort-label hover). */
@@ -1097,7 +1096,6 @@
     background: currentColor;
     -webkit-mask: var(--cmntr-icon) center / contain no-repeat;
             mask: var(--cmntr-icon) center / contain no-repeat;
-    transition: transform 0.15s ease;
 }
 
 .comentario-root .comentario-message-box.comentario-error .comentario-btn-link.comentario-btn-active::before {
