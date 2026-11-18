@@ -84,19 +84,34 @@ enum InstagramEmbed {
         }
         let date = displayDate(post.date)
 
-        // A post deleted since it was embedded: keep the date and the link.
-        guard let user = post.user, let image = post.image else {
+        // A post with no snapshot at all (deleted before it was taken, and no
+        // account on record): just the date and the link.
+        guard let user = post.user else {
             return #"<blockquote class="embed_social" data-platform="instagram">"#
                 + #"<p class="text">This post is no longer on Instagram.</p>"#
                 + #"<p class="meta"><a href="\#(permalink)">\#(date)</a></p></blockquote>"#
         }
 
+        // Accounts with a saved photo use it; others (e.g. Realm's) get a
+        // generated initial, like the migrated tweets.
+        let jpg = IgniteWebsite.packageRoot.appending(path: "Assets/img/site/avatars/\(user).jpg")
+        let avatar = "/img/site/avatars/\(user)." + (FileManager.default.fileExists(atPath: jpg.path) ? "jpg" : "svg")
         var s = #"<blockquote class="embed_social" data-platform="instagram">"#
         s += #"<div class="header"><a class="name_header" href="https://www.instagram.com/\#(user)/">"#
-        s += #"<img class="avatar" src="/img/site/avatars/\#(user).jpg" alt="" width="46" height="46">"#
+        s += #"<img class="avatar" src="\#(avatar)" alt="" width="46" height="46">"#
         s += #"<div class="name"><span class="display_name">\#(displayNames[user] ?? user)</span>"#
         s += #"<span class="account_name">@\#(user)</span></div></a>"#
         s += #"<svg class="embed_logo" viewBox="0 0 24 24" aria-hidden="true" width="32"><use href="/img/site/social-logos.svg#instagram"/></svg></div>"#
+
+        // A post deleted since it was embedded keeps its card, caption (copied
+        // into the snapshot from the post's own Markdown) and date; a grey
+        // placeholder stands in for the photo.
+        guard let image = post.image else {
+            s += #"<div class="media"><div class="media-missing">Media no longer available</div></div>"#
+            if !post.caption.isEmpty { s += #"<p class="text">\#(post.caption)</p>"# }
+            s += #"<p class="meta"><a href="\#(permalink)">\#(date)</a></p></blockquote>"#
+            return s
+        }
 
         // The photo opens in the lightbox like any other post image.
         let plain = post.caption.replacingOccurrences(of: "<br>", with: " ")
@@ -134,7 +149,7 @@ enum InstagramEmbed {
         }
     }
 
-    private static let displayNames = ["timoliver": "Tim Oliver", "icomicsapp": "iComics"]
+    private static let displayNames = ["timoliver": "Tim Oliver", "icomicsapp": "iComics", "realmstagram": "Realm"]
 
     private static let root = URL(fileURLWithPath: #filePath)
         .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()

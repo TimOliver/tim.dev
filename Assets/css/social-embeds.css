@@ -204,7 +204,8 @@ article .embed_social[data-platform="instagram"] {
     grid-template-columns: 1fr 1fr;
 }
 
-.embed_social .media:has(> a:only-child) {
+.embed_social .media:has(> a:only-child),
+.embed_social .media:has(> .media-missing) {
     grid-template-columns: 1fr;
 }
 
@@ -221,6 +222,21 @@ article .embed_social[data-platform="instagram"] {
     border-radius: 8px;
     corner-shape: squircle;
     margin: 0;
+}
+
+/* A photo deleted from Instagram since it was embedded: a grey square holds
+   its place, so the card keeps its shape and caption. */
+.embed_social .media-missing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    corner-shape: squircle;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    line-height: 1.4;
 }
 
 /* Instagram leads with the photo, so the caption sits below it. */
