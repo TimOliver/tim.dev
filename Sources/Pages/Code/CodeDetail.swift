@@ -39,7 +39,13 @@ extension CodeRenderer {
         // Title + tagline (no icon - repos have no app icon), then the large
         // landscape screenshot in a bordered surface (falls back to the flat
         // empty surface until one lands).
-        var header = #"<h1 class="collection-detail-name">\#(escape(repo.title))</h1>"#
+        // Repo names are one long camelCase word ("TOCropViewController"). The
+        // heading shrinks to fit it on a phone (--fit-chars, collection.css);
+        // word-boundary breaks remain as a fallback for enlarged text.
+        let name = escape(repo.title).replacingOccurrences(
+            of: #"(?<=[a-z])(?=[A-Z])|(?<=-)"#, with: "<wbr>", options: .regularExpression)
+        let fit = repo.title.contains(" ") ? "" : #" style="--fit-chars: \#(repo.title.count)""#
+        var header = #"<h1 class="collection-detail-name"\#(fit)>\#(name)</h1>"#
         header += #"<p class="collection-detail-tagline">\#(escape(repo.tagline))</p>"#
         header += #"<div class="collection-detail-shot">"#
 

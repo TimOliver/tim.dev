@@ -295,6 +295,19 @@ body:has(.collection-detail) {
     }
 }
 
+/* One-word names (Code repos: "TOPasscodeViewController") shrink to fit the
+   column instead of wrapping mid-word. --fit-chars is set per page at build
+   time; 0.6em is a little over the widest measured glyph average (0.574em).
+   On wider screens the cap is far above the normal size, so it never applies. */
+.collection-detail-name[style*="--fit-chars"] {
+    font-size: min(2.7em, (100vw - 40px) / (var(--fit-chars) * 0.6));
+}
+@media (max-width: 720px) {
+    .collection-detail-name[style*="--fit-chars"] {
+        font-size: min(2.1em, (100vw - 40px) / (var(--fit-chars) * 0.6));
+    }
+}
+
 /* Swap transition - applied by the JS content swap only (via .collection-swapped),
    so it fires on in-place navigation but NOT on a fresh page load. */
 @media (prefers-reduced-motion: no-preference) {
