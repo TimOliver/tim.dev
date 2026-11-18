@@ -19,7 +19,10 @@
     /* Border for strokes drawn ON a --bg-secondary surface: --border is tuned for
        the white --bg and nearly disappears against #F2F2F2, so step it darker. */
     --border-secondary: rgba(0, 0, 0, 0.12);
-    --icon-stroke: rgba(0, 0, 0, 0.07);
+    /* The hairline around images and icons (post images, galleries, app and
+       company icons). Light matches the app screenshot frame (--border #eee on
+       white); dark was tuned by eye on the launch hero. */
+    --image-stroke: rgba(0, 0, 0, 0.067);
     --icon-filter: none;
     --capsule-bg: rgba(245, 245, 247, 0.7);
     --capsule-border: rgba(0, 0, 0, 0.06);
@@ -67,7 +70,7 @@
     --pinned-gold: #E8B931;
     --border: #38383C;
     --border-secondary: rgba(255, 255, 255, 0.14);
-    --icon-stroke: rgba(255, 255, 255, 0.09);
+    --image-stroke: rgba(255, 255, 255, 0.04);
     /* Feed post separator peak: --border pulled toward the page (see the
        article + article::before rule) so it reads quieter on near-black. */
     --post-rule: color-mix(in srgb, #38383C 60%, #141414);
@@ -278,7 +281,7 @@ article img {
     max-height: 650px;
     width: auto;
     height: auto;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--image-stroke);
     border-radius: 15px;
     corner-shape: squircle;
     margin: 0 auto 1.75em;
@@ -288,10 +291,6 @@ article img {
    existing portrait height cap. The media renderer supplies these dimensions. */
 article img.post-image {
     width: min(100%, var(--image-width));
-}
-
-[data-color-scheme="dark"] article img {
-    border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Hero image - fills the content column, with height capped by the base
@@ -323,14 +322,10 @@ article img.hero {
 .post-gallery a {
     display: block;
     line-height: 0;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--image-stroke);
     border-radius: 15px;
     corner-shape: squircle;
     overflow: hidden;
-}
-
-[data-color-scheme="dark"] .post-gallery a {
-    border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Neutralise the standalone `article img` chrome - the anchor carries the

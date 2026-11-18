@@ -72,10 +72,10 @@ body:has(.about) {
        in browsers that support it; elsewhere it's a plain 25% round corner. */
     border-radius: 25%;
     corner-shape: squircle;
-    /* A barely-there inner stroke so the white tiles still read on the white
-       page in light mode (it vanishes against dark). An inset box-shadow
-       would paint under the image, so it's an outline pulled inside. */
-    outline: 1px solid rgba(0, 0, 0, 0.05);
+    /* The shared image hairline, so the white tiles still read on the white
+       page in light mode. An inset box-shadow would paint under the image,
+       so it's an outline pulled inside. */
+    outline: 1px solid var(--image-stroke);
     outline-offset: -1px;
 }
 /* Icons link to the same place as the company name (a duplicate link, so
