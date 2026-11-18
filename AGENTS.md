@@ -28,6 +28,11 @@ Sources/
 ├── SiteURL.swift              canonical URL normalisation (exactly one trailing slash)
 ├── ArticleContent.swift       body/feed HTML repair (absolute URLs etc.)
 ├── ArticleMarkdownRenderer.swift  keeps every body heading (Ignite's stock renderer drops the first)
+├── CodeHighlighter.swift      build-time syntax highlighting for fenced code blocks
+├── FrontMatter.swift          line-by-line front-matter reader shared by the post-publish passes
+├── MetaDescriptions.swift     post-publish: meta/og descriptions from the built HTML
+├── LinkCards.swift            post-publish: og:image title cards (AppKit) + the site card
+├── StructuredData.swift       post-publish: JSON-LD (BlogPosting, WebSite + Person)
 ├── Layouts/MainLayout.swift   page shell; per-page CSS/JS loading lives here
 └── Pages/                     StaticPages + ArticlePage templates
     ├── Home / Archive / About / Contact / NotFound / PostPage
@@ -38,11 +43,16 @@ Includes/                      hand-written HTML (about-page, contact-page, head
 Includes/_posts|_apps|…/       GENERATED per build, gitignored — never edit or commit
 Assets/                        copied verbatim into Build/ (css, js, img, fonts)
 Template/                      the original hand-coded mockup — design source of truth (Template/AGENTS.md)
-Scripts/                       build-media, check-site, dev-server, strip-exif, hooks, tests
+Scripts/                       build, build-media, youtube-posters, app-heroes, check-site,
+                               dev-server, strip-exif, hooks, tests
+Tests/IgniteStarterTests/      swift test: generation + ArticleImages
 Design/app-heroes/<slug>/      source bezel PNGs for Scripts/app-heroes.py (never copied into Build/)
+Design/app-icons/              source app icon art
 ~/Desktop/App-PNGs/hero-frames/  OUTSIDE the repo: Pixeden device frames (no redistribution)
 media-manifest.json            build INPUT written by build-media.py (dimensions, LQIP, variants)
 instagram-posts.json           build INPUT: snapshot of every embedded Instagram post (see below)
+LICENSE, THIRD-PARTY-NOTICES   code public domain, content reserved, vendored licences (see Licensing)
+CLAUDE.local.md                gitignored private ops notes (server, hostnames) - never commit
 ```
 
 ## How the site is built
@@ -227,7 +237,7 @@ instagram-posts.json           build INPUT: snapshot of every embedded Instagram
   squircle)`, `32%` squircle (iOS's continuous corner spans ~1.5x its nominal 22.4%). Safari picks up
   the squircle automatically once it ships `corner-shape`.
 - Breakpoints: 720px (phone: hamburger, single column, 16px text), 720–1000px (tablet: 17px header
-  but 18px content, 20px gutter), 1330px (gallery bleed/fades switch off). Mobile breakpoint is 720.
+  but 18px content, 20px gutter), 1430px (About gallery bleed/fades switch off). Mobile breakpoint is 720.
 - Reading measure 740px; heroes 840px; body 18px; `--post-gap` is the one vertical rhythm on the
   feed; in-article `<hr>` is a solid hairline, the fading gradient rule is ONLY between feed posts.
 - **No `text-wrap: pretty` on body text** — Safari re-rags the whole paragraph and leaves wide gaps in
