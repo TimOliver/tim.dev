@@ -135,6 +135,8 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
   hook does staged files). GPS leaks otherwise.
 - A post's tagline goes in `subtitle:` (shown under the title on the page and feed, and on its
   link card). Don't tack it onto the title after a dash; that's only how older posts did it.
+- The home feed shows only the newest post's year (up to 10 posts; `Home.swift`), keyed to the
+  newest post, not the build date, so a January deploy never empties it. Older years are Archive-only.
 - Posts shown on the home feed are complete, not excerpts; post pages exist mainly to host comments.
   Exception, opt-in: a `<!--more-->` line in a long post cuts its feed copy there; the cut fades
   out (`.post-excerpt` mask) and ends with a full-width "Continue reading →" block
