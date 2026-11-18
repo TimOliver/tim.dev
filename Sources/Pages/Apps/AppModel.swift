@@ -30,14 +30,11 @@ struct AppInfo {
     /// image path.
     let icon: String?
 
-    /// The app's single hero image (`image:`), shown in place of the
-    /// screenshot stage on the grid card and the detail page; nil until one
-    /// lands. Also the page's og:image, so its link card uses it.
+    /// The app's single hero image (`image:`), shown on the grid card and the
+    /// detail page; nil until one lands (the flat empty surface holds its
+    /// place). Also the page's og:image, so its link card uses it.
     let image: String?
 
-    /// Screenshot image paths from the comma-separated `shots:` key. The device
-    /// chrome is baked into each PNG by hand, so the site renders them bare.
-    let shots: [String]
 
     /// The article's own site path (e.g. `/apps/icomics`) - used to link each
     /// grid card through to its detail page.
@@ -89,13 +86,6 @@ struct AppInfo {
         icon = CollectionRenderer.nonEmpty(a.metadata["icon"] as? String)
         image = CollectionRenderer.nonEmpty(a.metadata["image"] as? String)
 
-        // `shots:` is a single comma-separated string in the markdown. Split it
-        // into individual paths, trim the whitespace around each, and drop any
-        // empty fragments left behind by a stray or trailing comma.
-        shots = (a.metadata["shots"] as? String ?? "")
-            .split(separator: ",")
-            .map { $0.trimmingCharacters(in: .whitespaces) }
-            .filter { !$0.isEmpty }
 
         // The article's own site path - used to link the grid card to its
         // detail page.
@@ -143,28 +133,4 @@ enum AppRenderer {
         Media.box(container: "app-icon", path: icon, alt: "", sizes: sizes)
     }
 
-    /// The stage the device shots stand on. Screenshots carry their own baked-in
-    /// chrome, so they are emitted bare - no wrapper, no rounding, no clipping.
-    /// With no shots yet the stage wears `.is-empty` and holds the space.
-    static func stage(_ shots: [String], className: String, sizes: String, appName: String) -> String {
-
-        // No screenshots yet: render just the empty stage so the layout still
-        // reserves the space where they will eventually sit.
-        guard !shots.isEmpty else {
-            return #"<div class="\#(className) is-empty"></div>"#
-        }
-
-        var s = #"<div class="\#(className)">"#
-
-        // Position suffixed onto alt text: identical alt on every shot in a
-        // multi-shot stage would have a screen reader announce e.g. "iComics
-        // screenshot" twice with no way to tell them apart.
-        for (index, shot) in shots.enumerated() {
-            let alt = shots.count > 1 ? "\(appName) screenshot \(index + 1)" : "\(appName) screenshot"
-            s += Media.image(shot, alt: alt, sizes: sizes, className: "app-shot")
-        }
-
-        s += "</div>"
-        return s
-    }
 }

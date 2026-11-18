@@ -143,9 +143,8 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
   `Scripts/build.sh`, reused while the source's bytes are unchanged (recorded in the gitignored
   `.media-cache.json`, never by mtime, so a fresh checkout reuses them); Site.swift deletes from Build/ any variant no page references (lightbox-only
   originals).
-- **Every app has ONE hero image** (`image:`); the old `shots:` screenshot carousel is unused
-  (AppModel still parses `shots:`, and `.app-shot` must never get `border-radius`, `background` or
-  `overflow:hidden`, since those PNGs carried their own device chrome).
+- **Every app has ONE hero image** (`image:`); without one, the card and detail page show the
+  flat empty 16:10 surface. (The old `shots:` screenshot carousel was removed in November 2026.)
 - **Details rows are a fixed schema per collection** (`stats` in each `*Model.swift`), one
   front-matter key per row, always in this order. A required row with no value renders `[TBC]`, is
   logged as `TBC: <path> <row>` by `swift run`, and is counted by `check-site.py` (not an error);

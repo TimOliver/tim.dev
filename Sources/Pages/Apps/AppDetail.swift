@@ -53,11 +53,9 @@ extension AppRenderer {
         header += "</div>"  // app-detail-headings
         header += "</div>"  // app-detail-head
 
-        // Screenshot stage. The shots render bare (their device chrome is baked
-        // into each PNG). On a phone this becomes a full-bleed scroll-snap
-        // pager (apps.css) - one shot per view.
-        // A hero image replaces the stage: the same framed, natural-ratio
-        // slot as Art, and a lightbox trigger like Code and Art.
+        // The hero image: the same framed, natural-ratio slot as Art, and a
+        // lightbox trigger like Code and Art. Without one, the flat empty
+        // 16:10 surface holds its place.
         if let image = app.image, let entry = Media.manifest[image] {
             header += #"<div class="collection-detail-shot collection-detail-shot--natural" style="--ar: \#(entry.width) / \#(entry.height)">"#
             header += Media.zoomable(
@@ -66,12 +64,9 @@ extension AppRenderer {
                 path: image, caption: app.title)
             header += "</div>"
         } else {
-            header += stage(
-                app.shots,
-                className: "app-detail-stage",
-                sizes: "(max-width: 720px) 74vw, 320px",
-                appName: app.title
-            )
+            header += #"<div class="collection-detail-shot">"#
+                + Media.box(container: "app-hero", path: nil, alt: "", sizes: "")
+                + "</div>"
         }
 
         // Sidebar starts with the shared details table (empty string when the

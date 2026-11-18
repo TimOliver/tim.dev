@@ -81,31 +81,10 @@
     padding: 3px 8px;
 }
 
-/* ---------- Screenshot stages ----------
-   The stage is a flat surface the device shots stand on. Screenshots have their
-   device chrome - bezel, corner radius, drop shadow - baked into the PNG by
-   hand, so .app-shot gets NO border-radius, NO background and NO overflow
-   clipping: any of those would eat the bezel's own corners. Size comes from the
-   image's intrinsic width/height attributes, never a CSS aspect-ratio.
-
-   A flexible row, so it holds either one supplied image containing two devices
-   or two separate files side by side. */
-.app-stage,
-.app-detail-stage {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    background: var(--bg-secondary);
-    border-radius: 18px;
-    corner-shape: squircle;
-    padding: 24px;
-}
-
 /* An app's hero image (`image:`): a full-bleed picture in the card's 16:10
    media slot, cropped to fill. On the detail page it sits in the shared
-   natural-ratio frame instead (collection.css). Unlike the bare device
-   shots above, heroes are rectangular pictures, so they're rounded. */
+   natural-ratio frame instead (collection.css). Heroes are rectangular
+   pictures, so they're rounded. */
 .app-hero {
     aspect-ratio: 16 / 10;
     border-radius: 18px;
@@ -116,18 +95,6 @@
 
 .collection-detail-shot .app-hero {
     border-radius: 0;
-}
-
-/* No shots yet - hold the space with the flat surface. */
-.app-stage.is-empty,
-.app-detail-stage.is-empty {
-    aspect-ratio: 16 / 10;
-}
-
-.app-detail-stage {
-    gap: 24px;
-    padding: 32px;
-    margin-bottom: 2.5em;
 }
 
 /* Detail header: icon tile + headings, left-aligned. */
@@ -175,10 +142,4 @@
         font-size: 1.05em;
     }
 
-    /* Single-column cards span the full width here; cap the stage so a lone
-       screenshot doesn't blow up huge in landscape, and centre it in the card. */
-    .app-stage {
-        max-width: 480px;
-        margin-inline: auto;
-    }
 }

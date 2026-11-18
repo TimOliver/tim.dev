@@ -85,22 +85,10 @@ extension AppRenderer {
             s += "</div>"  // app-card-meta
             s += "</div>"  // app-card-head
 
-            // Screenshot stage under the head. The shots render bare (their
-            // device chrome is baked into each PNG), and an app with none yet
-            // gets the flat empty stage - both handled inside `stage`.
-            // An app with a hero image shows it here instead (16:10 crop,
-            // like the stage it replaces).
-            if let image = app.image {
-                s += Media.box(container: "app-hero", path: image, alt: "",
-                               sizes: "(max-width: 720px) 90vw, 480px")
-            } else {
-                s += stage(
-                    app.shots,
-                    className: "app-stage",
-                    sizes: "(max-width: 720px) 90vw, 240px",
-                    appName: app.title
-                )
-            }
+            // The hero image under the head, cropped to 16:10; an app without
+            // one yet gets the flat empty surface (Media.box handles both).
+            s += Media.box(container: "app-hero", path: app.image, alt: "",
+                           sizes: "(max-width: 720px) 90vw, 480px")
 
             s += "</a>"
         }
