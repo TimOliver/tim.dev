@@ -5,7 +5,6 @@ import SwiftSoup
 
 /// Adds responsive delivery to post images without changing their original
 /// lightbox targets. Native loading/srcset also work when JavaScript is off.
-@MainActor
 enum ArticleImages {
     static func hero(_ path: String, eager: Bool) -> String {
         guard let entry = metadata(for: path) else {

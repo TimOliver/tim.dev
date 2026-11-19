@@ -12,12 +12,12 @@ import Ignite
 /// `data-color-scheme`, so the badge follows the manual theme toggle. An
 /// <img> keeps the badge's ~4 KB of paths out of every page's HTML and lets
 /// the browser cache it across all the pages that use it.
-@MainActor
 enum Badge {
 
     /// Reads and caches a portfolio SVG. Fails LOUDLY when the file is
     /// missing - a swallowed error would ship a broken "get it" link.
-    private static var cache: [String: String] = [:]
+    /// Ignite renders pages one at a time in a single task, so plain static state is safe.
+    nonisolated(unsafe) private static var cache: [String: String] = [:]
     static func svg(_ file: String) -> String {
         if let hit = cache[file] { return hit }
         let url = IgniteWebsite.packageRoot

@@ -77,7 +77,6 @@ struct RepoInfo {
     /// either a direct read of the article's title/path/body or a lookup of one
     /// front-matter metadata key, each with an empty-string / nil fallback so a
     /// missing key degrades gracefully instead of crashing the build.
-    @MainActor
     init(_ a: Article) {
 
         // The article title doubles as the repo's display name.
@@ -127,7 +126,6 @@ struct RepoInfo {
 /// collection stacks); holds only the repo-specific markup. The grid and detail
 /// entry points live in Code.swift / CodeDetail.swift as extensions on this
 /// enum, beside the pages that call them.
-@MainActor
 enum CodeRenderer {
 
     /// The inline octocat mark preceding the owner/name line.

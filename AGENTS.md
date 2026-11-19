@@ -19,7 +19,7 @@ swift test --disable-automatic-resolution
 python3 Scripts/deploy-bunny.py --dry-run  # what a deploy would upload/purge/delete (needs Bunny env vars)
 ```
 
-Needs macOS with Xcode/Swift and Python 3.10+. Python packages are pinned in `requirements.txt`
+Needs macOS with Xcode/Swift and Python 3.11+ (Pillow 13 requires it). Python packages are pinned in `requirements.txt`
 and live in `.venv` (gitignored); `build.sh` and the pre-commit hook use it automatically, CI
 installs the same pin. Swift dependencies are locked by `Package.resolved` - keep
 `--disable-automatic-resolution` on `swift run`/`swift test` so a build never re-resolves them.
@@ -83,6 +83,13 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
 
 ## How the site is built
 
+- **Ignite is pinned to releases** (`.upToNextMinor(from: "0.7.2")`, github.com/Ignite-Swift):
+  before 1.0 a minor release can break the build. Since 0.7 pages aren't `@MainActor`; Ignite
+  still renders one page at a time in a single task, which is what makes the four
+  `nonisolated(unsafe)` static caches (Badge, ArticleShell, InstagramEmbed, CollectionRenderer)
+  safe. If Ignite ever renders in parallel, they need locks. `Title` escapes its own text, but
+  `MetaTag` values are written verbatim, so only meta tags get `escapedTitle`. To update any
+  dependency: build a baseline first, rebuild, diff `Build/`, and check the feeds.
 - **Ignite is used for routing and Markdown only.** No Ignite UI components, themes or Bootstrap:
   `useDefaultBootstrapURLs`/`builtInIconsEnabled` are `.none`, `prettifyHTML` is off (SwiftSoup
   lowercases SVG `viewBox`). Pages write HTML strings into `Includes/_<dir>/<key>.html` and return
@@ -300,7 +307,10 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
   Any card whose thumbnail is a different crop from the lightbox file needs `data-crop`.
 - `lite-yt-embed.js` (vendored 0.3.4) also carries `tim.dev` patches: no hover preconnects
   (YouTube, Google, DoubleClick) and the Safari/mobile `YT.Player` path uses
-  youtube-nocookie, so nothing contacts YouTube before Play. Re-apply if re-vendored. Raw
+  youtube-nocookie, so nothing contacts YouTube before Play. Re-apply if re-vendored. Don't
+  move to 0.4.0 (checked 2026-11-19): its headline change is a "prepared" mode for iPhone/iPad
+  Safari that loads the www.youtube.com iframe and Player API at page load, before Play, which
+  breaks that promise; the rest is refactoring. Raw
   YouTube iframes in posts are rewritten to `<lite-youtube>` at build time (a link in feeds)
   by `ArticleContent`; write new videos as a plain iframe or `<lite-youtube>`, either works.
   Every facade shows a LOCAL poster, so no page touches YouTube before Play: Talks and Art use
@@ -428,16 +438,6 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
   The live site is now the source of truth.
 
 ## Roadmap (not built yet)
-
-- Dependency updates (dry-run on 2026-11-18, deferred past launch; rebuild, diff `Build/` and confirm
-  the feeds are unchanged before merging any of them):
-  - SwiftSoup 2.11.3 → 2.14.4 compiles and passes, but changes 22 pages (swift-markdown 0.9.0,
-    argument-parser, collections, atomics and lrucache were updated on 2026-11-18 with
-    byte-identical output): void tags become `<br>`-style (cosmetic), `<wbr>` comes out as `<wbr></wbr>` in
-    2011/07/21/on-ipokedex-getting-pulled (check a newer SwiftSoup), and italics stop carrying
-    across a paragraph in 2010/06/25/day-1-of-volunteering-at-supanova (fix that post's markup).
-  - Ignite past `7486c3f` changes its pages' actor isolation: ~216 "main actor-isolated" errors
-    across the page templates, so it needs a migration, not a bump.
 
 - A native iOS/Mac posting app (separate repo) committing via the GitHub API; photos converted,
   downscaled and EXIF-stripped on device into `Assets/img/posts/YYYY/MM/`.

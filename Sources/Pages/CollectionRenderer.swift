@@ -20,7 +20,6 @@ func escape(_ s: String) -> String {
 /// Art, Talks) and the post/archive include writers. Holds the front-matter
 /// detail parser, the Include-string writer (parameterised by collection
 /// subdir), the blog-post path filter, and shared HTML fragment builders.
-@MainActor
 enum CollectionRenderer {
 
     /// Path prefixes of the collection sections; everything else under
@@ -72,8 +71,8 @@ enum CollectionRenderer {
     }
 
     /// Gaps already logged - Ignite renders some articles more than once per
-    /// build, and each gap should be reported once.
-    private static var reportedGaps = Set<String>()
+    /// build, and each gap should be reported once. Ignite renders pages one at a time in a single task, so plain static state is safe.
+    nonisolated(unsafe) private static var reportedGaps = Set<String>()
 
     /// The article's year in the site's display timezone (Ignite parses
     /// front-matter dates as GMT; `Calendar.current` would shift a midnight
@@ -246,7 +245,6 @@ struct MediaEntry {
 ///
 /// The manifest is a BUILD INPUT and lives at the repo root - not under
 /// Assets/, which is copied verbatim into Build/ and shipped.
-@MainActor
 enum Media {
 
     /// Manifest keyed by site path, e.g. "/img/apps/icomics/icon.png".
@@ -391,7 +389,7 @@ enum Media {
     /// turned off playback on other sites: the facade stays a plain link
     /// (lite-yt-embed skips `data-no-embed`). `start` is in seconds. `title`
     /// names the video for screen readers ("Play: <title>").
-    nonisolated static func youtube(id: String, posterStyle: String, title: String? = nil, start: Int? = nil,
+    static func youtube(id: String, posterStyle: String, title: String? = nil, start: Int? = nil,
                                     embeddable: Bool = true) -> String {
         let watch = "https://www.youtube.com/watch?v=\(id)" + (start.map { "&t=\($0)" } ?? "")
         let mode = !embeddable ? " data-no-embed" : start.map { #" params="start=\#($0)""# } ?? ""

@@ -15,7 +15,7 @@ This site is now statically generated, with the generator itself being an extens
 
 ## System Requirements
 
-macOS with Xcode (Swift 6), and Python 3.10 or above.
+macOS with Xcode (Swift 6), and Python 3.11 or above.
 
 ## Running Locally
 
