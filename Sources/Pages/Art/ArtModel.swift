@@ -111,7 +111,6 @@ struct ArtItem {
     /// front-matter metadata key, each with an empty-string / nil / zero
     /// fallback so a missing key degrades gracefully instead of crashing the
     /// build.
-    @MainActor
     init(_ a: Article) {
 
         // The article title doubles as the piece's display name.
@@ -190,7 +189,6 @@ struct ArtSection {
 /// builders live in extensions over in Art.swift and ArtDetail.swift. Shares
 /// parsing/escaping/include with `CollectionRenderer` (called directly, like the
 /// other three collection stacks).
-@MainActor
 enum ArtRenderer {
 
     /// Reads all Content/art/<slug>/_section.md files off disk and returns the

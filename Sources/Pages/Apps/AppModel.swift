@@ -68,7 +68,6 @@ struct AppInfo {
     /// either a direct read of the article's title/path/body or a lookup of one
     /// front-matter metadata key, each with an empty-string / nil fallback so a
     /// missing key degrades gracefully instead of crashing the build.
-    @MainActor
     init(_ a: Article) {
 
         // The article title doubles as the app's display name.
@@ -106,7 +105,6 @@ struct AppInfo {
 /// HTML builders for the Apps grid + detail pages. Shares parsing/escaping/
 /// include with `CollectionRenderer` (called directly, like the other three
 /// collection stacks); holds only the app-specific markup.
-@MainActor
 enum AppRenderer {
 
     /// Year + platform chip pair (grid card only - the detail header dropped

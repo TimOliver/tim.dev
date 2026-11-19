@@ -30,11 +30,10 @@ struct Archive: StaticPage {
     }
 }
 
-/// Builds the Archive page's HTML. A `@MainActor` enum used purely as a
+/// Builds the Archive page's HTML. An enum used purely as a
 /// namespace for static builders (it has no cases and is never instantiated) -
 /// the same pattern the collection renderers use. Kept separate from `Archive`
 /// so the string-building helpers stay out of the `StaticPage` conformance.
-@MainActor
 enum ArchivePage {
 
     /// Renders the entire archive page to a raw HTML string: a search box above

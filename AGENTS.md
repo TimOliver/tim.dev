@@ -83,6 +83,13 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
 
 ## How the site is built
 
+- **Ignite is pinned to releases** (`.upToNextMinor(from: "0.7.2")`, github.com/Ignite-Swift):
+  before 1.0 a minor release can break the build. Since 0.7 pages aren't `@MainActor`; Ignite
+  still renders one page at a time in a single task, which is what makes the four
+  `nonisolated(unsafe)` static caches (Badge, ArticleShell, InstagramEmbed, CollectionRenderer)
+  safe. If Ignite ever renders in parallel, they need locks. `Title` escapes its own text, but
+  `MetaTag` values are written verbatim, so only meta tags get `escapedTitle`. To update any
+  dependency: build a baseline first, rebuild, diff `Build/`, and check the feeds.
 - **Ignite is used for routing and Markdown only.** No Ignite UI components, themes or Bootstrap:
   `useDefaultBootstrapURLs`/`builtInIconsEnabled` are `.none`, `prettifyHTML` is off (SwiftSoup
   lowercases SVG `viewBox`). Pages write HTML strings into `Includes/_<dir>/<key>.html` and return
@@ -431,11 +438,6 @@ poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` li
   The live site is now the source of truth.
 
 ## Roadmap (not built yet)
-
-- Dependency updates: rebuild, diff `Build/` against a baseline build and confirm the feeds are
-  unchanged before merging any of them.
-  - Ignite past `7486c3f` changes its pages' actor isolation: ~216 "main actor-isolated" errors
-    across the page templates, so it needs a migration, not a bump.
 
 - A native iOS/Mac posting app (separate repo) committing via the GitHub API; photos converted,
   downscaled and EXIF-stripped on device into `Assets/img/posts/YYYY/MM/`.

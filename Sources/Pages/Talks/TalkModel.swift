@@ -82,7 +82,6 @@ struct TalkInfo {
     /// of one front-matter metadata key, each with an empty-string / nil
     /// fallback so a missing key degrades gracefully instead of crashing the
     /// build.
-    @MainActor
     init(_ a: Article) {
 
         // The article title doubles as the talk's display title.
@@ -133,7 +132,6 @@ struct TalkInfo {
 /// include with `CollectionRenderer` (called directly, like the other three
 /// collection stacks); holds only the talk-specific markup. The grid-index and
 /// detail-page builders live in extensions in Talks.swift and TalkDetail.swift.
-@MainActor
 enum TalksRenderer {
 
     /// Poster thumbnail with an optional duration badge. Shared by the featured

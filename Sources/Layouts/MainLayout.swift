@@ -42,8 +42,10 @@ struct MainLayout: Layout {
         return text.replacingOccurrences(of: "\"", with: "&quot;")
     }
 
-    /// pageTitle for HTML: Ignite writes <title> text and attribute values
+    /// pageTitle for meta tag attributes: Ignite writes MetaTag values
     /// verbatim, so a title like `My "new" app & UIKit` must be escaped here.
+    /// `Title` is the exception - since Ignite 0.7 it escapes its own text, so
+    /// it takes the raw `pageTitle` (escaping it here too printed `&amp;amp;`).
     private var escapedTitle: String { escape(pageTitle) }
 
     private var canonicalURL: String { SiteURL.canonicalPage(page.url) }
@@ -136,7 +138,7 @@ struct MainLayout: Layout {
 
             MetaTag(characterSet: "UTF-8")
             MetaTag(name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover")
-            Title(escapedTitle)
+            Title(pageTitle)
             // Error pages have no canonical identity: a host can serve this
             // document at any missing URL. Keep it out of search results.
             MetaTag(name: "description", content: metaDescription)

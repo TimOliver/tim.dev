@@ -7,7 +7,7 @@ let package = Package(
     name: "IgniteStarter",
     platforms: [.macOS(.v13)],
     dependencies: [
-        .package(url: "https://github.com/twostraws/Ignite.git", branch: "main"),
+        .package(url: "https://github.com/Ignite-Swift/Ignite.git", .upToNextMinor(from: "0.7.2")),
         // Imported directly by ArticleMarkdownRenderer (Ignite also uses it).
         .package(url: "https://github.com/swiftlang/swift-markdown.git", from: "0.7.3"),
         // Imported directly by ArticleImages and ArticleContent (Ignite also uses it).

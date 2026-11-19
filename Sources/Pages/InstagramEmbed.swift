@@ -197,10 +197,9 @@ enum InstagramEmbed {
     // MARK: - Regex helpers
 
     /// Compiled patterns, keyed by pattern string - transform runs for every
-    /// article render, so compiling per call adds up. Only ever touched from
-    /// ArticleShell's @MainActor rendering, so plain static state is safe. A
-    /// failed compile caches as nil so a bad pattern isn't retried.
-    private static var regexCache: [String: NSRegularExpression?] = [:]
+    /// article render, so compiling per call adds up. Ignite renders pages one at a time in a single task, so plain static state is safe.
+    /// A failed compile caches as nil so a bad pattern isn't retried.
+    nonisolated(unsafe) private static var regexCache: [String: NSRegularExpression?] = [:]
 
     /// Replaces each match of `pattern`; the closure receives the whole matched
     /// text and returns its replacement, or nil to leave that match untouched

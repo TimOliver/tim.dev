@@ -11,7 +11,6 @@ import Ignite
 /// `CoreAttributes.init` are both `internal`, so emitting raw HTML from outside
 /// the framework requires routing through `Include`. See
 /// [[project-ignite-core-js-pr]] for the upstream fix.
-@MainActor
 enum ArticleShell {
 
     /// The migration script writes dates as the original local wall-clock time
@@ -378,9 +377,9 @@ enum ArticleShell {
 
     /// Compiled patterns, keyed by pattern string. replaceRegex runs ~10× per
     /// article across every article render, so compiling per call would
-    /// dominate the build; the type is @MainActor, so plain static state is
-    /// safe. A failed compile caches as nil so a bad pattern isn't retried.
-    private static var regexCache: [String: NSRegularExpression?] = [:]
+    /// dominate the build. Ignite renders pages one at a time in a single task, so plain static state is safe.
+    /// A failed compile caches as nil so a bad pattern isn't retried.
+    nonisolated(unsafe) private static var regexCache: [String: NSRegularExpression?] = [:]
 
     /// Splices each regex match's replacement into the string.
     private static func replaceRegex(

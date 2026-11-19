@@ -3,10 +3,10 @@
     {
       "identity" : "ignite",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/twostraws/Ignite.git",
+      "location" : "https://github.com/Ignite-Swift/Ignite.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "7486c3fe4e8fc9956d585f945c886b7601e890a9"
+        "revision" : "eb4c031d3298825a707fb23741f827409282cce4",
+        "version" : "0.7.2"
       }
     },
     {
