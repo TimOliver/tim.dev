@@ -300,7 +300,10 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
   Any card whose thumbnail is a different crop from the lightbox file needs `data-crop`.
 - `lite-yt-embed.js` (vendored 0.3.4) also carries `tim.dev` patches: no hover preconnects
   (YouTube, Google, DoubleClick) and the Safari/mobile `YT.Player` path uses
-  youtube-nocookie, so nothing contacts YouTube before Play. Re-apply if re-vendored. Raw
+  youtube-nocookie, so nothing contacts YouTube before Play. Re-apply if re-vendored. Don't
+  move to 0.4.0 (checked 2026-11-19): its headline change is a "prepared" mode for iPhone/iPad
+  Safari that loads the www.youtube.com iframe and Player API at page load, before Play, which
+  breaks that promise; the rest is refactoring. Raw
   YouTube iframes in posts are rewritten to `<lite-youtube>` at build time (a link in feeds)
   by `ArticleContent`; write new videos as a plain iframe or `<lite-youtube>`, either works.
   Every facade shows a LOCAL poster, so no page touches YouTube before Play: Talks and Art use
