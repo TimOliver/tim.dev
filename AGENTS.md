@@ -19,7 +19,7 @@ swift test --disable-automatic-resolution
 python3 Scripts/deploy-bunny.py --dry-run  # what a deploy would upload/purge/delete (needs Bunny env vars)
 ```
 
-Needs macOS with Xcode/Swift and Python 3.10+. Python packages are pinned in `requirements.txt`
+Needs macOS with Xcode/Swift and Python 3.11+ (Pillow 13 requires it). Python packages are pinned in `requirements.txt`
 and live in `.venv` (gitignored); `build.sh` and the pre-commit hook use it automatically, CI
 installs the same pin. Swift dependencies are locked by `Package.resolved` - keep
 `--disable-automatic-resolution` on `swift run`/`swift test` so a build never re-resolves them.

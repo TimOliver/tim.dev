@@ -1,4 +1,4 @@
 # Python packages for the media scripts (Scripts/build-media.py and friends).
 # Installed into .venv by Scripts/setup.sh; the deploy workflow installs the
 # same pin.
-Pillow==12.2.0
+Pillow==13.0.0
