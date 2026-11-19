@@ -39,22 +39,22 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Use the newest release Xcode on the runner (no betas or RCs)
         run: |
           sudo xcode-select -s "$(ls -d /Applications/Xcode_*.app | grep -viE 'beta|_rc|release.candidate' | sort -V | tail -1)"
           swift --version
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: "3.14"
       - run: python -m pip install --quiet -r requirements.txt
 
       # Caches only make the build faster: a cold run produces the same bytes,
       # so a cache miss never means a bigger upload.
       - name: Restore Swift build
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             .build
@@ -62,7 +62,7 @@ jobs:
           key: swiftpm-${{ runner.os }}-${{ hashFiles('Package.resolved', 'Package.swift', 'Sources/**/*.swift') }}
           restore-keys: swiftpm-${{ runner.os }}-
       - name: Restore image variants
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             Assets/img/**/*@*w.*
@@ -70,7 +70,7 @@ jobs:
           key: media-${{ github.run_id }}
           restore-keys: media-
       - name: Restore link cards
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .build/link-cards
           key: link-cards-${{ github.run_id }}
