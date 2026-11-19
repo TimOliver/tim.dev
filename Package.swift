@@ -11,7 +11,7 @@ let package = Package(
         // Imported directly by ArticleMarkdownRenderer (Ignite also uses it).
         .package(url: "https://github.com/swiftlang/swift-markdown.git", from: "0.7.3"),
         // Imported directly by ArticleImages and ArticleContent (Ignite also uses it).
-        .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.11.3"),
+        .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.14.4"),
     ],
     targets: [
         .executableTarget(
