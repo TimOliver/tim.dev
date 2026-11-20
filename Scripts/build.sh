@@ -10,4 +10,5 @@ python=python3
 "$python" Scripts/youtube-posters.py   # fetches only posters not yet saved
 "$python" Scripts/build-media.py
 swift run --disable-automatic-resolution
+"$python" Scripts/minify-assets.py   # squeezes Build/ only; Assets/ stays readable
 "$python" Scripts/check-site.py
