@@ -397,7 +397,10 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
 
 Data from `https://twitch.tim.dev` (separate repo `~/Developer/TwitchWatcher`; push to `main` to
 deploy; CORS allows tim.dev, www.tim.dev and any localhost origin; `max-age=60` drives the 60 s
-poll). Nothing from Twitch loads until Play is clicked. The embed's `parent=` list in
+poll). Nothing from Twitch loads until Play is clicked. `twitch-live.css` isn't linked from
+`<head>`: the script loads it (path from the card's `data-twitch-css`, which fingerprinting
+rewrites) on the first live answer and reveals the card once it arrives, so offline visits never
+wait on it. The embed's `parent=` list in
 `twitch-live.js` (`EMBED_PARENTS`) must include every host that serves the page. Pure helpers are
 `module.exports`'d for `node -e` checks; `timXD` is hard-coded in `twitch-live.html`/`.js`.
 

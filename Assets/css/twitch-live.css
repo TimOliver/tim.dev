@@ -1,4 +1,5 @@
-/* Twitch "live now" card - home page only (loaded from MainLayout when isHome).
+/* Twitch "live now" card - home page only. Not linked from <head>: twitch-live.js
+   loads this file once the channel is live, so it stays off the critical path.
    A cinematic, always-dark frame: a near-black rounded slab that breaks out to
    the header width, with the 16:9 player and the metadata floating inside a
    matte. Deliberately a featured, ephemeral element. See Includes/twitch-live.html. */

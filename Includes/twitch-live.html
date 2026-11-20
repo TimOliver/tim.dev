@@ -1,7 +1,10 @@
 <!-- Twitch "live now" card. Ships hidden; Assets/js/twitch-live.js fetches
      https://twitch.tim.dev and, when the channel is live, fills the [data-…]
-     slots and clears [hidden]. Home page only (included from Home.swift). -->
-<section class="twitch-live" data-twitch-live aria-label="Live on Twitch" hidden>
+     slots and clears [hidden]. Home page only (included from Home.swift).
+     data-twitch-css is the card's stylesheet, which the script loads only once
+     the channel is live, so it never blocks the first paint. It's quoted here so
+     the build's fingerprinting rewrites it to the hashed name like a <link>. -->
+<section class="twitch-live" data-twitch-live data-twitch-css="/css/twitch-live.css" aria-label="Live on Twitch" hidden>
     <div class="twitch-live-media">
         <img class="twitch-live-thumb" data-twitch-thumb src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" aria-hidden="true">
         <span class="twitch-live-badge"><span class="twitch-live-badge-dot" aria-hidden="true"></span>LIVE</span>
