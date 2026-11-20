@@ -23,6 +23,8 @@
        company icons). Light matches the app screenshot frame (--border #eee on
        white); dark was tuned by eye on the launch hero. */
     --image-stroke: rgba(0, 0, 0, 0.067);
+    /* Loading spinners (the comments placeholder and Comentario's own). */
+    --spinner: #F0F0F0;
     --icon-filter: none;
     --capsule-bg: rgba(245, 245, 247, 0.7);
     --capsule-border: rgba(0, 0, 0, 0.06);
@@ -74,6 +76,8 @@
     /* Feed post separator peak: --border pulled toward the page (see the
        article + article::before rule) so it reads quieter on near-black. */
     --post-rule: color-mix(in srgb, #38383C 60%, #141414);
+    /* A step lighter than --bg-secondary: #1F1F1F all but vanished on #141414. */
+    --spinner: #38383C;
     --icon-filter: invert(1);
     --capsule-bg: rgba(32, 32, 32, 0.7);
     --capsule-border: rgba(255, 255, 255, 0.08);
@@ -2059,6 +2063,30 @@ comentario-comments {
     display: block;
     /* Top only - the article's 60px bottom margin already spaces the end. */
     padding: 1.2em 0 0;
+}
+
+/* Loading spinner until the widget has something to show. comentario.js first
+   attaches an empty .comentario-root, and only fills it (profile bar, editor,
+   comments) once its API request returns - with nothing visible in between, not
+   even its own spinner. So spin while the element is empty AND while that root
+   is still childless. Same arc, size and speed as Comentario's own spinner
+   (comentario.css). comentario-tweaks.js adds .is-unavailable if nothing ever
+   renders, so a blocked script or a dead server doesn't spin forever. */
+comentario-comments:not(.is-unavailable):not(:has(.comentario-root > *))::before {
+    content: "";
+    display: block;
+    width: 1.5em;
+    height: 1.5em;
+    margin: 0.5em auto;
+    --spinner-arc: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M21 12a9 9 0 1 1-6.219-8.56'/%3E%3C/svg%3E");
+    background: var(--spinner);
+    -webkit-mask: var(--spinner-arc) center / 100% no-repeat;
+            mask: var(--spinner-arc) center / 100% no-repeat;
+    animation: comments-spinner 1s linear infinite;
+}
+
+@keyframes comments-spinner {
+    to { transform: rotate(360deg); }
 }
 
 .post-comments-title {

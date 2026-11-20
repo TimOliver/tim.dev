@@ -53,8 +53,10 @@
   /* ---- 1. Comment counts (home feed badges, end-of-article links, post heading) ----
      Comentario keeps each <comentario-count> in place even at zero and fills it
      in later, so one observer per count: badges and the heading toggle
-     .has-count once a number shows; the end-of-article links use a fixed
-     " comments" suffix, so a single comment's "1 comments" becomes "1 comment". */
+     .has-count once a number shows; the end-of-article links drop their
+     fallback "Comments" text once Comentario's count span arrives, and use a
+     fixed " comments" suffix, so a single comment's "1 comments" becomes
+     "1 comment". */
   (function () {
     var counts = document.querySelectorAll('comentario-count');
     if (!counts.length) return;
@@ -62,7 +64,16 @@
     function sync(el) {
       var text = (el.textContent || '').trim();
       if (el.closest('.post-link')) {
-        if (text === '1 comments') el.textContent = '1 comment';
+        // The link ships with "Comments" as fallback text (a name before, or
+        // without, the count). Comentario doesn't replace it: it appends its own
+        // span ("10 comments", or "Comments" on error), which read as
+        // "Comments10 comments". Once that span is in, drop the fallback.
+        var count = el.querySelector('.comentario-comment-count');
+        if (!count) return;
+        Array.prototype.slice.call(el.childNodes).forEach(function (node) {
+          if (node !== count) el.removeChild(node);
+        });
+        if (count.textContent.trim() === '1 comments') count.textContent = '1 comment';
       } else {
         el.classList.toggle('has-count', text !== '');
       }
@@ -80,6 +91,13 @@
   // left running against a widget that can never appear.
   var widget = document.querySelector('comentario-comments');
   if (!widget) return;
+
+  // site.css spins a placeholder until the widget's root has content. If it
+  // never fills (comentario.js blocked, or its API unreachable), stop the
+  // spinner after 20 seconds rather than promise comments that aren't coming.
+  setTimeout(function () {
+    if (!widget.querySelector('.comentario-root > *')) widget.classList.add('is-unavailable');
+  }, 20000);
 
   // Share one bounded readiness observer. A blocked/offline external script
   // may never render its root; stop waiting after 20 seconds without polling.
