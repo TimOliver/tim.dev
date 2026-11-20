@@ -155,7 +155,12 @@ enum ArticleShell {
         // readers switch voice and search engines index it correctly; the
         // page around it stays English.
         let lang = (article.metadata["lang"] as? String).flatMap { $0.isEmpty ? nil : $0 }
-        var s = lang.map { #"<article lang="\#(escape($0))">"# } ?? "<article>"
+        var s = lang.map { #"<article lang="\#(escape($0))""# } ?? "<article"
+        // In the feed, keep the post's text out of the home page's search
+        // snippet: Google otherwise splices sentences from the newest post onto
+        // the meta description. The post's own page is still indexed as usual.
+        if context == .feed { s += " data-nosnippet" }
+        s += ">"
 
         // Header - plain date, then the title (a link to the post in the feed).
         // The badge row sits between the title and the hero (see below), not here.
