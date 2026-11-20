@@ -213,10 +213,9 @@ struct MainLayout: Layout {
             for stylesheet in pageStylesheets {
                 MetaLink(href: stylesheet, rel: .stylesheet)
             }
-            // The Twitch live card and its assets are home-page only.
-            if isHome {
-                MetaLink(href: "/css/twitch-live.css", rel: .stylesheet)
-            }
+            // No <link> for the home page's Twitch live card: twitch-live.js
+            // loads its stylesheet only when the channel is live (see
+            // Includes/twitch-live.html), keeping it off the critical path.
             // lightbox3 (1.1.0) + lite-youtube-embed (0.3.4) are vendored into
             // Assets/ (like embla) - a render-blocking cross-origin stylesheet
             // in <head> put jsdelivr's DNS+TLS on the critical path of every

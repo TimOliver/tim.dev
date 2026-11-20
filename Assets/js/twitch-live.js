@@ -93,9 +93,36 @@
         playing = false;
     }
 
-    function show() { root.hidden = false; }
+    // The card's stylesheet isn't linked from <head>, so it can't hold up the
+    // first paint while the channel is offline (nearly always). Load it on the
+    // first "live" answer and reveal the card only once it has arrived: unstyled,
+    // the card would flash as a jumble of raw markup. A failed load still
+    // reveals it, so a stream is never hidden by a missing stylesheet.
+    var cssState = 'none'; // 'none' -> 'loading' -> 'ready'
+    var wantShown = false;
+
+    function loadStylesheet() {
+        var href = root.getAttribute('data-twitch-css');
+        if (!href) { cssState = 'ready'; return; }
+        cssState = 'loading';
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.onload = link.onerror = function () {
+            cssState = 'ready';
+            if (wantShown) root.hidden = false;
+        };
+        document.head.appendChild(link);
+    }
+
+    function show() {
+        wantShown = true;
+        if (cssState === 'none') loadStylesheet();
+        if (cssState === 'ready') root.hidden = false;
+    }
 
     function hide() {
+        wantShown = false;
         root.hidden = true;
         teardownEmbed();
     }
