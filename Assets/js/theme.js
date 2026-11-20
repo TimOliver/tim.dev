@@ -1,62 +1,40 @@
-// FOUC prevention + theme propagation. `data-theme` reflects the user's
-// saved choice (`auto` | `light` | `dark`); `data-color-scheme`
-// reflects the resolved effective scheme (`light` | `dark`) - CSS uses
-// `data-color-scheme` so dark-mode rules need a single selector instead
-// of duplicating across `[data-theme="auto"] @media-dark` and
-// `[data-theme="dark"]`. Both attributes are kept in sync via a
-// MutationObserver (toggle changes) + matchMedia listener (OS pref).
-(function() {
+// Theme, before first paint. Inlined into every page's <head> at build time
+// (comments and indentation stripped, see InlineScript in MainLayout.swift),
+// so it costs no request. Keep it small; only whole-line `//` comments are
+// stripped, so don't use `/* */`.
+//
+// `data-theme` is the saved choice (auto | light | dark); `data-color-scheme`
+// is the resolved scheme (light | dark), so dark-mode CSS needs one selector.
+// The toggle in site.js changes `data-theme`; the observer and the OS
+// preference listener below keep `data-color-scheme` and the browser-UI tint
+// (theme-color: the page background, #fff / #141414) in sync.
+(function () {
     var root = document.documentElement;
+    var dark = matchMedia('(prefers-color-scheme: dark)');
+    var tint = document.querySelector('meta[name="theme-color"]');
+    var valid = /^(auto|light|dark)$/;
 
-    // Apply the narrow-iPad Safari layout class before first paint. Modern
-    // iPadOS commonly reports MacIntel; multiple touch points disambiguate it
-    // from a Mac. Keeping this in the synchronous head script avoids a late
-    // capsule-position jump when site.js loads at the end of the body.
-    try {
-        var platform = navigator.platform || '';
-        if (/iPad/.test(platform) ||
-            (platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
-            root.classList.add('is-ipad');
-        }
-    } catch (e) { /* detection is best-effort */ }
-
-    var darkQuery = window.matchMedia
-        ? window.matchMedia('(prefers-color-scheme: dark)')
-        : { matches: false };
-    var allowedThemes = /^(auto|light|dark)$/;
-
-    function storedTheme() {
-        try {
-            var saved = localStorage.getItem('theme');
-            return allowedThemes.test(saved) ? saved : 'auto';
-        } catch (e) {
-            return 'auto';
-        }
+    // Narrow-iPad Safari layout class. iPadOS reports MacIntel; touch points
+    // tell it from a Mac. Set here so the capsule doesn't jump when site.js
+    // loads at the end of the body.
+    if (/iPad/.test(navigator.platform) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+        root.classList.add('is-ipad');
     }
 
-    // The browser-UI tint follows the resolved scheme: the page background
-    // (--bg) in each, #fff light and #141414 dark.
-    var themeColor = document.querySelector('meta[name="theme-color"]');
-
-    function syncScheme() {
-        var t = root.getAttribute('data-theme') || 'auto';
-        if (!allowedThemes.test(t)) t = 'auto';
-        var effective = t === 'auto' ? (darkQuery.matches ? 'dark' : 'light') : t;
-        root.setAttribute('data-color-scheme', effective);
-        if (themeColor) themeColor.setAttribute('content', effective === 'dark' ? '#141414' : '#ffffff');
+    function sync() {
+        var t = root.getAttribute('data-theme');
+        var s = valid.test(t) && t !== 'auto' ? t : (dark.matches ? 'dark' : 'light');
+        root.setAttribute('data-color-scheme', s);
+        if (tint) tint.content = s === 'dark' ? '#141414' : '#ffffff';
     }
 
-    root.setAttribute('data-theme', storedTheme());
-    syncScheme();
+    // Storage can throw (private windows, blocked site data): fall back to auto.
+    var saved;
+    try { saved = localStorage.getItem('theme'); } catch (e) {}
+    root.setAttribute('data-theme', valid.test(saved) ? saved : 'auto');
+    sync();
 
-    if (darkQuery.addEventListener) {
-        darkQuery.addEventListener('change', syncScheme);
-    } else if (darkQuery.addListener) {
-        darkQuery.addListener(syncScheme);
-    }
-
-    new MutationObserver(syncScheme).observe(root, {
-        attributes: true,
-        attributeFilter: ['data-theme']
-    });
+    dark.addEventListener('change', sync);
+    new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 })();
