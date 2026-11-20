@@ -39,6 +39,13 @@
  *    one-time token and fails with "Token is missing or invalid" once the user has
  *    allowed the blocked window and signed in through it. We open a blank popup
  *    synchronously in the click instead and hand it to Comentario when it asks.
+ *
+ * 7. Arriving at #comments (the feed's comment links): the browser scrolls once,
+ *    on load, before the widget has rendered, so the section is nearly the end of
+ *    the page and the comments then load in below the fold. Once the first comment
+ *    appears, smoothly scroll just far enough to show it (not its replies) -
+ *    unless the visitor has already scrolled or it's already on screen. Posts
+ *    with no comments stay put.
  */
 (function () {
   'use strict';
@@ -330,5 +337,97 @@
       // leave a blank one open forever.
       timer = setTimeout(abandon, 20000);
     }, true);
+  })();
+
+  /* ---- 7. Arriving at #comments: bring the first comment into view ---- */
+
+  (function () {
+    if (location.hash !== '#comments') return;
+
+    // Any input of the visitor's own means they've taken over; never fight it.
+    // (Not a scroll listener: the browser's own jump to #comments fires those.)
+    var userMoved = false;
+    var INPUTS = ['wheel', 'touchstart', 'keydown', 'mousedown'];
+    function onInput() { userMoved = true; stop(); }
+    INPUTS.forEach(function (type) {
+      window.addEventListener(type, onInput, { passive: true, once: true });
+    });
+
+    var observer = null;
+    var timer = null;
+    var done = false;
+    function stop() {
+      done = true;
+      if (observer) observer.disconnect();
+      clearTimeout(timer);
+      INPUTS.forEach(function (type) { window.removeEventListener(type, onInput); });
+    }
+
+    // Scroll only as far as it takes to show the whole first comment, with a
+    // little room beneath it - not pull it to the top. A comment taller than
+    // the screen stops with its top just under the sticky nav (html's
+    // scroll-padding-top).
+    var ROOM_BELOW = 24;
+    var NAV_CLEARANCE = 100;
+    function scrollToFirst(card) {
+      stop();
+      if (userMoved) return;
+      // Just the comment itself (header, text, toolbar): a card also wraps its
+      // whole reply chain in .comentario-card-children, which we don't chase.
+      var self = card.querySelector('.comentario-card-self') || card;
+      var rect = self.getBoundingClientRect();
+      var distance = Math.min(rect.bottom + ROOM_BELOW - window.innerHeight,
+                              rect.top - NAV_CLEARANCE);
+      if (distance <= 0) return; // already on screen
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) { window.scrollBy(0, distance); return; }
+      glide(distance);
+    }
+
+    // The browser's smooth scroll has a fixed, quick duration and curve, so
+    // animate by hand: a quintic ease-out (fast start, long gentle settle, close
+    // to an iOS scroll view decelerating). Longer trips take a little longer,
+    // within 900-1600ms: the curve covers most of the distance early, so the
+    // tail is what reads as the slow settle. Any wheel, touch or key input
+    // cancels it on the spot.
+    function glide(distance) {
+      var startY = window.scrollY;
+      var duration = Math.max(900, Math.min(1600, 800 + distance));
+      var startTime = null;
+      var cancelled = false;
+      function cancel() { cancelled = true; }
+      var CANCELS = ['wheel', 'touchstart', 'keydown', 'mousedown'];
+      CANCELS.forEach(function (type) {
+        window.addEventListener(type, cancel, { passive: true, once: true });
+      });
+      function frame(now) {
+        if (cancelled) return;
+        if (startTime === null) startTime = now;
+        var t = Math.min(1, (now - startTime) / duration);
+        var eased = 1 - Math.pow(1 - t, 5);
+        window.scrollTo(0, startY + distance * eased);
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          CANCELS.forEach(function (type) { window.removeEventListener(type, cancel); });
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // Watch the <comentario-comments> host, not .comentario-root: the widget
+    // re-renders its root once the page's data arrives.
+    function check() {
+      if (done) return;
+      var card = widget.querySelector('.comentario-card');
+      if (card) scrollToFirst(card);
+    }
+    check();
+    if (!done) {
+      observer = new MutationObserver(check);
+      observer.observe(widget, { childList: true, subtree: true });
+      // Comments arrive with the widget's first load; don't watch forever.
+      timer = setTimeout(stop, 15000);
+    }
   })();
 })();
