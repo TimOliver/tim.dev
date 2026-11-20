@@ -187,10 +187,12 @@ test('comments root initialization shares a bounded observer when the widget is 
     const script = fs.readFileSync(path.join(__dirname, '../../Assets/js/comentario-tweaks.js'), 'utf8');
     const observers = [];
     const timers = [];
-    const widget = { querySelector: () => null };
+    const classes = new Set();
+    const widget = { querySelector: () => null, classList: { add: name => classes.add(name) } };
     vm.runInNewContext(script, {
         document: { querySelector: selector => selector === 'comentario-comments' ? widget : null, querySelectorAll: () => [], addEventListener() {} },
         window: { open() {} },
+        location: { hash: '' },
         MutationObserver: class {
             constructor(callback) { this.callback = callback; observers.push(this); }
             observe() {}
@@ -199,13 +201,16 @@ test('comments root initialization shares a bounded observer when the widget is 
         setTimeout(callback, delay) { timers.push({ callback, delay }); return timers.length; },
         clearTimeout() {}
     });
+    // timers[0] stops the loading spinner; timers[1] bounds the root observer.
     assert.equal(observers.length, 1);
-    assert.equal(timers.length, 1);
-    assert.equal(timers[0].delay, 20000);
+    assert.equal(timers.length, 2);
+    assert.deepEqual(timers.map(t => t.delay), [20000, 20000]);
     observers[0].callback();
-    assert.equal(timers.length, 1);
-    timers[0].callback();
+    assert.equal(timers.length, 2);
+    timers[1].callback();
     assert.equal(observers[0].disconnected, true);
+    timers[0].callback();
+    assert.ok(classes.has('is-unavailable'));
 });
 
 test('newly swapped LQIP images are observed and receive responsive sources', () => {
