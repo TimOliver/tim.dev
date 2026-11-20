@@ -38,18 +38,20 @@
 }
 
 /* Spinner: Comentario bakes its orange (#ec8100) into the SVG background-image,
-   so re-tint by swapping that image for a mask and filling with our secondary
-   colour. Size/position/animation stay from Comentario's own ::after rule. */
+   so re-tint by swapping that image for a mask and filling with the site's
+   --spinner colour (shared with the placeholder site.css shows before the widget
+   loads, so the hand-over is seamless). Size/position/animation stay from
+   Comentario's own ::after rule. */
 .comentario-root .comentario-spinner::after {
     --cmntr-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M21 12a9 9 0 1 1-6.219-8.56'/%3E%3C/svg%3E");
-    background: var(--bg-secondary);
+    background: var(--spinner);
     -webkit-mask: var(--cmntr-icon) center / 100% no-repeat;
             mask: var(--cmntr-icon) center / 100% no-repeat;
 }
 
 /* Spinning BUTTONS (Comentario adds .comentario-spinner to e.g. the "Sign in"
    pill while an OAuth popup is open, or a submit while in flight): the base
-   --bg-secondary tint above is for the page-loading spinner on the page bg -
+   --spinner tint above is for the page-loading spinner on the page bg -
    on a filled pill it's fill-on-fill, drawn over the still-visible label. Hide
    the label (transparent keeps the pill's size) and tint the spinner the
    colour the label would be. */

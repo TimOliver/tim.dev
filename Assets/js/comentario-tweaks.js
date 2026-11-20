@@ -81,6 +81,13 @@
   var widget = document.querySelector('comentario-comments');
   if (!widget) return;
 
+  // site.css spins a placeholder until the widget's root has content. If it
+  // never fills (comentario.js blocked, or its API unreachable), stop the
+  // spinner after 20 seconds rather than promise comments that aren't coming.
+  setTimeout(function () {
+    if (!widget.querySelector('.comentario-root > *')) widget.classList.add('is-unavailable');
+  }, 20000);
+
   // Share one bounded readiness observer. A blocked/offline external script
   // may never render its root; stop waiting after 20 seconds without polling.
   var readyRoot = null;
