@@ -185,11 +185,12 @@ struct MainLayout: Layout {
             }
             // theme.js must run synchronously in <head> - it sets data-theme +
             // data-color-scheme on <html> before first paint, preventing FOUC.
+            // It's inlined so it costs no render-blocking request.
             // Browser UI tint (Safari's bar, the iOS status area). theme.js,
             // right below, sets it to the page background for the resolved
             // light/dark scheme, so it must come first.
             MetaTag(name: "theme-color", content: "#ffffff")
-            Script(file: "/js/theme.js")
+            Script(code: InlineScript.theme)
             // Preload sprites - works around Safari sometimes failing to render
             // external <use href> references on cold cache.
             // Chromium never matches an `as=image` preload to a <use> fetch, so
