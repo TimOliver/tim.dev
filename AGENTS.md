@@ -259,6 +259,9 @@ CLAUDE.local.md                gitignored private ops notes (server, hostnames) 
   too, for profile verification), and `theme-color`, which theme.js keeps on the page background for
   the resolved scheme. site.css sets `color-scheme` from `data-color-scheme` so native controls and
   scrollbars follow the theme toggle.
+- theme.js is the only script in `<head>` and runs before first paint, so it's inlined rather than
+  linked (`InlineScript` strips its whole-line `//` comments and indentation at build time, and
+  keeps line breaks). Keep it tiny, and use `//` comments only: `/* */` blocks aren't stripped.
 - Acknowledgements, Privacy and Terms (/acknowledgements/, /privacy/, /terms/) are hand-written
   includes styled by `info.css`. Acknowledgements is open-source notices grouped by licence (name,
   copyright line, then the licence text once): shipped JS, icons, Comentario and the Swift build
