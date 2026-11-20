@@ -1,4 +1,7 @@
-# Python packages for the media scripts (Scripts/build-media.py and friends).
+# Python packages for the build scripts (Scripts/build-media.py, minify-assets.py
+# and friends).
 # Installed into .venv by Scripts/setup.sh; the deploy workflow installs the
 # same pin.
 Pillow==13.0.0
+rcssmin==1.3.0
+rjsmin==1.3.0
