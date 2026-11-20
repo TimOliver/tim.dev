@@ -1,0 +1,15 @@
+name: Suggestion
+description: An idea for something tim.dev could do better.
+labels: ["suggestion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Suggestions are welcome, though this is a personal site, so I can't promise I'll take them all on.
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What you'd like to see, and why it'd help.
+    validations:
+      required: true

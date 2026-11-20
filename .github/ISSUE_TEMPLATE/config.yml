@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Running your own copy of this site
+    url: https://github.com/twostraws/Ignite/discussions
+    about: I can't help set up or debug other instances. For questions about Ignite itself, the Ignite community is the place to ask.
+  - name: Anything else
+    url: https://tim.dev/contact/
+    about: For anything that isn't a bug or a suggestion, get in touch directly.

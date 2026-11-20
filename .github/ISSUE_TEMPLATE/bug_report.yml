@@ -1,0 +1,40 @@
+name: Bug report
+description: Something on tim.dev looks broken or doesn't work.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this! Issues here are only for problems on tim.dev itself. I can't help with setting up or running your own copy of the site.
+  - type: input
+    id: url
+    attributes:
+      label: Page
+      description: The URL where it happened.
+      placeholder: https://tim.dev/...
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected to see instead. Screenshots help a lot.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: Safari 26 on iPhone 17, Chrome on Windows 11, etc.
+    validations:
+      required: true
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Theme
+      options:
+        - Light
+        - Dark
+        - Not sure
+    validations:
+      required: false
