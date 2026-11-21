@@ -1,4 +1,4 @@
-# tim.dev
+![tim.dev home page](screenshot.webp)
 
 [tim.dev] is my personal website, featuring my blog, and a portfolio of my past work. Originally launched in 2008 as a WordPress instance, the site has now been rewritten from the ground up for the modern web.
 
