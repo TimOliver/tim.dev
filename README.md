@@ -1,4 +1,4 @@
-![tim.dev home page](screenshot.webp)
+![tim.dev home page](Screenshot.webp)
 
 <p align="center">
     <a href="https://github.com/TimOliver/tim.dev/actions/workflows/deploy.yml"><img src="https://github.com/TimOliver/tim.dev/actions/workflows/deploy.yml/badge.svg" alt="Deploy"></a>
