@@ -1,5 +1,12 @@
 ![tim.dev home page](screenshot.webp)
 
+<p align="center">
+    <a href="https://github.com/TimOliver/tim.dev/actions/workflows/deploy.yml"><img src="https://github.com/TimOliver/tim.dev/actions/workflows/deploy.yml/badge.svg" alt="Deploy"></a>
+    <img src="https://img.shields.io/badge/Swift-5.9+-F05138?logo=swift&logoColor=white" alt="Swift 5.9+">
+    <a href="https://github.com/Ignite-Swift/Ignite"><img src="https://img.shields.io/badge/built_with-Ignite-orange" alt="Built with Ignite"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/code-public_domain-blue" alt="Code: public domain"></a>
+</p>
+
 [tim.dev] is my personal website, featuring my blog, and a portfolio of my past work. Originally launched in 2008 as a WordPress instance, the site has now been rewritten from the ground up for the modern web.
 
 This site is now statically generated, with the generator itself being an extension of [Ignite](https://github.com/Ignite-Swift/Ignite), a modern static site generator, written in Swift.
